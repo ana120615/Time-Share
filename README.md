@@ -1,8 +1,7 @@
 **# Time-Share**
 **Repositório destinado ao projeto final da disciplina de Introdução à Programação II **
 
-# Projeto ABC 
-[Nome do projeto ou do grupo - este será seu identificador único até o final da disciplina]
+# Projeto FlexShare
 
 Ideias que inspiram o projeto (sites, blogs, sistemas, fontes de dados): 
  * https://dados.gov.br/
