@@ -8,23 +8,23 @@ public class Bem {
     private String descricao;
     private String localizacao;
     private int capacidade;
-    private ArrayList<Fracao> fracoes;
+    private ArrayList<Cota> fracoes;
 
     //Métodos get e set
-    public Fracao getFracao(int id) {
-        for (Fracao fracao : fracoes) {
-            if (fracao.getId() == id) {
-                return fracao;
+    public Cota getFracao(int id) {
+        for (Cota cota : fracoes) {
+            if (cota.getId() == id) {
+                return cota;
             }
         }
         return null;
     }
 
-    public void setFracoes(ArrayList<Fracao> fracoes) {
+    public void setFracoes(ArrayList<Cota> fracoes) {
         this.fracoes = fracoes;
     }
 
-    public ArrayList<Fracao> getFracoes() {
+    public ArrayList<Cota> getFracoes() {
         return this.fracoes;
     }
 
@@ -85,8 +85,8 @@ public class Bem {
         if (numero > 0 && preco > 0) {
             for (int i = 0; i < numero; i++) {
                 int id = i;
-                Fracao fracao = new Fracao(id, id, valor);
-                fracoes.add(fracao);
+                Cota cota = new Cota(id, id, valor);
+                fracoes.add(cota);
                 resultado = true;
             }
         } else {
@@ -97,7 +97,7 @@ public class Bem {
 
     public boolean verificarDisponibilidade(int id) {
         boolean resultado = false;
-        for (Fracao fracoes : fracoes) {
+        for (Cota fracoes : fracoes) {
             if (fracoes.getId() == id) {
                 resultado = fracoes.getStatus();
             }

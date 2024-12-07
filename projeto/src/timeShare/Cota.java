@@ -1,6 +1,6 @@
 package timeShare;
 
-public class Fracao {
+public class Cota {
 private int id;
 private int numero;
 private String periodo;
@@ -40,13 +40,13 @@ public void setPeriodo(String periodo) {
 	this.periodo=periodo;
 }
 
-public Fracao(int id, int numero, double preco) {
+public Cota(int id, int numero, double preco) {
 	this.id=id;
 	this.numero=numero;
 	this.preco=preco;
 	this.status=true; //inicializada como disponivel
 }
 public String calcularDeslocamento(int anoAtual) {
-	
+	return "bilubili";
 }
 }

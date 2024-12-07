@@ -7,7 +7,7 @@ public class Usuario extends Pessoa {
 public Usuario(String nome, String cpf, String email, String senha) {
 		super(nome, cpf, email, senha);
 	}
-private ArrayList <Fracao> fracoesCompradas;
+private ArrayList <Cota> fracoesCompradas;
 
 public Venda adquirirFracao(int fracaoId, Bem bem) {
 	if (bem.verificarDisponibilidade(fracaoId)) {
