@@ -32,7 +32,7 @@ Integrar funcionalidades externas, como mapas e calendários, para aprimorar a e
 O sistema busca atender às necessidades de administradores e usuários de forma eficiente, promovendo um modelo eficaz de compartilhamento de bens ao longo do tempo.
 
 ## Requisitos do projeto 
-Requisitos para sistema FlexShare
+Requisitos para o sistema FlexShare
 
   * **REQ1** - Gerenciamento de administradores, que podem cadastrar e ofertar bens para venda.
    
