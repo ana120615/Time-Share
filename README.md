@@ -3,11 +3,10 @@
 
 # Projeto FlexShare
 
-Ideias que inspiram o projeto (sites, blogs, sistemas, fontes de dados): 
- * https://dados.gov.br/
- * https://play.google.com
- * https://www.apple.com/br/app-store/
- * https://gtagenda2030.org.br/ods/ (17 Objetivos de Desenvolvimento Sustentável - ODS)
+Ideias que inspiram o projeto: 
+ * https://www.airbnb.com.br/?_set_bev_on_new_domain=1733602638_EAMTA0MzJmN2RlY2
+ * https://www.share-now.com/
+ * https://www.wework.com.br/
 
 ## Integrantes do grupo 
  * Ana Beatriz Gomes - ana.beatriz@ufrpe.br
@@ -17,15 +16,23 @@ Ideias que inspiram o projeto (sites, blogs, sistemas, fontes de dados):
  * Samara Monteiro Xavier - samara.xavier@ufrpe.br
 
 ## Descrição geral do projeto 
-Nesta descrição, apresente um texto resumido com a(s) principal(is) funcionalidade(s) do sistema. 
-É muito importante que você consiga responder em uma única frase: qual a principal funcionalidade do seu sistema? 
-A partir disso, você deve detalhar as funcionalidades do sistema tentando responder às perguntas:
- 1. Quem vai usar o programa?
- 2. Que serviços são “necessários” (leia-se: importantes para os clientes e usuários)?
- 3. Quais serviços cada usuário pode executar?
+O sistema será uma aplicação voltada para o gerenciamento de bens compartilhados no modelo de time share. Ele permitirá que administradores ofertem produtos de alto valor, em frações de tempo específicas. Usuários poderão adquirir direitos de uso dessas frações, realizar reservas dentro de seus períodos contratados e, opcionalmente, fora desses períodos mediante pagamento de taxas adicionais.
+
+O sistema automatiza o deslocamento das semanas adquiridas a cada ano, assegurando um uso justo ao longo do tempo e possibilita a revenda ou transferência de direitos entre usuários. Além disso, oferece funcionalidades de consulta, relatórios e integração com ferramentas externas, como mapas e calendários, promovendo praticidade e transparência para todos os envolvidos.
+
+O objetivo do sistema é gerenciar e otimizar a compra, venda, reserva e uso compartilhado de bens, garantindo que múltiplos usuários possam usufruir de produtos de alto valor de forma justa, prática e organizada.
+
+Objetivos Específicos:
+Facilitar o cadastro, gerenciamento e oferta de bens pelos administradores.
+Proporcionar aos usuários ferramentas para adquirir, reservar e transferir direitos de uso.
+Automatizar o deslocamento de frações de tempo para garantir equilíbrio no uso anual.
+Permitir a reserva no período contratado e aplicar taxas para reservas fora dele.
+Oferecer relatórios e estatísticas para auxiliar no controle e na tomada de decisões.
+Integrar funcionalidades externas, como mapas e calendários, para aprimorar a experiência dos usuários.
+O sistema busca atender às necessidades de administradores e usuários de forma eficiente, promovendo um modelo eficaz de compartilhamento de bens ao longo do tempo.
 
 ## Requisitos do projeto 
-Requisitos para sistema Time Share de (escolher o que será ofertado).
+Requisitos para sistema FlexShare
 
   * **REQ1** - Gerenciamento de administradores, que podem cadastrar e ofertar bens para venda.
    
