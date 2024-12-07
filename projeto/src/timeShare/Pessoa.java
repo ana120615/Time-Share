@@ -16,7 +16,7 @@ public class Pessoa {
         setNome(nome);
         setEmail(email);
         setSenha(senha);
-        this.dataNascimento = dataNascimento;
+        setDataNascimento(dataNascimento);
     }
 
     public String getCpf() {

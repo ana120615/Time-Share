@@ -7,7 +7,7 @@ public class Administrador extends Pessoa {
 
     private ArrayList<Bem> bens;
 
-    public Administrador(String nome, String cpf, String email, String senha, LocalDate dataNasicmento) {
+    public Administrador(String nome, String cpf, String email, String senha, LocalDate dataNascimento) {
         super(nome, cpf, email, senha, dataNascimento);
         this.bens = new ArrayList<Bem>();
     }
@@ -25,16 +25,15 @@ public class Administrador extends Pessoa {
 
     }
 
-    public consultarRelatorios() {
-
-    }
 
     public ArrayList<Bem> getBens(int id) {
-        for(Bem b : bens) {
-            if(b.getId() == id) {
+        ArrayList<Bem> resultado = new ArrayList<>();
+        for (Bem b : bens) {
+            if (b.getId() == id) {
 
             }
-        };
+        }
+        return resultado;
     }
 
 }
