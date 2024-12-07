@@ -1,12 +1,13 @@
 package timeShare;
 
 import java.util.Date;
+import java.util.UUID;
 
 public class Venda {
 private int id;
 private Date data;
 private double valor;
-private Fracao fracao;
+private Fracao fracao; // trocar para cota quando for comitado
 private Usuario usuario;
 private Bem bem;
 
@@ -58,9 +59,26 @@ public Bem getBem() {
 //Outros métodos
 
 public String gerarNotaFiscal() {
-	
+   String notaFiscal = "Nota Fiscal: \n ";
+
+   notaFiscal += "Cliente: " + usuario.getNome() + "/n";
+   notaFiscal+= "--------------------------------------\n";
+   notaFiscal+= "Nome do Time Share\n";
+   notaFiscal+= "--------------------------------------\n";
+   notaFiscal += "CPF: " + usuario.getCpf() + "\n";
+   notaFiscal +=  "cota:" ; // fracao ainda está sem descrição
+   notaFiscal+= "Período: " + fracao.getPeriodo();  
+   notaFiscal += "Valor: R$" + valor + "\n";
+   notaFiscal += "Data de Emissão: " + new Date() + "\n";
+    String numeroNotaFiscal = UUID.randomUUID().toString();
+	notaFiscal += "Número da Nota Fiscal: " + numeroNotaFiscal + "\n";
+   
+   return notaFiscal;
+
+
 }
 public void confirmarVenda() {
+	System.out.println("Venda confrimada para usuário:" + usuario.getNome());
 	
 }
 }
