@@ -12,8 +12,8 @@ public class Administrador extends Pessoa {
         this.bens = new ArrayList<Bem>();
     }
 
-    public void cadastrarBem(String nome, String descricao, String localizacao, int capacidade) {
-        Bem novo = new Bem(nome, descricao, localizacao, capacidade, this);
+    public void cadastrarBem(int id, String nome, String descricao, String localizacao, int capacidade) {
+        Bem novo = new Bem(id, nome, descricao, localizacao, capacidade, this);
         this.bens.add(novo);
     }
 
@@ -22,12 +22,10 @@ public class Administrador extends Pessoa {
     }
 
 
-    public ArrayList<Bem> getBens(int id) {
+    public ArrayList<Bem> getBens() {
         ArrayList<Bem> resultado = new ArrayList<>();
         for (Bem b : bens) {
-            if (b.getId() == id) {
-
-            }
+            resultado.add(b);
         }
         return resultado;
     }

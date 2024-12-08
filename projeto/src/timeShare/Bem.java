@@ -11,7 +11,8 @@ public class Bem {
     private ArrayList<Cota> cotas;
     private Administrador adm;
 
-    public Bem(String nome, String descricao, String localizacao, int capacidade, Administrador adm) {
+    public Bem(int id, String nome, String descricao, String localizacao, int capacidade, Administrador adm) {
+        this.id = id;
         this.nome = nome;
         this.descricao = descricao;
         this.localizacao = localizacao;
@@ -109,6 +110,12 @@ public class Bem {
 
     public void gerarRelatorioDeUso() {
 
+    }
+
+    public String toString() {
+        return String.format("ID: %d\n" +
+                            "Nome: %s\nDescrição: %s", 
+                            getId() ,getNome(), getDescricao());
     }
 
 }
