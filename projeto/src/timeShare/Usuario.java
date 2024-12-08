@@ -8,8 +8,8 @@ import java.util.Random;
 public class Usuario extends Pessoa {
 private ArrayList <Cota> cotasCompradas;
 private ArrayList <Reserva> reservasFeitas;
-public Usuario(String nome, String cpf, String email, String senha) {
-		super(nome, cpf, email, senha);
+public Usuario(String nome, String cpf, String email, String senha, LocalDate dataNascimento) {
+		super(nome, cpf, email, senha, dataNascimento);
 		this.cotasCompradas= new ArrayList<>();
 		this.reservasFeitas = new ArrayList<>();
 	}
@@ -29,6 +29,7 @@ public Venda adquirirCota(int cotaId, Bem bem, Date dataInicio, Date dataFim) {
 	Cota cota = bem.getCota(cotaId);
 	double valor = cota.getPreco();
 	if(cota!=null) {
+	if(calcularIdade()>=18) {
 	if (bem.verificarDisponibilidade(cotaId)) {
 		this.cotasCompradas.add(cota);
 		cota.setStatus(false);
@@ -38,6 +39,7 @@ public Venda adquirirCota(int cotaId, Bem bem, Date dataInicio, Date dataFim) {
 	}
 	else {
 		System.out.println("Cota indisponivel");
+	}
 	}
 	}
 	else {
@@ -51,6 +53,7 @@ public Reserva realizarReserva(int cotaId, Date dataInicio, Date dataFim, Bem be
 	int idReserva = random.nextInt(100); 
 	Cota cota = bem.getCota(cotaId);
 	if(possuiCota(cotaId)) {
+		if (calcularIdade()>=18){
 		Reserva novaReserva = new Reserva (idReserva, dataInicio, dataFim);
 		
 		if (dataInicio.equals(cota.getDataInicio()) && dataFim.equals(cota.getDataFim())) {
@@ -61,6 +64,7 @@ public Reserva realizarReserva(int cotaId, Date dataInicio, Date dataFim, Bem be
 		System.out.println("TAXA: " + taxa);
 		reservasFeitas.add(novaReserva);
 		return novaReserva;
+	}
 	}
 }
 public void consultarReservas() {
