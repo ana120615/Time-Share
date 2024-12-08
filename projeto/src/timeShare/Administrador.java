@@ -21,11 +21,7 @@ public class Administrador extends Pessoa {
         this.bens.remove(bem);
     }
 
-    public void gerenciarCotas(int bemId) {
-
-    }
-
-
+    
     public ArrayList<Bem> getBens(int id) {
         ArrayList<Bem> resultado = new ArrayList<>();
         for (Bem b : bens) {

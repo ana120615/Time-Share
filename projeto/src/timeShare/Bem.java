@@ -8,11 +8,18 @@ public class Bem {
     private String descricao;
     private String localizacao;
     private int capacidade;
-    private ArrayList<Cota> fracoes;
+    private ArrayList<Cota> cotas;
+
+    public Bem(String nome, String descricao, String localizacao, int capacidade) {
+        this.nome = nome;
+        this.descricao = descricao;
+        this.localizacao = localizacao;
+        this.capacidade = capacidade;
+    }
 
     //Métodos get e set
-    public Cota getFracao(int id) {
-        for (Cota cota : fracoes) {
+    public Cota getCota(int id) {
+        for (Cota cota : cotas) {
             if (cota.getId() == id) {
                 return cota;
             }
@@ -20,12 +27,14 @@ public class Bem {
         return null;
     }
 
-    public void setFracoes(ArrayList<Cota> fracoes) {
-        this.fracoes = fracoes;
+    public void setCotas(ArrayList<Cota> cotas) {
+        this.cotas = cotas;
     }
 
-    public ArrayList<Cota> getFracoes() {
-        return this.fracoes;
+    public void getCotas() {
+        for (Cota c: cotas) {
+            System.out.println(c);
+        }
     }
 
     public int getId() {
@@ -68,45 +77,15 @@ public class Bem {
         this.capacidade = capacidade;
     }
 
-    public Bem(String nome, String descricao, String localizacao, int capacidade) {
-        this.nome = nome;
-        this.descricao = descricao;
-        this.localizacao = localizacao;
-        this.capacidade = capacidade;
-    }
-
     //Outros métodos
-    public boolean criarFracoes(int numero, double preco) {
-        boolean resultado = false;
-        double valor = preco / numero;
-        if (fracoes == null) {
-            fracoes = new ArrayList<>();
+    public void criarCotasParaBem(Cota cota) {
+        if (cota != null) {
+            cotas.add(cota);
+            System.out.println("Inserção concluída.");
         }
-        if (numero > 0 && preco > 0) {
-            for (int i = 0; i < numero; i++) {
-                int id = i;
-                Cota cota = new Cota(id, id, valor);
-                fracoes.add(cota);
-                resultado = true;
-            }
-        } else {
-            System.out.println("Erro");
+        else {
+            System.out.println("Falha");
         }
-        return resultado;
-    }
-
-    public boolean verificarDisponibilidade(int id) {
-        boolean resultado = false;
-        for (Cota fracoes : fracoes) {
-            if (fracoes.getId() == id) {
-                resultado = fracoes.getStatus();
-            }
-        }
-        return resultado;
-    }
-
-    public void gerarRelatorioDeUso() {
-
     }
 
 }

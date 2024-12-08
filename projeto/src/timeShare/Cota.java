@@ -1,12 +1,22 @@
 package timeShare;
 
+import java.time.LocalDateTime;
+
 public class Cota {
     private int id;
-    private int numero;
+    private int quantidadeCotas;
     private String periodo;
-    private int ano;
+    private LocalDateTime ano;
     private double preco;
     private boolean status;
+
+    public Cota(int id, int quantidadeCotas, double preco) {
+        this.id = id;
+        this.quantidadeCotas = quantidadeCotas;
+        this.preco = preco;
+        this.ano = LocalDateTime.now();
+        this.status = true; //inicializada como disponivel
+    }
 
     //Métodos get e set
     public int getId() {
@@ -26,11 +36,11 @@ public class Cota {
     }
 
     public int getNumero() {
-        return this.numero;
+        return this.quantidadeCotas;
     }
 
     public void setNumero(int numero) {
-        this.numero = numero;
+        this.quantidadeCotas = numero;
     }
 
     public double getPreco() {
@@ -47,13 +57,6 @@ public class Cota {
 
     public void setPeriodo(String periodo) {
         this.periodo = periodo;
-    }
-
-    public Cota(int id, int numero, double preco) {
-        this.id = id;
-        this.numero = numero;
-        this.preco = preco;
-        this.status = true; //inicializada como disponivel
     }
 
     public String calcularDeslocamento(int anoAtual) {
