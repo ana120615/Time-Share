@@ -10,13 +10,6 @@ public class Bem {
     private int capacidade;
     private ArrayList<Cota> cotas;
 
-    public Bem(String nome, String descricao, String localizacao, int capacidade) {
-        this.nome = nome;
-        this.descricao = descricao;
-        this.localizacao = localizacao;
-        this.capacidade = capacidade;
-    }
-
     //Métodos get e set
     public Cota getCota(int id) {
         for (Cota cota : cotas) {
@@ -31,10 +24,8 @@ public class Bem {
         this.cotas = cotas;
     }
 
-    public void getCotas() {
-        for (Cota c: cotas) {
-            System.out.println(c);
-        }
+    public ArrayList<Cota> getCotas() {
+        return this.cotas;
     }
 
     public int getId() {
@@ -77,15 +68,40 @@ public class Bem {
         this.capacidade = capacidade;
     }
 
+    public Bem(String nome, String descricao, String localizacao, int capacidade) {
+        this.nome = nome;
+        this.descricao = descricao;
+        this.localizacao = localizacao;
+        this.capacidade = capacidade;
+    }
+
     //Outros métodos
-    public void criarCotasParaBem(Cota cota) {
-        if (cota != null) {
-            cotas.add(cota);
-            System.out.println("Inserção concluída.");
+    public boolean criarCotas(int numero, double preco) {
+        boolean resultado = false;
+        double valor = preco / numero;
+        if (cotas != null) {
+        if (numero > 0 && preco > 0) {
+            for (int i = 0; i < numero; i++) {
+                int id = i;
+                Cota cota = new Cota(id, id, valor);
+                cotas.add(cota);
+                resultado = true;
+            }
+        } else {
+            System.out.println("Erro");
         }
-        else {
-            System.out.println("Falha");
+    }
+        return resultado;
+    }
+
+    public boolean verificarDisponibilidade(int id) {
+        boolean resultado = false;
+        for (Cota cotas : cotas) {
+            if (cotas.getId() == id) {
+                resultado = cotas.getStatus();
+            }
         }
+        return resultado;
     }
 
 }

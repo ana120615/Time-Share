@@ -6,10 +6,9 @@ public class TesteFuncionamento {
         Bem b1 = new Bem("casaNaPraia", "Para todas as pessoas",
                 "Recife-Pe", 7);
 
-        Cota c1 = new Cota(124554, 50, 18000);
 
 
-        b1.criarCotasParaBem(c1);
+        b1.criarCotas(4, 1000);
 
     }
 }
