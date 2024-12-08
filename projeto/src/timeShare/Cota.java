@@ -1,43 +1,48 @@
 package timeShare;
 
-
-import java.util.Date;
-import java.util.Calendar;
+import java.time.LocalDateTime;
 
 public class Cota {
     private int id;
-    private int numero;
+    private int quantidadeCotas;
     private String periodo;
-    private int ano;
-    private Date dataInicio;
-    private Date dataFim;
+    private String descricao;
+    private LocalDateTime ano;
     private double preco;
     private boolean status;
+    private Bem bem;
+
+    public Cota(int id, int quantidadeCotas, double preco, String descricao, String periodo, Bem bem) {
+        setId(id);
+        setQuantidadeCotas(quantidadeCotas);
+        setPreco(preco);
+        setBem(bem);
+        setDescricao(descricao);
+        setPeriodo(periodo);
+        this.status = true; //inicializado como disponivel
+    }
+
 
     //Métodos get e set
-    public int getAno(){
-        return this.ano;
+    public String getDescricao() {
+        return descricao;
     }
-    public void setAno(int ano){
-        this.ano=ano;
+
+    public void setDescricao(String descricao) {
+        if (descricao == null) {
+            throw new NullPointerException();
+        }
+        this.descricao = descricao;
     }
-    public Date getDataInicio(){
-        return this.dataInicio;
-    }
-    public void setDataInicio(Date dataInicio){
-        this.dataInicio=dataInicio;
-    }
-    public Date getDataFim(){
-        return this.dataFim;
-    }
-    public void setDataFim(Date dataFim){
-        this.dataFim=dataFim;
-    }
+
     public int getId() {
         return this.id;
     }
 
     public void setId(int id) {
+        if (id < 0) {
+            throw new IllegalArgumentException();
+        }
         this.id = id;
     }
 
@@ -49,12 +54,15 @@ public class Cota {
         this.status = status;
     }
 
-    public int getNumero() {
-        return this.numero;
+    public int getQuantidadeCotas() {
+        return this.quantidadeCotas;
     }
 
-    public void setNumero(int numero) {
-        this.numero = numero;
+    public void setQuantidadeCotas(int quantidadeCotas) {
+        if (quantidadeCotas < 1) {
+            throw new IllegalArgumentException();
+        }
+        this.quantidadeCotas = quantidadeCotas;
     }
 
     public double getPreco() {
@@ -62,6 +70,9 @@ public class Cota {
     }
 
     public void setPreco(double preco) {
+        if (preco < 0.0) {
+            throw new IllegalArgumentException();
+        }
         this.preco = preco;
     }
 
@@ -70,31 +81,38 @@ public class Cota {
     }
 
     public void setPeriodo(String periodo) {
+        if (periodo == null) {
+            throw new IllegalArgumentException();
+        }
         this.periodo = periodo;
     }
 
-    public Cota(int id, int numero, double preco) {
-        this.id = id;
-        this.numero = numero;
-        this.preco = preco;
-        this.status = true; //inicializada como disponivel
+    public LocalDateTime getAno() {
+        return ano;
     }
 
-    public void calcularDeslocamento() {
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(getDataInicio());
-        calendar.add(Calendar.YEAR,1);
-        calendar.add(Calendar.WEEK_OF_YEAR,1);
-        Date novaInicio = calendar.getTime();
+    public void setAno(LocalDateTime ano) {
+        this.ano = ano;
+    }
 
-        calendar.setTime(getDataFim());
-        calendar.add(Calendar.YEAR,1);
-        calendar.add(Calendar.WEEK_OF_YEAR,1);
-        Date novaFim = calendar.getTime();
-        System.out.println("Periodo: "+ novaInicio+" - "+novaFim);
-        
-        //Talvez só deslocar depois de usar a cota
-        setDataInicio(novaInicio);
-        setDataFim(novaFim);
+    public boolean isStatus() {
+        return status;
+    }
+
+    public Bem getBem() {
+        return bem;
+    }
+
+    public void setBem(Bem bem) {
+        if (bem == null) {
+            throw new NullPointerException();
+        }
+        this.bem = bem;
+    }
+
+
+    //Outros metodos
+    public String calcularDeslocamento(int anoAtual) {
+        return "Colocar depois";
     }
 }

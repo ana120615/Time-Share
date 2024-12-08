@@ -1,42 +1,32 @@
 package timeShare;
+
 import java.time.LocalDateTime;
 
 public class Promocao {
+
     private double taxaDesconto;
     private LocalDateTime dataInicio;
     private LocalDateTime dataFim;
 
-    //Métodos get e set
-public void setTaxaDesconto(double taxaDesconto){
-    this.taxaDesconto=taxaDesconto;
-}
-public double getTaxaDesconto(){
-    return this.taxaDesconto;
-}
-public void setDataInicio(LocalDateTime dataInicio){
-    this.dataInicio=dataInicio;
-}
-public LocalDateTime getDataInicio(LocalDateTime dataInicio){
-    return this.dataInicio;
-}
-public void setDataFim(LocalDateTime dataFim){
-    this.dataFim=dataFim;
-}
-public LocalDateTime getDataFim(LocalDateTime dataFim){
-   return this.dataFim;
-}
 
-//Outros métodos
+    public double aplicarTaxa(Usuario usuario, double valorTotal) {
+        double resultado = 0;
+        /*
 
-    public double aplicarTaxa(Usuario usuario, double valorTotal){
-        valorTotal -= valorTotal*getTaxaDesconto();
-    return valorTotal;
-    }
+        IMPLEMENTAR LÓGICA DO RETORNO DA TAXA APLICADA COM BASE NAS INFORMAÇÕES DO USUÁRIO E
+        VALOR TOTAL
 
-    public boolean verificarValidade(){
-        //NÃO FIZ ESSE :( SÓ INCIALIZEI
-        boolean resultado = false;
+        */
         return resultado;
     }
 
+    public boolean verificarValidade() {
+        boolean resultado = false;
+        /*
+
+        IMPLEMENTAR A VERIFICAÇÃO DA VALIDADE DA PROMOÇÃO
+
+        */
+        return resultado;
+    }
 }

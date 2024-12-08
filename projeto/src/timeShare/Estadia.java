@@ -2,20 +2,32 @@ package timeShare;
 
 public class Estadia {
     private int id;
-    //Métodos get e set
-    public void setId(int id){
-        this.id=id;
-    }
-    public int getId(){
-        return this.id;
+    private Reserva reserva;
+
+    public Estadia(int id, Reserva reserva) {
+        this.reserva = reserva;
+        this.id = id;
     }
 
-    //Outros métodos
+    public int getId() {
+        return id;
+    }
 
-    //Talvez colocar algum marcador de que já usou as cotas na estadia
-    public int calcularDuracao (Reserva reserva){
-        long difmili = reserva.getDataFim().getTime() - reserva.getDataInicio().getTime();
-        int difdias = (int) (difmili/(1000*60*60*24));
-        return difdias;
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public Reserva getReserva() {
+        return reserva;
+    }
+
+    public void setReserva(Reserva reserva) {
+        this.reserva = reserva;
+    }
+
+    public int calcularDuracao () {
+
+        // CALCULAR DURACAO COM BASE NA RESERVA QUE POSSUI ATRIBUTOS DE TEMPO
+        return 1;
     }
 }
