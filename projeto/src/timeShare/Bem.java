@@ -11,47 +11,46 @@ public class Bem {
     private ArrayList<Cota> cotas;
     private Administrador adm;
 
-    public Bem(int id, String nome, String descricao, String localizacao, int capacidade, Administrador adm) {
-        this.id = id;
-        this.nome = nome;
-        this.descricao = descricao;
-        this.localizacao = localizacao;
-        this.capacidade = capacidade;
-        this.adm = adm;
+    public Bem(String nome, String descricao, String localizacao, int capacidade, Administrador adm) {
+        setNome(nome);
+        setDescricao(descricao);
+        setLocalizacao(localizacao);
+        setCapacidade(capacidade);
+        setAdm(adm);
     }
 
     //Métodos get e set
-
     public Administrador getAdm() {
         return adm;
     }
 
     public void setAdm(Administrador adm) {
+        if(adm == null) {
+            throw new IllegalArgumentException();
+        }
         this.adm = adm;
     }
 
     public Cota getCota(int id) {
+        Cota cota = null;
         for (Cota c : cotas) {
             if (c.getId() == id) {
-                return c;
+                cota = c;
             }
         }
-        return null;
+
+        return cota;
     }
 
-    public void setCotas(ArrayList<Cota> cotas) {
-        this.cotas = cotas;
-    }
-
-    public ArrayList<Cota> getCotas() {
-        return this.cotas;
-    }
 
     public int getId() {
         return this.id;
     }
 
     public void setId(int id) {
+        if(id < 0) {
+            throw new IllegalArgumentException();
+        }
         this.id = id;
     }
 
@@ -60,6 +59,9 @@ public class Bem {
     }
 
     public void setNome(String nome) {
+        if(nome == null) {
+            throw new IllegalArgumentException();
+        }
         this.nome = nome;
     }
 
@@ -68,6 +70,9 @@ public class Bem {
     }
 
     public void setDescricao(String descricao) {
+        if(descricao == null) {
+            throw new IllegalArgumentException();
+        }
         this.descricao = descricao;
     }
 
@@ -76,6 +81,9 @@ public class Bem {
     }
 
     public void setLocalizacao(String localizacao) {
+        if(localizacao == null) {
+            throw new IllegalArgumentException();
+        }
         this.localizacao = localizacao;
     }
 
@@ -84,38 +92,27 @@ public class Bem {
     }
 
     public void setCapacidade(int capacidade) {
+        if(capacidade < 1) {
+            throw new IllegalArgumentException();
+        }
         this.capacidade = capacidade;
     }
 
 
     //Outros métodos
-    public void criarCotas(Cota cota) {
-        if (cota != null) {
-            cotas.add(cota);
-        }
-        else {
-            System.out.println("Erro.");
-        }
-    }
-
-    public boolean verificarDisponibilidade(int id) {
-        boolean resultado = false;
-        for (Cota fracoes : cotas) {
-            if (fracoes.getId() == id) {
-                resultado = fracoes.getStatus();
-            }
-        }
-        return resultado;
-    }
-
-    public void gerarRelatorioDeUso() {
-
+    public void criarCotas(int id, int quantidadeCotas, double preco, String descricao, String periodo) {
+        Cota cota = new Cota (id, quantidadeCotas, preco, descricao, periodo, this);
+        this.cotas.add(cota);
     }
 
     public String toString() {
-        return String.format("ID: %d\n" +
-                            "Nome: %s\nDescrição: %s", 
-                            getId() ,getNome(), getDescricao());
+        String resultado = "\n------------------------\n";
+        resultado += String.format("ID: %d\nNome: %s\n" +
+                "Descrição: %s\nLocalização: %s\n" +
+                "Capacidade: %d", getId(), getNome(), getDescricao(), getLocalizacao(), getCapacidade());
+        return resultado;
     }
+
+
 
 }

@@ -1,4 +1,3 @@
-
 package timeShare;
 
 import java.util.ArrayList;
@@ -13,7 +12,15 @@ public class Usuario extends Pessoa {
         this.cotasAdquiridas = new ArrayList<>();
     }
 
+    public String consultarCotas() {
+        String consulta = "";
+        consulta += "Suas Cotas: \n";
+        for(Cota cota : cotasAdquiridas) {
+            consulta += "Descricao: " + cota.getDescricao() + " | Periodo: " + cota.getPeriodo();
+            consulta += "\n";
+        }
 
-
+        return consulta;
+    }
 
 }
