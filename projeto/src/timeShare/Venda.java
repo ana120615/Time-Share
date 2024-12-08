@@ -7,7 +7,7 @@ public class Venda {
 private int id;
 private Date data;
 private double valor;
-private Fracao fracao; // trocar para cota quando for comitado
+private Cota cota; // trocar para cota quando for comitado
 private Usuario usuario;
 private Bem bem;
 
@@ -37,11 +37,11 @@ public void setValor(double valor) {
 public double getValor() {
 	return this.valor;
 }
-public void setFracao(Fracao fracao) {
-	this.fracao=fracao;
+public void setFracao(Cota cota) {
+	this.cota = cota;
 }
-public Fracao getFracao() {
-	return this.fracao;
+public Cota getFracao() {
+	return this.cota;
 }
 public void setUsuario(Usuario usuario) {
 	this.usuario=usuario;
@@ -67,7 +67,7 @@ public String gerarNotaFiscal() {
    notaFiscal+= "--------------------------------------\n";
    notaFiscal += "CPF: " + usuario.getCpf() + "\n";
    notaFiscal +=  "cota:" ; // fracao ainda está sem descrição
-   notaFiscal+= "Período: " + fracao.getPeriodo();  
+   notaFiscal+= "Período: " + cota.getPeriodo();
    notaFiscal += "Valor: R$" + valor + "\n";
    notaFiscal += "Data de Emissão: " + new Date() + "\n";
     String numeroNotaFiscal = UUID.randomUUID().toString();

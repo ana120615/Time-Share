@@ -1,0 +1,17 @@
+package timeShare;
+
+import java.time.LocalDate;
+
+public class TesteAqui {
+    public static void main(String[] args) {
+
+        Administrador adm1 = new Administrador("Samara", "1234567", "samara@gmail.com,"
+                ,"samara.2005", LocalDate.of(2005,2,1));
+
+        adm1.cadastrarBem("Casa na praia", "Linda e limpa", "Recife-PE",
+                7);
+        
+       
+
+    }
+}

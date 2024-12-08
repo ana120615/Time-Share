@@ -13,16 +13,12 @@ public class Administrador extends Pessoa {
     }
 
     public void cadastrarBem(String nome, String descricao, String localizacao, int capacidade) {
-        Bem novo = new Bem(nome, descricao, localizacao, capacidade);
+        Bem novo = new Bem(nome, descricao, localizacao, capacidade, this);
         this.bens.add(novo);
     }
 
     public void removerBem(Bem bem) {
         this.bens.remove(bem);
-    }
-
-    public void gerenciarCotas(int bemId) {
-
     }
 
 
