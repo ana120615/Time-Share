@@ -71,8 +71,31 @@ Requisitos para o sistema FlexShare
 
  
 ## Cronograma de MVPs com seleção de requisitos
-Liste os possíveis MVPs associando-os diretamente aos requisitos do projeto e faça uma breve descrição e justificativa de cada MVP. 
-A descrição deve ser breve e justificar as escolhas. 
-Exemplo de sequência de MVPs:
-* **MVP1 - Cadastros** - [REQ1, REQ2]: cadastros básicos de todas as entidades
-* **MVP2 - Regras** - [REQ3, REQ4]: implementação de regras mínimas para venda de produtos com cartão de crédito.
+
+MVP1 - Cadastros Básicos - 
+[REQ1, REQ2, REQ3]
+
+Descrição: Implementação das funcionalidades para gerenciamento de administradores, usuários e bens ofertados.
+Justificativa: Esses cadastros são fundamentais para estruturar o sistema e permitir a entrada e organização dos dados necessários para operações futuras.
+
+MVP2 - Operações de Venda - 
+[REQ5, REQ6]
+
+Descrição: Desenvolvimento das funcionalidades de compra e venda das cotas, com controle automático de disponibilidade e atualização dos registros.
+Justificativa: Após o cadastro dos dados, é essencial viabilizar a principal operação do sistema, que é a comercialização de direitos de uso.
+
+MVP3 - Operações de Reserva -
+[REQ7, REQ8, REQ9, REQ10]
+
+Descrição: Implementação de funcionalidades relacionadas à reserva de bens, incluindo consulta de períodos disponíveis, criação de reservas, e cancelamento de reservas.
+Justificativa: As reservas são o principal ponto de interação dos usuários com os bens adquiridos, sendo necessário estabelecer um controle robusto para esta funcionalidade.
+
+MVP4 - Consultas e Relatórios - [REQ11, REQ12, REQ13]
+
+Descrição: Criação de funcionalidades para consulta do histórico de uso, relatórios de disponibilidade futura, e estatísticas de vendas e reservas.
+Justificativa: As consultas e relatórios fornecem informações estratégicas para usuários e administradores, promovendo transparência e auxiliando na tomada de decisões.
+
+MVP5 - Validação e Controle - [REQ14, REQ15]
+
+Descrição: Desenvolvimento de mecanismos automáticos para validar conflitos de datas, aplicar taxas adicionais e ajustar o deslocamento de frações de semanas no início de cada ano.
+Justificativa: Esse módulo garante que o sistema mantenha a consistência e integridade dos dados ao longo do tempo, corrigindo automaticamente as mudanças de períodos.
