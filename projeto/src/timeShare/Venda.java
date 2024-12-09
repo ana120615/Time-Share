@@ -13,12 +13,17 @@ public class Venda {
 	private Usuario usuario;
 	private ArrayList<Cota> cotas;
 	private Promocao promocao;
+	
 
 
-	public Venda(int id, double valor, Cota cota) {
+	public Venda(int id, Usuario usuario, Cota cota) {
 		this.id = id;
 		this.valorTotal = 0;
 		this.cotas.add(cota);
+		this.usuario = usuario;
+	
+		
+	
 	}
 
 	//Métodos get e set
@@ -62,11 +67,11 @@ public class Venda {
 
 		notaFiscal += "Cliente: " + usuario.getNome() + "\n";
 		notaFiscal += "--------------------------------------\n";
-		notaFiscal += "Nome do Time Share\n";
+		notaFiscal += " Flex Share \n";
 		notaFiscal += "--------------------------------------\n";
 		notaFiscal += "CPF: " + usuario.getCpf() + "\n";
-		notaFiscal += "cota:" + cota.getDescricao(); 
-		notaFiscal += "Período: " + cota.getPeriodo();
+		notaFiscal += "cota:" + cota.getDescricao()  + "\n"; 
+		notaFiscal += "Período: " + cota.getPeriodo() + "\n";
 		notaFiscal += "Valor: R$" + valorTotal + "\n";
 		notaFiscal += "Data de Emissão: " + LocalDate.now() + "\n";
 		String numeroNotaFiscal = UUID.randomUUID().toString();

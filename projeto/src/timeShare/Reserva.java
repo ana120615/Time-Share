@@ -9,13 +9,18 @@ private Date dataInicio;
 private Date dataFim;
 private boolean status;
 private double taxa;
+private Usuario usuario;
+private Cota cota;
 
-public Reserva ( int id, Date dataInicio, Date dataFim){
+public Reserva ( int id, Date dataInicio, Date dataFim, Usuario usuario, Cota cota){
     this.id = id; 
     this.status = true; 
     this.dataInicio = dataInicio; 
     this.dataFim = dataFim; 
     this.taxa = 0.00d;
+    this.usuario = usuario; 
+    this.cota = cota;
+
 
     
 
@@ -62,6 +67,19 @@ public boolean getStatus(){
 public Date getDataInicio() {
     return dataInicio;
 }
+public Usuario getUsuario() {
+    return usuario;
+}
+public void setUsuario(Usuario usuario ){
+    this.usuario = usuario;
+}
+public Cota getCota() {
+    return cota;
+}
+public void setCota(Cota cota ){
+    this.cota = cota;
+}
+
 public void setDataInicio(Date dataInicio) {
     this.dataInicio = dataInicio;
 }
