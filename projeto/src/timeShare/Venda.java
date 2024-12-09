@@ -8,7 +8,7 @@ import java.util.ArrayList;
 public class Venda {
 	private int id;
 	private LocalDateTime data;
-	private double valorTotal;
+	private double valorTotal = 0;
 	private Cota cota;
 	private Usuario usuario;
 	private ArrayList<Cota> cotas;
@@ -17,7 +17,6 @@ public class Venda {
 
 	public Venda(int id, double valor, Cota cota) {
 		this.id = id;
-		this.valorTotal = valor;
 		this.cotas.add(cota);
 	}
 
@@ -65,7 +64,7 @@ public class Venda {
 		notaFiscal += "Nome do Time Share\n";
 		notaFiscal += "--------------------------------------\n";
 		notaFiscal += "CPF: " + usuario.getCpf() + "\n";
-		notaFiscal += "cota:"; // fracao ainda está sem descrição
+		notaFiscal += "cota:" + cota.getDescricao(); 
 		notaFiscal += "Período: " + cota.getPeriodo();
 		notaFiscal += "Valor: R$" + valorTotal + "\n";
 		notaFiscal += "Data de Emissão: " + LocalDate.now() + "\n";
