@@ -8,7 +8,7 @@ import java.util.ArrayList;
 public class Venda {
 	private int id;
 	private LocalDateTime data;
-	private double valorTotal = 0;
+	private double valorTotal;
 	private Cota cota;
 	private Usuario usuario;
 	private ArrayList<Cota> cotas;
@@ -17,6 +17,7 @@ public class Venda {
 
 	public Venda(int id, double valor, Cota cota) {
 		this.id = id;
+		this.valorTotal = 0;
 		this.cotas.add(cota);
 	}
 
