@@ -77,8 +77,60 @@ public class Venda {
 
 	}
 
-	public void confirmarVenda() {
-		System.out.println("Venda confrimada para usuário:" + usuario.getNome());
-
+	public void calcularValorTotal() {
+		double resultado = 0;
+		for (Cota c : cotas) {
+			resultado += c.getPreco();
+		}
+		this.valorTotal = resultado;
 	}
+
+	public boolean adicionarCota (Cota cota) {
+		boolean resultado = false;
+		if (cota != null) {
+			cotas.add(cota);
+			resultado = true;
+		}
+		return resultado;
+	}
+
+	public boolean removerCota (Cota cota) {
+		boolean resultado = false;
+		if (cota != null) {
+			cotas.remove(cota);
+			resultado = true;
+		}
+		return resultado;
+	}
+
+	public boolean finalizarCompra() {
+		/*
+		REALIZAR A FINALIZAÇÂO DE COMPRA DE TAL FORMA QUE ALIMENTE A LISTA DE COTAS DO USUÁRIO.
+		 */
+		return false;
+	}
+
+	public ArrayList<Cota> listarCotas() {
+		ArrayList<Cota> resultado = new ArrayList<>();
+		for (Cota c : cotas) {
+			resultado.add(c);
+		}
+		return resultado;
+	}
+
+	public double aplicarPromocao () {
+		/*
+		UTILIZAR O VALOR TOTAL DA VENDA MENOS UM DESCONTO DADO POR UM ANIVERSÁRIO OU PERIODO ESPECIFICO
+		 */
+		return 0;
+	}
+	public boolean verificarPromocao () {
+		/*
+		RETORNAR A VERACIDADE PARA PODER APLICAR A PROMOÇÃO. TAMBÉM PODERIA SER UMA CONDICIONAL DENTRO
+		DE APLICARPROMOCAO
+		 */
+		return false;
+	}
+
+
 }
