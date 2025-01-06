@@ -48,10 +48,10 @@ Requisitos para o sistema FlexShare
    * **REQ6** Transferência ou revenda de direitos de uso entre usuários cadastrados, com atualização dos registros.
 
    **Operações de Reserva**
-   * **REQ07** Consulta de períodos disponíveis para reserva, considerando o deslocamento da fração adquirida a cada ano.
+   * **REQ7** Consulta de períodos disponíveis para reserva, considerando o deslocamento da fração adquirida a cada ano.
      
-   * **REQ08** Criação de reservas gratuitas dentro do intervalo permitido pelo direito adquirido, respeitando o período correspondente à fração comprada.
-   * **REQ09** Criação de reservas fora do intervalo permitido, aplicando automaticamente uma taxa extra calculada com base no período.
+   * **REQ8** Criação de reservas gratuitas dentro do intervalo permitido pelo direito adquirido, respeitando o período correspondente à fração comprada.
+   * **REQ9** Criação de reservas fora do intervalo permitido, aplicando automaticamente uma taxa extra calculada com base no período.
      
    * **REQ10** Cancelamento de reservas pelos usuários ou administradores.
   
@@ -73,7 +73,7 @@ Requisitos para o sistema FlexShare
 ## Cronograma de MVPs com seleção de requisitos
 
 MVP1 - Cadastros Básicos - 
-[REQ1, REQ2, REQ3]
+[REQ1, REQ2, REQ3, REQ4]
 
 Descrição: Implementação das funcionalidades para gerenciamento de administradores, usuários e bens ofertados.
 Justificativa: Esses cadastros são fundamentais para estruturar o sistema e permitir a entrada e organização dos dados necessários para operações futuras.
