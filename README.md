@@ -36,14 +36,14 @@ Requisitos para o sistema FlexShare
 
   * **REQ1** - Gerenciamento de administradores, que podem cadastrar e ofertar bens para venda.
    
-    * **REQ2** - Gerenciamento de bens ofertados, incluindo informações como nome, descrição, capacidade de uso (ex.: número de pessoas), localização, preço e frações disponíveis para venda.
+  * **REQ2** - Gerenciamento de bens ofertados, incluindo informações como nome, descrição, capacidade de uso (ex.: número de pessoas), localização, preço e frações disponíveis para venda.
    
-    * **REQ3** - Gerenciamento de usuários, que podem adquirir direitos de uso, realizar reservas e revender direitos.
+  * **REQ3** - Gerenciamento de usuários, que podem adquirir direitos de uso, realizar reservas e revender direitos.
    
-    * **REQ4** - Registro de direitos de uso adquiridos por usuários, incluindo informações como bem associado, fração comprada (ex.: 1/52) e período móvel correspondente ao ano atual.
+  * **REQ4** - Registro de direitos de uso adquiridos por usuários, incluindo informações como bem associado, fração comprada (ex.: 1/52) e período móvel correspondente ao ano atual.
    
    **Operações de venda**
-    * **REQ5** Compra de frações de bens, com controle automático de disponibilidade de frações e do deslocamento anual da semana adquirida.
+   * **REQ5** Compra de frações de bens, com controle automático de disponibilidade de frações e do deslocamento anual da semana adquirida.
 
    * **REQ6** Transferência ou revenda de direitos de uso entre usuários cadastrados, com atualização dos registros.
 
@@ -63,7 +63,7 @@ Requisitos para o sistema FlexShare
 
      * **REQ13** Estatísticas de vendas e reservas por bem, incluindo frações mais populares e períodos mais reservados.
 
-       **Validação e Controle**
+     **Validação e Controle**
        * **REQ14** Validação automática de conflitos de datas para reservas e controle de taxas adicionais para períodos fora do intervalo permitido.
          
        * **REQ15** Ajuste automático do deslocamento da fração de semanas no início de cada ano (ex.: a fração de uma semana de 2024, de 1 a 7 de março, passará para 8 a 15 de março em 2025, e assim sucessivamente).
