@@ -4,9 +4,9 @@
 # Projeto FlexShare
 
 Ideias que inspiram o projeto: 
- * https://www.airbnb.com.br/?_set_bev_on_new_domain=1733602638_EAMTA0MzJmN2RlY2
- * https://www.share-now.com/
- * https://www.wework.com.br/
+ * https://www.webuyandselltimeshares.com/
+ * https://www.sellmytimesharenow.com/
+ * https://gavresorts.com.br/
 
 ## Integrantes do grupo 
  * Ana Beatriz Gomes - ana.beatriz@ufrpe.br
