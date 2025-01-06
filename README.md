@@ -41,11 +41,13 @@ Requisitos para o sistema FlexShare
   * **REQ3** - Gerenciamento de usuários, que podem adquirir direitos de uso, realizar reservas e revender direitos.
    
   * **REQ4** - Registro de direitos de uso adquiridos por usuários, incluindo informações como bem associado, fração comprada (ex.: 1/52) e período móvel correspondente ao ano atual.
+
    
    **Operações de venda**
    * **REQ5** Compra de frações de bens, com controle automático de disponibilidade de frações e do deslocamento anual da semana adquirida.
 
    * **REQ6** Transferência ou revenda de direitos de uso entre usuários cadastrados, com atualização dos registros.
+
 
    **Operações de Reserva**
    * **REQ7** Consulta de períodos disponíveis para reserva, considerando o deslocamento da fração adquirida a cada ano.
@@ -54,19 +56,21 @@ Requisitos para o sistema FlexShare
    * **REQ9** Criação de reservas fora do intervalo permitido, aplicando automaticamente uma taxa extra calculada com base no período.
      
    * **REQ10** Cancelamento de reservas pelos usuários ou administradores.
+
   
-     **Consultas e Relatórios**
+   **Consultas e Relatórios**
 
-     * **REQ11** Consulta ao histórico de uso de um bem, incluindo reservas realizadas por diferentes usuários.
+   * **REQ11** Consulta ao histórico de uso de um bem, incluindo reservas realizadas por diferentes usuários.
        
-     * **REQ12** Relatório de disponibilidade de um bem em períodos futuros, considerando frações ainda não vendidas e reservas pendentes.
+   * **REQ12** Relatório de disponibilidade de um bem em períodos futuros, considerando frações ainda não vendidas e reservas pendentes.
 
-     * **REQ13** Estatísticas de vendas e reservas por bem, incluindo frações mais populares e períodos mais reservados.
+   * **REQ13** Estatísticas de vendas e reservas por bem, incluindo frações mais populares e períodos mais reservados.
 
-     **Validação e Controle**
-       * **REQ14** Validação automática de conflitos de datas para reservas e controle de taxas adicionais para períodos fora do intervalo permitido.
+
+   **Validação e Controle**
+   * **REQ14** Validação automática de conflitos de datas para reservas e controle de taxas adicionais para períodos fora do intervalo permitido.
          
-       * **REQ15** Ajuste automático do deslocamento da fração de semanas no início de cada ano (ex.: a fração de uma semana de 2024, de 1 a 7 de março, passará para 8 a 15 de março em 2025, e assim sucessivamente).
+   * **REQ15** Ajuste automático do deslocamento da fração de semanas no início de cada ano (ex.: a fração de uma semana de 2024, de 1 a 7 de março, passará para 8 a 15 de março em 2025, e assim sucessivamente).
 
 
  
