@@ -1,6 +1,7 @@
 package negocio.beans;
 
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 
 public abstract class Usuario {
 
@@ -9,6 +10,15 @@ public abstract class Usuario {
     private String email;
     private String senha;
     private LocalDate dataNascimento;
+
+    //Construtor
+    public Usuario(String cpf, String nome, String email, String senha, LocalDate dataNascimento){
+    this.setCpf(cpf);
+    this.setNome(nome);
+    this.setEmail(email);
+    this.setSenha(senha);
+    this.setDataNascimento(dataNascimento);
+    }
 
     //METODOS GET E SET
     public String getCpf() {
@@ -50,6 +60,12 @@ public abstract class Usuario {
     public void setDataNascimento(LocalDate dataNascimento) {
         this.dataNascimento = dataNascimento;
     }
+
+    //METODO PARA CALCULAR IDADE
+        public int calcularIdade() {
+        return (int) dataNascimento.until(LocalDate.now(), ChronoUnit.YEARS);
+    }
+
     //METODO ABSTRATO
 public abstract boolean eAdm();
 }
