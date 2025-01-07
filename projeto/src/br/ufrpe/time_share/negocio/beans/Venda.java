@@ -1,4 +1,4 @@
-package timeShare;
+package br.ufrpe.time_share;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
