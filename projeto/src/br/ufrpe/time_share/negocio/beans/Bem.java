@@ -1,4 +1,4 @@
-package br.ufrpe.time_share;
+package br.ufrpe.time_share.negocio.beans;
 
 import java.util.ArrayList;
 
