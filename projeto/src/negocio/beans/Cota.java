@@ -1,25 +1,41 @@
 package negocio.beans;
-
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 public class Cota {
     private int id;
-    private String periodo;
+    private LocalDate dataInicio;
+    private LocalDate dataFim;
     private String descricao;
-    private LocalDateTime ano;
     private double preco;
     private boolean status;
 
-    public Cota(int id, double preco, String descricao, String periodo) {
+    public Cota(int id, double preco, String descricao, LocalDate dataInicio, LocalDate dataFim) {
         setId(id);
         setPreco(preco);
         setDescricao(descricao);
-        setPeriodo(periodo);
+        setDataInicio(dataInicio);
+        setDataFim(dataFim);
         this.status = true; //inicializado como disponivel
     }
 
 
     //Métodos get e set
+    public LocalDate getDataInicio() {
+        return dataInicio;
+    }
+
+
+    public void setDataInicio(LocalDate dataInicio) {
+        this.dataInicio = dataInicio;
+    }
+    public LocalDate getDataFim() {
+        return dataFim;
+    }
+
+
+    public void setDataFim(LocalDate dataFim) {
+        this.dataFim = dataFim;
+    }
     public String getDescricao() {
         return descricao;
     }
@@ -52,28 +68,13 @@ public class Cota {
         this.preco = preco;
     }
 
-    public String getPeriodo() {
-        return this.periodo;
-    }
-
-    public void setPeriodo(String periodo) {
-        this.periodo = periodo;
-    }
-
-    public LocalDateTime getAno() {
-        return ano;
-    }
-
-    public void setAno(LocalDateTime ano) {
-        this.ano = ano;
-    }
-
     public boolean isStatus() {
         return status;
     }
     
-    //Outros metodos
-    public String calcularDeslocamento(int anoAtual) {
-        return "Colocar depois";
+    //CALCULAR DESLOCAMENTO DA COTA
+    public void calcularDeslocamento() {
+            this.dataInicio = dataInicio.plusYears(1).plusWeeks(1);
+            this.dataFim = dataFim.plusYears(1).plusWeeks(1);
     }
 }

@@ -65,7 +65,17 @@ public abstract class Usuario {
         public int calcularIdade() {
         return (int) dataNascimento.until(LocalDate.now(), ChronoUnit.YEARS);
     }
+    //METODO PARA VERIFICAR ANIVERSARIO
+    public boolean verificarAniversario(){
+        boolean eNiver=false;
+        LocalDate dataAtual = LocalDate.now();
 
+        if(dataAtual.getDayOfMonth() == dataNascimento.getDayOfMonth() &&
+        dataAtual.getMonth() == dataNascimento.getMonth()){
+            eNiver=true;
+        } 
+        return eNiver;
+    }
     //METODO ABSTRATO
 public abstract boolean eAdm();
 }
