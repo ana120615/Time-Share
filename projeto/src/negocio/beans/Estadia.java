@@ -1,4 +1,6 @@
-
+<<<<<<<< HEAD:projeto/src/br/ufrpe/time_share/negocio/beans/Estadia.java
+package br.ufrpe.time_share.negocio.beans;
+========
 package negocio.beans;
 >>>>>>>> laila_branch:projeto/src/negocio/beans/Estadia.java
 
