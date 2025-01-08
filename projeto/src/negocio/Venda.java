@@ -1,8 +1,9 @@
-package br.ufrpe.time_share.negocio.beans;
+package negocio;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;
+
 import java.util.ArrayList;
 
 public class Venda {
