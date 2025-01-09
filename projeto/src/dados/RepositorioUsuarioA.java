@@ -8,12 +8,13 @@ public class RepositorioUsuarioA extends Repositorio<UsuarioAdm> {
      }
 
     public UsuarioAdm buscarUsuarioPorCpf(int cpf){
+        UsuarioAdm resultado=null;
         for (UsuarioAdm usuarioAdm : getEntidades()) {
             if (usuarioAdm.getCpf()==cpf) {
-                return usuarioAdm;
+                resultado= usuarioAdm;
             }
         }
-        return null; // Retorna null se não encontrar
+        return resultado; 
     }
     }
 

@@ -1,6 +1,7 @@
 
 package negocio.beans;
 
+import java.time.temporal.ChronoUnit;
 
 public class Estadia {
     private int id;
@@ -27,9 +28,8 @@ public class Estadia {
         this.reserva = reserva;
     }
 
+    //CALCULAR DURACAO DA ESTADIA
     public int calcularDuracao () {
-
-        // CALCULAR DURACAO COM BASE NA RESERVA QUE POSSUI ATRIBUTOS DE TEMPO
-        return 1;
+      return (int) ChronoUnit.DAYS.between (this.reserva.getDataInicio(),this.reserva.getDataFim());
     }
 }

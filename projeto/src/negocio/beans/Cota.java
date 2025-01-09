@@ -7,19 +7,27 @@ public class Cota {
     private LocalDate dataFim;
     private String descricao;
     private double preco;
+    private Usuario proprietario;
     private boolean status;
 
-    public Cota(int id, double preco, String descricao, LocalDate dataInicio, LocalDate dataFim) {
-        setId(id);
-        setPreco(preco);
-        setDescricao(descricao);
-        setDataInicio(dataInicio);
-        setDataFim(dataFim);
+    public Cota(int id, double preco, String descricao, LocalDate dataInicio, LocalDate dataFim, Usuario proprietario) {
+        this.setId(id);
+        this.setPreco(preco);
+        this.setDescricao(descricao);
+        this.setDataInicio(dataInicio);
+        this.setDataFim(dataFim);
+        this.setProprietario(proprietario)
         this.status = true; //inicializado como disponivel
     }
 
 
     //Métodos get e set
+    public Usuario getProprietario(){
+    return this.proprietario;
+    }
+    public void setProprietario(Usuario proprietario){
+        this.proprietario=proprietario;
+    }
     public LocalDate getDataInicio() {
         return dataInicio;
     }

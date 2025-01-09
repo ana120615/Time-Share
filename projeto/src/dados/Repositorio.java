@@ -13,7 +13,7 @@ public class Repositorio<T> {
      public void remover(T obj){
           entidades.remove(obj);
      }
-     public RepositorioCotas listar(){
+     public void listar(){
           for (T entidade : entidades) {
                System.out.println(entidade);
            }
