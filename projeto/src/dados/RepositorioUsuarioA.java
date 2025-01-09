@@ -6,18 +6,14 @@ public class RepositorioUsuarioA extends Repositorio<UsuarioAdm> {
      public RepositorioUsuarioA(){
           super();
      }
-    @Override
-    void cadastrar(UsuarioAdm usuarioAdm) {
-        super.cadastrar(usuarioAdm);
+
+    public UsuarioAdm buscarUsuarioPorCpf(int cpf){
+        for (UsuarioAdm usuarioAdm : getEntidades()) {
+            if (usuarioAdm.getCpf()==cpf) {
+                return usuarioAdm;
+            }
+        }
+        return null; // Retorna null se não encontrar
+    }
     }
 
-    @Override
-    void listar() {
-        super.listar();
-    }
-
-    @Override
-    void remover(UsuarioAdm usuarioAdm) {
-        super.remover(usuarioAdm);
-    }
-}

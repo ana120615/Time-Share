@@ -6,20 +6,21 @@ public class RepositorioBem extends Repositorio<Bem> {
      public RepositorioBem(){
           super();
      }
-    @Override
-    void cadastrar(Bem bem) {
-        super.cadastrar(bem);
+public Bem buscarBemPorId(int id){
+for (Bem bem : getEntidades()) {
+            if (bem.getId()==id) {
+                return bem;
+            }
+        }
+        return null; // Retorna null se não encontrar
     }
-
-    @Override
-    void listar() {
-        super.listar();
+    public void atualizarCapacidade(int bemId, int novaCapacidade){
+        for (Bem bem : getEntidades()) {
+            if (bem.getId()==bemId) {
+                bem.setCapacidade(novaCapacidade);
+            }
+        }
     }
-
-    @Override
-    void remover(Bem bem) {
-        super.remover(bem);
-    }
-
-
 }
+
+

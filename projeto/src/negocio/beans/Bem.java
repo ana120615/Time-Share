@@ -1,4 +1,5 @@
 package negocio.beans;
+import dados.RepositorioCotas;
 
 public class Bem {
     private int id;
@@ -6,8 +7,30 @@ public class Bem {
     private String descricao;
     private String localizacao;
     private int capacidade;
+    private Usuario proprietario; 
+    private RepositorioCotas repositorioCotas;
 
+    public Bem(int id, String nome, String descricao, String localizacao, int capacidade, Usuario proprietario){
+    setId(id);
+    setCapacidade(capacidade);
+    setDescricao(descricao);
+    setLocalizacao(localizacao);
+    setNome(nome);
+    setProprietario(proprietario);
+    this.repositorioCotas=new RepositorioCotas();
+    }
+
+    public void buscarCotas() {
+      repositorioCotas.listar(); 
+    }
+    
     //METODOS GET E SET
+    public Usuario getProprietario() {
+        return proprietario;
+    }
+    public void setProprietario(Usuario proprietario) {
+        this.proprietario = proprietario;
+    }
     public int getId() {
         return this.id;
     }

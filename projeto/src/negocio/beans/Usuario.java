@@ -1,22 +1,20 @@
-<<<<<<<< HEAD:projeto/src/br/ufrpe/time_share/negocio/beans/Pessoa.java
-package br.ufrpe.time_share.negocio.beans;
-========
+
 package negocio.beans;
->>>>>>>> laila_branch:projeto/src/negocio/beans/Usuario.java
+
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 
 public abstract class Usuario {
 
-    private String cpf;
+    private int cpf;
     private String nome;
     private String email;
     private String senha;
     private LocalDate dataNascimento;
 
     //Construtor
-    public Usuario(String cpf, String nome, String email, String senha, LocalDate dataNascimento){
+    public Usuario(int cpf, String nome, String email, String senha, LocalDate dataNascimento){
     this.setCpf(cpf);
     this.setNome(nome);
     this.setEmail(email);
@@ -25,11 +23,11 @@ public abstract class Usuario {
     }
 
     //METODOS GET E SET
-    public String getCpf() {
+    public int getCpf() {
         return cpf;
     }
 
-    public void setCpf(String cpf) {
+    public void setCpf(int cpf) {
         this.cpf = cpf;
     }
 

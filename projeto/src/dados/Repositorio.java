@@ -7,19 +7,19 @@ public class Repositorio<T> {
      public Repositorio(){
           this.entidades=new ArrayList<>();
      }
-     void cadastrar(T obj){
+     public void cadastrar(T obj){
           entidades.add(obj);
      }
-     void remover(T obj){
+     public void remover(T obj){
           entidades.remove(obj);
      }
-     void modificar(T obj){
-
-     }
-     void listar(){
+     public RepositorioCotas listar(){
           for (T entidade : entidades) {
                System.out.println(entidade);
            }
    
      }
+     protected List<T> getEntidades() {
+          return entidades;
+      }
 }

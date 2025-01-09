@@ -1,8 +1,6 @@
-<<<<<<<< HEAD:projeto/src/br/ufrpe/time_share/negocio/beans/Reserva.java
-package br.ufrpe.time_share.negocio.beans;
-========
+
 package negocio.beans;
->>>>>>>> laila_branch:projeto/src/negocio/beans/Reserva.java
+
 
 import java.util.Date;
 import java.util.Calendar;
