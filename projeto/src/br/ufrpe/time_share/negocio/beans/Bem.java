@@ -2,6 +2,7 @@ package br.ufrpe.time_share.negocio.beans;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class Bem {
     private int id;
@@ -16,6 +17,7 @@ public class Bem {
         this.cotas = new ArrayList<>(10);
     }
 
+    //CONSTRUTOR
     public Bem(int id, String nome, String descricao, String localizacao, int capacidade) {
         setId(id);
         setCapacidade(capacidade);
@@ -27,7 +29,6 @@ public class Bem {
     }
 
     //METODOS GET E SET
-
     public int getId() {
         return this.id;
     }
@@ -80,6 +81,7 @@ public class Bem {
         return cotas;
     }
 
+    //OUTROS METODOS
     public void criarCotas(ArrayList<Cota> cotas) {
         this.cotas = cotas;
     }
@@ -106,4 +108,14 @@ public class Bem {
                 ", cotas=" + cotas +
                 '}';
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Bem) {
+            Bem bem = (Bem) obj;
+            return this.id == bem.getId() && this.nome.equals(bem.getNome()) && this.descricao.equals(bem.getDescricao()) && this.localizacao.equals(bem.getLocalizacao());
+        }
+        return false;
+    }
+
 }

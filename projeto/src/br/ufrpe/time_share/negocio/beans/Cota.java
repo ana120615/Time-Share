@@ -3,23 +3,25 @@ package br.ufrpe.time_share.negocio.beans;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-
 public class Cota {
     private int id;
     private LocalDate data;
     private double preco;
     private UsuarioComum proprietario;
     private boolean statusDeDisponibilidadeParaCompra;
+    private boolean statusDeDisponibilidadeParaReserva;
     private Bem bemAssociado;
 
+    //CONSTRUTOR
     public Cota(int id, LocalDate data, double preco) {
         this.setId(id);
         setData(data);
         this.setPreco(preco);
         this.statusDeDisponibilidadeParaCompra = true; //inicializado como disponivel
+        this.statusDeDisponibilidadeParaReserva = true; //inicializado como disponivel
     }
 
-    //Métodos get e set
+    //METODOS GET E SET
 
     public LocalDate getData() {
         return data;
@@ -37,7 +39,6 @@ public class Cota {
             }
         }
     }
-
 
     public Usuario getProprietario() {
         return this.proprietario;
@@ -83,6 +84,13 @@ public class Cota {
         return statusDeDisponibilidadeParaCompra;
     }
 
+    public boolean isStatusDeDisponibilidadeParaReserva() {
+        return this.statusDeDisponibilidadeParaReserva;
+    }
+
+    public void setStatusDeDisponibilidadeParaReserva(boolean statusDeDisponibilidadeParaReserva) {
+        this.statusDeDisponibilidadeParaReserva = statusDeDisponibilidadeParaReserva;
+    }
 
     @Override
     public String toString() {
@@ -94,6 +102,15 @@ public class Cota {
                 ", statusDeDisponibilidadeParaCompra=" + statusDeDisponibilidadeParaCompra +
                 ", bemAssociado=" + (bemAssociado != null ? bemAssociado.getId() : "null") +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if(o instanceof Cota) {
+            Cota cota = (Cota) o;
+            return id == cota.getId() && data.equals(cota.getData());
+        }
+        return false;
     }
 
 }

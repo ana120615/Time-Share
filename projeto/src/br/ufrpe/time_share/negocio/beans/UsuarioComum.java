@@ -8,7 +8,11 @@ public class UsuarioComum extends Usuario {
     public final String nivelAcesso = "COMUM";
     private ArrayList<Cota> cotasAdquiridas;
 
-    //Construtor
+    {
+        this.cotasAdquiridas = new ArrayList<>(10);
+    }
+
+    //CONSTRUTORES
     public UsuarioComum(int cpf, String nome, String email, String senha, LocalDate dataNascimento) {
         super(cpf, nome, email, senha, dataNascimento);
     }
@@ -18,9 +22,9 @@ public class UsuarioComum extends Usuario {
     }
 
 
-
+    //METODOS GET E SET
     public ArrayList<Cota> getCotasAdquiridas() {
-        return cotasAdquiridas;
+        return this.cotasAdquiridas;
     }
     // adicionei para poder validas as cotas em reserva
     public boolean temCotasAdquiridas(){
@@ -28,11 +32,23 @@ public class UsuarioComum extends Usuario {
     }
 
     public void setCotasAdquiridas(ArrayList<Cota> cotasAdquiridas) {
-        this.cotasAdquiridas = cotasAdquiridas;
+        if (cotasAdquiridas != null) {
+            this.cotasAdquiridas.addAll(cotasAdquiridas);
+        }
     }
 
-    public String consultarCotas() {
-        return "";
+
+    //OUTROS METODOS
+    public boolean revenderDireitoUso(Usuario usuario, Cota cota) {
+        boolean retorno = false;
+        if (usuario != null && !this.equals(usuario)) {
+            if (this.cotasAdquiridas.contains(cota)) {
+                cota.setProprietario((UsuarioComum) usuario);
+                this.cotasAdquiridas.remove(cota);
+                retorno = true;
+            }
+        }
+        return retorno;
     }
 
     @Override
@@ -44,6 +60,14 @@ public class UsuarioComum extends Usuario {
     public String toString() {
         return super.toString() + " " +
                 "nivelAcesso=" + nivelAcesso;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof UsuarioComum) {
+            return super.equals(obj);
+        }
+        return false;
     }
 
 }
