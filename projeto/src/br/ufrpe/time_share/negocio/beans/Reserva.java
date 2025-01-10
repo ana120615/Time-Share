@@ -11,6 +11,7 @@ public class Reserva {
     private double taxa;
     private Usuario usuario;
     private UsuarioComum usuarioComum;
+    private UsuarioAdm usuarioAdm;
     private Bem bem;
     private List<Cota> cotas;
     public Reserva(int id, LocalDate dataInicio, LocalDate dataFim, Usuario usuario, Bem bem, List<Cota> cotas) {
@@ -30,17 +31,19 @@ public class Reserva {
         this.status = false;
     }
     public boolean validarReserva(){
-        if ( usuarioComum.temCotasAdquiridas()){
+       
             for (Cota cota: cotas){
-                if(!cota.isStatusDeDisponibilidadeParaCompra()){
+                if(!cota.isStatusDeDisponibilidadeParaReserva()){
+                    // para ajudar no debug 
+                    System.out.println("cota id" + cota.getId()+ "não está disponível para comprar");
                     return false;
                 }
+               
             } 
+            //debug
+            System.out.println("Períodos e cotas estão disponíveis e válidos!");
             return true;
-        }else {
-
-            return false;
-        }
+       
     
     }
 
@@ -105,5 +108,26 @@ public class Reserva {
 
     public void setCotas(List<Cota> cotas) {
         this.cotas = cotas;
+  
     }
+    public UsuarioComum getUsuarioComum() {
+        return usuarioComum;
+    }
+
+
+
+    public void setUsuarioComum(UsuarioComum usuarioComum) {
+        this.usuarioComum = usuarioComum;
+    }
+    public UsuarioAdm getUsuarioAdm() {
+        return usuarioAdm;
+    }
+
+
+
+    public void setUsuarioAdm(UsuarioAdm usuarioAdm) {
+        this.usuarioAdm = usuarioAdm;
+    }
+
+
 }
