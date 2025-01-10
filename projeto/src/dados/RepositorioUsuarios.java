@@ -1,9 +1,9 @@
 package dados;
 import negocio.beans.UsuarioAdm;
 
-public class RepositorioUsuarioA extends Repositorio<UsuarioAdm> {
+public class RepositorioUsuarios extends Repositorio<UsuarioAdm> {
 //Construtor
-     public RepositorioUsuarioA(){
+     public RepositorioUsuarios(){
           super();
      }
 
