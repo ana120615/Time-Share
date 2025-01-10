@@ -110,11 +110,12 @@ public class Bem {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Bem bem = (Bem) o;
-        return id == bem.id && Objects.equals(nome, bem.nome) && Objects.equals(descricao, bem.descricao) && Objects.equals(localizacao, bem.localizacao);
+    public boolean equals(Object obj) {
+        if (obj instanceof Bem) {
+            Bem bem = (Bem) obj;
+            return this.id == bem.getId() && this.nome.equals(bem.getNome()) && this.descricao.equals(bem.getDescricao()) && this.localizacao.equals(bem.getLocalizacao());
+        }
+        return false;
     }
 
 }

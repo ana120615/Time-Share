@@ -119,27 +119,9 @@ public class Venda {
     }
 
     public ArrayList<Cota> getCarrinhoDeComprasCotas() {
-        ArrayList<Cota> resultado = new ArrayList<>();
-        for (Cota c : carrinhoDeComprasCotas) {
-            resultado.add(c);
-        }
-        return resultado;
+        return this.carrinhoDeComprasCotas;
     }
 
-    public double aplicarPromocao() {
-		/*
-		UTILIZAR O VALOR TOTAL DA VENDA MENOS UM DESCONTO DADO POR UM ANIVERSÁRIO OU PERIODO ESPECIFICO
-		 */
-        return 0;
-    }
-
-    public boolean verificarPromocao() {
-		/*
-		RETORNAR A VERACIDADE PARA PODER APLICAR A PROMOÇÃO. TAMBÉM PODERIA SER UMA CONDICIONAL DENTRO
-		DE APLICARPROMOCAO
-		 */
-        return false;
-    }
 
     @Override
     public String toString() {

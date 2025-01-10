@@ -28,15 +28,23 @@ public class UsuarioComum extends Usuario {
     }
 
     public void setCotasAdquiridas(ArrayList<Cota> cotasAdquiridas) {
-        if(cotasAdquiridas != null) {
+        if (cotasAdquiridas != null) {
             this.cotasAdquiridas.addAll(cotasAdquiridas);
         }
     }
 
 
     //OUTROS METODOS
-    public String consultarCotas() {
-        return "";
+    public boolean revenderDireitoUso(Usuario usuario, Cota cota) {
+        boolean retorno = false;
+        if (usuario != null && !this.equals(usuario)) {
+            if (this.cotasAdquiridas.contains(cota)) {
+                cota.setProprietario((UsuarioComum) usuario);
+                this.cotasAdquiridas.remove(cota);
+                retorno = true;
+            }
+        }
+        return retorno;
     }
 
     @Override

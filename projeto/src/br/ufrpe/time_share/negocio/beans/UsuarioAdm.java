@@ -29,9 +29,6 @@ public class UsuarioAdm extends Usuario {
         return resultado;
     }
 
-    public void setBens(ArrayList<Bem> bens) {
-        this.bens = bens;
-    }
 
     public void cadastrarBem(Bem bem) {
         if (bem != null) {
