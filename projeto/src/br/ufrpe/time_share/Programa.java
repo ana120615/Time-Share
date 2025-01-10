@@ -1,9 +1,6 @@
 package br.ufrpe.time_share;
 
-import br.ufrpe.time_share.negocio.beans.Bem;
-import br.ufrpe.time_share.negocio.beans.Cota;
-import br.ufrpe.time_share.negocio.beans.Usuario;
-import br.ufrpe.time_share.negocio.beans.UsuarioAdm;
+import br.ufrpe.time_share.negocio.beans.*;
 
 import java.time.LocalDate;
 
@@ -25,12 +22,31 @@ public class Programa {
         Cota cota2 = new Cota(2617, LocalDate.now(), 600);
 
 
-        bem.adicionarCota(cota1);
-        bem.adicionarCota(cota2);
+//        bem.adicionarCota(cota1);
+//        bem.adicionarCota(cota2);
+//
+//        System.out.println(((UsuarioAdm) adm1).consultarBens());
+//
+//        System.out.println(bem.getCotas());
 
-        System.out.println(((UsuarioAdm) adm1).consultarBens());
+        UsuarioComum comum = new UsuarioComum(153284, "545415@@Senha");
 
-        System.out.println(bem.getCotas());
+        Venda v1 = new Venda(1512, comum);
+
+        v1.adicionarCotaCarrinho(cota1);
+        v1.adicionarCotaCarrinho(cota2);
+
+        System.out.println(v1.gerarNotaFiscal());
+
+        // Em tese não finalizou a compra
+        System.out.println(comum.getCotasAdquiridas());
+
+        v1.finalizarCompra();
+
+        // Agora posso acessar as cotas compradas no Usuário Comum
+        System.out.println(comum.getCotasAdquiridas());
+
+
 
     }
 }

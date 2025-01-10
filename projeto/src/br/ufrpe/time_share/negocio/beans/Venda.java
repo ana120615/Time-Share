@@ -7,134 +7,150 @@ import java.util.UUID;
 import java.util.ArrayList;
 
 public class Venda {
-	private int id;
-	private LocalDateTime data;
-	private double valorTotal;
-	private Cota cota;
-	private Usuario usuario;
-	private ArrayList<Cota> cotas;
-	private Promocao promocao;
-	
+    private int id;
+    private LocalDateTime data;
+    private double valorTotal;
+    private Cota cota;
+    private UsuarioComum usuarioComum;
+    private ArrayList<Cota> carrinhoDeComprasCotas;
+    private Promocao promocao;
+
+    {
+        this.carrinhoDeComprasCotas = new ArrayList<>(10);
+    }
+
+    public Venda(int id, UsuarioComum usuarioComum) {
+        this.id = id;
+        this.valorTotal = 0;
+        this.usuarioComum = usuarioComum;
 
 
-	public Venda(int id, Usuario usuario, Cota cota) {
-		this.id = id;
-		this.valorTotal = 0;
-		this.cotas.add(cota);
-		this.usuario = usuario;
-	
-		
-	
-	}
+    }
 
-	//Métodos get e set
-	public void setId(int id) {
-		this.id = id;
-	}
+    //Métodos get e set
+    public void setId(int id) {
+        this.id = id;
+    }
 
-	public int getId() {
-		return this.id;
-	}
+    public int getId() {
+        return this.id;
+    }
 
-	public void setValorTotal(double valorTotal) {
-		this.valorTotal = valorTotal;
-	}
+    public void setValorTotal(double valorTotal) {
+        this.valorTotal = valorTotal;
+    }
 
-	public double getValorTotal() {
-		return this.valorTotal;
-	}
+    public double getValorTotal() {
+        return this.valorTotal;
+    }
 
-	public void setCota(Cota cota) {
-		this.cota = cota;
-	}
+    public void setCota(Cota cota) {
+        this.cota = cota;
+    }
 
-	public Cota getCota() {
-		return this.cota;
-	}
+    public Cota getCota() {
+        return this.cota;
+    }
 
-	public void setUsuario(Usuario usuario) {
-		this.usuario = usuario;
-	}
+    public void setUsuario(UsuarioComum usuarioComum) {
+        this.usuarioComum = usuarioComum;
+    }
 
-	public Usuario getUsuario() {
-		return this.usuario;
-	}
+    public Usuario getUsuario() {
+        return this.usuarioComum;
+    }
 
 
 //Outros métodos
 
-	public String gerarNotaFiscal() {
-		String notaFiscal = "Nota Fiscal: \n ";
+    public String gerarNotaFiscal() {
+        String notaFiscal = "Nota Fiscal: \n ";
 
-		notaFiscal += "Cliente: " + usuario.getNome() + "\n";
-		notaFiscal += "--------------------------------------\n";
-		notaFiscal += " Flex Share \n";
-		notaFiscal += "--------------------------------------\n";
-		notaFiscal += "CPF: " + usuario.getCpf() + "\n";
-		notaFiscal += "Valor: R$" + valorTotal + "\n";
-		notaFiscal += "Data de Emissão: " + LocalDate.now() + "\n";
-		String numeroNotaFiscal = UUID.randomUUID().toString();
-		notaFiscal += "Número da Nota Fiscal: " + numeroNotaFiscal + "\n";
+        notaFiscal += "Cliente: " + usuarioComum.getNome() + "\n";
+        notaFiscal += "--------------------------------------\n";
+        notaFiscal += " Flex Share \n";
+        notaFiscal += "--------------------------------------\n";
+        notaFiscal += "CPF: " + usuarioComum.getCpf() + "\n";
+        notaFiscal += "Valor: R$" + valorTotal + "\n";
+        notaFiscal += "Data de Emissão: " + LocalDate.now() + "\n";
+        String numeroNotaFiscal = UUID.randomUUID().toString();
+        notaFiscal += "Número da Nota Fiscal: " + numeroNotaFiscal + "\n";
 
-		return notaFiscal;
+        return notaFiscal;
 
 
-	}
+    }
 
-	public void calcularValorTotal() {
-		double resultado = 0;
-		for (Cota c : cotas) {
-			resultado += c.getPreco();
-		}
-		this.valorTotal = resultado;
-	}
+    public void calcularValorTotal() {
+        double resultado = 0;
+        for (Cota c : carrinhoDeComprasCotas) {
+            resultado += c.getPreco();
+        }
+        this.valorTotal = resultado;
+    }
 
-	public boolean adicionarCota (Cota cota) {
-		boolean resultado = false;
-		if (cota != null) {
-			cotas.add(cota);
-			resultado = true;
-		}
-		return resultado;
-	}
+    public void adicionarCotaCarrinho(Cota cota) {
 
-	public boolean removerCota (Cota cota) {
-		boolean resultado = false;
-		if (cota != null) {
-			cotas.remove(cota);
-			resultado = true;
-		}
-		return resultado;
-	}
+        if (cota != null) {
+            carrinhoDeComprasCotas.add(cota);
+            cota.setStatusDeDisponibilidadeParaCompra(false);
+            calcularValorTotal();
+        }
 
-	public boolean finalizarCompra() {
-		/*
-		REALIZAR A FINALIZAÇÂO DE COMPRA DE TAL FORMA QUE ALIMENTE A LISTA DE COTAS DO USUÁRIO.
-		 */
-		return false;
-	}
+    }
 
-	public ArrayList<Cota> listarCotas() {
-		ArrayList<Cota> resultado = new ArrayList<>();
-		for (Cota c : cotas) {
-			resultado.add(c);
-		}
-		return resultado;
-	}
+    public void removerCotaCarrinho(Cota cota) {
 
-	public double aplicarPromocao () {
+        if (cota != null) {
+            carrinhoDeComprasCotas.remove(cota);
+            cota.setStatusDeDisponibilidadeParaCompra(true);
+            calcularValorTotal();
+        }
+
+    }
+
+    public void finalizarCompra() {
+		usuarioComum.setCotasAdquiridas(carrinhoDeComprasCotas);
+        for (Cota cota : carrinhoDeComprasCotas) {
+            cota.setProprietario(usuarioComum);
+        }
+        carrinhoDeComprasCotas = null;
+        System.out.println("Compra finalizada");
+    }
+
+    public ArrayList<Cota> getCarrinhoDeComprasCotas() {
+        ArrayList<Cota> resultado = new ArrayList<>();
+        for (Cota c : carrinhoDeComprasCotas) {
+            resultado.add(c);
+        }
+        return resultado;
+    }
+
+    public double aplicarPromocao() {
 		/*
 		UTILIZAR O VALOR TOTAL DA VENDA MENOS UM DESCONTO DADO POR UM ANIVERSÁRIO OU PERIODO ESPECIFICO
 		 */
-		return 0;
-	}
-	public boolean verificarPromocao () {
+        return 0;
+    }
+
+    public boolean verificarPromocao() {
 		/*
 		RETORNAR A VERACIDADE PARA PODER APLICAR A PROMOÇÃO. TAMBÉM PODERIA SER UMA CONDICIONAL DENTRO
 		DE APLICARPROMOCAO
 		 */
-		return false;
-	}
+        return false;
+    }
 
-
+    @Override
+    public String toString() {
+        return "Venda{" +
+                "id=" + id +
+                ", data=" + data +
+                ", valorTotal=" + valorTotal +
+                ", cota=" + cota +
+                ", usuarioComum=" + usuarioComum +
+                ", carrinhoDeComprasCotas=" + carrinhoDeComprasCotas +
+                ", promocao=" + promocao +
+                '}';
+    }
 }

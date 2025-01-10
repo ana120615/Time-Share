@@ -1,9 +1,12 @@
 package br.ufrpe.time_share.negocio.beans;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+
 
 public class UsuarioComum extends Usuario {
     public final String nivelAcesso = "COMUM";
+    private ArrayList<Cota> cotasAdquiridas;
 
     //Construtor
     public UsuarioComum(int cpf, String nome, String email, String senha, LocalDate dataNascimento) {
@@ -12,6 +15,20 @@ public class UsuarioComum extends Usuario {
 
     public UsuarioComum(int cpf, String senha) {
         super(cpf, senha);
+    }
+
+
+
+    public ArrayList<Cota> getCotasAdquiridas() {
+        return cotasAdquiridas;
+    }
+
+    public void setCotasAdquiridas(ArrayList<Cota> cotasAdquiridas) {
+        this.cotasAdquiridas = cotasAdquiridas;
+    }
+
+    public String consultarCotas() {
+        return "";
     }
 
     @Override

@@ -63,7 +63,7 @@ public class Cota {
         this.id = id;
     }
 
-    public boolean getStatus() {
+    public boolean getStatusDeDisponibilidadeParaCompra() {
         return this.statusDeDisponibilidadeParaCompra;
     }
 
@@ -90,7 +90,7 @@ public class Cota {
                 "id=" + id +
                 ", data=" + data.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) +
                 ", preco=" + preco +
-                ", proprietario=" + (proprietario != null ? proprietario.getNome() : "null") +
+                ", proprietarioCPF=" + (proprietario != null ? proprietario.getCpf() : "null") +
                 ", statusDeDisponibilidadeParaCompra=" + statusDeDisponibilidadeParaCompra +
                 ", bemAssociado=" + (bemAssociado != null ? bemAssociado.getId() : "null") +
                 '}';
