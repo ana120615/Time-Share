@@ -36,7 +36,7 @@ public class RepositorioReservas extends Repositorio<Reserva> {
        return reservasPorBem;
         
     }
-    public List<Reserva> buscarreservaPorUsuarioAdm(int usuarioCPF){
+    public List<Reserva> buscarReservaPorUsuarioAdm(int usuarioCPF){
         List<Reserva> reservasPorUsuario = new ArrayList<>();
         for (Reserva reserva : reservas ){
             if (reserva.getUsuarioAdm().getCpf() == usuarioCPF){
