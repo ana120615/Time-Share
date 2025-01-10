@@ -71,8 +71,6 @@ public class Venda {
 		notaFiscal += " Flex Share \n";
 		notaFiscal += "--------------------------------------\n";
 		notaFiscal += "CPF: " + usuario.getCpf() + "\n";
-		notaFiscal += "cota:" + cota.getDescricao()  + "\n"; 
-		notaFiscal += "Período: " + cota.getPeriodo() + "\n";
 		notaFiscal += "Valor: R$" + valorTotal + "\n";
 		notaFiscal += "Data de Emissão: " + LocalDate.now() + "\n";
 		String numeroNotaFiscal = UUID.randomUUID().toString();

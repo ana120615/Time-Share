@@ -1,19 +1,50 @@
 package br.ufrpe.time_share.negocio.beans;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 public class UsuarioAdm extends Usuario {
-    //Construtor
-    public UsuarioAdm(int cpf, String nome, String email, String senha, LocalDate dataNascimento){
+    public final String nivelAcesso = "ADM";
+    private ArrayList<Bem> bens;
+
+    {
+        this.bens = new ArrayList<>(10);
+    }
+
+    public UsuarioAdm(int cpf, String nome, String email, String senha, LocalDate dataNascimento) {
         super(cpf, nome, email, senha, dataNascimento);
     }
-    //METODO TO STRING
-    public String toString(){
-    return "USUARIO ADMINISTRADOR: NOME- "+ this.getNome() + " CPF- "  +String.format("%d", this.getCpf())+ " EMAIL- " +this.getEmail()+ " SENHA- " +this.getSenha()+" IDADE- " +String.format("%d", this.calcularIdade());
+
+    public UsuarioAdm(int cpf, String senha) {
+        super(cpf, senha);
+    }
+
+    public String consultarBens() {
+        String resultado = "";
+        for (Bem bem : this.bens) {
+            resultado += bem + "\n";
+        }
+        return resultado;
+    }
+
+    public void setBens(ArrayList<Bem> bens) {
+        this.bens = bens;
+    }
+
+    public void cadastrarBem(Bem bem) {
+         if (bem != null) {
+             this.bens.add(bem);
+         }
     }
 
     @Override
     public boolean eAdm() {
         return true;
+    }
+
+    @Override
+    public String toString() {
+        return super.toString() + " " +
+                "nivelAcesso=" + nivelAcesso;
     }
 }

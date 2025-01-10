@@ -20,7 +20,7 @@ public abstract class Usuario {
         this.setDataNascimento(dataNascimento);
     }
 
-    public Usuario (int cpf, String senha) {
+    public Usuario(int cpf, String senha) {
         this.setCpf(cpf);
         this.setSenha(senha);
     }
@@ -85,4 +85,14 @@ public abstract class Usuario {
 
     //METODO ABSTRATO
     public abstract boolean eAdm();
+
+    @Override
+    public String toString() {
+        return "\n" +
+                "cpf=" + cpf +
+                ", nome='" + nome + '\'' +
+                ", email='" + email + '\'' +
+                ", senha='" + senha + '\'' +
+                ", dataNascimento=" + dataNascimento;
+    }
 }

@@ -1,6 +1,8 @@
 package br.ufrpe.time_share.negocio.beans;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
 
 public class Cota {
     private int id;
@@ -10,10 +12,10 @@ public class Cota {
     private boolean statusDeDisponibilidadeParaCompra;
     private Bem bemAssociado;
 
-    public Cota(int id, LocalDate data, double preco, Bem bemAssociado) {
+    public Cota(int id, LocalDate data, double preco) {
         this.setId(id);
+        setData(data);
         this.setPreco(preco);
-        this.setBemAssociado(bemAssociado);
         this.statusDeDisponibilidadeParaCompra = true; //inicializado como disponivel
     }
 
@@ -28,10 +30,14 @@ public class Cota {
     }
 
     public void setBemAssociado(Bem bemAssociado) {
-        if (bemAssociado != null) {
+        if (this.bemAssociado != bemAssociado) {
             this.bemAssociado = bemAssociado;
+            if (bemAssociado != null && !bemAssociado.getCotas().contains(this)) {
+                bemAssociado.adicionarCota(this);
+            }
         }
     }
+
 
     public Usuario getProprietario() {
         return this.proprietario;
@@ -82,11 +88,12 @@ public class Cota {
     public String toString() {
         return "Cota{" +
                 "id=" + id +
-                ", data=" + data +
+                ", data=" + data.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) +
                 ", preco=" + preco +
-                ", proprietario=" + proprietario +
+                ", proprietario=" + (proprietario != null ? proprietario.getNome() : "null") +
                 ", statusDeDisponibilidadeParaCompra=" + statusDeDisponibilidadeParaCompra +
-                ", bemAssociado=" + bemAssociado +
+                ", bemAssociado=" + (bemAssociado != null ? bemAssociado.getId() : "null") +
                 '}';
     }
+
 }

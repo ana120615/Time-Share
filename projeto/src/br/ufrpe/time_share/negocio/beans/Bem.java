@@ -12,6 +12,10 @@ public class Bem {
     private boolean ofertado;
     private ArrayList<Cota> cotas;
 
+    {
+        this.cotas = new ArrayList<>(10);
+    }
+
     public Bem(int id, String nome, String descricao, String localizacao, int capacidade) {
         setId(id);
         setCapacidade(capacidade);
@@ -23,7 +27,6 @@ public class Bem {
     }
 
     //METODOS GET E SET
-
 
     public int getId() {
         return this.id;
@@ -82,7 +85,12 @@ public class Bem {
     }
 
     public void adicionarCota(Cota cota) {
-        cotas.add(cota);
+        if (!this.cotas.contains(cota)) {
+            this.cotas.add(cota);
+            if (cota.getBemAssociado() != this) {
+                cota.setBemAssociado(this);
+            }
+        }
     }
 
 
