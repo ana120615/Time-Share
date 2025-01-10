@@ -22,6 +22,10 @@ public class UsuarioComum extends Usuario {
     public ArrayList<Cota> getCotasAdquiridas() {
         return cotasAdquiridas;
     }
+    // adicionei para poder validas as cotas em reserva
+    public boolean temCotasAdquiridas(){
+        return cotasAdquiridas !=null && !cotasAdquiridas.isEmpty();
+    }
 
     public void setCotasAdquiridas(ArrayList<Cota> cotasAdquiridas) {
         this.cotasAdquiridas = cotasAdquiridas;

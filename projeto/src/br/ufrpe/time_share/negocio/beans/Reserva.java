@@ -1,6 +1,7 @@
 package br.ufrpe.time_share.negocio.beans;
 
 import java.time.LocalDate;
+import java.util.List;
 
 public class Reserva {
     private int id;
@@ -9,9 +10,10 @@ public class Reserva {
     private boolean status;
     private double taxa;
     private Usuario usuario;
+    private UsuarioComum usuarioComum;
     private Bem bem;
-
-    public Reserva(int id, LocalDate dataInicio, LocalDate dataFim, Usuario usuario, Bem bem) {
+    private List<Cota> cotas;
+    public Reserva(int id, LocalDate dataInicio, LocalDate dataFim, Usuario usuario, Bem bem, List<Cota> cotas) {
         this.id = id;
         this.status = true;
         this.dataInicio = dataInicio;
@@ -19,24 +21,27 @@ public class Reserva {
         this.taxa = 0.00d;
         this.usuario = usuario;
         this.bem = bem;
+        this.cotas = cotas;
     }
 
-    public double calcularTaxa(boolean foraPeriodo) {
-        if (eAltaTemporada(dataInicio)) {
-            this.taxa = 200.00d;
-        } else {
-            this.taxa = 75.00d;
-        }
-        return this.taxa;
-    }
-
-    private boolean eAltaTemporada(LocalDate data) {
-        int mes = data.getMonthValue();
-        return mes == 12 || mes == 1 || mes == 2;
-    }
+  
 
     public void cancelarReserva() {
         this.status = false;
+    }
+    public boolean validarReserva(){
+        if ( usuarioComum.temCotasAdquiridas()){
+            for (Cota cota: cotas){
+                if(!cota.isStatusDeDisponibilidadeParaCompra()){
+                    return false;
+                }
+            } 
+            return true;
+        }else {
+
+            return false;
+        }
+    
     }
 
     public Bem getBem() {
@@ -93,5 +98,12 @@ public class Reserva {
 
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
+    }
+    public List<Cota> getCotas() {
+        return cotas;
+    }
+
+    public void setCotas(List<Cota> cotas) {
+        this.cotas = cotas;
     }
 }
