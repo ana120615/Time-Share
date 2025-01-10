@@ -11,7 +11,7 @@ public abstract class Usuario {
     private String senha;
     private LocalDate dataNascimento;
 
-    //Construtor
+    //CONSTRUTORES
     public Usuario(int cpf, String nome, String email, String senha, LocalDate dataNascimento) {
         this.setCpf(cpf);
         this.setNome(nome);
@@ -94,5 +94,17 @@ public abstract class Usuario {
                 ", email='" + email + '\'' +
                 ", senha='" + senha + '\'' +
                 ", dataNascimento=" + dataNascimento;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        boolean ret = false;
+        if (obj instanceof Usuario) {
+            Usuario usuario = (Usuario) obj;
+            if (this.cpf == usuario.getCpf() || this.email.equals(usuario.getEmail())) {
+                ret = true;
+            }
+        }
+        return ret;
     }
 }

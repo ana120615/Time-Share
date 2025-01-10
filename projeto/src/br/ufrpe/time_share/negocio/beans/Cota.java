@@ -12,6 +12,7 @@ public class Cota {
     private boolean statusDeDisponibilidadeParaCompra;
     private Bem bemAssociado;
 
+    //CONSTRUTOR
     public Cota(int id, LocalDate data, double preco) {
         this.setId(id);
         setData(data);
@@ -19,7 +20,7 @@ public class Cota {
         this.statusDeDisponibilidadeParaCompra = true; //inicializado como disponivel
     }
 
-    //Métodos get e set
+    //METODOS GET E SET
 
     public LocalDate getData() {
         return data;
@@ -37,7 +38,6 @@ public class Cota {
             }
         }
     }
-
 
     public Usuario getProprietario() {
         return this.proprietario;

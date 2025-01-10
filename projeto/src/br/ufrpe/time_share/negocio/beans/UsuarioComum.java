@@ -8,7 +8,11 @@ public class UsuarioComum extends Usuario {
     public final String nivelAcesso = "COMUM";
     private ArrayList<Cota> cotasAdquiridas;
 
-    //Construtor
+    {
+        cotasAdquiridas = new ArrayList<>(10);
+    }
+
+    //CONSTRUTORES
     public UsuarioComum(int cpf, String nome, String email, String senha, LocalDate dataNascimento) {
         super(cpf, nome, email, senha, dataNascimento);
     }
@@ -18,15 +22,19 @@ public class UsuarioComum extends Usuario {
     }
 
 
-
+    //METODOS GET E SET
     public ArrayList<Cota> getCotasAdquiridas() {
         return cotasAdquiridas;
     }
 
     public void setCotasAdquiridas(ArrayList<Cota> cotasAdquiridas) {
-        this.cotasAdquiridas = cotasAdquiridas;
+        if(cotasAdquiridas != null) {
+            this.cotasAdquiridas.addAll(cotasAdquiridas);
+        }
     }
 
+
+    //OUTROS METODOS
     public String consultarCotas() {
         return "";
     }
@@ -40,6 +48,15 @@ public class UsuarioComum extends Usuario {
     public String toString() {
         return super.toString() + " " +
                 "nivelAcesso=" + nivelAcesso;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof UsuarioComum) {
+            UsuarioComum usuario = (UsuarioComum) obj;
+            return super.equals(usuario);
+        }
+        return false;
     }
 
 }

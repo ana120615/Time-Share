@@ -11,6 +11,7 @@ public class UsuarioAdm extends Usuario {
         this.bens = new ArrayList<>(10);
     }
 
+    //CONSTRUTORES
     public UsuarioAdm(int cpf, String nome, String email, String senha, LocalDate dataNascimento) {
         super(cpf, nome, email, senha, dataNascimento);
     }
@@ -19,6 +20,7 @@ public class UsuarioAdm extends Usuario {
         super(cpf, senha);
     }
 
+    //OUTROS METODOS
     public String consultarBens() {
         String resultado = "";
         for (Bem bem : this.bens) {
@@ -32,9 +34,9 @@ public class UsuarioAdm extends Usuario {
     }
 
     public void cadastrarBem(Bem bem) {
-         if (bem != null) {
-             this.bens.add(bem);
-         }
+        if (bem != null) {
+            this.bens.add(bem);
+        }
     }
 
     @Override
@@ -46,5 +48,14 @@ public class UsuarioAdm extends Usuario {
     public String toString() {
         return super.toString() + " " +
                 "nivelAcesso=" + nivelAcesso;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof UsuarioAdm) {
+            UsuarioAdm usuario = (UsuarioAdm) obj;
+            return super.equals(usuario);
+        }
+        return false;
     }
 }

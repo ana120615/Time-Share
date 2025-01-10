@@ -22,12 +22,12 @@ public class Programa {
         Cota cota2 = new Cota(2617, LocalDate.now(), 600);
 
 
-//        bem.adicionarCota(cota1);
-//        bem.adicionarCota(cota2);
-//
-//        System.out.println(((UsuarioAdm) adm1).consultarBens());
-//
-//        System.out.println(bem.getCotas());
+        bem.adicionarCota(cota1);
+        bem.adicionarCota(cota2);
+
+        //System.out.println(((UsuarioAdm) adm1).consultarBens());
+
+        //System.out.println(bem.getCotas());
 
         UsuarioComum comum = new UsuarioComum(153284, "545415@@Senha");
 
@@ -36,16 +36,23 @@ public class Programa {
         v1.adicionarCotaCarrinho(cota1);
         v1.adicionarCotaCarrinho(cota2);
 
-        System.out.println(v1.gerarNotaFiscal());
+        //System.out.println(v1.gerarNotaFiscal());
 
         // Em tese não finalizou a compra
         System.out.println(comum.getCotasAdquiridas());
 
         v1.finalizarCompra();
+        Cota cota3 = new Cota(5555, LocalDate.now(), 400.50);
+        Cota cota4 = new Cota(6666, LocalDate.now(), 600);
+        Venda v2 = new Venda(151, comum);
+        v2.adicionarCotaCarrinho(cota3);
+        v2.adicionarCotaCarrinho(cota4);
+        System.out.println(comum.getCotasAdquiridas());
+
+        v2.finalizarCompra();
 
         // Agora posso acessar as cotas compradas no Usuário Comum
         System.out.println(comum.getCotasAdquiridas());
-
 
 
     }
