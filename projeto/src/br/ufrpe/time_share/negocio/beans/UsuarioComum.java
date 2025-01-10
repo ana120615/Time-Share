@@ -13,6 +13,7 @@ public class UsuarioComum extends Usuario {
     }
 
     //CONSTRUTORES
+
     public UsuarioComum(int cpf, String nome, String email, String senha, LocalDate dataNascimento) {
         super(cpf, nome, email, senha, dataNascimento);
     }
@@ -39,17 +40,6 @@ public class UsuarioComum extends Usuario {
 
 
     //OUTROS METODOS
-    public boolean revenderDireitoUso(Usuario usuario, Cota cota) {
-        boolean retorno = false;
-        if (usuario != null && !this.equals(usuario)) {
-            if (this.cotasAdquiridas.contains(cota)) {
-                cota.setProprietario((UsuarioComum) usuario);
-                this.cotasAdquiridas.remove(cota);
-                retorno = true;
-            }
-        }
-        return retorno;
-    }
 
     @Override
     public boolean eAdm() {

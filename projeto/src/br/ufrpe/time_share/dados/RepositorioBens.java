@@ -5,7 +5,47 @@ import java.util.List;
 
 import br.ufrpe.time_share.negocio.beans.Bem;
 
-public class RepositorioBens extends Repositorio<Bem> {
+public class RepositorioBens implements IRepositorioBens {
+    @Override
+    public void cadastrarBem(Bem bem) {
+
+    }
+
+    @Override
+    public void editarBem(Bem bem) {
+
+    }
+
+    @Override
+    public void removerBemPorId(int id) {
+
+    }
+
+    @Override
+    public void removerBem(Bem bem) {
+
+    }
+
+    @Override
+    public Bem buscarBemPorId(int id) {
+        return null;
+    }
+
+    @Override
+    public Bem buscarBemPorNome(String nome) {
+        return null;
+    }
+
+    @Override
+    public ArrayList<Bem> listarBensDisponiveis() {
+        return null;
+    }
+
+    @Override
+    public ArrayList<Bem> listarBens() {
+        return null;
+    }
+
 //    //Construtor
 //    public RepositorioBens() {
 //        super();

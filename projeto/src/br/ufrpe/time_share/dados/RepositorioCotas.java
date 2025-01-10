@@ -7,7 +7,53 @@ import br.ufrpe.time_share.negocio.beans.Bem;
 import br.ufrpe.time_share.negocio.beans.Cota;
 import br.ufrpe.time_share.negocio.beans.Usuario;
 
-public class RepositorioCotas extends Repositorio<Cota> {
+public class RepositorioCotas implements IRepositorioCotas {
+    @Override
+    public void cadastrarCota(Cota cota) {
+
+    }
+
+    @Override
+    public void alterarCota(Cota cota) {
+
+    }
+
+    @Override
+    public void excluirCota(Cota cota) {
+
+    }
+
+    @Override
+    public void atualizarStatusCota(Cota cota, boolean statusAtualizado) {
+
+    }
+
+    @Override
+    public Cota buscarCota(Cota cota) {
+        return null;
+    }
+
+    @Override
+    public Cota buscarCotaPorId(int id) {
+        return null;
+    }
+
+    @Override
+    public ArrayList<Cota> buscarCotasPorBem(Bem id) {
+        return null;
+    }
+
+    @Override
+    public ArrayList<Cota> listarCota() {
+        return null;
+    }
+
+    @Override
+    public ArrayList<Cota> listarCotaDisponivelParaVenda(Cota cota) {
+        return null;
+    }
+
+
 //    //Construtor
 //    public RepositorioCotas() {
 //        super();
