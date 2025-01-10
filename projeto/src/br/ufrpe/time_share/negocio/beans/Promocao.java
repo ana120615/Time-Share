@@ -1,4 +1,4 @@
-package negocio.beans;
+package br.ufrpe.time_share.negocio.beans;
 
 public class Promocao {
 //Aplicando 15% de desconto

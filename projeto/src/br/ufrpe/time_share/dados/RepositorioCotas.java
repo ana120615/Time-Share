@@ -1,10 +1,10 @@
-package dados;
+package br.ufrpe.time_share.dados;
 import java.util.ArrayList;
 import java.util.List;
 
-import negocio.beans.Bem;
-import negocio.beans.Cota;
-import negocio.beans.Usuario;
+import br.ufrpe.time_share.negocio.beans.Bem;
+import br.ufrpe.time_share.negocio.beans.Cota;
+import br.ufrpe.time_share.negocio.beans.Usuario;
 
 public class RepositorioCotas extends Repositorio<Cota> {
     //Construtor
@@ -14,7 +14,7 @@ public class RepositorioCotas extends Repositorio<Cota> {
    public void atualizarStatusCota(int cotaId, boolean status){
 for (Cota cota : getEntidades()) {
             if (cota.getId()==cotaId) {
-                cota.setStatus(status);
+                cota.setStatusDeDisponibilidadeParaCompra(status);
             }
         }
    }

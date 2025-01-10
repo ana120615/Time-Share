@@ -1,5 +1,5 @@
-package dados;
-import negocio.beans.UsuarioAdm;
+package br.ufrpe.time_share.dados;
+import br.ufrpe.time_share.negocio.beans.UsuarioAdm;
 
 public class RepositorioUsuarios extends Repositorio<UsuarioAdm> {
 //Construtor

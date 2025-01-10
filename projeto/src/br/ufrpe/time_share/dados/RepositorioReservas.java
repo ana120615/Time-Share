@@ -1,5 +1,5 @@
-package dados;
-import negocio.beans.Reserva;
+package br.ufrpe.time_share.dados;
+import br.ufrpe.time_share.negocio.beans.Reserva;
 
 public class RepositorioReservas extends Repositorio<Reserva> {
     //Construtor

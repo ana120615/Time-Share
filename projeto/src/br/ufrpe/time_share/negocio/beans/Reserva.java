@@ -1,7 +1,6 @@
-package negocio.beans;
+package br.ufrpe.time_share.negocio.beans;
 
 import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
 
 public class Reserva {
     private int id;

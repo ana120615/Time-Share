@@ -1,4 +1,4 @@
-package dados;
+package br.ufrpe.time_share.dados;
 import java.util.ArrayList;
 import java.util.List;
 

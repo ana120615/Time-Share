@@ -1,12 +1,12 @@
-package dados;
+package br.ufrpe.time_share.dados;
 import java.util.ArrayList;
 import java.util.List;
 
-import negocio.beans.Bem;
+import br.ufrpe.time_share.negocio.beans.Bem;
 
-public class RepositorioBem extends Repositorio<Bem> {
+public class RepositorioBens extends Repositorio<Bem> {
     //Construtor
-     public RepositorioBem(){
+     public RepositorioBens(){
           super();
      }
 public Bem buscarBemPorId(int id){
