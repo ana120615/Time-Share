@@ -13,7 +13,6 @@ public class Venda {
     private Cota cota;
     private UsuarioComum usuarioComum;
     private ArrayList<Cota> carrinhoDeComprasCotas;
-    private Promocao promocao;
 
     {
         this.carrinhoDeComprasCotas = new ArrayList<>(10);
@@ -132,7 +131,6 @@ public class Venda {
                 ", cota=" + cota +
                 ", usuarioComum=" + usuarioComum +
                 ", carrinhoDeComprasCotas=" + carrinhoDeComprasCotas +
-                ", promocao=" + promocao +
                 '}';
     }
 }

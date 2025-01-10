@@ -9,7 +9,7 @@ public class UsuarioComum extends Usuario {
     private ArrayList<Cota> cotasAdquiridas;
 
     {
-        cotasAdquiridas = new ArrayList<>(10);
+        this.cotasAdquiridas = new ArrayList<>(10);
     }
 
     //CONSTRUTORES
@@ -24,7 +24,7 @@ public class UsuarioComum extends Usuario {
 
     //METODOS GET E SET
     public ArrayList<Cota> getCotasAdquiridas() {
-        return cotasAdquiridas;
+        return this.cotasAdquiridas;
     }
 
     public void setCotasAdquiridas(ArrayList<Cota> cotasAdquiridas) {
@@ -61,8 +61,7 @@ public class UsuarioComum extends Usuario {
     @Override
     public boolean equals(Object obj) {
         if (obj instanceof UsuarioComum) {
-            UsuarioComum usuario = (UsuarioComum) obj;
-            return super.equals(usuario);
+            return super.equals(obj);
         }
         return false;
     }
