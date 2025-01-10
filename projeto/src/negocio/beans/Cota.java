@@ -16,7 +16,7 @@ public class Cota {
         this.setDescricao(descricao);
         this.setDataInicio(dataInicio);
         this.setDataFim(dataFim);
-        this.setProprietario(proprietario)
+        this.setProprietario(proprietario);
         this.status = true; //inicializado como disponivel
     }
 

@@ -1,7 +1,4 @@
-
 package negocio.beans;
-
-import java.time.temporal.ChronoUnit;
 
 public class Estadia {
     private int id;

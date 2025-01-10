@@ -1,5 +1,4 @@
-package negocio;
-import negocio.beans.Usuario;
+package negocio.beans;
 
 public class Promocao {
 //Aplicando 15% de desconto
