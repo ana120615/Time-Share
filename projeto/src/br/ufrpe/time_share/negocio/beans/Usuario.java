@@ -3,7 +3,7 @@ package br.ufrpe.time_share.negocio.beans;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 
-public abstract class Usuario {
+public class Usuario {
 
     private int cpf;
     private String nome;
@@ -83,8 +83,7 @@ public abstract class Usuario {
         return eNiver;
     }
 
-    //METODO ABSTRATO
-    public abstract boolean eAdm();
+
 
     @Override
     public String toString() {

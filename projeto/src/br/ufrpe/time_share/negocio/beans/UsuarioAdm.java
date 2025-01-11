@@ -36,10 +36,7 @@ public class UsuarioAdm extends Usuario {
         }
     }
 
-    @Override
-    public boolean eAdm() {
-        return true;
-    }
+
 
     @Override
     public String toString() {

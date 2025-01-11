@@ -42,11 +42,6 @@ public class UsuarioComum extends Usuario {
     //OUTROS METODOS
 
     @Override
-    public boolean eAdm() {
-        return false;
-    }
-
-    @Override
     public String toString() {
         return super.toString() + " " +
                 "nivelAcesso=" + nivelAcesso;
