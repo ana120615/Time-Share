@@ -14,70 +14,47 @@ public class RepositorioReservas implements IRepositorioReservas {
         this.reservas = new ArrayList<>();
     }
     private List<Reserva> reservas;
-    public Reserva buscarPorId(int id){
-    Reserva resultado=null;
-//    for (Reserva reserva : getEntidades()) {
-//            if (reserva.getId()==id) {
-//                resultado= reserva;
-//            }
-//        }
-    return resultado;
-    }
-    public List<Reserva> buscarReservaPorBem(int bemId){
-       List<Reserva> reservasPorBem = new ArrayList<>();
-
-       for ( Reserva reserva : reservas){
-
-        if(reserva.getBem().getId() == bemId){
-            reservasPorBem.add(reserva);
-        }
+        private LocalDate novaDataFim;
         
+        //depois vai ser alterado para integrar o controlador 
+       public void disponibilizarCotas (Reserva reserva){
+        for (Cota cota : reserva.getCotas()){
+            //*repositorioCotas.atualizarStatusCota(cota.getId(), true);  como comentário porque o repositorio de reservas está todo como comentário*//
+        }
        }
-       return reservasPorBem;
-        
-    }
-    public List<Reserva> buscarReservaPorUsuario(int usuarioCPF){
-        List<Reserva> reservasPorUsuario = new ArrayList<>();
-        for (Reserva reserva : reservas ){
-            if (reserva.getUsuarioAdm().getCpf() == usuarioCPF){
-                reservasPorUsuario.add(reserva);
-            }
-            if ( reserva.getUsuarioComum().getCpf() == usuarioCPF){
-                reservasPorUsuario.add(reserva);
-            }
-        } 
-        return reservasPorUsuario;
-    }
-  
-    public boolean cancelarReserva (int idreserva){
-        Reserva reserva = buscarPorId(idreserva);
-        if ( reserva != null && reserva.getStatus()){
-        reserva.cancelarReserva();
-        disponibilizarCotas(reserva);
-        return true;
+    
+    
+        @Override
+        public void cadastrarReserva(Reserva reserva) {
+    
         }
-        return false;
-    }
-   public void disponibilizarCotas (Reserva reserva){
-    for (Cota cota : reserva.getCotas()){
-        //*repositorioCotas.atualizarStarusCota(cota.getId(), true);  como comentário porque o repositorio de reservas está todo como comentário*//
-    }
-   }
-
-
-    @Override
-    public void cadastrarReserva(Reserva reserva) {
-
-    }
-
-    @Override
-    public void removerReserva(Reserva reserva) {
-
-    }
-
-    @Override
-    public void atualizarReserva(Reserva reserva) {
-
+    
+        @Override
+        public boolean removerReserva( int idReserva) {
+            
+         Reserva reserva = buscarReservasPorId(idReserva);
+            if ( reserva != null && reserva.getStatus()){
+            reserva.cancelarReserva();
+            disponibilizarCotas(reserva);
+            return true;
+            }
+            return false;
+    
+        }
+    
+        @Override
+        public Reserva atualizarReserva(int idReserva, LocalDate novaDataInicio, LocalDate novaDataFim ){
+            this.novaDataFim = novaDataFim;
+            Reserva reserva =  buscarReservasPorId(idReserva);
+        if (reserva != null ){
+            reserva.setDataInicio(novaDataInicio);
+            reserva.setDataFim(novaDataFim);
+            return reserva;
+        }else {
+            System.out.println("reserva não encontrada");
+            return null;
+        }
+         
     }
 
     @Override
@@ -87,18 +64,45 @@ public class RepositorioReservas implements IRepositorioReservas {
 
     @Override
     public ArrayList<Reserva> buscarReservasPorUsuario(int idUsuario) {
-        return null;
-    }
+       
+            List<Reserva> reservasPorUsuario = new ArrayList<>();
+            for (Reserva reserva : reservas ){
+                if (reserva.getUsuarioAdm().getCpf() == idUsuario){
+                    reservasPorUsuario.add(reserva);
+                }
+                if ( reserva.getUsuarioComum().getCpf() == idUsuario){
+                    reservasPorUsuario.add(reserva);
+                }
+            } 
+            return (ArrayList<Reserva>) reservasPorUsuario;
+        }
+    
 
     @Override
     public ArrayList<Reserva> buscarReservasPorBem(int idBem) {
-        return null;
+     
+            List<Reserva> reservasPorBem = new ArrayList<>();
+     
+            for ( Reserva reserva : reservas){
+     
+             if(reserva.getBem().getId() == idBem){
+                 reservasPorBem.add(reserva);
+             }
+             
+            }
+            return (ArrayList<Reserva>) reservasPorBem;
     }
 
     @Override
-    public ArrayList<Reserva> buscarReservasPorId(int idReserva) {
-        return null;
+    public Reserva buscarReservasPorId(int idReserva) {
+     
+    for (Reserva reserva : reservas) { 
+        if (reserva.getId() == idReserva) {
+          return reserva;
+        }
     }
+    return null;
+}
 
     @Override
     public ArrayList<Reserva> listarReservas() {

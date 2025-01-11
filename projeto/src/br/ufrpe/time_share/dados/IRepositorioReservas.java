@@ -1,15 +1,17 @@
 package br.ufrpe.time_share.dados;
 
 import br.ufrpe.time_share.negocio.beans.Reserva;
+
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 public interface IRepositorioReservas {
 
     void cadastrarReserva(Reserva reserva);
 
-    void removerReserva(Reserva reserva);
+    boolean removerReserva( int idReserva);
 
-    void atualizarReserva(Reserva reserva);
+    Reserva atualizarReserva(int idReserva, LocalDate novaDataInicio, LocalDate novaDataFim);
 
     Reserva buscarReserva(Reserva reserva);
 
@@ -17,7 +19,7 @@ public interface IRepositorioReservas {
 
     ArrayList<Reserva> buscarReservasPorBem(int idBem);
 
-    ArrayList<Reserva> buscarReservasPorId(int idReserva);
+    Reserva buscarReservasPorId(int idReserva);
 
     ArrayList<Reserva> listarReservas();
 
