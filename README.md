@@ -80,7 +80,7 @@ MVP1 - Cadastros Básicos -
 [REQ1, REQ2, REQ3, REQ4]
 
 Descrição: Implementação das funcionalidades para gerenciamento de administradores, usuários e bens ofertados.
-Justificativa: Esses cadastros são fundamentais para estruturar o sistema e permitir a entrada e organização dos br.ufrpe.time_share.dados necessários para operações futuras.
+Justificativa: Esses cadastros são fundamentais para estruturar o sistema e permitir a entrada e organização dos dados necessários para operações futuras.
 
 MVP2 - Operações de Venda - 
 [REQ5, REQ6]
