@@ -11,7 +11,7 @@ import java.util.ArrayList;
 public class Programa {
     public static void main(String[] args) {
 
-        RepositorioBens repositorioBens = new RepositorioBens();
+        IRepositorioBens repositorioBens = new RepositorioBens();
 
         Usuario adm1 = new UsuarioAdm(1223548, "senhaAdm1");
 
@@ -28,18 +28,6 @@ public class Programa {
 
         bem.adicionarCota(cota1);
         bem.adicionarCota(cota2);
-
-        repositorioBens.cadastrarBem(bem);
-        repositorioBens.cadastrarBem(bem2);
-
-        System.out.println(repositorioBens.buscarBemPorId(111));
-
-        System.out.println("\n\n");
-        ArrayList<Bem> bensNoRepo = repositorioBens.listarBensDisponiveis();
-        for (Bem b : bensNoRepo) {
-            System.out.println(b);
-        }
-        System.out.println("\n\n");
 
 
         //System.out.println(((UsuarioAdm) adm1).consultarBens());
@@ -70,6 +58,38 @@ public class Programa {
 
         // Agora posso acessar as cotas compradas no Usuário Comum
         System.out.println(comum.getCotasAdquiridas());
+
+
+
+        //***************************************************************************8
+        //TESTE REPOSITORIO BENS
+
+        repositorioBens.cadastrarBem(bem);
+        repositorioBens.cadastrarBem(bem2);
+
+        Bem encontrado = repositorioBens.buscarBemPorNome("Apartamento");
+        System.out.println(encontrado);
+
+        if(repositorioBens.existe(bem)) {
+            System.out.println("existe");
+        }
+
+        repositorioBens.removerBem(bem);
+
+        if(repositorioBens.existe(bem)) {
+            System.out.println("existe");
+        }
+        else{
+            System.out.println("Nao existe");
+        }
+
+        System.out.println("\n\n");
+        ArrayList<Bem> bensNoRepo = new ArrayList<>();
+        bensNoRepo.addAll(repositorioBens.listarBens());
+        for (Bem b : bensNoRepo) {
+            System.out.println(b);
+        }
+        System.out.println("\n\n");
 
 
     }
