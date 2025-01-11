@@ -16,11 +16,11 @@ public class RepositorioReservas implements IRepositorioReservas {
     private List<Reserva> reservas;
     public Reserva buscarPorId(int id){
     Reserva resultado=null;
-    //for (Reserva reserva : getEntidades()) {
-           // if (reserva.getId()==id) {
-           //     resultado= reserva;
-          //  }
-       // }
+//    for (Reserva reserva : getEntidades()) {
+//            if (reserva.getId()==id) {
+//                resultado= reserva;
+//            }
+//        }
     return resultado;
     }
     public List<Reserva> buscarReservaPorBem(int bemId){

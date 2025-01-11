@@ -1,20 +1,21 @@
 package br.ufrpe.time_share.dados;
 import br.ufrpe.time_share.negocio.beans.Usuario;
 import br.ufrpe.time_share.negocio.beans.UsuarioAdm;
+import br.ufrpe.time_share.negocio.beans.UsuarioComum;
 
 import java.util.ArrayList;
 
 public class RepositorioUsuarios implements IRepositorioUsuario {
+    private ArrayList<Usuario> usuarios;
+
+    {
+        this.usuarios = new ArrayList<>();
+    }
 
 
     @Override
     public void cadastrar(Usuario usuario) {
-
-    }
-
-    @Override
-    public void cadastrar(int cpf, String email) {
-
+        usuarios.add(usuario);
     }
 
     @Override
@@ -24,32 +25,66 @@ public class RepositorioUsuarios implements IRepositorioUsuario {
 
     @Override
     public void remover(Usuario usuario) {
-
+        usuarios.remove(usuario);
     }
 
-    public UsuarioAdm buscarUsuarioPorCpf(int cpf){
-        UsuarioAdm resultado=null;
-        //for (UsuarioAdm usuarioAdm : getEntidades()) {
-         //   if (usuarioAdm.getCpf()==cpf) {
-           //     resultado= usuarioAdm;
-          //  }
-       // }
+    public Usuario buscarUsuarioPorCpf(int cpf){
+        Usuario resultado = null;
+
+        boolean usuarioComEsseCpfExiste = false;
+        int i;
+        for (i = 0; i < usuarios.size() && !usuarioComEsseCpfExiste; i++) {
+            if (usuarios.get(i).getCpf() == cpf) {
+                usuarioComEsseCpfExiste = true;
+            }
+        }
+
+        if (usuarioComEsseCpfExiste) {
+            resultado = usuarios.get(i-1);
+        }
+
         return resultado; 
     }
 
     @Override
     public Usuario buscarUsuarioPorEmail(String email) {
-        return null;
+        Usuario resultado = null;
+
+        boolean usuarioComEsseEmailExiste = false;
+        int i;
+        for (i = 0; i < usuarios.size() && !usuarioComEsseEmailExiste; i++) {
+            if (usuarios.get(i).getEmail().equals(email)) {
+                usuarioComEsseEmailExiste = true;
+            }
+        }
+
+        if (usuarioComEsseEmailExiste) {
+            resultado = usuarios.get(i-1);
+        }
+
+        return resultado;
     }
 
     @Override
-    public ArrayList<Usuario> listarUsuarioComum() {
-        return null;
+    public ArrayList<UsuarioComum> listarUsuarioComum() {
+        ArrayList<UsuarioComum> resultado = new ArrayList<>();
+        for (Usuario comum : usuarios) {
+            if (comum instanceof UsuarioComum) {
+                resultado.add((UsuarioComum) comum);
+            }
+        }
+        return resultado;
     }
 
     @Override
-    public ArrayList<Usuario> listarUsuarioAdm() {
-        return null;
+    public ArrayList<UsuarioAdm> listarUsuarioAdm() {
+        ArrayList<UsuarioAdm> resultado = new ArrayList<>();
+        for (Usuario adm : usuarios) {
+            if (adm instanceof UsuarioAdm) {
+                resultado.add((UsuarioAdm) adm);
+            }
+        }
+        return resultado;
     }
 }
 

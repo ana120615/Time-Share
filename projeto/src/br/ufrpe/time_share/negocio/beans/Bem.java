@@ -113,7 +113,7 @@ public class Bem {
     public boolean equals(Object obj) {
         if (obj instanceof Bem) {
             Bem bem = (Bem) obj;
-            return this.id == bem.getId() && this.nome.equals(bem.getNome()) && this.descricao.equals(bem.getDescricao()) && this.localizacao.equals(bem.getLocalizacao()) && this.capacidade == bem.getCapacidade();
+            return this.id == bem.getId() && this.nome.equals(bem.getNome()) && this.descricao.equals(bem.getDescricao()) && this.localizacao.equals(bem.getLocalizacao());
         }
         return false;
     }

@@ -1,13 +1,14 @@
 package br.ufrpe.time_share.dados;
 
 import br.ufrpe.time_share.negocio.beans.Usuario;
+import br.ufrpe.time_share.negocio.beans.UsuarioAdm;
+import br.ufrpe.time_share.negocio.beans.UsuarioComum;
+
 import java.util.ArrayList;
 
 public interface IRepositorioUsuario {
 
     void cadastrar(Usuario usuario);
-
-    void cadastrar(int cpf, String email);
 
     void alterar(Usuario usuario);
 
@@ -17,8 +18,8 @@ public interface IRepositorioUsuario {
 
     Usuario buscarUsuarioPorEmail(String email);
 
-    ArrayList<Usuario> listarUsuarioComum();
+    ArrayList<UsuarioComum> listarUsuarioComum();
 
-    ArrayList<Usuario> listarUsuarioAdm();
+    ArrayList<UsuarioAdm> listarUsuarioAdm();
 
 }

@@ -72,5 +72,6 @@ public class Programa {
         System.out.println(comum.getCotasAdquiridas());
 
 
+
     }
 }
