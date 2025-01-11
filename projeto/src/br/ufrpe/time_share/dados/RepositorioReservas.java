@@ -6,7 +6,8 @@ import java.util.List;
 import br.ufrpe.time_share.negocio.beans.Cota;
 import br.ufrpe.time_share.negocio.beans.Reserva;
 // pendencias : listarReservas, salvar Reservas, ver a lógica para quem não tem cotas. 
-public class RepositorioReservas extends Repositorio<Reserva> {
+public class RepositorioReservas implements IRepositorioReservas {
+
     private RepositorioCotas repositorioCotas;
     //Construtor
     public RepositorioReservas(){
@@ -70,4 +71,43 @@ public class RepositorioReservas extends Repositorio<Reserva> {
    }
 
 
+    @Override
+    public void cadastrarReserva(Reserva reserva) {
+
+    }
+
+    @Override
+    public void removerReserva(Reserva reserva) {
+
+    }
+
+    @Override
+    public void atualizarReserva(Reserva reserva) {
+
+    }
+
+    @Override
+    public Reserva buscarReserva(Reserva reserva) {
+        return null;
+    }
+
+    @Override
+    public ArrayList<Reserva> buscarReservasPorUsuario(int idUsuario) {
+        return null;
+    }
+
+    @Override
+    public ArrayList<Reserva> buscarReservasPorBem(int idBem) {
+        return null;
+    }
+
+    @Override
+    public ArrayList<Reserva> buscarReservasPorId(int idReserva) {
+        return null;
+    }
+
+    @Override
+    public ArrayList<Reserva> listarReservas() {
+        return null;
+    }
 }
