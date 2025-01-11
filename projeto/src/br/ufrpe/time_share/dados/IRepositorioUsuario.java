@@ -18,6 +18,8 @@ public interface IRepositorioUsuario {
 
     Usuario buscarUsuarioPorEmail(String email);
 
+    boolean existe(Usuario usuario);
+
     ArrayList<UsuarioComum> listarUsuarioComum();
 
     ArrayList<UsuarioAdm> listarUsuarioAdm();

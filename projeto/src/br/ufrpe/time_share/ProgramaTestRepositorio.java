@@ -9,6 +9,7 @@ import br.ufrpe.time_share.negocio.beans.UsuarioComum;
 public class ProgramaTestRepositorio {
     public static void main(String[] args) {
 
+        //USUARIOS
         IRepositorioUsuario repo = new RepositorioUsuarios();
 
         Usuario u1 = new UsuarioComum(1111, "5654");
@@ -20,7 +21,16 @@ public class ProgramaTestRepositorio {
         repo.cadastrar(u3);
 
         System.out.println(repo.listarUsuarioAdm());
-       
+
+
+        //BENS
+
+
+
+        //RESERVA
+
+
+        //COTAS
 
     }
 }

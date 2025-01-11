@@ -7,7 +7,7 @@ public interface IRepositorioBens {
 
     void cadastrarBem(Bem bem);
 
-    //void editarBem(Bem bem);
+    void editarBem(Bem bem);
 
     void removerBem(Bem bem);
 

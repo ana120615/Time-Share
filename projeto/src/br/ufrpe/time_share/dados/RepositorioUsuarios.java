@@ -66,6 +66,17 @@ public class RepositorioUsuarios implements IRepositorioUsuario {
     }
 
     @Override
+    public boolean existe(Usuario usuario) {
+        boolean existe = false;
+        for (int i = 0; i < usuarios.size() && !existe; i++) {
+            if (usuarios.get(i).equals(usuario)) {
+                existe = true;
+            }
+        }
+        return existe;
+    }
+
+    @Override
     public ArrayList<UsuarioComum> listarUsuarioComum() {
         ArrayList<UsuarioComum> resultado = new ArrayList<>();
         for (Usuario comum : usuarios) {

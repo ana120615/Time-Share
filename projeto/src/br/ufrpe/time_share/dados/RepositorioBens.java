@@ -17,11 +17,10 @@ public class RepositorioBens implements IRepositorioBens {
         this.listaBem.add(bem);
     }
 
-    /* @Override
+    @Override
     public void editarBem(Bem bem) {
 
     }
-     */
 
     @Override
     public void removerBem(Bem bem) {
@@ -32,11 +31,15 @@ public class RepositorioBens implements IRepositorioBens {
     public Bem buscarBemPorId(int id) {
         Bem bemProcurado = null;
         boolean encontrado = false;
-        for (int i = 0; i < listaBem.size() && !encontrado; i++) {
+        int i;
+        for (i = 0; i < listaBem.size() && !encontrado; i++) {
             if (listaBem.get(i).getId() == id) {
-                bemProcurado = listaBem.get(i);
                 encontrado = true;
             }
+        }
+
+        if (encontrado) {
+            bemProcurado = listaBem.get(i-1);
         }
         return bemProcurado;
     }
@@ -45,11 +48,15 @@ public class RepositorioBens implements IRepositorioBens {
     public Bem buscarBemPorNome(String nome) {
         Bem bemProcurado = null;
         boolean encontrado = false;
-        for (int i = 0; i < this.listaBem.size() && !encontrado; i++) {
+        int i;
+        for (i = 0; i < this.listaBem.size() && !encontrado; i++) {
             if (this.listaBem.get(i).getNome().equals(nome)) {
-                bemProcurado = this.listaBem.get(i);
                 encontrado = true;
             }
+        }
+
+        if (encontrado) {
+            bemProcurado = this.listaBem.get(i-1);
         }
         return bemProcurado;
     }
