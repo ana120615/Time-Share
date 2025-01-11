@@ -2,7 +2,6 @@ package br.ufrpe.time_share.dados;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-
 import br.ufrpe.time_share.negocio.beans.Cota;
 import br.ufrpe.time_share.negocio.beans.Reserva;
 // pendencias : listarReservas, salvar Reservas, ver a lógica para quem não tem cotas. 
@@ -37,24 +36,19 @@ public class RepositorioReservas implements IRepositorioReservas {
        return reservasPorBem;
         
     }
-    public List<Reserva> buscarReservaPorUsuarioAdm(int usuarioCPF){
+    public List<Reserva> buscarReservaPorUsuario(int usuarioCPF){
         List<Reserva> reservasPorUsuario = new ArrayList<>();
         for (Reserva reserva : reservas ){
             if (reserva.getUsuarioAdm().getCpf() == usuarioCPF){
                 reservasPorUsuario.add(reserva);
             }
-        }
-        return reservasPorUsuario;
-    }
-    public List<Reserva> buscarreservaPorUsuarioComum(int usuarioCPF){
-        List<Reserva> reservasPorUsuario = new ArrayList<>();
-        for (Reserva reserva : reservas ){
-            if (reserva.getUsuarioComum().getCpf() == usuarioCPF){
+            if ( reserva.getUsuarioComum().getCpf() == usuarioCPF){
                 reservasPorUsuario.add(reserva);
             }
-        }
+        } 
         return reservasPorUsuario;
     }
+  
     public boolean cancelarReserva (int idreserva){
         Reserva reserva = buscarPorId(idreserva);
         if ( reserva != null && reserva.getStatus()){
