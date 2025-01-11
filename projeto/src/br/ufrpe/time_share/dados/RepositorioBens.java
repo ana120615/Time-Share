@@ -17,10 +17,11 @@ public class RepositorioBens implements IRepositorioBens {
         this.listaBem.add(bem);
     }
 
-    @Override
+    /* @Override
     public void editarBem(Bem bem) {
 
     }
+     */
 
     @Override
     public void removerBem(Bem bem) {

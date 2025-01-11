@@ -1,18 +1,16 @@
 package br.ufrpe.time_share.dados;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import br.ufrpe.time_share.negocio.beans.Bem;
 import br.ufrpe.time_share.negocio.beans.Cota;
-import br.ufrpe.time_share.negocio.beans.Usuario;
 
 public class RepositorioCotas implements IRepositorioCotas {
 
-    private ArrayList<Cota> cotas;
+    private ArrayList<Cota> listaCotas;
 
     {
-        cotas = new ArrayList<>(50);
+        listaCotas = new ArrayList<>(50);
     }
 
     @Override
@@ -37,7 +35,13 @@ public class RepositorioCotas implements IRepositorioCotas {
 
     @Override
     public boolean existeCota(Cota cota) {
-        return false;
+        boolean existe = false;
+        for (int i = 0; i < this.listaCotas.size() && !existe; i++) {
+            if (this.listaCotas.get(i).equals(cota)) {
+                existe = true;
+            }
+        }
+        return existe;
     }
 
     @Override
