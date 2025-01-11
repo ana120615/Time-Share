@@ -108,7 +108,7 @@ public class Cota {
     public boolean equals(Object o) {
         if(o instanceof Cota) {
             Cota cota = (Cota) o;
-            return id == cota.getId() && data.equals(cota.getData()) && proprietario.equals(cota.getProprietario()) && bemAssociado.equals(cota.getBemAssociado());
+            return id == cota.getId() && data.equals(cota.getData()) && bemAssociado.equals(cota.getBemAssociado());
         }
         return false;
     }

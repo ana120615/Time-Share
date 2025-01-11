@@ -1,12 +1,17 @@
 package br.ufrpe.time_share;
 
+import br.ufrpe.time_share.dados.IRepositorioBens;
+import br.ufrpe.time_share.dados.RepositorioBens;
 import br.ufrpe.time_share.negocio.beans.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 
 public class Programa {
     public static void main(String[] args) {
+
+        RepositorioBens repositorioBens = new RepositorioBens();
 
         Usuario adm1 = new UsuarioAdm(1223548, "senhaAdm1");
 
@@ -14,7 +19,6 @@ public class Programa {
                 "Recife-Pe", 4);
         Bem bem2 = new Bem(2222, "Apartamento", "Centro",
                 "Recife-Pe", 2);
-
         ((UsuarioAdm) adm1).cadastrarBem(bem);
         ((UsuarioAdm) adm1).cadastrarBem(bem2);
 
@@ -24,6 +28,19 @@ public class Programa {
 
         bem.adicionarCota(cota1);
         bem.adicionarCota(cota2);
+
+        repositorioBens.cadastrarBem(bem);
+        repositorioBens.cadastrarBem(bem2);
+
+        System.out.println(repositorioBens.buscarBemPorId(111));
+
+        System.out.println("\n\n");
+        ArrayList<Bem> bensNoRepo = repositorioBens.listarBensDisponiveis();
+        for (Bem b : bensNoRepo) {
+            System.out.println(b);
+        }
+        System.out.println("\n\n");
+
 
         //System.out.println(((UsuarioAdm) adm1).consultarBens());
 

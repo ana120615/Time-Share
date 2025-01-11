@@ -29,11 +29,11 @@ public class RepositorioUsuarios implements IRepositorioUsuario {
 
     public UsuarioAdm buscarUsuarioPorCpf(int cpf){
         UsuarioAdm resultado=null;
-        for (UsuarioAdm usuarioAdm : getEntidades()) {
-            if (usuarioAdm.getCpf()==cpf) {
-                resultado= usuarioAdm;
-            }
-        }
+        //for (UsuarioAdm usuarioAdm : getEntidades()) {
+         //   if (usuarioAdm.getCpf()==cpf) {
+           //     resultado= usuarioAdm;
+          //  }
+       // }
         return resultado; 
     }
 
