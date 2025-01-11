@@ -8,6 +8,13 @@ import br.ufrpe.time_share.negocio.beans.Cota;
 import br.ufrpe.time_share.negocio.beans.Usuario;
 
 public class RepositorioCotas implements IRepositorioCotas {
+
+    private ArrayList<Cota> cotas;
+
+    {
+        cotas = new ArrayList<>(50);
+    }
+
     @Override
     public void cadastrarCota(Cota cota) {
 
@@ -26,6 +33,11 @@ public class RepositorioCotas implements IRepositorioCotas {
     @Override
     public void atualizarStatusCota(Cota cota, boolean statusAtualizado) {
 
+    }
+
+    @Override
+    public boolean existeCota(Cota cota) {
+        return false;
     }
 
     @Override

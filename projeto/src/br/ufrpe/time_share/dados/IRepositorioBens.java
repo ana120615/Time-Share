@@ -9,13 +9,13 @@ public interface IRepositorioBens {
 
     void editarBem(Bem bem);
 
-    void removerBemPorId(int id);
-
     void removerBem(Bem bem);
 
     Bem buscarBemPorId(int id);
 
     Bem buscarBemPorNome(String nome);
+
+    boolean existe(Bem bem);
 
     ArrayList<Bem> listarBensDisponiveis();
 

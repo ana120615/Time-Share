@@ -6,9 +6,15 @@ import java.util.List;
 import br.ufrpe.time_share.negocio.beans.Bem;
 
 public class RepositorioBens implements IRepositorioBens {
+    private ArrayList<Bem> listaBem;
+
+    {
+        listaBem = new ArrayList<>(50);
+    }
+
     @Override
     public void cadastrarBem(Bem bem) {
-
+        this.listaBem.add(bem);
     }
 
     @Override
@@ -17,67 +23,62 @@ public class RepositorioBens implements IRepositorioBens {
     }
 
     @Override
-    public void removerBemPorId(int id) {
-
-    }
-
-    @Override
     public void removerBem(Bem bem) {
-
+        this.listaBem.remove(bem);
     }
 
     @Override
     public Bem buscarBemPorId(int id) {
-        return null;
+        Bem bemProcurado = null;
+        boolean encontrado = false;
+        for (int i = 0; i < listaBem.size() && !encontrado; i++) {
+            if (listaBem.get(i).getId() == id) {
+                bemProcurado = listaBem.get(i);
+                encontrado = true;
+            }
+        }
+        return bemProcurado;
     }
 
     @Override
     public Bem buscarBemPorNome(String nome) {
-        return null;
+        Bem bemProcurado = null;
+        boolean encontrado = false;
+        for (int i = 0; i < this.listaBem.size() && !encontrado; i++) {
+            if (this.listaBem.get(i).getNome().equals(nome)) {
+                bemProcurado = this.listaBem.get(i);
+                encontrado = true;
+            }
+        }
+        return bemProcurado;
+    }
+
+    @Override
+    public boolean existe(Bem bem) {
+        boolean existe = false;
+        for (int i = 0; i < this.listaBem.size() && !existe; i++) {
+            if (this.listaBem.get(i).equals(bem)) {
+                existe = true;
+            }
+        }
+        return existe;
     }
 
     @Override
     public ArrayList<Bem> listarBensDisponiveis() {
-        return null;
+        ArrayList<Bem> listaBensDisponiveis = new ArrayList<>();
+        for (Bem bem : this.listaBem) {
+            if (bem.isOfertado()) {
+                listaBensDisponiveis.add(bem);
+            }
+        }
+        return listaBensDisponiveis;
     }
 
     @Override
     public ArrayList<Bem> listarBens() {
-        return null;
+        return this.listaBem;
     }
-
-//    //Construtor
-//    public RepositorioBens() {
-//        super();
-//    }
-//
-//    public Bem buscarBemPorId(int id) {
-//        Bem resultado = null;
-//        for (Bem bem : getEntidades()) {
-//            if (bem.getId() == id) {
-//                resultado = bem;
-//            }
-//        }
-//        return resultado; // Retorna null se não encontrar
-//    }
-//
-//    public void atualizarCapacidade(int bemId, int novaCapacidade) {
-//        for (Bem bem : getEntidades()) {
-//            if (bem.getId() == bemId) {
-//                bem.setCapacidade(novaCapacidade);
-//            }
-//        }
-//    }
-//
-//    public List<Bem> buscarBensDisponiveis() {
-//        List<Bem> resultado = new ArrayList<>();
-//        for (Bem bem : getEntidades()) {
-//            if (bem.verificarDisponibilidade()) {
-//                resultado.add(bem);
-//            }
-//        }
-//        return resultado;
-//    }
 }
 
 

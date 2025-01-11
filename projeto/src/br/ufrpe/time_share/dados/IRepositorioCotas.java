@@ -14,6 +14,8 @@ public interface IRepositorioCotas {
 
     void atualizarStatusCota(Cota cota, boolean statusAtualizado);
 
+    boolean existeCota(Cota cota);
+
     Cota buscarCota(Cota cota);
 
     Cota buscarCotaPorId(int id);
