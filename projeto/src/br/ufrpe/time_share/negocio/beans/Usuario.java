@@ -3,7 +3,7 @@ package br.ufrpe.time_share.negocio.beans;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 
-public class Usuario {
+public abstract class Usuario {
 
     private int cpf;
     private String nome;

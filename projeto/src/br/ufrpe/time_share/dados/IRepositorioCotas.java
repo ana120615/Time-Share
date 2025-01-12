@@ -2,6 +2,8 @@ package br.ufrpe.time_share.dados;
 
 import br.ufrpe.time_share.negocio.beans.Bem;
 import br.ufrpe.time_share.negocio.beans.Cota;
+import br.ufrpe.time_share.negocio.beans.UsuarioComum;
+
 import java.util.ArrayList;
 
 public interface IRepositorioCotas {
@@ -12,18 +14,18 @@ public interface IRepositorioCotas {
 
     void excluirCota(Cota cota);
 
-    void atualizarStatusCota(Cota cota, boolean statusAtualizado);
+    void atualizarStatusCota(Cota cota, boolean statusAtualizado, boolean isCompra, boolean isReserva);
 
     boolean existeCota(Cota cota);
 
-    Cota buscarCota(Cota cota);
-
     Cota buscarCotaPorId(int id);
 
-    ArrayList<Cota> buscarCotasPorBem(Bem id);
+    ArrayList<Cota> buscarCotasPorProprietario(UsuarioComum proprietario);
 
-    ArrayList<Cota> listarCota();
+    ArrayList<Cota> buscarCotasPorBem(Bem bem);
 
-    ArrayList<Cota> listarCotaDisponivelParaVenda(Cota cota);
+    ArrayList<Cota> listarCotas();
+
+    ArrayList<Cota> listarCotasDisponiveisParaVenda();
 
 }

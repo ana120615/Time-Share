@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import br.ufrpe.time_share.negocio.beans.Bem;
 import br.ufrpe.time_share.negocio.beans.Cota;
+import br.ufrpe.time_share.negocio.beans.UsuarioComum;
 
 public class RepositorioCotas implements IRepositorioCotas {
 
@@ -15,22 +16,41 @@ public class RepositorioCotas implements IRepositorioCotas {
 
     @Override
     public void cadastrarCota(Cota cota) {
-
+      listaCotas.add(cota);
     }
 
     @Override
-    public void alterarCota(Cota cota) {
-
+    public void alterarCota(Cota cotaAtualizada) {
+    //no controlador seria feita a verificacao 
+    //de cada parte que seria modificada e se a cota existe, 
+    //entre outros aspectos, mas aqui ha uma substituicao direta
+    for (int i = 0; i < listaCotas.size(); i++) {
+        if (listaCotas.get(i).getId() == cotaAtualizada.getId()) {
+            listaCotas.set(i, cotaAtualizada);
+        }
+    }
     }
 
     @Override
     public void excluirCota(Cota cota) {
-
+    listaCotas.remove(cota);
     }
 
     @Override
-    public void atualizarStatusCota(Cota cota, boolean statusAtualizado) {
-
+    public void atualizarStatusCota(Cota cota, boolean statusAtualizado, boolean isCompra, boolean isReserva) {
+        //isCompra: quero mudar status de disponibilidade de compra
+        //isReserva: quero mudar status de disponibilidade de reserva
+        //ou posso modificar os dois
+        if(isCompra&&!isReserva){
+            cota.setStatusDeDisponibilidadeParaCompra(statusAtualizado);
+        }
+        else if(isReserva&&!isCompra){
+            cota.setStatusDeDisponibilidadeParaReserva(statusAtualizado);
+        }
+        else{
+            cota.setStatusDeDisponibilidadeParaCompra(statusAtualizado);
+            cota.setStatusDeDisponibilidadeParaReserva(statusAtualizado);
+        }
     }
 
     @Override
@@ -43,67 +63,57 @@ public class RepositorioCotas implements IRepositorioCotas {
         }
         return existe;
     }
+   
+    //@Override
+    //public Cota buscarCota(Cota cota) {
+    //ISSO PODERIA SER FEITO NO CONTROLADOR ESCOLHENDO O METODO DE BUSCA:
+    //POR ID, POR BEM OU POR PROPRIETARIO
+    //}
 
     @Override
-    public Cota buscarCota(Cota cota) {
-        return null;
+    public ArrayList<Cota> buscarCotasPorProprietario(UsuarioComum proprietario){
+    return proprietario.getCotasAdquiridas();
     }
 
     @Override
     public Cota buscarCotaPorId(int id) {
-        return null;
+        Cota retorno = null;
+    for(Cota cota: listaCotas){
+        if(cota.getId()==id){
+        retorno = cota;
+        }
+    }
+        return retorno;
     }
 
     @Override
-    public ArrayList<Cota> buscarCotasPorBem(Bem id) {
-        return null;
+    public ArrayList<Cota> buscarCotasPorBem(Bem bem) {
+     ArrayList<Cota> retorno=new ArrayList<>();
+     for(Cota cota: listaCotas){
+        if(cota.getBemAssociado().equals(bem)){
+            retorno.add(cota);
+        }
+     }
+        return retorno;
     }
 
     @Override
-    public ArrayList<Cota> listarCota() {
-        return null;
+    public ArrayList<Cota> listarCotas() {
+        ArrayList<Cota> retorno=new ArrayList<>();
+        for(Cota cota:listaCotas){
+         retorno.add(cota);
+        }
+        return retorno;
     }
 
     @Override
-    public ArrayList<Cota> listarCotaDisponivelParaVenda(Cota cota) {
-        return null;
+    public ArrayList<Cota> listarCotasDisponiveisParaVenda() {
+        ArrayList<Cota>retorno=new ArrayList<>();
+        for(Cota cota:listaCotas){
+            if(cota.isStatusDeDisponibilidadeParaCompra()){
+                retorno.add(cota);
+            }
+        }
+        return retorno;
     }
-
-
-//    //Construtor
-//    public RepositorioCotas() {
-//        super();
-//    }
-//
-//    public void atualizarStatusCota(int cotaId, boolean status) {
-//        for (Cota cota : getEntidades()) {
-//            if (cota.getId() == cotaId) {
-//                cota.setStatusDeDisponibilidadeParaCompra(status);
-//            }
-//        }
-//    }
-//
-//    public void buscarCotasPorBem(Bem bem) {
-//        bem.buscarCotas();
-//    }
-//
-//    public List<Cota> buscarPorUsuario(Usuario usuario) {
-//        List<Cota> resultado = new ArrayList<>();
-//        for (Cota cota : getEntidades()) {
-//            if (cota.getProprietario().equals(usuario)) {
-//                resultado.add(cota);
-//            }
-//        }
-//        return resultado;
-//    }
-//
-//    public List<Cota> buscarCotasDisponiveis() {
-//        List<Cota> resultado = new ArrayList<>();
-//        for (Cota cota : getEntidades()) {
-//            if (cota.verificarDisponibilidade()) {
-//                resultado.add(cota);
-//            }
-//        }
-//        return resultado;
-//    }
 }
