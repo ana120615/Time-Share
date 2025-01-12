@@ -6,6 +6,7 @@ import br.ufrpe.time_share.negocio.beans.Usuario;
 import br.ufrpe.time_share.negocio.beans.UsuarioAdm;
 import br.ufrpe.time_share.negocio.beans.UsuarioComum;
 
+
 public class ProgramaTestRepositorio {
     public static void main(String[] args) {
 
@@ -22,15 +23,6 @@ public class ProgramaTestRepositorio {
 
         System.out.println(repo.listarUsuarioAdm());
 
-
-        //BENS
-
-
-
-        //RESERVA
-
-
-        //COTAS
 
     }
 }

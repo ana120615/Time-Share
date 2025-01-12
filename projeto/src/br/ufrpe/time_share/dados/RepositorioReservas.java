@@ -1,111 +1,107 @@
 package br.ufrpe.time_share.dados;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.List;
-import br.ufrpe.time_share.negocio.beans.Cota;
+
 import br.ufrpe.time_share.negocio.beans.Reserva;
-// pendencias : listarReservas, salvar Reservas, ver a lógica para quem não tem cotas. 
+
 public class RepositorioReservas implements IRepositorioReservas {
 
-    private RepositorioCotas repositorioCotas;
-    //Construtor
-    public RepositorioReservas(){
-        super();
+    private ArrayList<Reserva> reservas;
+
+    {
         this.reservas = new ArrayList<>();
     }
-    private List<Reserva> reservas;
-        private LocalDate novaDataFim;
-        
-        //depois vai ser alterado para integrar o controlador 
-       public void disponibilizarCotas (Reserva reserva){
-        for (Cota cota : reserva.getCotas()){
-            //*repositorioCotas.atualizarStatusCota(cota.getId(), true);  como comentário porque o repositorio de reservas está todo como comentário*//
-        }
-       }
-    
-    
-        @Override
-        public void cadastrarReserva(Reserva reserva) {
-    
-        }
-    
-        @Override
-        public boolean removerReserva( int idReserva) {
-            
-         Reserva reserva = buscarReservasPorId(idReserva);
-            if ( reserva != null && reserva.getStatus()){
-            reserva.cancelarReserva();
-            disponibilizarCotas(reserva);
-            return true;
+
+    @Override
+    public void cadastrarReserva(Reserva reserva) {
+        this.reservas.add(reserva);
+    }
+
+    @Override
+    public boolean removerReserva(int idReserva) {
+        boolean resultado = false;
+
+        boolean reservaExiste = false;
+        int i;
+        for (i = 0; i < this.reservas.size() && !reservaExiste; i++) {
+            if (reservas.get(i).getId() == idReserva) {
+                reservaExiste = true;
             }
-            return false;
-    
         }
-    
-        @Override
-        public Reserva atualizarReserva(int idReserva, LocalDate novaDataInicio, LocalDate novaDataFim ){
-            this.novaDataFim = novaDataFim;
-            Reserva reserva =  buscarReservasPorId(idReserva);
-        if (reserva != null ){
-            reserva.setDataInicio(novaDataInicio);
-            reserva.setDataFim(novaDataFim);
-            return reserva;
-        }else {
-            System.out.println("reserva não encontrada");
-            return null;
+        if (reservaExiste) {
+            this.reservas.remove(i - 1);
+            resultado = true;
         }
-         
+        return resultado;
+
     }
 
     @Override
     public Reserva buscarReserva(Reserva reserva) {
-        return null;
-    }
-
-    @Override
-    public ArrayList<Reserva> buscarReservasPorUsuario(int idUsuario) {
-       
-            List<Reserva> reservasPorUsuario = new ArrayList<>();
-            for (Reserva reserva : reservas ){
-                if (reserva.getUsuarioAdm().getCpf() == idUsuario){
-                    reservasPorUsuario.add(reserva);
-                }
-                if ( reserva.getUsuarioComum().getCpf() == idUsuario){
-                    reservasPorUsuario.add(reserva);
-                }
-            } 
-            return (ArrayList<Reserva>) reservasPorUsuario;
-        }
-    
-
-    @Override
-    public ArrayList<Reserva> buscarReservasPorBem(int idBem) {
-     
-            List<Reserva> reservasPorBem = new ArrayList<>();
-     
-            for ( Reserva reserva : reservas){
-     
-             if(reserva.getBem().getId() == idBem){
-                 reservasPorBem.add(reserva);
-             }
-             
+        Reserva resultado = null;
+        boolean reservaExiste = false;
+        int i;
+        for (i = 0; i < this.reservas.size() && !reservaExiste; i++) {
+            if (this.reservas.get(i).equals(reserva)) {
+                reservaExiste = true;
             }
-            return (ArrayList<Reserva>) reservasPorBem;
+        }
+        if (reservaExiste) {
+            resultado = this.reservas.get(i - 1);
+        }
+        return resultado;
     }
 
     @Override
     public Reserva buscarReservasPorId(int idReserva) {
-     
-    for (Reserva reserva : reservas) { 
-        if (reserva.getId() == idReserva) {
-          return reserva;
+        Reserva resultado = null;
+        boolean reservaExiste = false;
+        int i;
+        for (i = 0; i < this.reservas.size() && !reservaExiste; i++) {
+            if (this.reservas.get(i).getId() == idReserva) {
+                reservaExiste = true;
+            }
         }
+        if (reservaExiste) {
+            resultado = this.reservas.get(i - 1);
+        }
+        return resultado;
     }
-    return null;
-}
+
+    @Override
+    public ArrayList<Reserva> buscarReservasPorUsuario(int idUsuario) {
+        ArrayList<Reserva> resultado = new ArrayList<>();
+        for (Reserva reservaUser : this.reservas) {
+            if (reservaUser.getId() == idUsuario) {
+                resultado.add(reservaUser);
+            }
+        }
+        return resultado;
+    }
+
+    @Override
+    public ArrayList<Reserva> buscarReservasPorBem(int idBem) {
+        ArrayList<Reserva> resultado = new ArrayList<>();
+        for (Reserva reservaBem : this.reservas) {
+            if (reservaBem.getId() == idBem) {
+                resultado.add(reservaBem);
+            }
+        }
+        return resultado;
+    }
+
 
     @Override
     public ArrayList<Reserva> listarReservas() {
+        return this.reservas;
+    }
+
+
+    @Override
+    public Reserva atualizarReserva(int idReserva, LocalDate novaDataInicio, LocalDate novaDataFim) {
+        // Depende de Controladores
         return null;
     }
+
 }

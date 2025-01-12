@@ -9,7 +9,6 @@ import java.util.ArrayList;
 public class Venda {
     private int id;
     private LocalDateTime data;
-    private double valorTotal;
     private Cota cota;
     private UsuarioComum usuarioComum;
     private ArrayList<Cota> carrinhoDeComprasCotas;
@@ -20,7 +19,6 @@ public class Venda {
 
     public Venda(int id, UsuarioComum usuarioComum) {
         this.id = id;
-        this.valorTotal = 0;
         this.usuarioComum = usuarioComum;
 
 
@@ -33,14 +31,6 @@ public class Venda {
 
     public int getId() {
         return this.id;
-    }
-
-    public void setValorTotal(double valorTotal) {
-        this.valorTotal = valorTotal;
-    }
-
-    public double getValorTotal() {
-        return this.valorTotal;
     }
 
     public void setCota(Cota cota) {
@@ -70,7 +60,7 @@ public class Venda {
         notaFiscal += " Flex Share \n";
         notaFiscal += "--------------------------------------\n";
         notaFiscal += "CPF: " + usuarioComum.getCpf() + "\n";
-        notaFiscal += "Valor: R$" + valorTotal + "\n";
+        notaFiscal += "Valor: R$" + calcularValorTotal() + "\n";
         notaFiscal += "Data de Emissão: " + LocalDate.now() + "\n";
         String numeroNotaFiscal = UUID.randomUUID().toString();
         notaFiscal += "Número da Nota Fiscal: " + numeroNotaFiscal + "\n";
@@ -80,12 +70,12 @@ public class Venda {
 
     }
 
-    public void calcularValorTotal() {
+    public double calcularValorTotal() {
         double resultado = 0;
         for (Cota c : carrinhoDeComprasCotas) {
             resultado += c.getPreco();
         }
-        this.valorTotal = resultado;
+        return resultado;
     }
 
     public void adicionarCotaCarrinho(Cota cota) {
@@ -127,7 +117,7 @@ public class Venda {
         return "Venda{" +
                 "id=" + id +
                 ", data=" + data +
-                ", valorTotal=" + valorTotal +
+                ", valorTotal=" + calcularValorTotal() +
                 ", cota=" + cota +
                 ", usuarioComum=" + usuarioComum +
                 ", carrinhoDeComprasCotas=" + carrinhoDeComprasCotas +
