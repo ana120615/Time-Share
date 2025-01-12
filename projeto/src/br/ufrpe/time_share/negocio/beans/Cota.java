@@ -2,29 +2,55 @@ package br.ufrpe.time_share.negocio.beans;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 
 public class Cota {
     private int id;
-    private LocalDate data;
     private double preco;
     private UsuarioComum proprietario;
     private boolean statusDeDisponibilidadeParaCompra;
     private boolean statusDeDisponibilidadeParaReserva;
     private Bem bemAssociado;
+    private LocalDate dataInicio;
+    private LocalDate dataFim;
+    private int quantidadeDiasDeReserva;
 
     //CONSTRUTOR
-    public Cota(int id, LocalDate data, double preco) {
+    public Cota(int id, LocalDate dataInicio, LocalDate dataFim, double preco) {
         this.setId(id);
-        setData(data);
+        this.setDataInicio(dataInicio);
+        this.setDataFim(dataFim);
         this.setPreco(preco);
+        calculoQuantidadeDeDias();
         this.statusDeDisponibilidadeParaCompra = true; //inicializado como disponivel
         this.statusDeDisponibilidadeParaReserva = true; //inicializado como disponivel
     }
 
     //METODOS GET E SET
 
-    public LocalDate getData() {
-        return data;
+
+    public LocalDate getDataInicio() {
+        return dataInicio;
+    }
+
+    public void setDataInicio(LocalDate dataInicio) {
+        this.dataInicio = dataInicio;
+    }
+
+    public LocalDate getDataFim() {
+        return dataFim;
+    }
+
+    public void setDataFim(LocalDate dataFim) {
+        this.dataFim = dataFim;
+    }
+
+    public int getQuantidadeDiasDeReserva() {
+        return quantidadeDiasDeReserva;
+    }
+
+    private void calculoQuantidadeDeDias (){
+        this.quantidadeDiasDeReserva = (int) this.dataInicio.until(dataFim, ChronoUnit.DAYS);
     }
 
     public Bem getBemAssociado() {
@@ -48,13 +74,6 @@ public class Cota {
         this.proprietario = proprietario;
     }
 
-    public LocalDate getdata() {
-        return data;
-    }
-
-    public void setData(LocalDate data) {
-        this.data = data;
-    }
 
     public int getId() {
         return this.id;
@@ -96,7 +115,8 @@ public class Cota {
     public String toString() {
         return "Cota{" +
                 "id=" + id +
-                ", data=" + data.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) +
+                ", dataInicio=" + dataInicio.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) +
+                ", dataFim=" + dataFim.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) +
                 ", preco=" + preco +
                 ", proprietarioCPF=" + (proprietario != null ? proprietario.getCpf() : "null") +
                 ", statusDeDisponibilidadeParaCompra=" + statusDeDisponibilidadeParaCompra +
@@ -108,7 +128,8 @@ public class Cota {
     public boolean equals(Object o) {
         if(o instanceof Cota) {
             Cota cota = (Cota) o;
-            return id == cota.getId() && data.equals(cota.getData()) && bemAssociado.equals(cota.getBemAssociado());
+            return id == cota.getId() && dataInicio.equals(cota.getDataInicio()) &&
+                    dataFim.equals(cota.getDataFim()) && bemAssociado.equals(cota.getBemAssociado());
         }
         return false;
     }

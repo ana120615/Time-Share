@@ -14,6 +14,7 @@ public class Reserva {
     private UsuarioAdm usuarioAdm;
     private Bem bem;
     private List<Cota> cotas;
+
     public Reserva(int id, LocalDate dataInicio, LocalDate dataFim, Usuario usuario, Bem bem, List<Cota> cotas) {
         this.id = id;
         this.status = true;
@@ -30,8 +31,8 @@ public class Reserva {
     public void cancelarReserva() {
         this.status = false;
     }
+
     public boolean validarReserva(){
-       
             for (Cota cota: cotas){
                 if(!cota.isStatusDeDisponibilidadeParaReserva()){
                     // para ajudar no debug 
