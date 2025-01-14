@@ -41,7 +41,7 @@ public class Promocao {
     }
 
 
-    //VERIFICACAO DE VALIDADE DA PROMOCAO COM BASE NO ANIVERSARIO
+    // PROMOCAO COM BASE NO ANIVERSARIO
     public double calcularTaxaAniversario(Usuario usuario) {
         double taxaAniversario = 0;
         if (usuario.verificarAniversario()) {

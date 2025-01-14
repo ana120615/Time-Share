@@ -19,8 +19,12 @@ public class RepositorioUsuarios implements IRepositorioUsuario {
     }
 
     @Override
-    public void alterar(Usuario usuario) {
-
+    public void alterar(Usuario usuarioAtualizado) {
+        for (int i = 0; i < usuarios.size(); i++) {
+            if (usuarios.get(i).getCpf() == usuarioAtualizado.getCpf()) {
+                usuarios.set(i, usuarioAtualizado);
+            }
+        }
     }
 
     @Override
@@ -84,7 +88,7 @@ public class RepositorioUsuarios implements IRepositorioUsuario {
                 resultado.add((UsuarioComum) comum);
             }
         }
-        return resultado;
+        return new ArrayList<>(resultado);
     }
 
     @Override
@@ -95,7 +99,7 @@ public class RepositorioUsuarios implements IRepositorioUsuario {
                 resultado.add((UsuarioAdm) adm);
             }
         }
-        return resultado;
+        return new ArrayList<>(resultado);
     }
 }
 

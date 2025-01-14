@@ -1,6 +1,5 @@
 package br.ufrpe.time_share.dados;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 
 import br.ufrpe.time_share.negocio.beans.Reserva;
@@ -77,7 +76,7 @@ public class RepositorioReservas implements IRepositorioReservas {
                 resultado.add(reservaUser);
             }
         }
-        return resultado;
+        return new ArrayList<>(resultado);
     }
 
     @Override
@@ -88,20 +87,23 @@ public class RepositorioReservas implements IRepositorioReservas {
                 resultado.add(reservaBem);
             }
         }
-        return resultado;
+        return new ArrayList<>(resultado);
     }
 
 
     @Override
     public ArrayList<Reserva> listarReservas() {
-        return this.reservas;
+        return new ArrayList<>(reservas);
     }
 
 
     @Override
-    public Reserva atualizarReserva(int idReserva, LocalDate novaDataInicio, LocalDate novaDataFim) {
-        // Depende de Controladores
-        return null;
+    public void atualizarReserva(Reserva reservaAtualizada) {
+        for (int i = 0; i < reservas.size(); i++) {
+            if (reservas.get(i).getId() == reservaAtualizada.getId()) {
+                reservas.set(i, reservaAtualizada);
+            }
+        }
     }
 
 }

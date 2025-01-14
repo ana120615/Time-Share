@@ -36,22 +36,6 @@ public class RepositorioCotas implements IRepositorioCotas {
     listaCotas.remove(cota);
     }
 
-    @Override
-    public void atualizarStatusCota(Cota cota, boolean statusAtualizado, boolean isCompra, boolean isReserva) {
-        //isCompra: quero mudar status de disponibilidade de compra
-        //isReserva: quero mudar status de disponibilidade de reserva
-        //ou posso modificar os dois
-        if(isCompra&&!isReserva){
-            cota.setStatusDeDisponibilidadeParaCompra(statusAtualizado);
-        }
-        else if(isReserva&&!isCompra){
-            cota.setStatusDeDisponibilidadeParaReserva(statusAtualizado);
-        }
-        else{
-            cota.setStatusDeDisponibilidadeParaCompra(statusAtualizado);
-            cota.setStatusDeDisponibilidadeParaReserva(statusAtualizado);
-        }
-    }
 
     @Override
     public boolean existeCota(Cota cota) {
@@ -63,16 +47,16 @@ public class RepositorioCotas implements IRepositorioCotas {
         }
         return existe;
     }
-   
-    //@Override
-    //public Cota buscarCota(Cota cota) {
-    //ISSO PODERIA SER FEITO NO CONTROLADOR ESCOLHENDO O METODO DE BUSCA:
-    //POR ID, POR BEM OU POR PROPRIETARIO
-    //}
 
     @Override
     public ArrayList<Cota> buscarCotasPorProprietario(UsuarioComum proprietario){
-    return proprietario.getCotasAdquiridas();
+        ArrayList<Cota> resultado = new ArrayList<>();
+        for(Cota cota : listaCotas) {
+            if(cota.getProprietario().equals(proprietario)) {
+                resultado.add(cota);
+            }
+        }
+        return new ArrayList<>(resultado);
     }
 
     @Override
@@ -94,22 +78,22 @@ public class RepositorioCotas implements IRepositorioCotas {
             retorno.add(cota);
         }
      }
-        return retorno;
+        return new ArrayList<>(retorno);
     }
 
     @Override
     public ArrayList<Cota> listarCotas() {
         return new ArrayList<>(listaCotas);
     }
-
+    
     @Override
     public ArrayList<Cota> listarCotasDisponiveisParaVenda() {
-        ArrayList<Cota>retorno=new ArrayList<>();
-        for(Cota cota:listaCotas){
-            if(cota.isStatusDeDisponibilidadeParaCompra()){
-                retorno.add(cota);
+        ArrayList<Cota> resultado = new ArrayList<>();
+        for(Cota cota : listaCotas) {
+            if(cota.isStatusDeDisponibilidadeParaCompra()) {
+                resultado.add(cota);
             }
         }
-        return retorno;
+        return new ArrayList<>(resultado);
     }
 }

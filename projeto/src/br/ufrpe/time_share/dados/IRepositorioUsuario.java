@@ -10,7 +10,7 @@ public interface IRepositorioUsuario {
 
     void cadastrar(Usuario usuario);
 
-    void alterar(Usuario usuario);
+    void alterar(Usuario usuarioAtualizado);
 
     void remover(Usuario usuario);
 

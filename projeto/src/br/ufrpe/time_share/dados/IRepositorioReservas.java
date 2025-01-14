@@ -2,7 +2,6 @@ package br.ufrpe.time_share.dados;
 
 import br.ufrpe.time_share.negocio.beans.Reserva;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 
 public interface IRepositorioReservas {
@@ -11,7 +10,7 @@ public interface IRepositorioReservas {
 
     boolean removerReserva( int idReserva);
 
-    Reserva atualizarReserva(int idReserva, LocalDate novaDataInicio, LocalDate novaDataFim);
+    void atualizarReserva(Reserva reservaAtualizada);
 
     Reserva buscarReserva(Reserva reserva);
 

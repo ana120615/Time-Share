@@ -13,6 +13,7 @@ public class Estadia {
         this.reserva = reserva;
         this.id = id;
         setDataInicio(reserva.getDataInicio());
+        setDataFim(reserva.getDataFim());
     }
 
     public LocalDate getDataInicio() {

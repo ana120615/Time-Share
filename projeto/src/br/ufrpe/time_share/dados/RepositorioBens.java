@@ -16,8 +16,12 @@ public class RepositorioBens implements IRepositorioBens {
     }
 
     @Override
-    public void editarBem(Bem bem) {
-
+    public void editarBem(Bem bemAtualizado) {
+        for (int i = 0; i < listaBem.size(); i++) {
+            if (listaBem.get(i).getId() == bemAtualizado.getId()) {
+                listaBem.set(i, bemAtualizado);
+            }
+        }
     }
 
     @Override
@@ -78,12 +82,12 @@ public class RepositorioBens implements IRepositorioBens {
                 listaBensDisponiveis.add(bem);
             }
         }
-        return listaBensDisponiveis;
+        return new ArrayList<>(listaBensDisponiveis);
     }
 
     @Override
     public ArrayList<Bem> listarBens() {
-        return this.listaBem;
+        return new ArrayList<>(listaBem);
     }
 }
 

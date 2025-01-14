@@ -10,11 +10,9 @@ public interface IRepositorioCotas {
 
     void cadastrarCota(Cota cota);
 
-    void alterarCota(Cota cota);
+    void alterarCota(Cota cotaAtualizada);
 
     void excluirCota(Cota cota);
-
-    void atualizarStatusCota(Cota cota, boolean statusAtualizado, boolean isCompra, boolean isReserva);
 
     boolean existeCota(Cota cota);
 
@@ -25,7 +23,7 @@ public interface IRepositorioCotas {
     ArrayList<Cota> buscarCotasPorBem(Bem bem);
 
     ArrayList<Cota> listarCotas();
-
-    ArrayList<Cota> listarCotasDisponiveisParaVenda();
+    
+    ArrayList<Cota>listarCotasDisponiveisParaVenda();
 
 }
