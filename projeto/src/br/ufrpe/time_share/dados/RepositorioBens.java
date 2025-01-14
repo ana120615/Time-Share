@@ -1,8 +1,6 @@
 package br.ufrpe.time_share.dados;
 
 import java.util.ArrayList;
-import java.util.List;
-
 import br.ufrpe.time_share.negocio.beans.Bem;
 
 public class RepositorioBens implements IRepositorioBens {

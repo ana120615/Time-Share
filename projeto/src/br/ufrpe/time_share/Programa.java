@@ -1,11 +1,8 @@
 package br.ufrpe.time_share;
 
-import br.ufrpe.time_share.dados.IRepositorioBens;
-import br.ufrpe.time_share.dados.RepositorioBens;
 import br.ufrpe.time_share.negocio.beans.*;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 
 
 public class Programa {

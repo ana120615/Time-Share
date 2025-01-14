@@ -99,11 +99,7 @@ public class RepositorioCotas implements IRepositorioCotas {
 
     @Override
     public ArrayList<Cota> listarCotas() {
-        ArrayList<Cota> retorno=new ArrayList<>();
-        for(Cota cota:listaCotas){
-         retorno.add(cota);
-        }
-        return retorno;
+        return new ArrayList<>(listaCotas);
     }
 
     @Override
