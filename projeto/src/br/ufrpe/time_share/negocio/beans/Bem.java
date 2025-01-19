@@ -1,5 +1,6 @@
 package br.ufrpe.time_share.negocio.beans;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -76,22 +77,15 @@ public class Bem {
         this.ofertado = ofertado;
     }
 
-    public List<Cota> getCotas() {
+    public ArrayList<Cota> getCotas() {
         return cotas;
     }
 
-    //OUTROS METODOS
-    public void criarCotas(ArrayList<Cota> cotas) {
-        this.cotas = cotas;
-    }
+    // OUTROS METODOS
 
-    public void adicionarCota(Cota cota) {
-        if (!this.cotas.contains(cota)) {
-            this.cotas.add(cota);
-            if (cota.getBemAssociado() != this) {
-                cota.setBemAssociado(this);
-            }
-        }
+    public void adicionarCota(int id, LocalDate dataInicio, LocalDate dataFim, double preco) {
+        Cota newCota = new Cota(id, dataInicio, dataFim, preco, this);
+        this.cotas.add(newCota);
     }
 
 

@@ -13,16 +13,16 @@ public class Cota {
     private Bem bemAssociado;
     private LocalDate dataInicio;
     private LocalDate dataFim;
-    private int quantidadeDiasDeReserva;
+
 
     //CONSTRUTOR
-    public Cota(int id, LocalDate dataInicio, LocalDate dataFim, double preco) {
+    public Cota(int id, LocalDate dataInicio, LocalDate dataFim, double preco, Bem bemAssociado) {
         this.setId(id);
         this.setDataInicio(dataInicio);
         this.setDataFim(dataFim);
         this.setPreco(preco);
-        calculoQuantidadeDeDias();
-        this.statusDeDisponibilidadeParaCompra = true; //inicializado como disponivel
+        this.bemAssociado = bemAssociado;
+        this.setStatusDeDisponibilidadeParaCompra(bemAssociado.isOfertado()); //inicializado como disponivel
         this.statusDeDisponibilidadeParaReserva = true; //inicializado como disponivel
     }
 
@@ -45,25 +45,12 @@ public class Cota {
         this.dataFim = dataFim;
     }
 
-    public int getQuantidadeDiasDeReserva() {
-        return quantidadeDiasDeReserva;
-    }
-
-    private void calculoQuantidadeDeDias (){
-        this.quantidadeDiasDeReserva = (int) this.dataInicio.until(dataFim, ChronoUnit.DAYS);
+    private int calculoDoPeriodoDeDiasEntreAsDatas(){
+        return  (int) this.dataInicio.until(dataFim, ChronoUnit.DAYS);
     }
 
     public Bem getBemAssociado() {
         return bemAssociado;
-    }
-
-    public void setBemAssociado(Bem bemAssociado) {
-        if (this.bemAssociado != bemAssociado) {
-            this.bemAssociado = bemAssociado;
-            if (bemAssociado != null && !bemAssociado.getCotas().contains(this)) {
-                bemAssociado.adicionarCota(this);
-            }
-        }
     }
 
     public Usuario getProprietario() {

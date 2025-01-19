@@ -4,17 +4,16 @@ import java.time.LocalDate;
 
 public class Promocao {
 
-
-    private double taxa;
+    private double taxaDesconto;
 
     //CONSTRUTOR
     public Promocao() {
-        this.taxa = 0.00;
+        this.taxaDesconto = 0.00;
     }
 
     //METODOS GET E SET
-    public void setTaxa(double taxa) {
-        this.taxa = taxa;
+    public void setTaxaDesconto(double taxaDesconto) {
+        this.taxaDesconto = taxaDesconto;
     }
 
     public double getTaxaPromocaoAniversario() {
@@ -30,19 +29,19 @@ public class Promocao {
     }
 
     public double calcularTaxaPromocao(LocalDate dataInicio, Usuario usuario) {
-        this.taxa = 0.0;
+        this.taxaDesconto = 0.0;
         if (dataInicio != null) {
-            this.taxa += calcularTaxaTemporada(dataInicio);
+            this.taxaDesconto += calcularTaxaTemporada(dataInicio);
         }
         if (usuario != null) {
-            this.taxa += calcularTaxaAniversario(usuario);
+            this.taxaDesconto += calcularTaxaAniversario(usuario);
         }
-        return taxa;
+        return taxaDesconto;
     }
 
 
     // PROMOCAO COM BASE NO ANIVERSARIO
-    public double calcularTaxaAniversario(Usuario usuario) {
+    private double calcularTaxaAniversario(Usuario usuario) {
         double taxaAniversario = 0;
         if (usuario.verificarAniversario()) {
             taxaAniversario = 0.15d;
@@ -51,7 +50,7 @@ public class Promocao {
     }
 
     //LOGICA DE TEMPORADA E TAXA:
-    public double calcularTaxaTemporada(LocalDate dataInicio) {
+    private double calcularTaxaTemporada(LocalDate dataInicio) {
         double valorTaxa = 0;
         if (eAltaTemporada(dataInicio)) {
             valorTaxa = 0.25d;

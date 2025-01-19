@@ -1,16 +1,16 @@
 package br.ufrpe.time_share.negocio.beans;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class Reserva {
     private int id;
-    private LocalDate dataInicio;
-    private LocalDate dataFim;
+    private LocalDateTime dataInicio;
+    private LocalDateTime dataFim;
     private boolean status;
     private UsuarioComum usuarioComum;
     private Bem bem;
 
-    public Reserva(int id, LocalDate dataInicio, LocalDate dataFim, UsuarioComum usuarioComum, Bem bem) {
+    public Reserva(int id, LocalDateTime dataInicio, LocalDateTime dataFim, UsuarioComum usuarioComum, Bem bem) {
         this.id = id;
         this.status = true;
         this.dataInicio = dataInicio;
@@ -39,19 +39,19 @@ public class Reserva {
         return this.status;
     }
 
-    public LocalDate getDataInicio() {
+    public LocalDateTime getDataInicio() {
         return dataInicio;
     }
 
-    public void setDataInicio(LocalDate dataInicio) {
+    public void setDataInicio(LocalDateTime dataInicio) {
         this.dataInicio = dataInicio;
     }
 
-    public LocalDate getDataFim() {
+    public LocalDateTime getDataFim() {
         return dataFim;
     }
 
-    public void setDataFim(LocalDate dataFim) {
+    public void setDataFim(LocalDateTime dataFim) {
         this.dataFim = dataFim;
     }
 

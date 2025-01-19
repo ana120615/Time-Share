@@ -1,34 +1,33 @@
 package br.ufrpe.time_share.negocio.beans;
 
-import java.time.LocalDate;
+
+import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
 public class Estadia {
     private int id;
-    private LocalDate dataInicio;
-    private LocalDate dataFim;
+    private LocalDateTime dataInicio;
+    private LocalDateTime dataFim;
     private Reserva reserva;
 
     public Estadia(int id, Reserva reserva) {
         this.reserva = reserva;
         this.id = id;
-        setDataInicio(reserva.getDataInicio());
-        setDataFim(reserva.getDataFim());
     }
 
-    public LocalDate getDataInicio() {
+    public LocalDateTime getDataInicio() {
         return dataInicio;
     }
 
-    public void setDataInicio(LocalDate dataInicio) {
+    public void setDataInicio(LocalDateTime dataInicio) {
         this.dataInicio = dataInicio;
     }
 
-    public LocalDate getDataFim() {
+    public LocalDateTime getDataFim() {
         return dataFim;
     }
 
-    public void setDataFim(LocalDate dataFim) {
+    public void setDataFim(LocalDateTime dataFim) {
         this.dataFim = dataFim;
     }
 
@@ -50,7 +49,7 @@ public class Estadia {
 
     //CALCULAR DURACAO DA ESTADIA
     public int calcularDuracao () {
-      return (int) ChronoUnit.DAYS.between (reserva.getDataInicio(),reserva.getDataFim());
+      return (int) getDataInicio().until(getDataFim(), ChronoUnit.DAYS);
     }
 
     @Override
@@ -59,7 +58,8 @@ public class Estadia {
                 "id=" + id +
                 ", dataInicio=" + dataInicio +
                 ", dataFim=" + dataFim +
-                ", reserva=" + reserva +
+                ", bem=" + reserva.getBem().getNome() +
+                ", usuario=" + reserva.getUsuarioComum().getNome() +
                 '}';
     }
 }
