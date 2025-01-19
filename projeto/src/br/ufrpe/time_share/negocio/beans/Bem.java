@@ -17,7 +17,7 @@ public class Bem {
         this.cotas = new ArrayList<>(10);
     }
 
-    //CONSTRUTOR
+    // CONSTRUTOR
     public Bem(int id, String nome, String descricao, String localizacao, int capacidade) {
         setId(id);
         setCapacidade(capacidade);
@@ -28,7 +28,7 @@ public class Bem {
 
     }
 
-    //METODOS GET E SET
+    // METODOS GET E SET
     public int getId() {
         return this.id;
     }
@@ -85,9 +85,20 @@ public class Bem {
 
     public void adicionarCota(int id, LocalDate dataInicio, LocalDate dataFim, double preco) {
         Cota newCota = new Cota(id, dataInicio, dataFim, preco, this);
-        this.cotas.add(newCota);
+        if(!this.cotas.contains(newCota)) {
+            this.cotas.add(newCota);
+        }
     }
 
+    public void adicionarCota(Cota cota) {
+        if(!this.cotas.contains(cota)) {
+            this.cotas.add(cota);
+        }
+    }
+
+    public void removerCota(Cota cota) {
+        this.cotas.remove(cota);
+    }
 
     @Override
     public String toString() {

@@ -44,7 +44,7 @@ public class Programa {
         System.out.println("\nCOTAS OFERTADAS BEM1\n" + b1.getCotas());
 
 
-        // USUÀRIO COMUM
+        // USUARIO COMUM
 
         Usuario usuarioComum = new UsuarioComum (11233215, "SenhaComum");
         usuarioComum.setNome("Samara");
@@ -76,7 +76,10 @@ public class Programa {
         double x = p1.calcularTaxaPromocao(LocalDate.now(), usuarioComum);
         System.out.println("PROMOÇÃO: " + x*100 + "% de desconto");
 
-        double valorDescontado = v1.calcularValorTotal() * x;
+        double valorDescontado = 0;
+        if(x != 0) {
+            valorDescontado = v1.calcularValorTotal() * x;
+        }
         System.out.println("VALOR TOTAL R$" + v1.calcularValorTotal());
         System.out.println("VALOR DESCONTADO R$" + valorDescontado);
         System.out.println("VALOR FINAL R$" + (v1.calcularValorTotal() - valorDescontado));

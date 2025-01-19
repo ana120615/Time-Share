@@ -6,12 +6,20 @@ import br.ufrpe.time_share.negocio.beans.UsuarioComum;
 import java.util.ArrayList;
 
 public class RepositorioUsuarios implements IRepositorioUsuario {
+
+    // INSTANCIA UNICA DO REPOSITORIO
+    public static final RepositorioUsuarios INSTANCE = new RepositorioUsuarios();
+
     private ArrayList<Usuario> usuarios;
 
     {
         this.usuarios = new ArrayList<>();
     }
 
+    // METODO PARA OBTER A INSTANCIA DO REPOSITORIO
+    public static RepositorioUsuarios getInstance() {
+        return INSTANCE;
+    }
 
     @Override
     public void cadastrar(Usuario usuario) {
