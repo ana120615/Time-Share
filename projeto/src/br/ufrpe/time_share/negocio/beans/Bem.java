@@ -110,8 +110,7 @@ public class Bem {
             Bem bem = (Bem) obj;
             return this.id == bem.getId() && this.nome.equals(bem.getNome())
                     && this.descricao.equals(bem.getDescricao())
-                    && this.localizacao.equals(bem.getLocalizacao())
-                    && this.cadastradoPor.equals(bem.getCadastradoPor());
+                    && this.localizacao.equals(bem.getLocalizacao());
         }
         return false;
     }
