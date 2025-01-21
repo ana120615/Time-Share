@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import br.ufrpe.time_share.negocio.beans.Bem;
 import br.ufrpe.time_share.negocio.beans.Cota;
-import br.ufrpe.time_share.negocio.beans.UsuarioComum;
+import br.ufrpe.time_share.negocio.beans.Usuario;
 
 public class RepositorioCotas implements IRepositorioCotas {
 
@@ -48,16 +48,16 @@ public class RepositorioCotas implements IRepositorioCotas {
         return existe;
     }
 
-    @Override
-    public ArrayList<Cota> buscarCotasPorProprietario(UsuarioComum proprietario){
-        ArrayList<Cota> resultado = new ArrayList<>();
-        for(Cota cota : listaCotas) {
-            if(cota.getProprietario().equals(proprietario)) {
-                resultado.add(cota);
-            }
-        }
-        return new ArrayList<>(resultado);
-    }
+//    @Override
+//    public ArrayList<Cota> buscarCotasPorProprietario(Usuario proprietario){
+//        ArrayList<Cota> resultado = new ArrayList<>();
+//        for(Cota cota : listaCotas) {
+//            if(cota.getProprietario().equals(proprietario)) {
+//                resultado.add(cota);
+//            }
+//        }
+//        return new ArrayList<>(resultado);
+//    }
 
     @Override
     public Cota buscarCotaPorId(int id) {
@@ -68,6 +68,11 @@ public class RepositorioCotas implements IRepositorioCotas {
         }
     }
         return retorno;
+    }
+
+    @Override
+    public ArrayList<Cota> buscarCotasPorProprietario(Usuario proprietario) {
+        return null;
     }
 
     @Override

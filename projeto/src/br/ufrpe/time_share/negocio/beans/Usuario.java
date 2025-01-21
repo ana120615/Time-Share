@@ -3,26 +3,29 @@ package br.ufrpe.time_share.negocio.beans;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 
-public abstract class Usuario {
+public class Usuario {
 
     private int cpf;
     private String nome;
     private String email;
     private String senha;
     private LocalDate dataNascimento;
+    private TipoUsuario tipo;
 
     //CONSTRUTORES
-    public Usuario(int cpf, String nome, String email, String senha, LocalDate dataNascimento) {
+    public Usuario(int cpf, String nome, String email, String senha, LocalDate dataNascimento, TipoUsuario tipo) {
         this.setCpf(cpf);
         this.setNome(nome);
         this.setEmail(email);
         this.setSenha(senha);
         this.setDataNascimento(dataNascimento);
+        this.setTipo(tipo);
     }
 
-    public Usuario(int cpf, String senha) {
+    public Usuario(int cpf, String senha, TipoUsuario tipo) {
         this.setCpf(cpf);
         this.setSenha(senha);
+        this.setTipo(tipo);
     }
 
     //METODOS GET E SET
@@ -66,6 +69,14 @@ public abstract class Usuario {
         this.dataNascimento = dataNascimento;
     }
 
+    public TipoUsuario getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(TipoUsuario tipo) {
+        this.tipo = tipo;
+    }
+
     //METODO PARA CALCULAR IDADE
     public int calcularIdade() {
         return (int) dataNascimento.until(LocalDate.now(), ChronoUnit.YEARS);
@@ -92,6 +103,7 @@ public abstract class Usuario {
                 ", nome='" + nome + '\'' +
                 ", email='" + email + '\'' +
                 ", senha='" + senha + '\'' +
+                ", tipo='" + tipo + '\'' +
                 ", dataNascimento=" + dataNascimento;
     }
 

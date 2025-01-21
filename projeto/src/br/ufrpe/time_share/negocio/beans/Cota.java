@@ -7,7 +7,7 @@ import java.time.temporal.ChronoUnit;
 public class Cota {
     private int id;
     private double preco;
-    private UsuarioComum proprietario;
+    private Usuario proprietario;
     private boolean statusDeDisponibilidadeParaCompra;
     private boolean statusDeDisponibilidadeParaReserva;
     private Bem bemAssociado;
@@ -57,7 +57,7 @@ public class Cota {
         return this.proprietario;
     }
 
-    public void setProprietario(UsuarioComum proprietario) {
+    public void setProprietario(Usuario proprietario) {
         this.proprietario = proprietario;
     }
 

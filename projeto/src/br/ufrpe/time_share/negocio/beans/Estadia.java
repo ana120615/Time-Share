@@ -59,7 +59,7 @@ public class Estadia {
                 ", dataInicio=" + dataInicio +
                 ", dataFim=" + dataFim +
                 ", bem=" + reserva.getBem().getNome() +
-                ", usuario=" + reserva.getUsuarioComum().getNome() +
+//                ", usuario=" + reserva.getNome().getNome() +
                 '}';
     }
 }

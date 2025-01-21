@@ -2,7 +2,6 @@ package br.ufrpe.time_share.negocio.beans;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.List;
 
 public class Bem {
     private int id;
@@ -12,13 +11,14 @@ public class Bem {
     private int capacidade;
     private boolean ofertado;
     private ArrayList<Cota> cotas;
+    private Usuario cadastradoPor;
 
     {
         this.cotas = new ArrayList<>(10);
     }
 
     //CONSTRUTOR
-    public Bem(int id, String nome, String descricao, String localizacao, int capacidade) {
+    public Bem(int id, String nome, String descricao, String localizacao, int capacidade, Usuario cadastradoPor) {
         setId(id);
         setCapacidade(capacidade);
         setDescricao(descricao);
@@ -81,12 +81,14 @@ public class Bem {
         return cotas;
     }
 
-    // OUTROS METODOS
-
-    public void adicionarCota(int id, LocalDate dataInicio, LocalDate dataFim, double preco) {
-        Cota newCota = new Cota(id, dataInicio, dataFim, preco, this);
-        this.cotas.add(newCota);
+    public Usuario getCadastradoPor() {
+        return cadastradoPor;
     }
+
+    public void setCadastradoPor(Usuario cadastradoPor) {
+        this.cadastradoPor = cadastradoPor;
+    }
+
 
 
     @Override
@@ -106,7 +108,10 @@ public class Bem {
     public boolean equals(Object obj) {
         if (obj instanceof Bem) {
             Bem bem = (Bem) obj;
-            return this.id == bem.getId() && this.nome.equals(bem.getNome()) && this.descricao.equals(bem.getDescricao()) && this.localizacao.equals(bem.getLocalizacao());
+            return this.id == bem.getId() && this.nome.equals(bem.getNome())
+                    && this.descricao.equals(bem.getDescricao())
+                    && this.localizacao.equals(bem.getLocalizacao())
+                    && this.cadastradoPor.equals(bem.getCadastradoPor());
         }
         return false;
     }

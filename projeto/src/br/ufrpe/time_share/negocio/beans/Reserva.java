@@ -7,10 +7,10 @@ public class Reserva {
     private LocalDateTime dataInicio;
     private LocalDateTime dataFim;
     private boolean status;
-    private UsuarioComum usuarioComum;
+    private Usuario usuarioComum;
     private Bem bem;
 
-    public Reserva(int id, LocalDateTime dataInicio, LocalDateTime dataFim, UsuarioComum usuarioComum, Bem bem) {
+    public Reserva(int id, LocalDateTime dataInicio, LocalDateTime dataFim, Usuario usuarioComum, Bem bem) {
         this.id = id;
         this.status = true;
         this.dataInicio = dataInicio;
@@ -64,12 +64,12 @@ public class Reserva {
     }
 
 
-    public UsuarioComum getUsuarioComum() {
+    public Usuario getUsuarioComum() {
         return usuarioComum;
     }
 
 
-    public void setUsuarioComum(UsuarioComum usuarioComum) {
+    public void setUsuarioComum(Usuario usuarioComum) {
         this.usuarioComum = usuarioComum;
     }
 

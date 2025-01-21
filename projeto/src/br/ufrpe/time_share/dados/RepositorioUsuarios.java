@@ -1,7 +1,6 @@
 package br.ufrpe.time_share.dados;
+import br.ufrpe.time_share.negocio.beans.TipoUsuario;
 import br.ufrpe.time_share.negocio.beans.Usuario;
-import br.ufrpe.time_share.negocio.beans.UsuarioAdm;
-import br.ufrpe.time_share.negocio.beans.UsuarioComum;
 
 import java.util.ArrayList;
 
@@ -81,22 +80,22 @@ public class RepositorioUsuarios implements IRepositorioUsuario {
     }
 
     @Override
-    public ArrayList<UsuarioComum> listarUsuarioComum() {
-        ArrayList<UsuarioComum> resultado = new ArrayList<>();
+    public ArrayList<Usuario> listarUsuarioComum() {
+        ArrayList<Usuario> resultado = new ArrayList<>();
         for (Usuario comum : usuarios) {
-            if (comum instanceof UsuarioComum) {
-                resultado.add((UsuarioComum) comum);
+            if (comum.getTipo().equals(TipoUsuario.COMUM)) {
+                resultado.add(comum);
             }
         }
         return new ArrayList<>(resultado);
     }
 
     @Override
-    public ArrayList<UsuarioAdm> listarUsuarioAdm() {
-        ArrayList<UsuarioAdm> resultado = new ArrayList<>();
+    public ArrayList<Usuario> listarUsuarioAdm() {
+        ArrayList<Usuario> resultado = new ArrayList<>();
         for (Usuario adm : usuarios) {
-            if (adm instanceof UsuarioAdm) {
-                resultado.add((UsuarioAdm) adm);
+            if (adm.getTipo().equals(TipoUsuario.ADMINISTRADOR)) {
+                resultado.add(adm);
             }
         }
         return new ArrayList<>(resultado);
