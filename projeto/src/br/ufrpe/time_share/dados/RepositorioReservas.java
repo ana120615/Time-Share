@@ -6,10 +6,18 @@ import br.ufrpe.time_share.negocio.beans.Reserva;
 
 public class RepositorioReservas implements IRepositorioReservas {
 
+    // INSTANCIA UNICA DO REPOSITORIO
+    public static final RepositorioReservas INSTANCE = new RepositorioReservas();
+
     private ArrayList<Reserva> reservas;
 
     {
         this.reservas = new ArrayList<>();
+    }
+
+    // METODO PARA OBTER A INSTANCIA DO REPOSITORIO
+    public static RepositorioReservas getInstance() {
+        return INSTANCE;
     }
 
     @Override

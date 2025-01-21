@@ -15,7 +15,7 @@ public class Cota {
     private LocalDate dataFim;
 
 
-    //CONSTRUTOR
+    // CONSTRUTOR
     public Cota(int id, LocalDate dataInicio, LocalDate dataFim, double preco, Bem bemAssociado) {
         this.setId(id);
         this.setDataInicio(dataInicio);
@@ -26,8 +26,7 @@ public class Cota {
         this.statusDeDisponibilidadeParaReserva = true; //inicializado como disponivel
     }
 
-    //METODOS GET E SET
-
+    // METODOS GET E SET
 
     public LocalDate getDataInicio() {
         return dataInicio;

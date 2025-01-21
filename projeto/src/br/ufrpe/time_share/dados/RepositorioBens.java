@@ -4,10 +4,19 @@ import java.util.ArrayList;
 import br.ufrpe.time_share.negocio.beans.Bem;
 
 public class RepositorioBens implements IRepositorioBens {
+
+    // INSTANCIA UNICA DO REPOSITORIO
+    private static final RepositorioBens INSTANCE = new RepositorioBens();
+
     private ArrayList<Bem> listaBem;
 
     {
         listaBem = new ArrayList<>(50);
+    }
+
+    // METODO PARA OBTER A INSTANCIA DO REPOSITORIO
+    public static RepositorioBens getInstancia() {
+        return INSTANCE;
     }
 
     @Override

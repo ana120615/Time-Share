@@ -6,12 +6,12 @@ public class Promocao {
 
     private double taxaDesconto;
 
-    //CONSTRUTOR
+    // CONSTRUTOR
     public Promocao() {
         this.taxaDesconto = 0.00;
     }
 
-    //METODOS GET E SET
+    // METODOS GET E SET
     public void setTaxaDesconto(double taxaDesconto) {
         this.taxaDesconto = taxaDesconto;
     }
@@ -27,6 +27,8 @@ public class Promocao {
             return 0.05d;
         }
     }
+
+    // OUTROS METODOS
 
     public double calcularTaxaPromocao(LocalDate dataInicio, Usuario usuario) {
         this.taxaDesconto = 0.0;
@@ -49,7 +51,7 @@ public class Promocao {
         return taxaAniversario;
     }
 
-    //LOGICA DE TEMPORADA E TAXA:
+    // LOGICA DE TEMPORADA E TAXA
     private double calcularTaxaTemporada(LocalDate dataInicio) {
         double valorTaxa = 0;
         if (eAltaTemporada(dataInicio)) {
