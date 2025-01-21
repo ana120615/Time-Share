@@ -26,7 +26,7 @@ public class ControladorAdm {
         }
     }
 
-    public void cadastrarAministrador(Usuario adm) throws UsuarioJaExisteException {
+    public void cadastrarAministrador(Usuario adm) throws UsuarioJaExisteException, UsuarioNaoPermitidoException {
         validarCadastro(adm);
         repositorio.cadastrar(adm);
 
@@ -47,7 +47,7 @@ public class ControladorAdm {
         }
     }
 
-    public void removerAdm(Usuario adm) throws UsuarioNaoExisteException {
+    public void removerAdm(Usuario adm) throws UsuarioNaoExisteException, UsuarioNaoPermitidoException {
         if (adm == null) {
             throw new UsuarioNaoExisteException("Usuário com o CPF digitado não foi encontrado! ");
         }
