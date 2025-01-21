@@ -14,9 +14,8 @@ public class ProgramaTestRepositorio {
     public static void main(String[] args) {
 
 
-        IRepositorioBens repositorioBens = new RepositorioBens();
 
-        ControladorBens controladorBens = new ControladorBens();
+        ControladorBens controladorBens = new ControladorBens (new RepositorioBens());
 
         Usuario usuario = new Usuario(555555554, "SENHA", TipoUsuario.ADMINISTRADOR);
         Usuario usuario2 = new Usuario(225512124, "S#NH@", TipoUsuario.COMUM);
@@ -38,34 +37,13 @@ public class ProgramaTestRepositorio {
                 7, usuario);
 
 
-
         try {
-            controladorBens.cadastrar(usuario, bem, repositorioBens);
-            controladorBens.cadastrar(usuario2, bem2, repositorioBens);
-        } catch (UsuarioNaoPermitidoException e) {
-            System.out.println(e.getMessage());
-        } catch (BemJaExisteException e) {
-            System.out.println(e.getMessage());
-        } catch (NullPointerException e) {
+            controladorBens.cadastrar(usuario, bem);
+            controladorBens.cadastrar(usuario, bem2);
+        } catch (BemJaExisteException | UsuarioNaoPermitidoException | NullPointerException e) {
             System.out.println(e.getMessage());
         }
 
-        try {
-            controladorBens.cadastrar(usuario, bem3, repositorioBens);
-            controladorBens.cadastrar(usuario, bem4, repositorioBens);
-            controladorBens.cadastrar(usuario, bem5, repositorioBens);
-        } catch (UsuarioNaoPermitidoException e) {
-            System.out.println(e.getMessage());
-        } catch (BemJaExisteException e) {
-            System.out.println(e.getMessage());
-        } catch (NullPointerException e) {
-            System.out.println(e.getMessage());
-        }
-
-        System.out.println("\nIMPRIMINDO BEM CADASTRADOS PELO USUARIO");
-        for (Bem b : repositorioBens.listarBens()) {
-            System.out.println(b);
-        }
-
+        System.out.println(controladorBens.listarBens());
     }
 }

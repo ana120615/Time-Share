@@ -13,6 +13,7 @@ public class ControladorUsuarioComum {
     private IRepositorioUsuario repositorio;
 
     public ControladorUsuarioComum(IRepositorioUsuario instanciaInterface) {
+
         this.repositorio = instanciaInterface;
     }
 
