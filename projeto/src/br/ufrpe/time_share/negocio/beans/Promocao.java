@@ -1,6 +1,6 @@
 package br.ufrpe.time_share.negocio.beans;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class Promocao {
 
@@ -20,7 +20,7 @@ public class Promocao {
         return 0.15d;
     }
 
-    public double getTaxaPromocaoTemporada(LocalDate data) {
+    public double getTaxaPromocaoTemporada(LocalDateTime data) {
         if (eAltaTemporada(data)) {
             return 0.25d;
         } else {
@@ -30,7 +30,7 @@ public class Promocao {
 
     // OUTROS METODOS
 
-    public double calcularTaxaPromocao(LocalDate dataInicio, Usuario usuario) {
+    public double calcularTaxaPromocao(LocalDateTime dataInicio, Usuario usuario) {
         this.taxaDesconto = 0.0;
         if (dataInicio != null) {
             this.taxaDesconto += calcularTaxaTemporada(dataInicio);
@@ -52,7 +52,7 @@ public class Promocao {
     }
 
     // LOGICA DE TEMPORADA E TAXA
-    private double calcularTaxaTemporada(LocalDate dataInicio) {
+    private double calcularTaxaTemporada(LocalDateTime dataInicio) {
         double valorTaxa = 0;
         if (eAltaTemporada(dataInicio)) {
             valorTaxa = 0.25d;
@@ -62,7 +62,7 @@ public class Promocao {
         return valorTaxa;
     }
 
-    private boolean eAltaTemporada(LocalDate data) {
+    private boolean eAltaTemporada(LocalDateTime data) {
         int mes = data.getMonthValue();
         return mes == 12 || mes == 1 || mes == 2;
     }

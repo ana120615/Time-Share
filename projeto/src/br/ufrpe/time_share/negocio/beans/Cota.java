@@ -1,6 +1,6 @@
 package br.ufrpe.time_share.negocio.beans;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 
@@ -11,12 +11,12 @@ public class Cota {
     private boolean statusDeDisponibilidadeParaCompra;
     private boolean statusDeDisponibilidadeParaReserva;
     private Bem bemAssociado;
-    private LocalDate dataInicio;
-    private LocalDate dataFim;
+    private LocalDateTime dataInicio;
+    private LocalDateTime dataFim;
 
 
     // CONSTRUTOR
-    public Cota(int id, LocalDate dataInicio, LocalDate dataFim, double preco, Bem bemAssociado) {
+    public Cota(int id, LocalDateTime dataInicio, LocalDateTime dataFim, double preco, Bem bemAssociado) {
         this.setId(id);
         this.setDataInicio(dataInicio);
         this.setDataFim(dataFim);
@@ -28,19 +28,19 @@ public class Cota {
 
     // METODOS GET E SET
 
-    public LocalDate getDataInicio() {
+    public LocalDateTime getDataInicio() {
         return dataInicio;
     }
 
-    public void setDataInicio(LocalDate dataInicio) {
+    public void setDataInicio(LocalDateTime dataInicio) {
         this.dataInicio = dataInicio;
     }
 
-    public LocalDate getDataFim() {
+    public LocalDateTime getDataFim() {
         return dataFim;
     }
 
-    public void setDataFim(LocalDate dataFim) {
+    public void setDataFim(LocalDateTime dataFim) {
         this.dataFim = dataFim;
     }
 
