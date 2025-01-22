@@ -56,6 +56,7 @@ return estadia;
 //ao passar o tempo reservado, tenho a opcao de prolongar
 //colocar prolongar so ate + 7 dias
 //a estadia ou fazer check out
+//talvez cobrar taxa extra
 public Estadia prolongarEstadia(Estadia estadia, LocalDateTime dataFim){
 LocalDateTime agora = LocalDateTime.now();
 if(estadia.getDataFim().equals(agora)){
