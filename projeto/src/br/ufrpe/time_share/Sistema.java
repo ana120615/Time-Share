@@ -5,6 +5,7 @@ import br.ufrpe.time_share.dados.RepositorioUsuarios;
 import br.ufrpe.time_share.excecoes.SenhaInvalidaException;
 import br.ufrpe.time_share.excecoes.UsuarioNaoExisteException;
 import br.ufrpe.time_share.negocio.*;
+import br.ufrpe.time_share.negocio.beans.TipoUsuario;
 import br.ufrpe.time_share.negocio.beans.Usuario;
 
 import java.time.LocalDate;
@@ -12,78 +13,91 @@ import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
 public class Sistema {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws UsuarioNaoExisteException {
         Scanner input = new Scanner(System.in);
         IRepositorioUsuario repositorioUsuario = RepositorioUsuarios.getInstance();
         ControladorLogin controladorLogin = new ControladorLogin(repositorioUsuario);
         ControladorUsuarioComum controladorUsuarioComum = new ControladorUsuarioComum(repositorioUsuario);
         ControladorAdm controladorAdm = new ControladorAdm(repositorioUsuario);
 
-        boolean sairLogin = false;
         boolean entrarSistema = false;
+        boolean sairSistema = false;
 
-        while (!entrarSistema) {
-            System.out.println("BEM-VINDO AO FELX-SHARE");
-            System.out.println("Ja possui cadastro?(1 - sim/ 2 - nao)");
-            int escolha = input.nextInt();
-            if(escolha == 1) {
-                while (!sairLogin) {
-                    try {
-                        System.out.println("-- LOGIN --");
-                        String email, password;
-                        System.out.println("Informe o email: ");
-                        email = input.next();
-                        System.out.println("Informe a Senha: ");
-                        password = input.next();
-                        Usuario usuario = controladorLogin.efetuarLogin(email, password);
-                        sairLogin = true;
-                        entrarSistema = true;
+        Usuario usuario = null; //Variavel que vai armazenar o usuario apos login
+
+        while (!sairSistema) {
+            boolean sairLogin = false;
+            while (!entrarSistema) {
+                System.out.println("BEM-VINDO AO FELX-SHARE");
+                System.out.println("Ja possui cadastro?(1 - sim/ 2 - nao)");
+                int escolha = input.nextInt();
+                if (escolha == 1) {
+                    while (!sairLogin) {
+                        try {
+                            System.out.println("-- LOGIN --");
+                            String email, password;
+                            System.out.println("Informe o email: ");
+                            email = input.next();
+                            System.out.println("Informe a Senha: ");
+                            password = input.next();
+                            usuario = controladorLogin.efetuarLogin(email, password);
+                            sairLogin = true;
+                            entrarSistema = true;
+                        } catch (UsuarioNaoExisteException | SenhaInvalidaException e) {
+                            System.out.println(e.getMessage());
+                            sairLogin = true;
+                        }
                     }
-                    catch (UsuarioNaoExisteException | SenhaInvalidaException e) {
-                        System.out.println(e.getMessage());
-                        sairLogin = true;
+                } else if (escolha == 2) {
+                    boolean sairCadastro = false;
+                    while (!sairCadastro) {
+                        try {
+                            System.out.println("\n-- CADASTRO USUARIO --");
+                            String nome, cpf, email, senha, dataNascimento;
+                            System.out.println("Informe o nome: ");
+                            nome = input.next();  // Usando next
+                            System.out.println("Informe o cpf: ");
+                            cpf = input.next();  // Usando next
+                            System.out.println("Informe a Senha: ");
+                            senha = input.next();  // Usando next
+                            System.out.println("Informe o Email: ");
+                            email = input.next();  // Usando next
+                            System.out.println("Informe a data de nascimento (dd/MM/yyyy): ");
+                            dataNascimento = input.next();  // Usando next
+
+                            System.out.println("\nEscolha o tipo de usuario: ");
+                            System.out.println("1 - COMUM || 2 - ADM");
+                            int tipoUsuario = input.nextInt();  // Usando nextInt para o número
+
+
+                            if (tipoUsuario == 1) {
+                                controladorUsuarioComum.cadastrar(cpf, nome, email, senha, LocalDate.parse(dataNascimento, DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+                            } else if (tipoUsuario == 2) {
+                                controladorAdm.cadastrar(cpf, nome, email, senha, LocalDate.parse(dataNascimento, DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+                            } else {
+                                System.out.println("Opcao invalida!");
+                            }
+                        } catch (Exception e) {
+                            System.out.println(e.getMessage());
+                        } finally {
+                            sairCadastro = true;
+                        }
                     }
                 }
             }
-            else if (escolha == 2){
-                boolean sairCadastro = false;
-                while (!sairCadastro) {
-                    try {
-                        System.out.println("\n-- CADASTRO USUARIO --");
-                        String nome, cpf, email, senha, dataNascimento;
-                        System.out.println("Informe o nome: ");
-                        nome = input.next();  // Usando nextLine
-                        System.out.println("Informe o cpf: ");
-                        cpf = input.next();  // Usando nextLine
-                        System.out.println("Informe a Senha: ");
-                        senha = input.next();  // Usando nextLine
-                        System.out.println("Informe o Email: ");
-                        email = input.next();  // Usando nextLine
-                        System.out.println("Informe a data de nascimento (dd/MM/yyyy): ");
-                        dataNascimento = input.next();  // Usando nextLine
 
-                        System.out.println("\nEscolha o tipo de usuario: ");
-                        System.out.println("1 - COMUM || 2 - ADM");
-                        int tipoUsuario = input.nextInt();  // Usando nextInt para o número
+            boolean sairTela = false;
+            while (!sairTela) {
 
+                if (usuario != null && usuario.getTipo().equals(TipoUsuario.COMUM)) {
 
-                        if(tipoUsuario == 1) {
-                            controladorUsuarioComum.cadastrar(cpf, nome, email, senha, LocalDate.parse(dataNascimento, DateTimeFormatter.ofPattern("dd/MM/yyyy")));
-                        }
-                        else if(tipoUsuario == 2) {
-                            controladorAdm.cadastrar(cpf, nome, email, senha, LocalDate.parse(dataNascimento, DateTimeFormatter.ofPattern("dd/MM/yyyy")));
-                        }
-                        else{
-                            System.out.println("Opcao invalida!");
-                        }
-                    }
-                    catch (Exception e) {
-                        System.out.println(e.getMessage());
-                    } finally {
-                        sairCadastro = true;
-                    }
+                } else if (usuario != null && usuario.getTipo().equals(TipoUsuario.ADMINISTRADOR)) {
+
+                } else {
+                    throw new UsuarioNaoExisteException("Usuario invalido");
                 }
             }
+
         }
     }
 }
