@@ -88,7 +88,6 @@ public class Sistema {
 
             boolean sairTela = false;
             while (!sairTela) {
-
                 if (usuario != null && usuario.getTipo().equals(TipoUsuario.COMUM)) {
 
                 } else if (usuario != null && usuario.getTipo().equals(TipoUsuario.ADMINISTRADOR)) {

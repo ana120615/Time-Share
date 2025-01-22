@@ -22,6 +22,15 @@ public class Usuario {
         this.setTipo(tipo);
     }
 
+    public Usuario(String cpf, String nome, String email, String senha, LocalDate dataNascimento, int tipo) {
+        this.setCpf(cpf);
+        this.setNome(nome);
+        this.setEmail(email);
+        this.setSenha(senha);
+        this.setDataNascimento(dataNascimento);
+        this.setTipo(tipo);
+    }
+
     public Usuario(String cpf, String senha, TipoUsuario tipo) {
         this.setCpf(cpf);
         this.setSenha(senha);
@@ -75,6 +84,10 @@ public class Usuario {
 
     public void setTipo(TipoUsuario tipo) {
         this.tipo = tipo;
+    }
+
+    public void setTipo(int tipo) {
+        this.tipo = TipoUsuario.values()[tipo];
     }
 
     //METODO PARA CALCULAR IDADE
