@@ -129,10 +129,10 @@ public class ControladorBens {
             throw new IllegalArgumentException("Não permitido");
         } else {
 
-            int delta = bem.getDiaInicial().getYear() - anoParaDeslocamento;
-            int diasDeslocados = delta * 7;
+            int delta = anoParaDeslocamento - bem.getDiaInicial().getYear();
 
-            LocalDate dataInicio = bem.getDiaInicial().plusDays(6);
+            LocalDate dataInicio = bem.getDiaInicial();
+            dataInicio = dataInicio.plusDays(6 * delta); // Deslocamento inicial baseado em delta
             LocalDate dataFinal = dataInicio.plusDays(6);
 
             for (Cota c : bem.getCotas()) {
@@ -140,13 +140,15 @@ public class ControladorBens {
                 c.setDataFim(dataFinal);
                 resultado.add(c);
 
-                dataInicio = dataFinal.plusDays(1);
+                // Atualiza a nova data inicial para 7 dias depois do início atual
+                dataInicio = dataInicio.plusDays(7);
                 dataFinal = dataInicio.plusDays(6);
             }
         }
 
         return resultado;
     }
+
 
 
 }

@@ -15,8 +15,8 @@ public class ProgramaTestRepositorio {
 
         ControladorBens controladorBens = new ControladorBens(new RepositorioBens());
 
-        Usuario usuario = new Usuario(555555554, "SENHA", TipoUsuario.ADMINISTRADOR);
-        Usuario usuario2 = new Usuario(225512124, "S#NH@", TipoUsuario.COMUM);
+        Usuario usuario = new Usuario("555555554", "SENHA", TipoUsuario.ADMINISTRADOR);
+        Usuario usuario2 = new Usuario("225512124", "S#NH@", TipoUsuario.COMUM);
 
         Bem bem = new Bem(1111, "Casa na Praia", "Férias"
                 , "Noronha-PE",
@@ -34,6 +34,7 @@ public class ProgramaTestRepositorio {
         System.out.println("\nLISTA DE BENS");
         System.out.println(controladorBens.listarBens());
 
+        System.out.println("\nDESLOCAMENTO DA COTA");
         System.out.println(controladorBens.calcularDeslocamentoDasCotas(1364, 2026));
 
         // System.out.println(controladorBens.listarBens());
