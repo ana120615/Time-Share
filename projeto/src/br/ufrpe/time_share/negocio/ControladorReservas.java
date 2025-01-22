@@ -62,22 +62,17 @@ if(estadia.getDataFim().equals(agora)){
     LocalDateTime novaDataFim = estadia.getDataFim().plusWeeks(1);
     try{
         alterarPeriodoReserva(estadia.getReserva().getId(), agora, novaDataFim);
-        try {
-            calcularTaxaExtra(estadia.getReserva());
-        } catch (CotaJaReservadaException e) {
-            e.getMessage();
-        }
         estadia.setDataFim(novaDataFim);
     }
     catch(ReservaNaoExisteException e){
-        e.getMessage();
+        System.out.println(e.getMessage());
 
     }
     catch(ReservaJaCanceladaException e){
-    e.getMessage();
+        System.out.println(e.getMessage());
     }
     catch(PeriodoJaReservadoException e){
-    e.getMessage();
+        System.out.println(e.getMessage());
     }
 }
 return estadia;
@@ -150,7 +145,6 @@ return estadia.calcularDuracao();
     }
 
     //metodo para reembolso apos cancelamento
-    //talvez colocar mensagem no nullpointer
     public double reembolsar(Reserva reserva) throws ReservaNaoReembolsavelException{
         double reembolso=0.00;
     if(!(reserva.getStatus())){
@@ -163,13 +157,14 @@ return estadia.calcularDuracao();
         }
     } 
     catch(NullPointerException e){
-        e.getMessage();
+        System.out.println(e.getMessage());
     }
     catch (ReservaNaoExisteException e) {
-        e.getMessage();
+        System.out.println(e.getMessage());
+
     }
     catch(CotaJaReservadaException e){
-        e.getMessage();
+        System.out.println(e.getMessage());
     }
     }
     return reembolso;
