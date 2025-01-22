@@ -3,10 +3,7 @@ package br.ufrpe.time_share.negocio;
 import br.ufrpe.time_share.dados.IRepositorioBens;
 import br.ufrpe.time_share.dados.IRepositorioCotas;
 import br.ufrpe.time_share.dados.RepositorioCotas;
-import br.ufrpe.time_share.excecoes.BemJaExisteException;
-import br.ufrpe.time_share.excecoes.BemNaoExisteException;
-import br.ufrpe.time_share.excecoes.QuantidadeDeCotasExcedidasException;
-import br.ufrpe.time_share.excecoes.UsuarioNaoPermitidoException;
+import br.ufrpe.time_share.excecoes.*;
 import br.ufrpe.time_share.negocio.beans.Bem;
 import br.ufrpe.time_share.negocio.beans.Cota;
 import br.ufrpe.time_share.negocio.beans.TipoUsuario;
@@ -55,7 +52,7 @@ public class ControladorBens {
     public void cadastrar(int id, String nome, String descricao,
                           String localizacao, int capacidade, Usuario usuario,
                           LocalDateTime diaInicial, int quantidadeDeCotas,
-                          double precoDeUmaCota) throws BemNaoExisteException, UsuarioNaoPermitidoException, QuantidadeDeCotasExcedidasException {
+                          double precoDeUmaCota) throws BemNaoExisteException, UsuarioNaoPermitidoException, QuantidadeDeCotasExcedidasException, BemJaExisteException {
 
         Bem newBem = new Bem(id, nome, descricao, localizacao, capacidade, usuario);
 
@@ -172,6 +169,16 @@ public class ControladorBens {
         }
 
         return resultado;
+    }
+
+    public Cota buscarCota (int idCota) throws CotaNaoExisteException{
+        Cota cota = repositorioCotas.buscarCotaPorId(idCota);
+
+        if (cota == null) {
+            throw new CotaNaoExisteException("Cota não existe");
+        }
+
+        return cota;
     }
 
     public ArrayList<Cota> registros (String usuarioCpf) {

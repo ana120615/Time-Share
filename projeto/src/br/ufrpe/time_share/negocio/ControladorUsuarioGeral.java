@@ -55,7 +55,7 @@ public class ControladorUsuarioGeral {
         }
     }
 
-    private Usuario procurarUsuarioPorCpf(String cpf) {
+    public Usuario procurarUsuarioPorCpf(String cpf) {
         return this.repositorio.buscarUsuarioPorCpf(cpf);
     }
 
