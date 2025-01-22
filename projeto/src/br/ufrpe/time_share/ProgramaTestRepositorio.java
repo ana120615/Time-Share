@@ -8,7 +8,7 @@ import br.ufrpe.time_share.negocio.beans.Bem;
 import br.ufrpe.time_share.negocio.beans.TipoUsuario;
 import br.ufrpe.time_share.negocio.beans.Usuario;
 
-import java.time.LocalDate;
+
 import java.time.LocalDateTime;
 
 public class ProgramaTestRepositorio {
@@ -37,6 +37,9 @@ public class ProgramaTestRepositorio {
 
         System.out.println("\nDESLOCAMENTO DA COTA");
         System.out.println(controladorBens.calcularDeslocamentoDasCotas(1364, 2026));
+
+        System.out.println("\nLISTA DE BENS");
+        System.out.println(controladorBens.listarBens());
 
         // System.out.println(controladorBens.listarBens());
 
