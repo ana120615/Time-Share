@@ -37,7 +37,7 @@ public class ControladorAdm {
         if (adm == null) {
             throw new UsuarioNaoPermitidoException("O adminitsrador não pode ser nulo.");
         }
-        else if (adm.getCpf() != null) {
+        if (adm.getCpf() != null) {
             char[] verificador = adm.getCpf().toCharArray();
             if (verificador.length != 11) {
                 throw new UsuarioNaoPermitidoException("CPF invalido.");
@@ -49,10 +49,10 @@ public class ControladorAdm {
                 }
             }
         }
-        else if (this.repositorio.existe(adm)) {
+        if (this.repositorio.existe(adm)) {
             throw new UsuarioJaExisteException("Usuário já cadastrado.", adm.getCpf(), adm.getEmail());
         }
-        else if (adm.getTipo() != TipoUsuario.ADMINISTRADOR) {
+        if (adm.getTipo() != TipoUsuario.ADMINISTRADOR) {
             throw new UsuarioNaoPermitidoException("Apenas administradores podem ser cadastrados nessa categoria!");
         }
     }
@@ -64,10 +64,9 @@ public class ControladorAdm {
         if (adm.getTipo() != TipoUsuario.ADMINISTRADOR) {
             throw new UsuarioNaoPermitidoException("O usuário não tem permissão para ser removido de administradores! ");
         }
-        repositorio.remover(adm);
 
+        this.repositorio.remover(adm);
     }
-
 
 }
 

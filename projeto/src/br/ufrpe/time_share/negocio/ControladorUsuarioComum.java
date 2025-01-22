@@ -27,13 +27,13 @@ public class ControladorUsuarioComum {
     public void cadastrar(Usuario usuarioComum) throws UsuarioJaExisteException, UsuarioNaoPermitidoException {
         validarCadastro(usuarioComum);
         this.repositorio.cadastrar(usuarioComum);
-
     }
 
     public void validarCadastro(Usuario usuarioComum) throws UsuarioJaExisteException, UsuarioNaoPermitidoException {
         if (usuarioComum == null) {
             throw new UsuarioNaoPermitidoException("O adminitsrador não pode ser nulo.");
-        } else if (usuarioComum.getCpf() != null) {
+        }
+        if (usuarioComum.getCpf() != null) {
             char[] verificador = usuarioComum.getCpf().toCharArray();
             if (verificador.length != 11) {
                 throw new UsuarioNaoPermitidoException("CPF invalido.");
@@ -44,9 +44,11 @@ public class ControladorUsuarioComum {
                     throw new UsuarioNaoPermitidoException("CPF invalido.");
                 }
             }
-        } else if (this.repositorio.existe(usuarioComum)) {
+        }
+        if (this.repositorio.existe(usuarioComum)) {
             throw new UsuarioJaExisteException("Usuário já cadastrado.", usuarioComum.getCpf(), usuarioComum.getEmail());
-        } else if (usuarioComum.getTipo() != TipoUsuario.COMUM) {
+        }
+        if (usuarioComum.getTipo() != TipoUsuario.COMUM) {
             throw new UsuarioNaoPermitidoException("Apenas administradores podem ser cadastrados nessa categoria!");
         }
     }
@@ -65,7 +67,7 @@ public class ControladorUsuarioComum {
             if (usuario.getTipo().equals(TipoUsuario.COMUM)) {
                 this.repositorio.remover(usuario);
             } else {
-                throw new UsuarioNaoPermitidoException("O usuario em questao e de do tipo Administrador.");
+                throw new UsuarioNaoPermitidoException("O usuario em questao pertence ao tipo Administrador.");
             }
         } else {
             throw new UsuarioNaoExisteException("Usuario nao encontrado.");
