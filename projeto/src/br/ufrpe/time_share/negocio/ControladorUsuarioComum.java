@@ -11,7 +11,6 @@ public class ControladorUsuarioComum {
     private IRepositorioUsuario repositorio;
 
     public ControladorUsuarioComum(IRepositorioUsuario instanciaInterface) {
-
         this.repositorio = instanciaInterface;
     }
 
@@ -39,8 +38,8 @@ public class ControladorUsuarioComum {
                 throw new UsuarioNaoPermitidoException("CPF invalido.");
             }
 
-            for (int i = 0; i < verificador.length; i++) {
-                if (!Character.isDigit(verificador[i])) {
+            for (char c : verificador) {
+                if (!Character.isDigit(c)) {
                     throw new UsuarioNaoPermitidoException("CPF invalido.");
                 }
             }
@@ -53,11 +52,11 @@ public class ControladorUsuarioComum {
         }
     }
 
-    public Usuario procurarUsuarioPorCpf(String cpf) {
+    private Usuario procurarUsuarioPorCpf(String cpf) {
         return this.repositorio.buscarUsuarioPorCpf(cpf);
     }
 
-    public Usuario procurarUsuarioPorEmail(String email) {
+    private Usuario procurarUsuarioPorEmail(String email) {
         return this.repositorio.buscarUsuarioPorEmail(email);
     }
 
@@ -71,6 +70,39 @@ public class ControladorUsuarioComum {
             }
         } else {
             throw new UsuarioNaoExisteException("Usuario nao encontrado.");
+        }
+    }
+
+    public void alterarNomeUsuario(String cpf, String novoNome) throws UsuarioNaoExisteException, UsuarioNaoPermitidoException {
+        Usuario usuario = procurarUsuarioPorCpf(cpf);
+        if (usuario != null && usuario.getTipo().equals(TipoUsuario.COMUM)) {
+            usuario.setNome(novoNome);
+        } else if (usuario == null) {
+            throw new UsuarioNaoExisteException("Usuario nao encontrado.");
+        } else {
+            throw new UsuarioNaoPermitidoException("O usuario em questao pertence ao tipo Administrador.");
+        }
+    }
+
+    public void alterarSenhaUsuario(String email, String senha) throws UsuarioNaoExisteException, UsuarioNaoPermitidoException {
+        Usuario usuario = procurarUsuarioPorEmail(email);
+        if (usuario != null && usuario.getTipo().equals(TipoUsuario.COMUM)) {
+            usuario.setSenha(senha);
+        } else if (usuario == null) {
+            throw new UsuarioNaoExisteException("Usuario nao encontrado.");
+        } else {
+            throw new UsuarioNaoPermitidoException("O usuario em questao pertence ao tipo Administrador.");
+        }
+    }
+
+    public void alterarDataAniversario(String cpf, LocalDate dataAniversario) throws UsuarioNaoExisteException, UsuarioNaoPermitidoException {
+        Usuario usuarioAdm = procurarUsuarioPorCpf(cpf);
+        if (usuarioAdm != null && usuarioAdm.getTipo().equals(TipoUsuario.COMUM)) {
+            usuarioAdm.setDataNascimento(dataAniversario);
+        } else if (usuarioAdm == null) {
+            throw new UsuarioNaoExisteException("Usuario nao encontrado.");
+        } else {
+            throw new UsuarioNaoPermitidoException("O usuario em questao pertence ao tipo Administrador.");
         }
     }
 

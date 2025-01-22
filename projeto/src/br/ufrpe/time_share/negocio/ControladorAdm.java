@@ -27,10 +27,9 @@ public class ControladorAdm {
         this.repositorio.cadastrar(usuarioAdm);
     }
 
-    public void cadastrarAministrador(Usuario adm) throws UsuarioJaExisteException, UsuarioNaoPermitidoException {
+    public void cadastrar(Usuario adm) throws UsuarioJaExisteException, UsuarioNaoPermitidoException {
         validarCadastro(adm);
         repositorio.cadastrar(adm);
-
     }
 
     public void validarCadastro(Usuario adm) throws UsuarioJaExisteException, UsuarioNaoPermitidoException {
@@ -66,6 +65,48 @@ public class ControladorAdm {
         }
 
         this.repositorio.remover(adm);
+    }
+
+    private Usuario procurarUsuarioPorCpf(String cpf) {
+        return this.repositorio.buscarUsuarioPorCpf(cpf);
+    }
+
+    private Usuario procurarUsuarioPorEmail(String email) {
+        return this.repositorio.buscarUsuarioPorEmail(email);
+    }
+
+    public void alterarNomeUsuario(String cpf, String novoNome) throws UsuarioNaoExisteException, UsuarioNaoPermitidoException {
+        Usuario usuario = procurarUsuarioPorCpf(cpf);
+        if (usuario != null && usuario.getTipo().equals(TipoUsuario.ADMINISTRADOR)) {
+            usuario.setNome(novoNome);
+        } else if (usuario == null) {
+            throw new UsuarioNaoExisteException("Usuario nao encontrado.");
+        } else {
+            throw new UsuarioNaoPermitidoException("O usuario em questao pertence ao tipo Administrador.");
+        }
+
+    }
+
+    public void alterarSenhaUsuario(String email, String senha) throws UsuarioNaoExisteException, UsuarioNaoPermitidoException {
+        Usuario usuario = procurarUsuarioPorEmail(email);
+        if (usuario != null && usuario.getTipo().equals(TipoUsuario.ADMINISTRADOR)) {
+            usuario.setSenha(senha);
+        } else if (usuario == null) {
+            throw new UsuarioNaoExisteException("Usuario nao encontrado.");
+        } else {
+            throw new UsuarioNaoPermitidoException("O usuario em questao pertence ao tipo Administrador.");
+        }
+    }
+
+    public void alterarDataAniversario(String cpf, LocalDate dataAniversario) throws UsuarioNaoExisteException, UsuarioNaoPermitidoException {
+        Usuario usuario = procurarUsuarioPorCpf(cpf);
+        if (usuario != null && usuario.getTipo().equals(TipoUsuario.ADMINISTRADOR)) {
+            usuario.setDataNascimento(dataAniversario);
+        } else if (usuario == null) {
+            throw new UsuarioNaoExisteException("Usuario nao encontrado.");
+        } else {
+            throw new UsuarioNaoPermitidoException("O usuario em questao pertence ao tipo Administrador.");
+        }
     }
 
 }
