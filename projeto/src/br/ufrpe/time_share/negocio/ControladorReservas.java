@@ -3,6 +3,7 @@ package br.ufrpe.time_share.negocio;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 import br.ufrpe.time_share.dados.IRepositorioReservas;
@@ -59,7 +60,7 @@ return estadia;
 public Estadia prolongarEstadia(Estadia estadia){
 LocalDateTime agora = LocalDateTime.now();
 if(estadia.getDataFim().equals(agora)){
-    LocalDateTime novaDataFim = estadia.getDataFim().plusWeeks(1);
+    LocalDateTime novaDataFim = estadia.getDataFim().plusDays(6).withHour(23).withMinute(59).withSecond(59);;
     try{
         alterarPeriodoReserva(estadia.getReserva().getId(), agora, novaDataFim);
         estadia.setDataFim(novaDataFim);
@@ -99,32 +100,35 @@ return estadia.calcularDuracao();
 }
 
 //metodo para criar reserva/ reservar
-    public Reserva criarReserva( LocalDateTime dataInicio, LocalDateTime dataFim, Usuario usuarioComum, Bem bem)throws ReservaJaExisteException, PeriodoJaReservadoException, DadosInsuficientesException, ForaPeriodoException{  
-        int id = 1001 + ThreadLocalRandom.current().nextInt(10000);
-        Reserva reserva = new Reserva(id, dataInicio, dataFim, usuarioComum, bem);
-        Reserva novaReserva;
-        if(reserva.getBem()==null||reserva.getDataFim()==null||reserva.getDataInicio()==null||reserva.getUsuarioComum()==null){
-            throw new DadosInsuficientesException("Dados insuficientes");
-        }
-        else{
-         novaReserva = repositorio.buscarReserva(reserva);
-        if(novaReserva!=null){
-            throw new ReservaJaExisteException("Reserva ja existe");
-        }
-        else if(dataInicio.isAfter(dataFim)){
-            throw new ForaPeriodoException("Data de inicio apos data final");
-        }
-         for(Reserva buscar: repositorio.listarReservas()){
-        if(!(reserva.getDataFim().isBefore(buscar.getDataInicio()))||!(reserva.getDataInicio().isAfter(reserva.getDataFim()))&&buscar.getStatus()){
-            throw new PeriodoJaReservadoException("Esse periodo ja esta reservado");
-        }
-        else{
-            repositorio.cadastrarReserva(novaReserva);
+public Reserva criarReserva(LocalDateTime dataInicio, Usuario usuarioComum, Bem bem)
+        throws ReservaJaExisteException, PeriodoJaReservadoException, DadosInsuficientesException, ForaPeriodoException {
+    if (bem == null || dataInicio == null || usuarioComum == null) {
+        throw new DadosInsuficientesException("Bem, data de início ou usuário não podem ser nulos.");
+    }
+
+    int id = 1001 + ThreadLocalRandom.current().nextInt(10000);
+    LocalDateTime dataFim = dataInicio.plusDays(6).withHour(23).withMinute(59).withSecond(59);
+    Reserva reserva = new Reserva(id, dataInicio, dataFim, usuarioComum, bem);
+
+    Reserva reservaExistente = repositorio.buscarReserva(reserva);
+    if (reservaExistente != null) {
+        throw new ReservaJaExisteException("Reserva ja existe.");
+    }
+
+    if (dataInicio.isAfter(dataFim)) {
+        throw new ForaPeriodoException("Data de inicio apos data final");
+    }
+
+    for (Reserva buscar : repositorio.listarReservas()) {
+        if (buscar.getStatus() && 
+            !(reserva.getDataFim().isBefore(buscar.getDataInicio()) || reserva.getDataInicio().isAfter(buscar.getDataFim()))) {
+            throw new PeriodoJaReservadoException("Periodo ja reservado.");
         }
     }
+    repositorio.cadastrarReserva(reserva);
+    return reserva;
 }
-    return novaReserva;
-    }
+
 
 //metodo para cancelar reserva    
     public Reserva cancelarReserva(int idReserva)throws ReservaNaoExisteException, ReservaJaCanceladaException{
@@ -198,8 +202,8 @@ return reserva;
 
 
 
-    public ArrayList<LocalDateTime[]> consultarDisponibilidade(int bemId, LocalDateTime inicioPeriodo, LocalDateTime fimPeriodo)throws BemNaoExisteException {
-ArrayList<LocalDateTime[]> periodosDisponiveis = new ArrayList<>();
+    public List<String> consultarDisponibilidade(int bemId, LocalDateTime inicioPeriodo, LocalDateTime fimPeriodo)throws BemNaoExisteException {
+List<String> periodosDisponiveis = new ArrayList<>();
        // Buscar todas as reservas para o bem
        ArrayList<Reserva> reservas = repositorio.buscarReservasPorBem(bemId); 
 
@@ -215,7 +219,7 @@ ArrayList<LocalDateTime[]> periodosDisponiveis = new ArrayList<>();
                 fimAtual = fimPeriodo; 
             }
 
-            LocalDateTime[] periodo = {inicioAtual, fimAtual};
+            
 
             boolean disponivel = true;
 
@@ -238,7 +242,8 @@ ArrayList<LocalDateTime[]> periodosDisponiveis = new ArrayList<>();
             }
 
             if (disponivel) {
-                periodosDisponiveis.add(periodo);
+                String periodoFormatado = inicioAtual.toLocalDate() + " " + inicioAtual.toLocalTime() + " - " + fimAtual.toLocalDate() + " " + fimAtual.toLocalTime();
+                periodosDisponiveis.add(periodoFormatado);
             }
 
             inicioAtual = fimAtual.plusSeconds(1); 
@@ -249,38 +254,52 @@ ArrayList<LocalDateTime[]> periodosDisponiveis = new ArrayList<>();
     
 
     //metodo para calcular taxa extra
-    public double calcularTaxaExtra(Reserva reserva) throws ReservaNaoExisteException, CotaJaReservadaException{
-            double taxa = 0.00;
-            boolean reservaTaxada = true;
-            Promocao promocao=new Promocao();
-        if(reserva==null){
-            throw new NullPointerException();
+    //verifica se cota pertence ao usuario e corresponde ao periodo que deseja reservar
+    public double calcularTaxaExtra(Reserva reserva) throws ReservaNaoExisteException, CotaJaReservadaException {
+        double taxa = 0.00;
+        boolean reservaTaxada = true;
+        Promocao promocao = new Promocao();
+    
+        if (reserva == null) {
+            throw new NullPointerException("Reserva não pode ser nula");
         }
-        else{
-            if(repositorio.buscarReserva(reserva)==null){
-                throw new ReservaNaoExisteException("Reserva inexistente");
-            }
-            else{
-                
-                    for(Cota cota: reserva.getBem().getCotas()){
-                if(cota.getDataInicio().equals(reserva.getDataInicio())&&cota.getDataFim().equals(reserva.getDataFim())){
-                    if(!(cota.isStatusDeDisponibilidadeParaReserva())){
-                        throw new CotaJaReservadaException("A cota ja foi utilizada em uma reserva");
-                    }
-                    else{
+    
+        if (repositorio.buscarReserva(reserva) == null) {
+            throw new ReservaNaoExisteException("Reserva inexistente");
+        }
+    
+        // Verifica se a cota cobre a reserva
+        for (Cota cota : reserva.getBem().getCotas()) {
+            if (cota.getProprietario().equals(reserva.getUsuarioComum())) {
+                boolean datasIguais = cota.getDataInicio().equals(reserva.getDataInicio()) && 
+                                      cota.getDataFim().equals(reserva.getDataFim());
+                boolean cotaCobreReserva = !cota.getDataInicio().isAfter(reserva.getDataInicio()) && 
+                                           !cota.getDataFim().isBefore(reserva.getDataFim());
+    
+                if (datasIguais || cotaCobreReserva) {
+                    if (!cota.isStatusDeDisponibilidadeParaReserva()) {
+                        throw new CotaJaReservadaException("A cota já foi utilizada em uma reserva");
+                    } else {
                         cota.setStatusDeDisponibilidadeParaReserva(false);
                         reservaTaxada = false;
-                        break;
-                    }
-            }
-                    }
-                    if(reservaTaxada){
-                    taxa = 150;
+                        break; // Sai do loop, já encontrou a cota válida
                     }
                 }
             }
-        return taxa-=promocao.calcularTaxaPromocao(reserva.getDataInicio(), reserva.getUsuarioComum());   
+        }
+    
+        // Se nenhuma cota cobre a reserva, aplica a taxa
+        if (reservaTaxada) {
+            taxa = 150.00;
+            double taxaPromocional = promocao.calcularTaxaPromocao(reserva.getDataInicio(), reserva.getUsuarioComum());
+            double desconto = taxa * taxaPromocional; // Calcula o desconto monetário proporcional
+            taxa -= desconto;
+        }
+
+        // Aplica desconto promocional se aplicável
+        return Math.max(taxa,0.00);
     }
+    
 
 
 //metodo para gerar comprovante da reserva
