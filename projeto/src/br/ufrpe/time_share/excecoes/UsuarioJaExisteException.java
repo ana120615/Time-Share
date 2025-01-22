@@ -1,20 +1,20 @@
 package br.ufrpe.time_share.excecoes;
 
 public class UsuarioJaExisteException extends Exception {
-    private int cpfUsuario;
+    private String cpfUsuario;
     private String emailUsuario;
 
-    public UsuarioJaExisteException(String message, int cpf, String emailUsuario) {
+    public UsuarioJaExisteException(String message, String cpf, String emailUsuario) {
         super(message);
         this.cpfUsuario = cpf;
         this.emailUsuario = emailUsuario;
     }
 
-    public int getCpfUsuario() {
+    public String getCpfUsuario() {
         return cpfUsuario;
     }
 
-    public void setCpfUsuario(int cpfUsuario) {
+    public void setCpfUsuario(String cpfUsuario) {
         this.cpfUsuario = cpfUsuario;
     }
 
