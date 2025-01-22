@@ -14,12 +14,12 @@ public class Venda {
     private ArrayList<Cota> carrinhoDeComprasCotas;
 
     {
-        this.carrinhoDeComprasCotas = new ArrayList<>(10);
+        this.carrinhoDeComprasCotas = new ArrayList<>();
     }
 
-    public Venda(int id, Usuario usuario) {
+    public Venda(int id) {
         this.id = id;
-        this.usuario = usuario;
+//        this.usuario = usuario;
 
 
     }
@@ -55,8 +55,10 @@ public class Venda {
 
     public double calcularValorTotal() {
         double resultado = 0;
-        for (Cota c : carrinhoDeComprasCotas) {
-            resultado += c.getPreco();
+        if (carrinhoDeComprasCotas != null) {
+            for (Cota c : carrinhoDeComprasCotas) {
+                resultado += c.getPreco();
+            }
         }
         return resultado;
     }
@@ -82,14 +84,13 @@ public class Venda {
     }
 
     public void finalizarCompra() {
-        // REVISAR METODO DEPOIS
-		// usuarioComum.setCotasAdquiridas(carrinhoDeComprasCotas);
-        for (Cota cota : carrinhoDeComprasCotas) {
-            cota.setProprietario(usuario);
+        if (carrinhoDeComprasCotas != null) {
+            for (Cota cota : carrinhoDeComprasCotas) {
+                cota.setProprietario(usuario);
+            }
         }
-        carrinhoDeComprasCotas = null;
         System.out.println("Compra finalizada");
-   }
+    }
 
     public ArrayList<Cota> getCarrinhoDeComprasCotas() {
         return this.carrinhoDeComprasCotas;
@@ -108,9 +109,12 @@ public class Venda {
         notaFiscal += "CPF: " + usuario.getCpf() + "\n";
         notaFiscal += "Valor: R$" + calcularValorTotal() + "\n";
         notaFiscal += "Data de Emissão: " + LocalDate.now() + "\n";
-        notaFiscal += "Cotas no carrinho: " + carrinhoDeComprasCotas + "\n";
+        notaFiscal += "Cotas no carrinho: " + "\n";
+        for (Cota c : carrinhoDeComprasCotas) {
+            notaFiscal += c + "\n";
+        }
         String numeroNotaFiscal = UUID.randomUUID().toString();
-        notaFiscal += "Número da Nota Fiscal: " + numeroNotaFiscal + "\n";
+        notaFiscal += "\nNúmero da Nota Fiscal: " + numeroNotaFiscal + "\n";
 
         return notaFiscal;
     }

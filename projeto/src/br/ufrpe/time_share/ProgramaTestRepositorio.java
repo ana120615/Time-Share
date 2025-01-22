@@ -1,6 +1,7 @@
 package br.ufrpe.time_share;
 
 import br.ufrpe.time_share.dados.RepositorioBens;
+import br.ufrpe.time_share.excecoes.BemJaExisteException;
 import br.ufrpe.time_share.excecoes.BemNaoExisteException;
 import br.ufrpe.time_share.excecoes.UsuarioNaoPermitidoException;
 import br.ufrpe.time_share.negocio.ControladorBens;
@@ -26,7 +27,7 @@ public class ProgramaTestRepositorio {
             controladorBens.cadastrar(1364, "Apartamento", "Linda Casa",
                     "Centro da cidade", 5, usuario, LocalDateTime.now()
                     , 20,2000);
-        } catch (BemNaoExisteException | UsuarioNaoPermitidoException | NullPointerException e) {
+        } catch (BemNaoExisteException | UsuarioNaoPermitidoException | NullPointerException | BemJaExisteException e) {
             System.out.println(e.getMessage());
         }
 
