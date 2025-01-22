@@ -12,6 +12,7 @@ public class Bem {
     private boolean ofertado;
     private ArrayList<Cota> cotas;
     private Usuario cadastradoPor;
+    private LocalDate diaInicial;
 
     {
         this.cotas = new ArrayList<>(10);
@@ -29,6 +30,16 @@ public class Bem {
     }
 
     //METODOS GET E SET
+
+
+    public LocalDate getDiaInicial() {
+        return diaInicial;
+    }
+
+    public void setDiaInicial(LocalDate diaInicial) {
+        this.diaInicial = diaInicial;
+    }
+
     public int getId() {
         return this.id;
     }
@@ -79,6 +90,10 @@ public class Bem {
 
     public ArrayList<Cota> getCotas() {
         return cotas;
+    }
+
+    public void setCotas(ArrayList<Cota> cotas) {
+        this.cotas = cotas;
     }
 
     public Usuario getCadastradoPor() {
