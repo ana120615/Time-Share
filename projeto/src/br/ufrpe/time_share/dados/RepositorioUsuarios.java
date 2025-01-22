@@ -26,26 +26,17 @@ public class RepositorioUsuarios implements IRepositorioUsuario {
     }
 
     @Override
-    public void alterar(Usuario usuarioAtualizado) {
-        for (int i = 0; i < usuarios.size(); i++) {
-            if (usuarios.get(i).getCpf() == usuarioAtualizado.getCpf()) {
-                usuarios.set(i, usuarioAtualizado);
-            }
-        }
-    }
-
-    @Override
     public void remover(Usuario usuario) {
         usuarios.remove(usuario);
     }
 
-    public Usuario buscarUsuarioPorCpf(int cpf){
+    public Usuario buscarUsuarioPorCpf(String cpf){
         Usuario resultado = null;
 
         boolean usuarioComEsseCpfExiste = false;
         int i;
         for (i = 0; i < usuarios.size() && !usuarioComEsseCpfExiste; i++) {
-            if (usuarios.get(i).getCpf() == cpf) {
+            if (usuarios.get(i).getCpf().equals(cpf)) {
                 usuarioComEsseCpfExiste = true;
             }
         }

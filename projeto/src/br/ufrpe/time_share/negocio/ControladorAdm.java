@@ -1,6 +1,7 @@
 package br.ufrpe.time_share.negocio;
 
 import br.ufrpe.time_share.dados.IRepositorioUsuario;
+import br.ufrpe.time_share.excecoes.DadosInsuficientesException;
 import br.ufrpe.time_share.negocio.beans.TipoUsuario;
 import br.ufrpe.time_share.negocio.beans.Usuario;
 import br.ufrpe.time_share.excecoes.UsuarioNaoExisteException;
@@ -17,13 +18,13 @@ public class ControladorAdm {
         this.repositorio = repositorioUsuario;
     }
 
-    public void cadastrar(int cpf, String nome, String email, String senha, LocalDate dataNascimento) throws UsuarioJaExisteException {
-        Usuario usuarioAdm = new Usuario(cpf, nome, email, senha, dataNascimento, TipoUsuario.ADMINISTRADOR);
-        if (!this.repositorio.existe(usuarioAdm)) {
-            this.repositorio.cadastrar(usuarioAdm);
-        } else {
-            throw new UsuarioJaExisteException("Usuario ja cadastrado", cpf, email);
+    public void cadastrar(String cpf, String nome, String email, String senha, LocalDate dataNascimento) throws UsuarioJaExisteException, DadosInsuficientesException, UsuarioNaoPermitidoException {
+        if (cpf == null || nome == null || email == null || senha == null || dataNascimento == null) {
+            throw new DadosInsuficientesException("Informacao insuficiente.");
         }
+        Usuario usuarioAdm = new Usuario(cpf, nome, email, senha, dataNascimento, TipoUsuario.ADMINISTRADOR);
+        validarCadastro(usuarioAdm);
+        this.repositorio.cadastrar(usuarioAdm);
     }
 
     public void cadastrarAministrador(Usuario adm) throws UsuarioJaExisteException, UsuarioNaoPermitidoException {
@@ -36,8 +37,17 @@ public class ControladorAdm {
         if (adm == null) {
             throw new UsuarioNaoPermitidoException("O adminitsrador não pode ser nulo.");
         }
-        else if (adm.getCpf() <= 0) {
-            throw new UsuarioNaoPermitidoException("O CPF não é válido.");
+        else if (adm.getCpf() != null) {
+            char[] verificador = adm.getCpf().toCharArray();
+            if (verificador.length != 11) {
+                throw new UsuarioNaoPermitidoException("CPF invalido.");
+            }
+
+            for (int i = 0; i < verificador.length; i++) {
+                if (!Character.isDigit(verificador[i])) {
+                    throw new UsuarioNaoPermitidoException("CPF invalido.");
+                }
+            }
         }
         else if (this.repositorio.existe(adm)) {
             throw new UsuarioJaExisteException("Usuário já cadastrado.", adm.getCpf(), adm.getEmail());

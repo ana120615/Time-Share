@@ -8,11 +8,9 @@ public interface IRepositorioUsuario {
 
     void cadastrar(Usuario usuario);
 
-    void alterar(Usuario usuarioAtualizado);
-
     void remover(Usuario usuario);
 
-    Usuario buscarUsuarioPorCpf(int cpf);
+    Usuario buscarUsuarioPorCpf(String cpf);
 
     Usuario buscarUsuarioPorEmail(String email);
 

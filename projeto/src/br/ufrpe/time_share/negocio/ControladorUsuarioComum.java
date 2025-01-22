@@ -1,10 +1,7 @@
 package br.ufrpe.time_share.negocio;
 
 import br.ufrpe.time_share.dados.IRepositorioUsuario;
-import br.ufrpe.time_share.excecoes.UsuarioDeTipoIlegivel;
-import br.ufrpe.time_share.excecoes.UsuarioJaExisteException;
-import br.ufrpe.time_share.excecoes.UsuarioNaoExisteException;
-import br.ufrpe.time_share.excecoes.UsuarioNaoPermitidoException;
+import br.ufrpe.time_share.excecoes.*;
 import br.ufrpe.time_share.negocio.beans.TipoUsuario;
 import br.ufrpe.time_share.negocio.beans.Usuario;
 
@@ -18,7 +15,10 @@ public class ControladorUsuarioComum {
         this.repositorio = instanciaInterface;
     }
 
-    public void cadastrar(int cpf, String nome, String email, String senha, LocalDate dataNascimento) throws UsuarioJaExisteException, UsuarioNaoPermitidoException {
+    public void cadastrar(String cpf, String nome, String email, String senha, LocalDate dataNascimento) throws UsuarioJaExisteException, UsuarioNaoPermitidoException, DadosInsuficientesException {
+        if (cpf == null || nome == null || email == null || senha == null || dataNascimento == null) {
+            throw new DadosInsuficientesException("Informacao insuficiente.");
+        }
         Usuario usuarioComum = new Usuario(cpf, nome, email, senha, dataNascimento, TipoUsuario.COMUM);
         validarCadastro(usuarioComum);
         this.repositorio.cadastrar(usuarioComum);
@@ -33,19 +33,25 @@ public class ControladorUsuarioComum {
     public void validarCadastro(Usuario usuarioComum) throws UsuarioJaExisteException, UsuarioNaoPermitidoException {
         if (usuarioComum == null) {
             throw new UsuarioNaoPermitidoException("O adminitsrador não pode ser nulo.");
-        }
-        else if (usuarioComum.getCpf() <= 0) {
-            throw new UsuarioNaoPermitidoException("O CPF não é válido.");
-        }
-        else if (this.repositorio.existe(usuarioComum)) {
+        } else if (usuarioComum.getCpf() != null) {
+            char[] verificador = usuarioComum.getCpf().toCharArray();
+            if (verificador.length != 11) {
+                throw new UsuarioNaoPermitidoException("CPF invalido.");
+            }
+
+            for (int i = 0; i < verificador.length; i++) {
+                if (!Character.isDigit(verificador[i])) {
+                    throw new UsuarioNaoPermitidoException("CPF invalido.");
+                }
+            }
+        } else if (this.repositorio.existe(usuarioComum)) {
             throw new UsuarioJaExisteException("Usuário já cadastrado.", usuarioComum.getCpf(), usuarioComum.getEmail());
-        }
-        else if (usuarioComum.getTipo() != TipoUsuario.COMUM) {
+        } else if (usuarioComum.getTipo() != TipoUsuario.COMUM) {
             throw new UsuarioNaoPermitidoException("Apenas administradores podem ser cadastrados nessa categoria!");
         }
     }
 
-    public Usuario procurarUsuarioPorCpf(int cpf) {
+    public Usuario procurarUsuarioPorCpf(String cpf) {
         return this.repositorio.buscarUsuarioPorCpf(cpf);
     }
 
@@ -53,7 +59,7 @@ public class ControladorUsuarioComum {
         return this.repositorio.buscarUsuarioPorEmail(email);
     }
 
-    public void remover(int cpf) throws UsuarioNaoExisteException, UsuarioNaoPermitidoException {
+    public void remover(String cpf) throws UsuarioNaoExisteException, UsuarioNaoPermitidoException {
         Usuario usuario = procurarUsuarioPorCpf(cpf);
         if (usuario != null) {
             if (usuario.getTipo().equals(TipoUsuario.COMUM)) {
@@ -65,7 +71,6 @@ public class ControladorUsuarioComum {
             throw new UsuarioNaoExisteException("Usuario nao encontrado.");
         }
     }
-
 
 }
 

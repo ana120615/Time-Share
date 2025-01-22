@@ -5,7 +5,7 @@ import java.time.temporal.ChronoUnit;
 
 public class Usuario {
 
-    private int cpf;
+    private String cpf;
     private String nome;
     private String email;
     private String senha;
@@ -13,7 +13,7 @@ public class Usuario {
     private TipoUsuario tipo;
 
     //CONSTRUTORES
-    public Usuario(int cpf, String nome, String email, String senha, LocalDate dataNascimento, TipoUsuario tipo) {
+    public Usuario(String cpf, String nome, String email, String senha, LocalDate dataNascimento, TipoUsuario tipo) {
         this.setCpf(cpf);
         this.setNome(nome);
         this.setEmail(email);
@@ -22,18 +22,18 @@ public class Usuario {
         this.setTipo(tipo);
     }
 
-    public Usuario(int cpf, String senha, TipoUsuario tipo) {
+    public Usuario(String cpf, String senha, TipoUsuario tipo) {
         this.setCpf(cpf);
         this.setSenha(senha);
         this.setTipo(tipo);
     }
 
     //METODOS GET E SET
-    public int getCpf() {
+    public String getCpf() {
         return cpf;
     }
 
-    public void setCpf(int cpf) {
+    public void setCpf(String cpf) {
         this.cpf = cpf;
     }
 
@@ -95,7 +95,6 @@ public class Usuario {
     }
 
 
-
     @Override
     public String toString() {
         return "\n" +
@@ -112,7 +111,7 @@ public class Usuario {
         boolean ret = false;
         if (obj instanceof Usuario) {
             Usuario usuario = (Usuario) obj;
-            if (this.cpf == usuario.getCpf() || this.email.equals(usuario.getEmail())) {
+            if (this.cpf.equals(usuario.getCpf()) || this.email.equals(usuario.getEmail())) {
                 ret = true;
             }
         }
