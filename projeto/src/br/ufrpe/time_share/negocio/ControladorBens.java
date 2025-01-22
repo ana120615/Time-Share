@@ -3,6 +3,7 @@ package br.ufrpe.time_share.negocio;
 import br.ufrpe.time_share.dados.IRepositorioBens;
 import br.ufrpe.time_share.dados.IRepositorioCotas;
 import br.ufrpe.time_share.dados.RepositorioCotas;
+import br.ufrpe.time_share.dados.RepositorioUsuarios;
 import br.ufrpe.time_share.excecoes.*;
 import br.ufrpe.time_share.negocio.beans.Bem;
 import br.ufrpe.time_share.negocio.beans.Cota;
@@ -11,56 +12,40 @@ import br.ufrpe.time_share.negocio.beans.Usuario;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Random;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
+
 
 
 public class ControladorBens {
-    private IRepositorioBens repositorio;
+    private IRepositorioBens repositorioBens;
     private IRepositorioCotas repositorioCotas;
+    private ControladorUsuarioGeral controladorUsuarioGeral;
 
-    private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+
+    {
+        this.controladorUsuarioGeral = new ControladorUsuarioGeral(RepositorioUsuarios.getInstance());
+    }
 
     public ControladorBens(IRepositorioBens instanciaIneterface) {
-        this.repositorio = instanciaIneterface;
+        this.repositorioBens = instanciaIneterface;
         this.repositorioCotas =  RepositorioCotas.getInstancia();
     }
 
-    public void cadastrar(Usuario usuario, Bem bem) throws BemJaExisteException, UsuarioNaoPermitidoException {
-        if (usuario == null || bem == null) {
-            throw new NullPointerException();
-        } else {
-            if (usuario.getTipo().equals(TipoUsuario.ADMINISTRADOR)) {
-                boolean jaExiste = repositorio.existe(bem);
 
-                if (jaExiste) {
-                    throw new BemJaExisteException("Bem já existe");
-                }
+    // Cadastrar bem e inicializar as cotas dado a quantidade de cotas, a data inicial e quantidadeDeDiasPorCota
 
-                repositorio.cadastrarBem(bem);
-            } else {
-                throw new UsuarioNaoPermitidoException("Usuário não permitido");
-            }
-
-        }
-
-    }
-
-    // Cadastrar bem e inicializar as cotas dado a quantidade de cotas, a data inicial
-    // e quantidadeDeDiasPorCota
     public void cadastrar(int id, String nome, String descricao,
-                          String localizacao, int capacidade, Usuario usuario,
+                          String localizacao, int capacidade, String cpfUsuario,
                           LocalDateTime diaInicial, int quantidadeDeCotas,
-                          double precoDeUmaCota) throws BemNaoExisteException, UsuarioNaoPermitidoException, QuantidadeDeCotasExcedidasException, BemJaExisteException {
+                          double precoDeUmaCota) throws BemNaoExisteException, UsuarioNaoPermitidoException, QuantidadeDeCotasExcedidasException, BemJaExisteException, UsuarioNaoExisteException {
 
+        Usuario usuario = controladorUsuarioGeral.procurarUsuarioPorCpf(cpfUsuario);
         Bem newBem = new Bem(id, nome, descricao, localizacao, capacidade, usuario);
 
         if (usuario == null || newBem == null) {
             throw new NullPointerException();
         } else {
             if (usuario.getTipo().equals(TipoUsuario.ADMINISTRADOR)) {
-                boolean jaExiste = repositorio.existe(newBem);
+                boolean jaExiste = repositorioBens.existe(newBem);
 
                 if (jaExiste) {
                     throw new BemJaExisteException("Bem já existe");
@@ -91,7 +76,7 @@ public class ControladorBens {
                     }
                     newBem.setCotas(cotas);
                     repositorioCotas.cadastrarCotas(cotas);
-                    repositorio.cadastrarBem(newBem);
+                    repositorioBens.cadastrarBem(newBem);
                 }
 
 
@@ -105,10 +90,10 @@ public class ControladorBens {
 
 
     public void remover(int id) throws BemNaoExisteException {
-        Bem removido = repositorio.buscarBemPorId(id);
+        Bem removido = repositorioBens.buscarBemPorId(id);
 
         if (removido != null) {
-            repositorio.removerBem(removido);
+            repositorioBens.removerBem(removido);
         } else {
             throw new BemNaoExisteException("Bem não existe");
         }
@@ -116,7 +101,7 @@ public class ControladorBens {
     }
 
     public void ofertarBem(int id) throws BemNaoExisteException {
-        Bem bem = repositorio.buscarBemPorId(id);
+        Bem bem = repositorioBens.buscarBemPorId(id);
 
         if (bem != null) {
             bem.setOfertado(true);
@@ -129,16 +114,16 @@ public class ControladorBens {
     }
 
     public ArrayList<Bem> listarBens() {
-        return repositorio.listarBens();
+        return repositorioBens.listarBens();
     }
 
     public ArrayList<Bem> listarBensDisponiveis() {
-        return repositorio.listarBensDisponiveis();
+        return repositorioBens.listarBensDisponiveis();
     }
 
     public ArrayList<Cota> calcularDeslocamentoDasCotas(int bemId, int anoParaDeslocamento) throws BemNaoExisteException {
 
-        Bem bem = repositorio.buscarBemPorId(bemId);
+        Bem bem = repositorioBens.buscarBemPorId(bemId);
 
         if (bem == null) {
             throw new BemNaoExisteException("Bem não existe");
@@ -181,26 +166,31 @@ public class ControladorBens {
         return cota;
     }
 
-    public ArrayList<Cota> registros (String usuarioCpf) {
+    public void listarCotasDeUmBem (int idBem) throws BemNaoExisteException{
         ArrayList<Cota> resultado = new ArrayList<>();
-        // LISTA DE COTAS (REGISTRO) DE UM USUÀRIO
-        // BEM
-            // COTAS COMPRADAS PELO USUÁRIO PASSADO COMO PARAMETRO
+        Bem bem = repositorioBens.buscarBemPorId(idBem);
+
+        if (bem == null) {
+            throw new BemNaoExisteException("Bem não existe");
+        }
+
+        for (Cota cota : bem.getCotas()) {
+            System.out.println(cota);
+        }
+
+    }
+
+    public ArrayList<Cota> registros (String usuarioCpf) throws UsuarioNaoExisteException{
+        ArrayList<Cota> resultado = new ArrayList<>();
+        Usuario usuario = controladorUsuarioGeral.procurarUsuarioPorCpf(usuarioCpf);
+
+        for (Cota cota : repositorioCotas.listarCotas()) {
+            if (cota.getProprietario().equals(usuario)) {
+                resultado.add(cota);
+            }
+        }
         return resultado;
     }
-
-    public void atualizandoCotasApósUmAno (Bem bem) {
-//        ArrayList<Cota> cotasDeslocadas = calcularDeslocamentoDasCotas()
-    }
-
-    public void agendarTarefa(Runnable tarefa, long delay, TimeUnit unidade) {
-        scheduler.schedule(tarefa, delay, unidade);
-    }
-
-//    public void pararScheduler() {
-//        // Finaliza o agendador
-//        scheduler.shutdown();
-//    }
 
 }
 

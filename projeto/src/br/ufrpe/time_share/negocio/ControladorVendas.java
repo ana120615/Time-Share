@@ -1,13 +1,8 @@
 package br.ufrpe.time_share.negocio;
 
-import br.ufrpe.time_share.dados.IRepositorioBens;
-import br.ufrpe.time_share.dados.IRepositorioCotas;
 import br.ufrpe.time_share.dados.RepositorioBens;
 import br.ufrpe.time_share.dados.RepositorioUsuarios;
-import br.ufrpe.time_share.excecoes.CompraNaoFinalizada;
-import br.ufrpe.time_share.excecoes.CotaNaoExisteException;
-import br.ufrpe.time_share.excecoes.CotaNaoOfertadaException;
-import br.ufrpe.time_share.excecoes.UsuarioNaoExisteException;
+import br.ufrpe.time_share.excecoes.*;
 import br.ufrpe.time_share.negocio.beans.Cota;
 import br.ufrpe.time_share.negocio.beans.Usuario;
 import br.ufrpe.time_share.negocio.beans.Venda;
@@ -23,7 +18,7 @@ public class ControladorVendas {
         this.controladorUsuarioGeral = new ControladorUsuarioGeral(RepositorioUsuarios.getInstance());
     }
 
-    public Venda iniciarVenda (String cpfUsuario) throws UsuarioNaoExisteException{
+    public Venda iniciarVenda(String cpfUsuario) throws UsuarioNaoExisteException {
         Usuario comprador = controladorUsuarioGeral.procurarUsuarioPorCpf(cpfUsuario);
         Random random = new Random();
         if (comprador != null) {
@@ -32,13 +27,12 @@ public class ControladorVendas {
             venda.setUsuario(comprador);
 
             return venda;
-        }
-        else {
+        } else {
             throw new UsuarioNaoExisteException("Usuário não existe");
         }
     }
 
-    public void adicionarCotaCarrinho (int idCota, Venda venda) throws CotaNaoExisteException, CotaNaoOfertadaException{
+    public void adicionarCotaCarrinho(int idCota, Venda venda) throws CotaNaoExisteException, CotaNaoOfertadaException {
         Cota cotaVenda = controladorBens.buscarCota(idCota);
 
         if (cotaVenda.isStatusDeDisponibilidadeParaCompra()) {
@@ -49,33 +43,39 @@ public class ControladorVendas {
 
     }
 
-    public void removeCotaCarrinho (int idCota, Venda venda) throws CotaNaoExisteException {
+    public void removeCotaCarrinho(int idCota, Venda venda) throws CotaNaoExisteException {
         Cota cota = controladorBens.buscarCota(idCota);
 
         if (venda.getCarrinhoDeComprasCotas().contains(cota)) {
             venda.removerCotaCarrinho(cota);
-        }
-        else {
+        } else {
             throw new IllegalArgumentException("Não existe essa cota no carrinho");
         }
     }
 
-    public String finalizarCompra (Venda venda) {
+    public String finalizarCompra(Venda venda) {
         if (!venda.getCarrinhoDeComprasCotas().isEmpty()) {
             venda.finalizarCompra();
             // Poderia retornar algum Arquivo (Comprovante) de compra
             return venda.toString();
-        }
-        else {
+        } else {
             throw new CompraNaoFinalizada("Carrinho vazio");
         }
     }
 
-    public boolean transferenciaDeDireitos(String cpfUsuarioRemetente, String cpfUsuarioDestinario, int idCota) {
-        return false;
+    public boolean transferenciaDeDireitos(String cpfUsuarioRemetente, String cpfUsuarioDestinario, int idCota) throws CotaNaoExisteException, UsuarioNaoExisteException {
+        Cota cotaTransferida = controladorBens.buscarCota(idCota);
+
+        Usuario usuarioRemetente = controladorUsuarioGeral.procurarUsuarioPorCpf(cpfUsuarioRemetente);
+        Usuario usuarioDestinatario = controladorUsuarioGeral.procurarUsuarioPorCpf(cpfUsuarioDestinario);
+
+        if (cotaTransferida.getProprietario().equals(usuarioRemetente)) {
+            cotaTransferida.setProprietario(usuarioDestinatario);
+            return true;
+        } else {
+            throw new ProprietarioNaoIdentificadoException("Usuário não é o Proprietário da cota");
+        }
     }
 
-    public boolean revendaDeDireitos(String cpfUsuarioRemetente, String cpfUsuarioDestinario, int idCota) {
-        return false;
-    }
+
 }
