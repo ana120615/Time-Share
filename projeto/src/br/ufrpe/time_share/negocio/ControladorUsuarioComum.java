@@ -44,6 +44,7 @@ public class ControladorUsuarioComum {
                 }
             }
         }
+
         if (this.repositorio.existe(usuarioComum)) {
             throw new UsuarioJaExisteException("Usuário já cadastrado.", usuarioComum.getCpf(), usuarioComum.getEmail());
         }
