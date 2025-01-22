@@ -9,6 +9,7 @@ import br.ufrpe.time_share.negocio.beans.TipoUsuario;
 import br.ufrpe.time_share.negocio.beans.Usuario;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class ProgramaTestRepositorio {
     public static void main(String[] args) {
@@ -25,7 +26,7 @@ public class ProgramaTestRepositorio {
 
         try {
             controladorBens.cadastrar(1364, "Apartamento", "Linda Casa",
-                    "Centro da cidade", 5, usuario, LocalDate.now()
+                    "Centro da cidade", 5, usuario, LocalDateTime.now()
                     , 20,2000);
         } catch (BemNaoExisteException | UsuarioNaoPermitidoException | NullPointerException e) {
             System.out.println(e.getMessage());

@@ -1,6 +1,7 @@
 package br.ufrpe.time_share.negocio.beans;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 public class Bem {
@@ -12,7 +13,7 @@ public class Bem {
     private boolean ofertado;
     private ArrayList<Cota> cotas;
     private Usuario cadastradoPor;
-    private LocalDate diaInicial;
+    private LocalDateTime diaInicial;
 
     {
         this.cotas = new ArrayList<>(10);
@@ -32,11 +33,11 @@ public class Bem {
     //METODOS GET E SET
 
 
-    public LocalDate getDiaInicial() {
+    public LocalDateTime getDiaInicial() {
         return diaInicial;
     }
 
-    public void setDiaInicial(LocalDate diaInicial) {
+    public void setDiaInicial(LocalDateTime diaInicial) {
         this.diaInicial = diaInicial;
     }
 

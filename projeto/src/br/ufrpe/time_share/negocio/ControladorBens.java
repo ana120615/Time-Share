@@ -10,6 +10,7 @@ import br.ufrpe.time_share.negocio.beans.TipoUsuario;
 import br.ufrpe.time_share.negocio.beans.Usuario;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -45,7 +46,7 @@ public class ControladorBens {
     // e quantidadeDeDiasPorCota
     public void cadastrar(int id, String nome, String descricao,
                           String localizacao, int capacidade, Usuario usuario,
-                          LocalDate diaInicial, int quantidadeDeCotas,
+                          LocalDateTime diaInicial, int quantidadeDeCotas,
                           double precoDeUmaCota) throws BemNaoExisteException, UsuarioNaoPermitidoException {
 
         Bem newBem = new Bem(id, nome, descricao, localizacao, capacidade, usuario);
@@ -65,8 +66,8 @@ public class ControladorBens {
 
                 ArrayList<Cota> cotas = new ArrayList<>();
                 Random random = new Random();
-                LocalDate dataInicio = diaInicial;
-                LocalDate dataFim = dataInicio.plusDays(6);
+                LocalDateTime dataInicio = diaInicial;
+                LocalDateTime dataFim = dataInicio.plusDays(6);
 
                 for (int i = 0; i < quantidadeDeCotas; i++) {
                     int randomNumberCota = 1000 + random.nextInt(9999);
@@ -131,9 +132,9 @@ public class ControladorBens {
 
             int delta = anoParaDeslocamento - bem.getDiaInicial().getYear();
 
-            LocalDate dataInicio = bem.getDiaInicial();
+            LocalDateTime dataInicio = bem.getDiaInicial();
             dataInicio = dataInicio.plusDays(6 * delta); // Deslocamento inicial baseado em delta
-            LocalDate dataFinal = dataInicio.plusDays(6);
+            LocalDateTime dataFinal = dataInicio.plusDays(6);
 
             for (Cota c : bem.getCotas()) {
                 c.setDataInicio(dataInicio);
