@@ -27,8 +27,7 @@ public class TesteReservas {
         //criando um administrador
         Usuario administrador = new Usuario(
             "789.741.366-99", "Mario", "mario123@gmail.com", "M@rio887",
-            LocalDate.of(1981, 1, 17), TipoUsuario.ADMINISTRADOR
-        );
+            LocalDate.of(1981, 1, 17), TipoUsuario.ADMINISTRADOR);
 
 
         //ajustando datas iniciais para teste
@@ -38,8 +37,7 @@ public class TesteReservas {
         //criando um bem
         Bem bem = new Bem(
             5789, "Casa", "Casa com 5 quartos, 6 banheiros, 1 piscina, sala de estar, sala de jantar, cozinha e área gourmet",
-            "Praia de Serrambi", 10, administrador
-        );
+            "Praia de Serrambi", 10, administrador);
 
         //criando uma cota
         Cota cota = new Cota(89848, agora, dataFim, 1000, bem);
@@ -47,8 +45,7 @@ public class TesteReservas {
         //criando um usuario comum
         Usuario usuario = new Usuario(
             "798.747.222-80", "Maria", "maria123@gmail.com", "M@ria777",
-            LocalDate.of(1997, 01, 22), TipoUsuario.COMUM
-        );
+            LocalDate.of(1997, 01, 22), TipoUsuario.COMUM);
 
         //adicionando proprietario a cota
         cota.setProprietario(usuario);

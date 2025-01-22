@@ -1,6 +1,8 @@
 package br.ufrpe.time_share;
 
+import br.ufrpe.time_share.dados.IRepositorioBens;
 import br.ufrpe.time_share.dados.IRepositorioUsuario;
+import br.ufrpe.time_share.dados.RepositorioBens;
 import br.ufrpe.time_share.dados.RepositorioUsuarios;
 import br.ufrpe.time_share.excecoes.SenhaInvalidaException;
 import br.ufrpe.time_share.excecoes.UsuarioNaoExisteException;
@@ -15,10 +17,14 @@ import java.util.Scanner;
 public class Sistema {
     public static void main(String[] args) throws UsuarioNaoExisteException {
         Scanner input = new Scanner(System.in);
+
+        //INICIALIZAR REPOSITORIOS
         IRepositorioUsuario repositorioUsuario = RepositorioUsuarios.getInstance();
+        IRepositorioBens repositorioBens = RepositorioBens.getInstancia();
+
+        //INICIALIZANDO CONTROLADORES
         ControladorLogin controladorLogin = new ControladorLogin(repositorioUsuario);
-        ControladorUsuarioComum controladorUsuarioComum = new ControladorUsuarioComum(repositorioUsuario);
-        ControladorAdm controladorAdm = new ControladorAdm(repositorioUsuario);
+        ControladorUsuarioGeral controladorUsuario = new ControladorUsuarioGeral(repositorioUsuario);
 
         boolean entrarSistema = false;
         boolean sairSistema = false;
@@ -26,9 +32,9 @@ public class Sistema {
         Usuario usuario = null; //Variavel que vai armazenar o usuario apos login
 
         while (!sairSistema) {
-            boolean sairLogin = false;
             while (!entrarSistema) {
-                System.out.println("BEM-VINDO AO FELX-SHARE");
+                boolean sairLogin = false;
+                System.out.println("\nBEM-VINDO AO FELX-SHARE");
                 System.out.println("Ja possui cadastro?(1 - sim/ 2 - nao)");
                 int escolha = input.nextInt();
                 if (escolha == 1) {
@@ -71,9 +77,9 @@ public class Sistema {
 
 
                             if (tipoUsuario == 1) {
-                                controladorUsuarioComum.cadastrar(cpf, nome, email, senha, LocalDate.parse(dataNascimento, DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+                                controladorUsuario.cadastrar(cpf, nome, email, senha, LocalDate.parse(dataNascimento, DateTimeFormatter.ofPattern("dd/MM/yyyy")), TipoUsuario.fromValor(1));
                             } else if (tipoUsuario == 2) {
-                                controladorAdm.cadastrar(cpf, nome, email, senha, LocalDate.parse(dataNascimento, DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+                                controladorUsuario.cadastrar(cpf, nome, email, senha, LocalDate.parse(dataNascimento, DateTimeFormatter.ofPattern("dd/MM/yyyy")), TipoUsuario.fromValor(2));
                             } else {
                                 System.out.println("Opcao invalida!");
                             }
@@ -86,8 +92,8 @@ public class Sistema {
                 }
             }
 
-            boolean sairTela = false;
-            while (!sairTela) {
+            boolean sairTelaPrincipal = false;
+            while (!sairTelaPrincipal) {
                 if (usuario != null && usuario.getTipo().equals(TipoUsuario.COMUM)) {
 
                 } else if (usuario != null && usuario.getTipo().equals(TipoUsuario.ADMINISTRADOR)) {
@@ -97,6 +103,12 @@ public class Sistema {
                 }
             }
 
+
+            System.out.println("\n\nDeseja sair do sistema? (s/n) ");
+            sairSistema = input.next().equals("s");
+            if (!sairSistema) {
+                entrarSistema = false;
+            }
         }
     }
 }

@@ -55,18 +55,26 @@ public class ControladorUsuarioGeral {
         }
     }
 
-    private Usuario procurarUsuarioPorCpf(String cpf) {
-        return this.repositorio.buscarUsuarioPorCpf(cpf);
+    public Usuario procurarUsuarioPorCpf(String cpf) throws UsuarioNaoExisteException {
+        Usuario usuario = this.repositorio.buscarUsuarioPorCpf(cpf);
+        if (usuario == null) {
+            throw new UsuarioNaoExisteException("Usuario nao encontrado.");
+        }
+        return usuario;
     }
 
-    private Usuario procurarUsuarioPorEmail(String email) {
-        return this.repositorio.buscarUsuarioPorEmail(email);
+    public Usuario procurarUsuarioPorEmail(String email) throws UsuarioNaoExisteException {
+        Usuario usuario = this.repositorio.buscarUsuarioPorEmail(email);
+        if (usuario == null) {
+            throw new UsuarioNaoExisteException("Usuario nao encontrado.");
+        }
+        return usuario;
     }
 
-    public void remover(String cpf, int tipo) throws UsuarioNaoExisteException, UsuarioNaoPermitidoException {
+    public void remover(String cpf, TipoUsuario tipo) throws UsuarioNaoExisteException, UsuarioNaoPermitidoException {
         Usuario usuario = procurarUsuarioPorCpf(cpf);
         if (usuario != null) {
-            if (usuario.getTipo().getValor() == tipo) {
+            if (usuario.getTipo().equals(tipo)) {
                 this.repositorio.remover(usuario);
             } else {
                 throw new UsuarioNaoPermitidoException("O usuario em questao pertence a uma categoria diferente.");
@@ -76,9 +84,9 @@ public class ControladorUsuarioGeral {
         }
     }
 
-    public void alterarNomeUsuario(String cpf, String novoNome, int tipo) throws UsuarioNaoExisteException, UsuarioNaoPermitidoException {
+    public void alterarNomeUsuario(String cpf, String novoNome, TipoUsuario tipo) throws UsuarioNaoExisteException, UsuarioNaoPermitidoException {
         Usuario usuario = procurarUsuarioPorCpf(cpf);
-        if (usuario != null && usuario.getTipo().getValor() == tipo) {
+        if (usuario != null && usuario.getTipo().equals(tipo)) {
             usuario.setNome(novoNome);
         } else if (usuario == null) {
             throw new UsuarioNaoExisteException("Usuario nao encontrado.");
@@ -87,9 +95,9 @@ public class ControladorUsuarioGeral {
         }
     }
 
-    public void alterarSenhaUsuario(String email, String senha, int tipo) throws UsuarioNaoExisteException, UsuarioNaoPermitidoException {
+    public void alterarSenhaUsuario(String email, String senha, TipoUsuario tipo) throws UsuarioNaoExisteException, UsuarioNaoPermitidoException {
         Usuario usuario = procurarUsuarioPorEmail(email);
-        if (usuario != null && usuario.getTipo().getValor()  == tipo) {
+        if (usuario != null && usuario.getTipo().equals(tipo)) {
             usuario.setSenha(senha);
         } else if (usuario == null) {
             throw new UsuarioNaoExisteException("Usuario nao encontrado.");
@@ -98,9 +106,9 @@ public class ControladorUsuarioGeral {
         }
     }
 
-    public void alterarDataAniversario(String cpf, LocalDate dataAniversario, int tipo) throws UsuarioNaoExisteException, UsuarioNaoPermitidoException {
+    public void alterarDataAniversario(String cpf, LocalDate dataAniversario, TipoUsuario tipo) throws UsuarioNaoExisteException, UsuarioNaoPermitidoException {
         Usuario usuario = procurarUsuarioPorCpf(cpf);
-        if (usuario != null && usuario.getTipo().getValor() == tipo) {
+        if (usuario != null && usuario.getTipo().equals(tipo)) {
             usuario.setDataNascimento(dataAniversario);
         } else if (usuario == null) {
             throw new UsuarioNaoExisteException("Usuario nao encontrado.");
