@@ -8,6 +8,7 @@ import br.ufrpe.time_share.negocio.*;
 import br.ufrpe.time_share.negocio.beans.Usuario;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
 public class Sistema {
@@ -51,8 +52,7 @@ public class Sistema {
                 while (!sairCadastro) {
                     try {
                         System.out.println("\n-- CADASTRO USUARIO --");
-                        String nome, cpf, email, senha;
-                        LocalDate dataNascimento;
+                        String nome, cpf, email, senha, dataNascimento;
                         System.out.println("Informe o nome: ");
                         nome = input.nextLine();
                         input.next();
@@ -66,19 +66,19 @@ public class Sistema {
                         email = input.nextLine();
                         input.next();
                         System.out.println("Informe a data de nascimento: ");
-                        dataNascimento = LocalDate.parse(input.nextLine());
+                        dataNascimento = input.nextLine();
                         input.next();
                         System.out.println("\nEscolha o tipo de usuario: ");
                         System.out.println("1 - COMUM");
                         System.out.println("2 - ADM");
-                        String tipoUsuario = input.nextLine();
-                        input.next();
-                        if(tipoUsuario.equals("1")) {
-                            controladorUsuarioComum.cadastrar(cpf, nome, email, senha, dataNascimento);
+                        int tipoUsuario = input.nextInt();
+
+                        if(tipoUsuario == 1) {
+                            controladorUsuarioComum.cadastrar(cpf, nome, email, senha, LocalDate.parse(dataNascimento, DateTimeFormatter.ofPattern("dd/MM/yyyy")));
                             sairCadastro = true;
                         }
-                        else if(tipoUsuario.equals("2")) {
-                            controladorAdm.cadastrar(cpf, nome, email, senha, dataNascimento);
+                        else if(tipoUsuario == 2) {
+                            controladorAdm.cadastrar(cpf, nome, email, senha, LocalDate.parse(dataNascimento, DateTimeFormatter.ofPattern("dd/MM/yyyy")));
                             sairCadastro = true;
                         }
                         else{
