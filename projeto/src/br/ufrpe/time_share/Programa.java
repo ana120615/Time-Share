@@ -16,8 +16,8 @@ public class Programa {
         IRepositorioUsuario repositorioUsuario = RepositorioUsuarios.getInstance();
         ControladorUsuarioGeral controlador = new ControladorUsuarioGeral(repositorioUsuario);
 
-        controlador.cadastrar("11111111111", "Samara", "samara@gmail.com", "ss", LocalDate.of(2005,02,01), 1);
-        controlador.cadastrar("11111191111", "Samara", "samar@gmail.com", "ss", LocalDate.of(2005,02,01), 2);
+        controlador.cadastrar("11111111111", "Samara", "samara@gmail.com", "ss", LocalDate.of(2005,02,01), TipoUsuario.fromValor(1));
+        controlador.cadastrar("11111191111", "Samara", "samar@gmail.com", "ss", LocalDate.of(2005,02,01), TipoUsuario.fromValor(2));
 
         Usuario usuario = new Usuario("132644541", "Senha1", TipoUsuario.COMUM);
         Usuario usuario2 = new Usuario("65156155", "Senha9542", TipoUsuario.COMUM);
@@ -26,9 +26,6 @@ public class Programa {
         Usuario usuario5 = new Usuario("471652206", "fafeof", TipoUsuario.ADMINISTRADOR);
 
 
-        if (usuario.getTipo().VALOR == 1) {
-            System.out.println("Adm");
-        }
 
 //        IRepositorioUsuario repo = new RepositorioUsuarios();
 //        repo.cadastrar(usuario);

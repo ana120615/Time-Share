@@ -15,8 +15,8 @@ public class ControladorUsuarioGeral {
         this.repositorio = instanciaInterface;
     }
 
-    public void cadastrar(String cpf, String nome, String email, String senha, LocalDate dataNascimento, int tipo) throws UsuarioJaExisteException, UsuarioNaoPermitidoException, DadosInsuficientesException {
-        if (cpf == null || nome == null || email == null || senha == null || dataNascimento == null || tipo == 0) {
+    public void cadastrar(String cpf, String nome, String email, String senha, LocalDate dataNascimento, TipoUsuario tipo) throws UsuarioJaExisteException, UsuarioNaoPermitidoException, DadosInsuficientesException {
+        if (cpf == null || nome == null || email == null || senha == null || dataNascimento == null) {
             throw new DadosInsuficientesException("Informacao insuficiente.");
         }
         Usuario usuario = new Usuario(cpf, nome, email, senha, dataNascimento, tipo);
@@ -66,7 +66,7 @@ public class ControladorUsuarioGeral {
     public void remover(String cpf, int tipo) throws UsuarioNaoExisteException, UsuarioNaoPermitidoException {
         Usuario usuario = procurarUsuarioPorCpf(cpf);
         if (usuario != null) {
-            if (usuario.getTipo().VALOR == tipo) {
+            if (usuario.getTipo().getValor() == tipo) {
                 this.repositorio.remover(usuario);
             } else {
                 throw new UsuarioNaoPermitidoException("O usuario em questao pertence a uma categoria diferente.");
@@ -78,7 +78,7 @@ public class ControladorUsuarioGeral {
 
     public void alterarNomeUsuario(String cpf, String novoNome, int tipo) throws UsuarioNaoExisteException, UsuarioNaoPermitidoException {
         Usuario usuario = procurarUsuarioPorCpf(cpf);
-        if (usuario != null && usuario.getTipo().VALOR == tipo) {
+        if (usuario != null && usuario.getTipo().getValor() == tipo) {
             usuario.setNome(novoNome);
         } else if (usuario == null) {
             throw new UsuarioNaoExisteException("Usuario nao encontrado.");
@@ -89,7 +89,7 @@ public class ControladorUsuarioGeral {
 
     public void alterarSenhaUsuario(String email, String senha, int tipo) throws UsuarioNaoExisteException, UsuarioNaoPermitidoException {
         Usuario usuario = procurarUsuarioPorEmail(email);
-        if (usuario != null && usuario.getTipo().VALOR == tipo) {
+        if (usuario != null && usuario.getTipo().getValor()  == tipo) {
             usuario.setSenha(senha);
         } else if (usuario == null) {
             throw new UsuarioNaoExisteException("Usuario nao encontrado.");
@@ -100,7 +100,7 @@ public class ControladorUsuarioGeral {
 
     public void alterarDataAniversario(String cpf, LocalDate dataAniversario, int tipo) throws UsuarioNaoExisteException, UsuarioNaoPermitidoException {
         Usuario usuario = procurarUsuarioPorCpf(cpf);
-        if (usuario != null && usuario.getTipo().VALOR == tipo) {
+        if (usuario != null && usuario.getTipo().getValor() == tipo) {
             usuario.setDataNascimento(dataAniversario);
         } else if (usuario == null) {
             throw new UsuarioNaoExisteException("Usuario nao encontrado.");

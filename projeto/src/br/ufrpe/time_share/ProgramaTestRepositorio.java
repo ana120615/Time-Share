@@ -7,8 +7,6 @@ import br.ufrpe.time_share.negocio.ControladorBens;
 import br.ufrpe.time_share.negocio.beans.Bem;
 import br.ufrpe.time_share.negocio.beans.TipoUsuario;
 import br.ufrpe.time_share.negocio.beans.Usuario;
-
-
 import java.time.LocalDateTime;
 
 public class ProgramaTestRepositorio {
@@ -32,51 +30,7 @@ public class ProgramaTestRepositorio {
             System.out.println(e.getMessage());
         }
 
-        System.out.println("\nLISTA DE BENS");
-        System.out.println(controladorBens.listarBens());
 
-        System.out.println("VERIFICANDO ANTES DE OFERTAR A LISTA");
-        System.out.println(controladorBens.listarBensDisponiveis());
 
-        System.out.println("OFERTANDO BEM");
-        try {
-            controladorBens.ofertarBem(1364);
-        } catch (BemNaoExisteException e) {
-            System.out.println(e.getMessage());
-        }
-
-        System.out.println(controladorBens.listarBensDisponiveis());
-
-        System.out.println("\nDESLOCAMENTO DA COTA");
-        try {
-            System.out.println(controladorBens.calcularDeslocamentoDasCotas(1364, 2026));
-        } catch (BemNaoExisteException | IllegalArgumentException e) {
-            System.out.println(e.getMessage());
-        }
-
-        System.out.println("\nLISTA DE BENS");
-        System.out.println(controladorBens.listarBens());
-
-        // System.out.println(controladorBens.listarBens());
-
-//        try {
-//            controladorBens.remover(1111);
-//        } catch (BemNaoExisteException e) {
-//            System.out.println(e.getMessage());
-//        }
-//
-//        try {
-//            controladorBens.ofertarBem(2222);
-//            controladorBens.ofertarBem(1111);
-//        } catch (BemNaoExisteException e) {
-//            System.out.println(e.getMessage());
-//        }
-//
-//        System.out.println("\nBEM OFERTADOS");
-//        System.out.println(controladorBens.listarBensDisponiveis());
-//
-//        System.out.println("\nLISTA DE BENS");
-//        System.out.println(controladorBens.listarBens());
-//    }
     }
 }

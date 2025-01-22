@@ -11,15 +11,19 @@ import br.ufrpe.time_share.negocio.beans.Bem;
 import br.ufrpe.time_share.negocio.beans.Cota;
 import br.ufrpe.time_share.negocio.beans.TipoUsuario;
 import br.ufrpe.time_share.negocio.beans.Usuario;
-
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 
 public class ControladorBens {
     private IRepositorioBens repositorio;
     private IRepositorioCotas repositorioCotas;
+
+    private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 
     public ControladorBens(IRepositorioBens instanciaIneterface) {
         this.repositorio = instanciaIneterface;
@@ -178,6 +182,18 @@ public class ControladorBens {
         return resultado;
     }
 
+    public void atualizandoCotasApósUmAno (Bem bem) {
+//        ArrayList<Cota> cotasDeslocadas = calcularDeslocamentoDasCotas()
+    }
+
+    public void agendarTarefa(Runnable tarefa, long delay, TimeUnit unidade) {
+        scheduler.schedule(tarefa, delay, unidade);
+    }
+
+//    public void pararScheduler() {
+//        // Finaliza o agendador
+//        scheduler.shutdown();
+//    }
 
 }
 
