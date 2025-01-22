@@ -9,7 +9,6 @@ import br.ufrpe.time_share.negocio.beans.Cota;
 import br.ufrpe.time_share.negocio.beans.TipoUsuario;
 import br.ufrpe.time_share.negocio.beans.Usuario;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Random;
@@ -124,7 +123,9 @@ public class ControladorBens {
 
         Bem bem = repositorio.buscarBemPorId(bemId);
 
+        Bem bemClonado = bem.clone();
         ArrayList<Cota> resultado = new ArrayList<>();
+
 
         if (anoParaDeslocamento < bem.getDiaInicial().getYear()) {
             throw new IllegalArgumentException("Não permitido");
@@ -133,10 +134,10 @@ public class ControladorBens {
             int delta = anoParaDeslocamento - bem.getDiaInicial().getYear();
 
             LocalDateTime dataInicio = bem.getDiaInicial();
-            dataInicio = dataInicio.plusDays(6 * delta); // Deslocamento inicial baseado em delta
+            dataInicio = dataInicio.plusDays(7 * delta); // Deslocamento inicial baseado em delta
             LocalDateTime dataFinal = dataInicio.plusDays(6);
 
-            for (Cota c : bem.getCotas()) {
+            for (Cota c : bemClonado.getCotas()) {
                 c.setDataInicio(dataInicio);
                 c.setDataFim(dataFinal);
                 resultado.add(c);
@@ -149,7 +150,6 @@ public class ControladorBens {
 
         return resultado;
     }
-
 
 
 }
