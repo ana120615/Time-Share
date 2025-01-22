@@ -4,7 +4,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
-public class Bem {
+public class Bem implements Cloneable {
     private int id;
     private String nome;
     private String descricao;
@@ -105,7 +105,23 @@ public class Bem {
         this.cadastradoPor = cadastradoPor;
     }
 
+    @Override
+    public Bem clone() {
+        try {
+            // Chama o clone() da classe Object (que faz uma cópia superficial)
+            Bem cloneBem = (Bem) super.clone();
 
+            // Clonando as cotas (profundamente, para não compartilhar a mesma lista)
+            cloneBem.setCotas(new ArrayList<>());
+            for (Cota cota : this.cotas) {
+                cloneBem.getCotas().add(cota.clone());
+            }
+            return cloneBem;
+        } catch (CloneNotSupportedException e) {
+            // throw new RuntimeException("Falha ao clonar Bem", e);
+            throw new IllegalArgumentException(e.getMessage());
+        }
+    }
 
     @Override
     public String toString() {

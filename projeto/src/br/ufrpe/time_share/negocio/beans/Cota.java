@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 
-public class Cota {
+public class Cota implements Cloneable{
     private int id;
     private double preco;
     private Usuario proprietario;
@@ -108,6 +108,15 @@ public class Cota {
                 ", statusDeDisponibilidadeParaCompra=" + statusDeDisponibilidadeParaCompra +
                 ", bemAssociado=" + (bemAssociado != null ? bemAssociado.getId() : "null") +
                 '}';
+    }
+
+    @Override
+    public Cota clone() {
+        try {
+            return (Cota) super.clone(); // Clonagem superficial (ok para Cota simples)
+        } catch (CloneNotSupportedException e) {
+            throw new RuntimeException("Falha ao clonar Cota", e);
+        }
     }
 
     @Override
