@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 public class ProgramaTestRepositorio {
     public static void main(String[] args) {
 
-        ControladorBens controladorBens = new ControladorBens(new RepositorioBens());
+        ControladorBens controladorBens = new ControladorBens(RepositorioBens.getInstancia());
 
         Usuario usuario = new Usuario("555555554", "SENHA", TipoUsuario.ADMINISTRADOR);
         Usuario usuario2 = new Usuario("225512124", "S#NH@", TipoUsuario.COMUM);
@@ -35,8 +35,24 @@ public class ProgramaTestRepositorio {
         System.out.println("\nLISTA DE BENS");
         System.out.println(controladorBens.listarBens());
 
+        System.out.println("VERIFICANDO ANTES DE OFERTAR A LISTA");
+        System.out.println(controladorBens.listarBensDisponiveis());
+
+        System.out.println("OFERTANDO BEM");
+        try {
+            controladorBens.ofertarBem(1364);
+        } catch (BemNaoExisteException e) {
+            System.out.println(e.getMessage());
+        }
+
+        System.out.println(controladorBens.listarBensDisponiveis());
+
         System.out.println("\nDESLOCAMENTO DA COTA");
-        System.out.println(controladorBens.calcularDeslocamentoDasCotas(1364, 2026));
+        try {
+            System.out.println(controladorBens.calcularDeslocamentoDasCotas(1364, 2026));
+        } catch (BemNaoExisteException | IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+        }
 
         System.out.println("\nLISTA DE BENS");
         System.out.println(controladorBens.listarBens());

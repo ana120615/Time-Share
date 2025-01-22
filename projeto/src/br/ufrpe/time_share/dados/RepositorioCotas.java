@@ -8,15 +8,28 @@ import br.ufrpe.time_share.negocio.beans.Usuario;
 
 public class RepositorioCotas implements IRepositorioCotas {
 
+    // INSTANCIA UNICA DO REPOSITORIO
+    private static final RepositorioCotas INSTANCE = new RepositorioCotas();
+
     private ArrayList<Cota> listaCotas;
 
     {
         listaCotas = new ArrayList<>(50);
     }
 
+    // METODO PARA OBTER A INSTANCIA DO REPOSITORIO
+    public static RepositorioCotas getInstancia() {
+        return INSTANCE;
+    }
+
     @Override
     public void cadastrarCota(Cota cota) {
       listaCotas.add(cota);
+    }
+
+    @Override
+    public void cadastrarCotas(ArrayList<Cota> cotas) {
+        listaCotas.addAll(cotas);
     }
 
     @Override

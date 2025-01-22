@@ -10,6 +10,8 @@ public interface IRepositorioCotas {
 
     void cadastrarCota(Cota cota);
 
+    void cadastrarCotas(ArrayList<Cota> cotas);
+
     void alterarCota(Cota cotaAtualizada);
 
     void excluirCota(Cota cota);

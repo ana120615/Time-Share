@@ -94,7 +94,11 @@ public class Cota implements Cloneable{
     }
 
     public void setStatusDeDisponibilidadeParaReserva(boolean statusDeDisponibilidadeParaReserva) {
-        this.statusDeDisponibilidadeParaReserva = statusDeDisponibilidadeParaReserva;
+        if (proprietario == null) {
+            this.statusDeDisponibilidadeParaReserva = bemAssociado.isOfertado();
+        } else {
+            this.statusDeDisponibilidadeParaReserva = statusDeDisponibilidadeParaReserva;
+        }
     }
 
     @Override
