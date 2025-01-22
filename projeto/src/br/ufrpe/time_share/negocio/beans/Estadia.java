@@ -54,12 +54,11 @@ public class Estadia {
 
     @Override
     public String toString() {
-        return "Estadia{" +
+        return "Estadia: " +
                 "id=" + id +
                 ", dataInicio=" + dataInicio +
                 ", dataFim=" + dataFim +
                 ", bem=" + reserva.getBem().getNome() +
-//                ", usuario=" + reserva.getNome().getNome() +
-                '}';
+                ", usuario=" + reserva.getUsuarioComum().getNome();      
     }
 }

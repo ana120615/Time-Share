@@ -75,14 +75,13 @@ public class Reserva {
 
     @Override
     public String toString() {
-        return "Reserva{" +
+        return "Reserva: " +
                 "id=" + id +
                 ", dataInicio=" + dataInicio +
                 ", dataFim=" + dataFim +
                 ", status=" + status +
                 ", usuarioComum=" + usuarioComum +
-                ", bem=" + bem +
-                '}';
+                ", bem=" + bem;
     }
 
     @Override
