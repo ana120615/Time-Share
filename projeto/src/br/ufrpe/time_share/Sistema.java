@@ -72,9 +72,9 @@ public class Sistema {
 
                             } catch (UsuarioNaoExisteException | SenhaInvalidaException e) {
                                 System.out.println(e.getMessage());
-                                System.out.println("Tente novamente.");
+
                                 // Aqui você pode decidir se quer continuar tentando fazer login ou sair.
-                                System.out.println("Deseja tentar novamente? (s/n)");
+                                System.out.println("Deseja tentar novamente o Login? (s/n)");
                                 String resposta = input.nextLine();
                                 if (resposta.equals("n")) {
                                     sairLogin = true; // Força a saída do loop de login
@@ -229,7 +229,9 @@ public class Sistema {
                                             System.out.println("Opcao invalida!");
                                             break;
                                     }
+
                                 }
+                                break;
 
                             case 2:
                                 boolean sairGerenciamentoReservas = false;
@@ -306,13 +308,110 @@ public class Sistema {
                         System.out.println("4 - Sair Tela de Administrador");
                         escolha = input.nextInt();
                         switch (escolha) {
-                            case 1 :
+                            case 1:
+                                boolean sairConfiguracoes = false;
+                                while (!sairConfiguracoes) {
+                                    System.out.println("\n\n** Configuracoes **");
+                                    System.out.println("1 - Ver perfil");
+                                    System.out.println("2 - Editar perfil");
+                                    System.out.println("3 - Excluir perfil");
+                                    System.out.println("4 - Sair");
+                                    escolha = input.nextInt();
+                                    switch (escolha) {
+                                        case 1:
+                                            System.out.println(repositorioUsuario.buscarUsuarioPorEmail(usuario.getEmail()));
+                                            break;
+                                        case 2:
+                                            boolean sairEdicao = false;
+                                            while (!sairEdicao) {
+                                                System.out.println("O que deseja editar?");
+                                                System.out.println("1 - Nome");
+                                                System.out.println("2 - Senha");
+                                                System.out.println("3 - Data de nascimento");
+                                                System.out.println("4 - Voltar");
+                                                escolha = input.nextInt();
+                                                switch (escolha) {
+                                                    case 1:
+                                                        escolha = 0;
+                                                        try {
+                                                            System.out.println("Digite o novo nome: ");
+                                                            String novoNome = input.next();
+                                                            controladorUsuario.alterarNomeUsuario(usuario.getCpf(), novoNome, usuario.getTipo());
+                                                        } catch (NullPointerException | UsuarioNaoExisteException |
+                                                                 UsuarioNaoPermitidoException e) {
+                                                            System.out.println(e.getMessage());
+                                                        }
+                                                        break;
+                                                    case 2:
+                                                        escolha = 0;
+                                                        try {
+                                                            System.out.println("Digite a nova senha: ");
+                                                            String novaSenha = input.next();
+                                                            controladorUsuario.alterarSenhaUsuario(usuario.getEmail(), novaSenha, usuario.getTipo());
+                                                        } catch (NullPointerException | UsuarioNaoExisteException |
+                                                                 UsuarioNaoPermitidoException e) {
+                                                            System.out.println(e.getMessage());
+                                                        }
+                                                        break;
+                                                    case 3:
+                                                        escolha = 0;
+                                                        try {
+                                                            System.out.println("Digite a nova data de nascimento: ");
+                                                            String novaData = input.next();
+                                                            controladorUsuario.alterarDataAniversario(usuario.getEmail(), LocalDate.parse(novaData, DateTimeFormatter.ofPattern("dd/MM/yyyy")), usuario.getTipo());
+                                                        } catch (NullPointerException | UsuarioNaoExisteException |
+                                                                 UsuarioNaoPermitidoException e) {
+                                                            System.out.println(e.getMessage());
+                                                        }
+                                                        break;
+                                                    case 4:
+                                                        sairEdicao = true;
+                                                        break;
+                                                    default:
+                                                        System.out.println("Opcao invalida!");
+                                                        break;
+                                                }
+                                            }
+                                            break;
+
+                                        case 3:
+                                            System.out.println("\n\n-- EXCLUIR PERFIL -- ");
+                                            System.out.println("1 - Excluir");
+                                            System.out.println("2 - Voltar");
+                                            escolha = input.nextInt();
+                                            switch (escolha) {
+                                                case 1:
+                                                    try {
+                                                        repositorioUsuario.remover(usuario);
+                                                        System.out.println("Perfil removido com sucesso!");
+                                                        sairTelaPrincipalUsuario = true;
+                                                        sairConfiguracoes = true;
+                                                        entrarSistema = false;
+                                                    } catch (Exception e) {
+                                                        System.out.println(e.getMessage());
+                                                    }
+                                                    break;
+                                                case 2:
+                                                    continue;
+                                                default:
+                                                    System.out.println("Opcao invalida!");
+                                                    break;
+                                            }
+                                            break;
+
+                                        case 4:
+                                            sairConfiguracoes = true;
+                                            break;
+                                        default:
+                                            System.out.println("Opcao invalida!");
+                                            break;
+                                    }
+                                }
+                            case 2:
                                 break;
-                            case 2 :
+                            case 3:
                                 break;
-                            case 3 :
-                                break;
-                            case 4 :
+                            case 4:
                                 sairTelaPrincipalAdministrador = true;
                                 break;
                         }
@@ -320,16 +419,16 @@ public class Sistema {
 
                 } while (!sairTelaPrincipalUsuario && !sairTelaPrincipalAdministrador);
 
-                System.out.println("\n\nDeseja entrar novamente? (s/n) ");
+                System.out.println("\n\nDeseja logar novamente? (s/n) ");
                 char decisao = input.next().charAt(0);
                 if (decisao == 's') {
-                    finalizarPrograma = true;
-                }
-                else {
                     entrarSistema = false;
-                    sairSistema = false;
+                    // sairSistema = false;
                     sairTelaPrincipalAdministrador = false;
                     sairTelaPrincipalUsuario = false;
+
+                } else {
+                    finalizarPrograma = true;
                 }
 
             }
