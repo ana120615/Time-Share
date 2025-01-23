@@ -122,6 +122,14 @@ public class ControladorBens {
         return repositorioBens.listarBensDisponiveis();
     }
 
+    public void listarCotasDisponiveis() {
+        ArrayList<Cota> cotas =  repositorioCotas.listarCotasDisponiveisParaVenda();
+
+        for (Cota cota : cotas) {
+            System.out.println(cota + "\n");
+        }
+    }
+
     public ArrayList<Cota> calcularDeslocamentoDasCotas(int bemId, int anoParaDeslocamento) throws BemNaoExisteException {
 
         Bem bem = repositorioBens.buscarBemPorId(bemId);
@@ -177,6 +185,18 @@ public class ControladorBens {
 
         for (Cota cota : bem.getCotas()) {
             System.out.println(cota);
+        }
+
+    }
+
+    public void listarCotasDeUmUsuario(String cpfUsuario) throws BemNaoExisteException, UsuarioNaoExisteException {
+        ArrayList<Cota> resultado = new ArrayList<>();
+        Usuario usuario = controladorUsuarioGeral.procurarUsuarioPorCpf(cpfUsuario);
+
+        ArrayList<Cota> cotas = repositorioCotas.buscarCotasPorProprietario(usuario);
+
+        for (Cota cota : cotas) {
+            System.out.println(cota + "\n");
         }
 
     }
