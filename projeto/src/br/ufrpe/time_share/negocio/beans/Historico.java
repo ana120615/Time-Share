@@ -2,15 +2,15 @@ package br.ufrpe.time_share.negocio.beans;
 import java.time.LocalDate;
 public class Historico{
 
-private int idHistorico;
-private int idBem;
-private int idUsuario; 
+private String idHistorico;
+private String idBem;
+private String idUsuario; 
 private LocalDate dataInicio;
 private LocalDate dataFim;
 private String detalhes;
 
 
-public Historico (int idHistorico, int idBem, int idUsuario, LocalDate dataInicio, LocalDate dataFim ){
+public Historico (String idHistorico, String idBem, String  idUsuario, LocalDate dataInicio, LocalDate dataFim ){
     this.idHistorico = idHistorico;
         this.idBem = idBem;
         this.idUsuario = idUsuario;
@@ -18,27 +18,27 @@ public Historico (int idHistorico, int idBem, int idUsuario, LocalDate dataInici
         this.dataFim = dataFim;
         this.detalhes = detalhes;
 }
-public int getIdHistorico() {
+public String  getIdHistorico() {
     return idHistorico;
 }
 
-public void setIdHistorico(int idHistorico) {
+public void setIdHistorico(String idHistorico) {
     this.idHistorico = idHistorico;
 }
 
-public int getIdBem() {
+public String getIdBem() {
     return idBem;
 }
 
-public void setIdBem(int idBem) {
+public void setIdBem(String  idBem) {
     this.idBem = idBem;
 }
 
-public int getIdUsuario() {
+public String getIdUsuario() {
     return idUsuario;
 }
 
-public void setIdUsuario(int idUsuario) {
+public void setIdUsuario(String idUsuario) {
     this.idUsuario = idUsuario;
 }
 

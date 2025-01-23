@@ -9,13 +9,15 @@ public class RepositorioHistorico implements IRepositorioHistorico{
     private static final RepositorioHistorico INSTANCE = new RepositorioHistorico();
 
     private ArrayList<Historico> historicos;
+    private RepositorioBens repositorioBens;
 
     public RepositorioHistorico() {
         this.historicos = new ArrayList<>();
+        this.repositorioBens = RepositorioBens.getInstancia();
 
     }
 
-    // METODO PARA OBTER A INSTANCIA DO REPOSITORIO
+    
     public static RepositorioHistorico getInstancia() {
         return INSTANCE;
     }
@@ -24,7 +26,7 @@ public class RepositorioHistorico implements IRepositorioHistorico{
         this.historicos.add(historico);
     }
 
-    public ArrayList<Historico> listarHistoricoPorBem(int idBem) {
+    public ArrayList<Historico> listarHistoricoPorBem(String idBem) {
         ArrayList<Historico> resultado = new ArrayList<>();
         for (Historico historico : historicos) {
             if (historico.getIdBem() == idBem) {
@@ -35,6 +37,12 @@ public class RepositorioHistorico implements IRepositorioHistorico{
     }
     public ArrayList<Historico> listarTodosHistoricos() {
         return new ArrayList<>(historicos);
+    }
+
+    @Override
+    public ArrayList<Historico> listarHistoricoPorBem(int idBem) {
+
+        throw new UnsupportedOperationException("Unimplemented method 'listarHistoricoPorBem'");
     }
 
 }
