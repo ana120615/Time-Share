@@ -12,6 +12,7 @@ import br.ufrpe.time_share.negocio.beans.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Scanner;
+import java.util.Timer;
 
 
 public class Programa {
@@ -19,18 +20,13 @@ public class Programa {
         IRepositorioUsuario repositorioUsuario = RepositorioUsuarios.getInstance();
         ControladorUsuarioGeral controlador = new ControladorUsuarioGeral(repositorioUsuario);
 
-        //controlador.cadastrar("11111111111", "Samara", "samara@gmail.com", "ss", LocalDate.of(2005,02,01), TipoUsuario.fromValor(1));
         controlador.cadastrar("11111191111", "Samara", "samar@gmail.com", "ss", LocalDate.of(2005, 02, 01), TipoUsuario.fromValor(2));
-//
-//        Usuario usuario = new Usuario("132644541", "Senha1", TipoUsuario.COMUM);
-//        Usuario usuario2 = new Usuario("65156155", "Senha9542", TipoUsuario.COMUM);
-//        Usuario usuario3 = new Usuario("45165206", "S@NHASUF", TipoUsuario.COMUM);
-//        Usuario usuario4 = new Usuario("511006515", "#afjnja", TipoUsuario.ADMINISTRADOR);
-        Usuario usuario5 = new Usuario("471652206", "fafeof", TipoUsuario.ADMINISTRADOR);
+        controlador.cadastrar("12345678901", "Monteiro", "monte@gmail.com", "senh@", LocalDate.of(2005, 02, 01), TipoUsuario.fromValor(1));
 
 
         ControladorVendas controladorVendas = new ControladorVendas();
         ControladorBens controladorBens = new ControladorBens(RepositorioBens.getInstancia());
+
 
         Venda v1 = null;
         try {
@@ -41,9 +37,10 @@ public class Programa {
 
         try {
             controladorBens.cadastrar(1364, "Apartamento", "Linda Casa",
-                    "Centro da cidade", 5, "471652206", LocalDateTime.now()
+                    "Centro da cidade", 5, "12345678901", LocalDateTime.now()
                     , 20, 2000);
-        } catch (BemNaoExisteException | UsuarioNaoPermitidoException | NullPointerException | BemJaExisteException | UsuarioNaoExisteException e) {
+        } catch (BemNaoExisteException | UsuarioNaoPermitidoException | NullPointerException | BemJaExisteException |
+                 UsuarioNaoExisteException e) {
             System.out.println(e.getMessage());
         }
 
@@ -53,6 +50,19 @@ public class Programa {
             System.out.println(e.getMessage());
         }
 
+
+        for (int i = 0; i < 1; i++) {
+            try {
+                long delay = 6000;
+                Thread.sleep(delay);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            controladorBens.iniciarDeslocamentoAutomatico();
+
+
+        }
 
         // controladorVendas.adicionarCotaCarrinho();
 

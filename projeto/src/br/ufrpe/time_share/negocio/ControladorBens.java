@@ -9,11 +9,13 @@ import br.ufrpe.time_share.negocio.beans.Bem;
 import br.ufrpe.time_share.negocio.beans.Cota;
 import br.ufrpe.time_share.negocio.beans.TipoUsuario;
 import br.ufrpe.time_share.negocio.beans.Usuario;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Random;
-
-
+import java.util.Iterator;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class ControladorBens {
     private IRepositorioBens repositorioBens;
@@ -27,7 +29,7 @@ public class ControladorBens {
 
     public ControladorBens(IRepositorioBens instanciaIneterface) {
         this.repositorioBens = instanciaIneterface;
-        this.repositorioCotas =  RepositorioCotas.getInstancia();
+        this.repositorioCotas = RepositorioCotas.getInstancia();
     }
 
 
@@ -61,7 +63,7 @@ public class ControladorBens {
                     LocalDateTime dataInicio = diaInicial;
                     LocalDateTime dataFim = dataInicio.plusDays(6);
 
-                    for (int i = 0; i < quantidadeDeCotas;) {
+                    for (int i = 0; i < quantidadeDeCotas; ) {
                         int randomNumberCota = 1000 + random.nextInt(9999);
                         Cota c = repositorioCotas.buscarCotaPorId(randomNumberCota);
 
@@ -156,7 +158,7 @@ public class ControladorBens {
         return resultado;
     }
 
-    public Cota buscarCota (int idCota) throws CotaNaoExisteException{
+    public Cota buscarCota(int idCota) throws CotaNaoExisteException {
         Cota cota = repositorioCotas.buscarCotaPorId(idCota);
 
         if (cota == null) {
@@ -166,7 +168,7 @@ public class ControladorBens {
         return cota;
     }
 
-    public void listarCotasDeUmBem (int idBem) throws BemNaoExisteException{
+    public void listarCotasDeUmBem(int idBem) throws BemNaoExisteException {
         ArrayList<Cota> resultado = new ArrayList<>();
         Bem bem = repositorioBens.buscarBemPorId(idBem);
 
@@ -180,7 +182,7 @@ public class ControladorBens {
 
     }
 
-    public ArrayList<Cota> registros (String usuarioCpf) throws UsuarioNaoExisteException{
+    public ArrayList<Cota> registros(String usuarioCpf) throws UsuarioNaoExisteException {
         ArrayList<Cota> resultado = new ArrayList<>();
         Usuario usuario = controladorUsuarioGeral.procurarUsuarioPorCpf(usuarioCpf);
 
@@ -192,7 +194,43 @@ public class ControladorBens {
         return resultado;
     }
 
+    public void iniciarDeslocamentoAutomatico() {
+        Timer timer = new Timer(true);
+        TimerTask task = new TimerTask() {
+            @Override
+            public void run() {
+                deslocarCotasAutomaticamente();
+            }
+        };
+
+        // Agenda a tarefa para rodar a cada 24 horas
+        long umDiaEmMilissegundos = 5000; // 24 * 60 * 60 * 1000
+        timer.scheduleAtFixedRate(task, 0, umDiaEmMilissegundos);
+    }
+
+    public void deslocarCotasAutomaticamente()  {
+        ArrayList<Bem> bens = repositorioBens.listarBens();
+
+        for (Bem bem : bens) {
+            LocalDateTime agora = LocalDateTime.now();
+            LocalDateTime dataInicialBem = bem.getDiaInicial();
+
+            // Verifica se passou 1 ano da data inicial do bem
+            if (agora.isAfter(dataInicialBem.plusYears(1))) {
+                try {
+                    bem.setCotas(calcularDeslocamentoDasCotas(bem.getId(), agora.getYear()));
+                } catch (BemNaoExisteException e) {
+                    System.out.println(e.getMessage());
+                }
+
+
+            }
+
+        }
+    }
 }
+
+
 
 
 
