@@ -59,8 +59,9 @@ return estadia;
 //a estadia ou fazer check out
 public Estadia prolongarEstadia(Estadia estadia){
 LocalDateTime agora = LocalDateTime.now();
-if(estadia.getDataFim().equals(agora)){
-    LocalDateTime novaDataFim = estadia.getDataFim().plusDays(6).withHour(23).withMinute(59).withSecond(59);;
+LocalDateTime novaDataFim = estadia.getDataFim().plusDays(6).withHour(23).withMinute(59).withSecond(59);
+
+if(estadia.getDataFim().equals(agora)||estadia.getDataFim().isBefore(agora)){
     try{
         alterarPeriodoReserva(estadia.getReserva().getId(), agora, novaDataFim);
         estadia.setDataFim(novaDataFim);
@@ -82,7 +83,7 @@ return estadia;
 public int checkout(Estadia estadia) throws ReservaNaoExisteException, ReservaJaCanceladaException{
     Reserva reserva=null;
     LocalDateTime agora = LocalDateTime.now();
-    if(estadia.getDataFim().equals(agora)){
+    if(estadia.getDataFim().equals(agora)||estadia.getDataFim().isBefore(agora)){
     reserva=repositorio.buscarReserva(estadia.getReserva());
     if(reserva==null){
         throw new ReservaNaoExisteException("Reserva inexistente");
@@ -175,30 +176,36 @@ public Reserva criarReserva(LocalDateTime dataInicio, Usuario usuarioComum, Bem 
     }
     
     //metodo para alterar periodo da reserva
-    public Reserva alterarPeriodoReserva(int idReserva,LocalDateTime novaDataInicio,LocalDateTime novaDataFim) throws ReservaNaoExisteException, ReservaJaCanceladaException, PeriodoJaReservadoException{
-    Reserva reserva = repositorio.buscarReservasPorId(idReserva);
-   if(reserva==null){
+    public Reserva alterarPeriodoReserva(int idReserva, LocalDateTime novaDataInicio, LocalDateTime novaDataFim) 
+    throws ReservaNaoExisteException, ReservaJaCanceladaException, PeriodoJaReservadoException {
+
+Reserva reserva = repositorio.buscarReservasPorId(idReserva);
+
+if (reserva == null) {
     throw new ReservaNaoExisteException("Reserva inexistente");
-   }
-   else{
-    if(!(reserva.getStatus())){
-        throw new ReservaJaCanceladaException("Reserva ja cancelada");
-    }
-    else{
-        for(Reserva buscar: repositorio.listarReservas()){
-            if(!(reserva.getDataFim().isBefore(buscar.getDataInicio()))||!(reserva.getDataInicio().isAfter(reserva.getDataFim()))&&buscar.getStatus()){
-                throw new PeriodoJaReservadoException("Esse periodo ja esta reservado");
-            }
-            else{
-                reserva.setDataInicio(novaDataInicio);
-                reserva.setDataFim(novaDataFim);
-                repositorio.atualizarReserva(reserva);
-            }
-    }
-   }
 }
-return reserva;
+
+if (!reserva.getStatus()) {
+    throw new ReservaJaCanceladaException("Reserva ja cancelada");
+}
+
+// Verificar sobreposição de períodos com outras reservas
+for (Reserva buscar : repositorio.listarReservas()) {
+    if (buscar.getId() != reserva.getId() && buscar.getStatus()) {
+        if (!(novaDataFim.isBefore(buscar.getDataInicio()) || novaDataInicio.isAfter(buscar.getDataFim()))) {
+            throw new PeriodoJaReservadoException("Periodo ja reservado");
+        }
     }
+}
+
+// Atualizar dados da reserva
+reserva.setDataInicio(novaDataInicio);
+reserva.setDataFim(novaDataFim);
+repositorio.atualizarReserva(reserva);
+
+return reserva;
+}
+
 
 
 
