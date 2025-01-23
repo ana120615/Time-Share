@@ -3,11 +3,14 @@ package br.ufrpe.time_share;
 import br.ufrpe.time_share.dados.*;
 import br.ufrpe.time_share.excecoes.*;
 import br.ufrpe.time_share.negocio.*;
+import br.ufrpe.time_share.negocio.beans.Bem;
 import br.ufrpe.time_share.negocio.beans.TipoUsuario;
 import br.ufrpe.time_share.negocio.beans.Usuario;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Sistema {
@@ -25,10 +28,12 @@ public class Sistema {
         ControladorBens controladorBens = new ControladorBens(repositorioBens);
         ControladorReservas controladorReservas = new ControladorReservas(repositorioReservas);
 
+        Usuario usuario = null; //Variavel que vai armazenar o usuario apos login
+
         // Cadastrar Usuário Comum para facilitar na entrada do Sistema
         try {
             controladorUsuario.cadastrar("12345678901", "Caua", "caua@gmail.com",
-                    "senha123", LocalDate.of(2005, 12, 12), TipoUsuario.COMUM);
+                    "senha123", LocalDate.of(2005, 12, 12), TipoUsuario.ADMINISTRADOR);
         } catch (UsuarioJaExisteException | DadosInsuficientesException | UsuarioNaoPermitidoException e) {
             System.out.println(e.getMessage());
         }
@@ -41,7 +46,7 @@ public class Sistema {
         boolean finalizarPrograma = false;
 
 
-        Usuario usuario = null; //Variavel que vai armazenar o usuario apos login
+
 
         while (!finalizarPrograma) {
             while (!sairSistema) {
@@ -407,16 +412,62 @@ public class Sistema {
                                             break;
                                     }
                                 }
-                            case 2:
                                 break;
-                            case 3:
+                            case 2:
+                                boolean sairGerenciamentoBens = false;
+                                while (!sairGerenciamentoBens) {
+                                    System.out.println("\n\n** Gerenciamento de Bens **");
+                                    System.out.println("1 - Cadastrar Bem");
+                                    System.out.println("2 - Listar Bens Cadastrados");
+                                    System.out.println("3 - Sair");
+                                    escolha = input.nextInt();
+                                    switch (escolha) {
+                                        case 1:
+                                            System.out.println("\n\n-- CADASTRO DE BEM --");
+                                            System.out.print("Informe um id para o Bem:");
+                                            int idBem = input.nextInt();
+                                            System.out.print("Nome: ");
+                                            String nome = input.next();
+                                            System.out.print("Descrição: ");
+                                            String descricao = input.next();
+                                            System.out.print("Localização: ");
+                                            String localizacao = input.next();
+                                            System.out.print("Capacidade de pessoas: ");
+                                            int capacidade = input.nextInt();
+                                            System.out.print("Informe a data Inicial das cotas (dd/MM/yyyy): ");
+                                            String dataInicial = input.next();
+                                            dataInicial += " 00:00";
+                                            System.out.print("Quantidade de cotas: ");
+                                            int quantidadeCotas = input.nextInt();
+                                            System.out.print("Preço de uma Cota R$: ");
+                                            double precoCota = input.nextDouble();
+                                            try {
+                                                controladorBens.cadastrar(idBem, nome, descricao, localizacao, capacidade, usuario.getCpf(), LocalDateTime.parse(dataInicial, DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")), quantidadeCotas, precoCota);
+                                                System.out.println("Bem cadastrado com Sucesso!");
+                                            } catch (BemNaoExisteException | UsuarioNaoPermitidoException | QuantidadeDeCotasExcedidasException | BemJaExisteException | UsuarioNaoExisteException e) {
+                                                System.out.println(e.getMessage());
+                                            }
+                                            break;
+                                        case 2:
+                                            System.out.println("\n\n-- LISTA DE BEM CADASTRADOS --");
+                                            System.out.println(controladorBens.listarBensUsuario(usuario));
+                                            break;
+                                        case 3:
+                                            sairGerenciamentoBens = true;
+                                            break;
+                                    }
+
+                                }
+                                break;
+                            case 3 :
                                 break;
                             case 4:
                                 sairTelaPrincipalAdministrador = true;
                                 break;
-                        }
-                    }
 
+                        }
+
+                    }
                 } while (!sairTelaPrincipalUsuario && !sairTelaPrincipalAdministrador);
 
                 System.out.println("\n\nDeseja logar novamente? (s/n) ");
@@ -431,9 +482,10 @@ public class Sistema {
                     finalizarPrograma = true;
                 }
 
+
             }
+
+
         }
-
-
     }
 }

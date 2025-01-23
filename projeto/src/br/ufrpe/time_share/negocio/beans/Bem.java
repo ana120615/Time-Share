@@ -26,6 +26,7 @@ public class Bem implements Cloneable {
         setDescricao(descricao);
         setLocalizacao(localizacao);
         setNome(nome);
+        setCadastradoPor(cadastradoPor);
         this.ofertado = false;
 
     }
@@ -125,7 +126,7 @@ public class Bem implements Cloneable {
 
     @Override
     public String toString() {
-        return "Bem{" +
+        return "\nBem{" +
                 "id=" + id +
                 ", nome='" + nome + '\'' +
                 ", descricao='" + descricao + '\'' +
@@ -133,7 +134,7 @@ public class Bem implements Cloneable {
                 ", capacidade=" + capacidade +
                 ", ofertado=" + ofertado +
                 ", cotas=" + cotas +
-                '}';
+                '}' + "\n";
     }
 
     @Override

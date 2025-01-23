@@ -22,13 +22,10 @@ public class ControladorBens {
     private ControladorUsuarioGeral controladorUsuarioGeral;
 
 
-    {
-        this.controladorUsuarioGeral = new ControladorUsuarioGeral(RepositorioUsuarios.getInstance());
-    }
-
     public ControladorBens(IRepositorioBens instanciaIneterface) {
         this.repositorioBens = instanciaIneterface;
         this.repositorioCotas = RepositorioCotas.getInstancia();
+        this.controladorUsuarioGeral = new ControladorUsuarioGeral(RepositorioUsuarios.getInstance());
     }
 
 
@@ -116,6 +113,20 @@ public class ControladorBens {
 
     public ArrayList<Bem> listarBens() {
         return repositorioBens.listarBens();
+    }
+
+    public ArrayList<Bem> listarBensUsuario (Usuario usuario) {
+        ArrayList<Bem> resultado = new ArrayList<>();
+
+        if (repositorioBens != null && usuario != null) {
+            for (Bem bem : repositorioBens.listarBens()) {
+                if (bem.getCadastradoPor().equals(usuario)) {
+                    resultado.add(bem);
+                }
+            }
+        }
+
+        return resultado;
     }
 
     public ArrayList<Bem> listarBensDisponiveis() {
