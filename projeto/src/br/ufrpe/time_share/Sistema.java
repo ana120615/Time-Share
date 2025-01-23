@@ -309,11 +309,16 @@ public class Sistema {
                                                 Venda v1 = controladorVendas.iniciarVenda(usuario.getCpf());
                                                 boolean parar = false;
                                                 while (!parar) {
-                                                    System.out.print("Informe o id da Cota: ");
-                                                    int idCota = input.nextInt();
 
-                                                    System.out.println("1 - adicionar || 2 - remover || 3 - finalizar ");
+                                                    System.out.println("1 - adicionar || 2 - remover || 3 - finalizar compra ");
                                                     int escolhaCompra = input.nextInt();
+                                                    int idCota = 0;
+
+                                                    if (escolhaCompra == 1 || escolhaCompra == 2) {
+                                                        System.out.print("Informe o id da Cota: ");
+                                                        idCota = input.nextInt();
+                                                    }
+
 
                                                     if (escolhaCompra == 1) {
                                                         try {
@@ -328,7 +333,8 @@ public class Sistema {
                                                             System.out.println(e.getMessage());
                                                         }
                                                     } else if (escolhaCompra == 3) {
-                                                        controladorVendas.finalizarCompra(v1);
+                                                        String compra = controladorVendas.finalizarCompra(v1);
+                                                        System.out.println(compra);
                                                         parar = true;
                                                     }
                                                 }
@@ -348,6 +354,38 @@ public class Sistema {
                                 }
                                 break;
                             case 4:
+                                boolean pararMinhasCotas = false;
+                                while (!pararMinhasCotas) {
+                                    System.out.println("\n\nMINHAS COTAS");
+                                    try {
+                                        System.out.println(controladorBens.listarCotasDeUmUsuario(usuario.getCpf()));
+                                    } catch (BemNaoExisteException | UsuarioNaoExisteException e) {
+                                        System.out.println(e.getMessage());
+                                    }
+
+
+                                    System.out.println("1 - Repassar Direito de Uso:");
+                                    System.out.println("2 - Sair");
+                                    escolha = input.nextInt();
+
+                                    switch (escolha) {
+                                        case 1:
+                                            System.out.print("\n Informe de cota: ");
+                                            int idCotaTransfetir = input.nextInt();
+                                            System.out.println("Informe o cpf do destinatário: ");
+                                            String cpfDestinatario = input.next();
+
+                                            try {
+                                                controladorVendas.transferenciaDeDireitos(usuario.getCpf(), cpfDestinatario, idCotaTransfetir);
+                                            } catch (CotaNaoExisteException | UsuarioNaoExisteException e) {
+                                                System.out.println(e.getMessage());
+                                            }
+                                            break;
+                                        case 2:
+                                            pararMinhasCotas = true;
+                                            break;
+                                    }
+                                }
                                 break;
                             case 5:
                                 sairTelaPrincipalUsuario = true;

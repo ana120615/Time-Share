@@ -230,16 +230,20 @@ public class ControladorBens {
 
     }
 
-    public void listarCotasDeUmUsuario(String cpfUsuario) throws BemNaoExisteException, UsuarioNaoExisteException {
+    public ArrayList<Cota> listarCotasDeUmUsuario(String cpfUsuario) throws BemNaoExisteException, UsuarioNaoExisteException {
         ArrayList<Cota> resultado = new ArrayList<>();
         Usuario usuario = controladorUsuarioGeral.procurarUsuarioPorCpf(cpfUsuario);
 
-        ArrayList<Cota> cotas = repositorioCotas.buscarCotasPorProprietario(usuario);
+        ArrayList<Cota> cotas = repositorioCotas.listarCotas();
 
-        for (Cota cota : cotas) {
-            System.out.println(cota + "\n");
+        if (cotas != null) {
+            for (Cota cota : cotas) {
+                if (cota.getProprietario().equals(usuario)) {
+                    resultado.add(cota);
+                }
+            }
         }
-
+        return resultado;
     }
 
     public ArrayList<Cota> registros(String usuarioCpf) throws UsuarioNaoExisteException {
