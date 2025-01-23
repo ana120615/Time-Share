@@ -6,6 +6,7 @@ import br.ufrpe.time_share.dados.RepositorioBens;
 import br.ufrpe.time_share.dados.RepositorioUsuarios;
 import br.ufrpe.time_share.excecoes.SenhaInvalidaException;
 import br.ufrpe.time_share.excecoes.UsuarioNaoExisteException;
+import br.ufrpe.time_share.excecoes.UsuarioNaoPermitidoException;
 import br.ufrpe.time_share.negocio.*;
 import br.ufrpe.time_share.negocio.beans.TipoUsuario;
 import br.ufrpe.time_share.negocio.beans.Usuario;
@@ -95,7 +96,120 @@ public class Sistema {
             boolean sairTelaPrincipal = false;
             while (!sairTelaPrincipal) {
                 if (usuario != null && usuario.getTipo().equals(TipoUsuario.COMUM)) {
+                    int escolha = 0;
+                    System.out.println("\n\n-- TELA USUARIO --");
+                    System.out.println("1 - Configuracoes");
+                    System.out.println("2 - Gerenciamento de Reservas");
+                    System.out.println("3 - Bens Ofertados");
+                    System.out.println("4 - Minhas Cotas");
+                    escolha = input.nextInt();
+                    switch (escolha) {
+                        case 1:
+                            boolean sairConfiguracoes = false;
+                            while (!sairConfiguracoes) {
+                                System.out.println("\n\n** Configuracoes **");
+                                System.out.println("1 - Ver perfil");
+                                System.out.println("2 - Editar perfil");
+                                System.out.println("3 - Excluir perfil");
+                                System.out.println("4 - Sair");
+                                escolha = input.nextInt();
+                                switch (escolha) {
+                                    case 1:
+                                        System.out.println(repositorioUsuario.buscarUsuarioPorEmail(usuario.getEmail()));
+                                        break;
+                                    case 2:
+                                        boolean sairEdicao = false;
+                                        while (!sairEdicao) {
+                                            System.out.println("O que deseja editar?");
+                                            System.out.println("1 - Nome");
+                                            System.out.println("2 - Senha");
+                                            System.out.println("3 - Data de nascimento");
+                                            System.out.println("4 - Voltar");
+                                            escolha = input.nextInt();
+                                            switch (escolha) {
+                                                case 1:
+                                                    escolha = 0;
+                                                    try {
+                                                        System.out.println("Digite o novo nome: ");
+                                                        String novoNome = input.next();
+                                                        controladorUsuario.alterarNomeUsuario(usuario.getCpf(), novoNome, usuario.getTipo());
+                                                    } catch (NullPointerException | UsuarioNaoExisteException |
+                                                             UsuarioNaoPermitidoException e) {
+                                                        System.out.println(e.getMessage());
+                                                    }
+                                                    break;
+                                                case 2:
+                                                    escolha = 0;
+                                                    try {
+                                                        System.out.println("Digite a nova senha: ");
+                                                        String novaSenha = input.next();
+                                                        controladorUsuario.alterarSenhaUsuario(usuario.getEmail(), novaSenha, usuario.getTipo());
+                                                    } catch (NullPointerException | UsuarioNaoExisteException |
+                                                             UsuarioNaoPermitidoException e) {
+                                                        System.out.println(e.getMessage());
+                                                    }
+                                                    break;
+                                                case 3:
+                                                    escolha = 0;
+                                                    try {
+                                                        System.out.println("Digite a nova data de nascimento: ");
+                                                        String novaData = input.next();
+                                                        controladorUsuario.alterarDataAniversario(usuario.getEmail(), LocalDate.parse(novaData, DateTimeFormatter.ofPattern("dd/MM/yyyy")), usuario.getTipo());
+                                                    } catch (NullPointerException | UsuarioNaoExisteException |
+                                                             UsuarioNaoPermitidoException e) {
+                                                        System.out.println(e.getMessage());
+                                                    }
+                                                    break;
+                                                case 4:
+                                                    sairEdicao = true;
+                                                    break;
+                                                default:
+                                                    System.out.println("Opcao invalida!");
+                                                    break;
+                                            }
+                                        }
+                                        break;
 
+                                    case 3:
+                                        System.out.println("\n\n-- EXCLUIR PERFIL -- ");
+                                        System.out.println("1 - Excluir");
+                                        System.out.println("2 - Voltar");
+                                        escolha = input.nextInt();
+                                        switch (escolha) {
+                                            case 1:
+                                                try {
+                                                    repositorioUsuario.remover(usuario);
+                                                    System.out.println("Perfil removido com sucesso!");
+                                                    sairTelaPrincipal = true;
+                                                    sairConfiguracoes = true;
+                                                    entrarSistema = false;
+                                                } catch (Exception e) {
+                                                    System.out.println(e.getMessage());
+                                                }
+                                                break;
+                                            case 2:
+                                                continue;
+                                            default:
+                                                System.out.println("Opcao invalida!");
+                                                break;
+                                        }
+                                        break;
+
+                                    case 4:
+                                        sairConfiguracoes = true;
+                                        break;
+                                    default:
+                                        System.out.println("Opcao invalida!");
+                                        break;
+                                }
+                            }
+                            break;
+
+                        /////////////////////////////////////////////////////////////////////////////////////////////////
+                        case 2:
+
+
+                    }
                 } else if (usuario != null && usuario.getTipo().equals(TipoUsuario.ADMINISTRADOR)) {
 
                 } else {
