@@ -64,7 +64,6 @@ public class Programa {
 
         }
 
-
         Scanner teclado = new Scanner(System.in);
 
         boolean vendaFinalizada = false;

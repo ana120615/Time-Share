@@ -1,13 +1,11 @@
 package br.ufrpe.time_share.negocio;
-import br.ufrpe.time_share.dados.IRepositorioHistorico;
+import br.ufrpe.time_share.dados.RepositorioHistorico;
 import br.ufrpe.time_share.negocio.beans.Historico;
-import br.ufrpe.time_share.negocio.beans.Usuario;
-import java.util.ArrayList;
 
 public class ControladorHistorico {
-    private IRepositorioHistorico repositorioHistorico;
+    private RepositorioHistorico repositorioHistorico;
     public ControladorHistorico() {
-        this.repositorioHistorico = new IRepositorioHistorico(); 
+        this.repositorioHistorico = new RepositorioHistorico();
     }
     public void registrarHistorico(Historico historico) {
        // ver a logica amanha
