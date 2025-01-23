@@ -3,7 +3,6 @@ package br.ufrpe.time_share.negocio.beans;
 import java.time.LocalDateTime;
 
 public class Promocao {
-
     private double taxaDesconto;
 
     // CONSTRUTOR
@@ -62,7 +61,7 @@ public class Promocao {
         return valorTaxa;
     }
 
-    private boolean eAltaTemporada(LocalDateTime data) {
+    public boolean eAltaTemporada(LocalDateTime data) {
         int mes = data.getMonthValue();
         return mes == 12 || mes == 1 || mes == 2;
     }
