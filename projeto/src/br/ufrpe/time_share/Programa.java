@@ -41,9 +41,9 @@ public class Programa {
 
         try {
             controladorBens.cadastrar(1364, "Apartamento", "Linda Casa",
-                    "Centro da cidade", 5, usuario5, LocalDateTime.now()
+                    "Centro da cidade", 5, "471652206", LocalDateTime.now()
                     , 20, 2000);
-        } catch (BemNaoExisteException | UsuarioNaoPermitidoException | NullPointerException | BemJaExisteException e) {
+        } catch (BemNaoExisteException | UsuarioNaoPermitidoException | NullPointerException | BemJaExisteException | UsuarioNaoExisteException e) {
             System.out.println(e.getMessage());
         }
 
