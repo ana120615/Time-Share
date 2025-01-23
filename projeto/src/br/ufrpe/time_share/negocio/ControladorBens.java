@@ -125,6 +125,19 @@ public class ControladorBens {
                 }
             }
         }
+        return resultado;
+    }
+
+    public ArrayList<Bem> listarBensOfertadosUsuario (Usuario usuario) {
+        ArrayList<Bem> resultado = new ArrayList<>();
+
+        if (repositorioBens != null && usuario != null) {
+            for (Bem bem : repositorioBens.listarBens()) {
+                if (bem.getCadastradoPor().equals(usuario) && bem.isOfertado()) {
+                    resultado.add(bem);
+                }
+            }
+        }
 
         return resultado;
     }

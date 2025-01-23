@@ -4,6 +4,7 @@ import br.ufrpe.time_share.dados.*;
 import br.ufrpe.time_share.excecoes.*;
 import br.ufrpe.time_share.negocio.*;
 import br.ufrpe.time_share.negocio.beans.Bem;
+import br.ufrpe.time_share.negocio.beans.Cota;
 import br.ufrpe.time_share.negocio.beans.TipoUsuario;
 import br.ufrpe.time_share.negocio.beans.Usuario;
 
@@ -44,8 +45,6 @@ public class Sistema {
         boolean sairTelaPrincipalAdministrador = false;
         boolean sairTelaPrincipalUsuario = false;
         boolean finalizarPrograma = false;
-
-
 
 
         while (!finalizarPrograma) {
@@ -419,7 +418,10 @@ public class Sistema {
                                     System.out.println("\n\n** Gerenciamento de Bens **");
                                     System.out.println("1 - Cadastrar Bem");
                                     System.out.println("2 - Listar Bens Cadastrados");
-                                    System.out.println("3 - Sair");
+                                    System.out.println("3 - Filtrar Bens Ofertados");
+                                    System.out.println("4 - Editar Bem");
+                                    System.out.println("5 - Calcular Deslocamento das cotas do Bem");
+                                    System.out.println("6 - Sair");
                                     escolha = input.nextInt();
                                     switch (escolha) {
                                         case 1:
@@ -444,7 +446,9 @@ public class Sistema {
                                             try {
                                                 controladorBens.cadastrar(idBem, nome, descricao, localizacao, capacidade, usuario.getCpf(), LocalDateTime.parse(dataInicial, DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")), quantidadeCotas, precoCota);
                                                 System.out.println("Bem cadastrado com Sucesso!");
-                                            } catch (BemNaoExisteException | UsuarioNaoPermitidoException | QuantidadeDeCotasExcedidasException | BemJaExisteException | UsuarioNaoExisteException e) {
+                                            } catch (BemNaoExisteException | UsuarioNaoPermitidoException |
+                                                     QuantidadeDeCotasExcedidasException | BemJaExisteException |
+                                                     UsuarioNaoExisteException e) {
                                                 System.out.println(e.getMessage());
                                             }
                                             break;
@@ -453,13 +457,77 @@ public class Sistema {
                                             System.out.println(controladorBens.listarBensUsuario(usuario));
                                             break;
                                         case 3:
+                                            System.out.println("\n\n-- LISTA DE BEM OFERTADOS --");
+                                            System.out.println(controladorBens.listarBensUsuario(usuario));
+                                            break;
+
+                                        case 4:
+                                            boolean sairEdicaoBem = false;
+                                            while (!sairEdicaoBem) {
+                                                System.out.println("O que deseja editar?");
+                                                System.out.println("1 - Nome");
+                                                System.out.println("2 - Descrição");
+                                                System.out.println("3 - Localização");
+                                                System.out.println("4 - Capacidade");
+                                                System.out.println("5 - Ofertar");
+                                                System.out.println("6 - Excluir");
+                                                System.out.println("7 - Voltar");
+                                                escolha = input.nextInt();
+                                                switch (escolha) {
+                                                    case 1:
+
+                                                        break;
+                                                    case 2:
+                                                        break;
+                                                    case 3:
+                                                        break;
+                                                    case 4:
+                                                        break;
+                                                    case 5:
+                                                        try {
+                                                            System.out.print("Digite o id: ");
+                                                            int idBemOfertar = input.nextInt();
+                                                            controladorBens.ofertarBem(idBemOfertar);
+                                                        } catch (BemNaoExisteException e) {
+                                                            System.out.println(e.getMessage());
+                                                        }
+
+                                                        break;
+                                                    case 6:
+                                                        break;
+                                                    case 7:
+                                                        sairEdicaoBem = true;
+                                                        break;
+
+                                                }
+                                            }
+                                            break;
+
+                                        case 5:
+                                            System.out.println("\n\n-- CÁLCULO DE DESLOCAMENTO DE COTAS --");
+                                            System.out.print("Informe o ID do bem: ");
+                                            int id = input.nextInt();
+                                            System.out.println("Ano para o qual quer deslocar: ");
+                                            int ano = input.nextInt();
+
+                                            try {
+                                                ArrayList<Cota> cotas = controladorBens.calcularDeslocamentoDasCotas(id, ano);
+                                                for (Cota cota : cotas) {
+                                                    System.out.println(cota + "\n");
+                                                }
+                                            } catch (BemNaoExisteException e) {
+                                                System.out.println(e.getMessage());
+                                            }
+
+                                            break;
+                                        case 6:
                                             sairGerenciamentoBens = true;
                                             break;
                                     }
 
                                 }
                                 break;
-                            case 3 :
+                            case 3:
                                 break;
                             case 4:
                                 sairTelaPrincipalAdministrador = true;
