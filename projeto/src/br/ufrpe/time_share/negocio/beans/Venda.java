@@ -12,6 +12,8 @@ public class Venda {
     private Cota cota;
     private Usuario usuario;
     private ArrayList<Cota> carrinhoDeComprasCotas;
+    private boolean foiDescontoAplicado;
+    private Promocao promocao;
 
     {
         this.carrinhoDeComprasCotas = new ArrayList<>();
@@ -19,7 +21,7 @@ public class Venda {
 
     public Venda(int id) {
         this.id = id;
-//        this.usuario = usuario;
+        this.foiDescontoAplicado = false;
 
 
     }
@@ -49,17 +51,30 @@ public class Venda {
         return this.usuario;
     }
 
+    public boolean getFoiDescontoAplicado() {
+        return foiDescontoAplicado;
+    }
 
-//Outros métodos
+    public void setFoiDescontoAplicado(boolean foiDescontoAplicado) {
+        this.foiDescontoAplicado = foiDescontoAplicado;
+    }
+
+    //Outros métodos
 
 
     public double calcularValorTotal() {
+
         double resultado = 0;
         if (carrinhoDeComprasCotas != null) {
             for (Cota c : carrinhoDeComprasCotas) {
                 resultado += c.getPreco();
             }
         }
+
+        if (getFoiDescontoAplicado()) {
+            resultado = resultado - (promocao.calcularTaxaPromocao(LocalDateTime.now(), usuario));
+        }
+
         return resultado;
     }
 

@@ -4,9 +4,11 @@ import br.ufrpe.time_share.dados.RepositorioBens;
 import br.ufrpe.time_share.dados.RepositorioUsuarios;
 import br.ufrpe.time_share.excecoes.*;
 import br.ufrpe.time_share.negocio.beans.Cota;
+import br.ufrpe.time_share.negocio.beans.Promocao;
 import br.ufrpe.time_share.negocio.beans.Usuario;
 import br.ufrpe.time_share.negocio.beans.Venda;
 
+import java.time.LocalDateTime;
 import java.util.Random;
 
 public class ControladorVendas {
@@ -75,6 +77,31 @@ public class ControladorVendas {
         } else {
             throw new ProprietarioNaoIdentificadoException("Usuário não é o Proprietário da cota");
         }
+    }
+
+    public void verificarSeUsuarioPossuiDescontos (String cpfUsuario) throws UsuarioNaoExisteException{
+        Usuario usuario = controladorUsuarioGeral.procurarUsuarioPorCpf(cpfUsuario);
+
+        Promocao promocao = new Promocao();
+
+        if (usuario.verificarAniversario()) {
+            System.out.println("Desconto aniversário de" + promocao.getTaxaPromocaoAniversario()*100+"%");
+        }
+
+        if (promocao.eAltaTemporada(LocalDateTime.now())) {
+            System.out.println("Desconto temporada de" + promocao.getTaxaPromocaoTemporada(LocalDateTime.now())*100+"%");
+        }
+    }
+
+    public boolean aplicarDesconto (Venda venda, String cpfUsuario) throws UsuarioNaoExisteException {
+        boolean resultado = false;
+
+        if (venda != null && !venda.getFoiDescontoAplicado()) {
+            venda.setFoiDescontoAplicado(true);
+            resultado = true;
+        }
+
+        return resultado;
     }
 
 
