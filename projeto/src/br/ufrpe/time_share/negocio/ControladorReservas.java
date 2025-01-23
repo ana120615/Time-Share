@@ -36,7 +36,7 @@ public class ControladorReservas {
         if (reservaRelacionada == null) {
             throw new ReservaNaoExisteException("Reserva inexistente");
         } else {
-            if (!reservaRelacionada.getStatus()) {
+            if (reservaRelacionada.isCancelada()||!reservaRelacionada.getStatus()) {
                 throw new ReservaJaCanceladaException("Reserva ja cancelada");
             } else {
                 int idAleatorio = 1001 + ThreadLocalRandom.current().nextInt(10000);
@@ -82,10 +82,10 @@ public class ControladorReservas {
             if (reserva == null) {
                 throw new ReservaNaoExisteException("Reserva inexistente");
             } else {
-                if (!reserva.getStatus()) {
+                if (reserva.isCancelada()||!reserva.getStatus()) {
                     throw new ReservaJaCanceladaException("Reserva ja cancelada");
                 } else {
-                    estadia.getReserva().setStatus(false);
+                    estadia.getReserva().setStatus(false);;
                 }
             }
         }
@@ -130,7 +130,7 @@ public class ControladorReservas {
         if (reservaCancelada == null) {
             throw new ReservaNaoExisteException("Reserva inexistente");
         } else {
-            if (!(reservaCancelada.getStatus())) {
+            if (reservaCancelada.isCancelada()||!reservaCancelada.getStatus()) {
                 throw new ReservaJaCanceladaException("Reserva ja cancelada");
             } else {
                 reservaCancelada.cancelarReserva();
@@ -142,7 +142,7 @@ public class ControladorReservas {
     //metodo para reembolso apos cancelamento
     public double reembolsar(Reserva reserva) throws ReservaNaoReembolsavelException {
         double reembolso = 0.00;
-        if (!(reserva.getStatus())) {
+        if (reserva.isCancelada()) {
             try {
                 if (calcularTaxaExtra(reserva) != 0) {
                     reembolso += (calcularTaxaExtra(reserva)) * 0.30;
@@ -171,7 +171,7 @@ public class ControladorReservas {
             throw new ReservaNaoExisteException("Reserva inexistente");
         }
 
-        if (!reserva.getStatus()) {
+        if (!reserva.getStatus()||reserva.isCancelada()) {
             throw new ReservaJaCanceladaException("Reserva ja cancelada");
         }
 
