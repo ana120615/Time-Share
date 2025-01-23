@@ -37,7 +37,7 @@ public class Programa {
 
         try {
             controladorBens.cadastrar(1364, "Apartamento", "Linda Casa",
-                    "Centro da cidade", 5, "12345678901", LocalDateTime.of(2024, 01, 22, 10, 10)
+                    "Centro da cidade", 5, "12345678901", LocalDateTime.of(2024, LocalDateTime.now().getMonth(), LocalDateTime.now().getDayOfMonth(), LocalDateTime.now().getHour(), LocalDateTime.now().getMinute())
                     , 20, 2000);
         } catch (BemNaoExisteException | UsuarioNaoPermitidoException | NullPointerException | BemJaExisteException |
                  UsuarioNaoExisteException e) {
@@ -64,7 +64,6 @@ public class Programa {
 
         }
 
-        // controladorVendas.adicionarCotaCarrinho();
 
         Scanner teclado = new Scanner(System.in);
 

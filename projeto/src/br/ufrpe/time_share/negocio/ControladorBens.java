@@ -140,7 +140,7 @@ public class ControladorBens {
             int delta = anoParaDeslocamento - bem.getDiaInicial().getYear();
 
             LocalDateTime dataInicio = bem.getDiaInicial();
-            dataInicio = dataInicio.plusDays(7 * delta); // Deslocamento inicial baseado em delta
+            dataInicio = dataInicio.plusDays(7 * delta).plusYears(delta); // Deslocamento inicial baseado em delta
             LocalDateTime dataFinal = dataInicio.plusDays(6);
 
             for (Cota c : bemClonado.getCotas()) {
