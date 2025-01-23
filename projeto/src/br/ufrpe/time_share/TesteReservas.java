@@ -2,6 +2,8 @@ package br.ufrpe.time_share;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+
 import br.ufrpe.time_share.dados.IRepositorioReservas;
 import br.ufrpe.time_share.dados.RepositorioReservas;
 import br.ufrpe.time_share.excecoes.BemNaoExisteException;
@@ -26,6 +28,8 @@ public class TesteReservas {
         IRepositorioReservas repositorioReservas = RepositorioReservas.getInstance();
         ControladorReservas controladorReservas = new ControladorReservas(repositorioReservas);
 
+        ArrayList<Cota> cotas = new ArrayList<>();
+
         // criando um administrador
         Usuario administrador = new Usuario(
             "789.741.366-99", "Mario", "mario123@gmail.com", "M@rio887",
@@ -48,8 +52,11 @@ public class TesteReservas {
         // criando uma cota
         Cota cota = new Cota(89848, agora, dataFim, 1000, bem);
         Cota cotaB = new Cota(56874, LocalDateTime.of(2025, 01, 26, 20, 24, 55), LocalDateTime.of(2025, 01, 26, 20, 24, 55).plusWeeks(1), 900, bemB);
-        Cota cotaC = new Cota(5479, LocalDateTime.of(2025, 01, 20, 23, 59, 59), LocalDateTime.of(2025, 1, 30, 23, 59, 59), 900, bemB);
-
+        Cota cotaC = new Cota(5479, LocalDateTime.of(2025, 01, 20, 00, 00, 00), LocalDateTime.of(2025, 1, 30, 0, 0, 0), 900, bemB);
+       
+        cotas.add(cotaB);
+        cotas.add(cotaC);
+        bemB.setCotas(cotas);
         // criando um usuario comum
         Usuario usuario = new Usuario(
             "798.747.222-80", "Maria", "maria123@gmail.com", "M@ria777",
@@ -88,20 +95,21 @@ public class TesteReservas {
             }
 
             // testando outra reserva
-            Reserva reservaB = controladorReservas.criarReserva(LocalDateTime.of(2025, 1, 7, 23, 59, 59), usuario, bem);
+            Reserva reservaB = controladorReservas.criarReserva(LocalDateTime.of(2025, 1, 7, 23, 59, 59), usuarioB, bemB);
             System.out.println(reservaB);
 
             try {
-                controladorReservas.alterarPeriodoReserva(reservaB.getId(), LocalDateTime.of(2025, 1, 15, 1, 00, 59), LocalDateTime.of(2025, 1, 22, 23, 59, 59));
+                controladorReservas.alterarPeriodoReserva(reservaB.getId(), LocalDateTime.of(2025, 1, 15, 0, 00, 0), LocalDateTime.of(2025, 1, 21, 23, 59, 59));
                 System.out.println(reservaB);
 
-                Estadia estadia = controladorReservas.checkin(reservaB.getId(), LocalDateTime.of(2025, 1, 16, 1, 00, 59));
+                Estadia estadia = controladorReservas.checkin(reservaB.getId(), LocalDateTime.of(2025, 1, 16, 0, 00, 00));
                 System.out.println(estadia);
 
                 controladorReservas.gerarComprovanteEstadia(estadia, estadia.calcularDuracao());
                 controladorReservas.prolongarEstadia(estadia);
                 System.out.println("Reserva relacionada a estadia: " + estadia.getReserva());
-                System.out.println("Taxa para prolongar: " + controladorReservas.calcularTaxaExtra(estadia.getReserva()));
+                double taxaEstadia = controladorReservas.calcularTaxaExtra(estadia.getReserva());
+                System.out.println("Taxa para prolongar: " + taxaEstadia);
                 int duracao = controladorReservas.checkout(estadia);
                 System.out.println(controladorReservas.gerarComprovanteEstadia(estadia, duracao));
             } catch (ReservaJaCanceladaException | ReservaNaoExisteException | ForaPeriodoException e) {
