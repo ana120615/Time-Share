@@ -19,6 +19,7 @@ public class Sistema {
         IRepositorioUsuario repositorioUsuario = RepositorioUsuarios.getInstance();
         IRepositorioBens repositorioBens = RepositorioBens.getInstancia();
         IRepositorioReservas repositorioReservas = RepositorioReservas.getInstance();
+        IRepositorioCotas repositorioCotas = RepositorioCotas.getInstancia();
 
         //INICIALIZANDO CONTROLADORES
         ControladorLogin controladorLogin = new ControladorLogin(repositorioUsuario);
