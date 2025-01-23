@@ -87,15 +87,19 @@ public class ControladorBens {
     }
 
 
-    public void remover(int id) throws BemNaoExisteException {
+    public void remover(int id) throws BemNaoExisteException, IllegalAccessException {
         Bem removido = repositorioBens.buscarBemPorId(id);
-
-        if (removido != null) {
+        if (removido != null && !removido.isOfertado()) {
+            for (Cota c : removido.getCotas()) {
+                repositorioCotas.excluirCota(c);
+            }
             repositorioBens.removerBem(removido);
-        } else {
+        } else if(removido == null) {
             throw new BemNaoExisteException("Bem não existe");
         }
-
+        else{
+            throw new IllegalAccessException("Bem ja foi ofertado");
+        }
     }
 
     public void ofertarBem(int id) throws BemNaoExisteException {
@@ -265,10 +269,57 @@ public class ControladorBens {
                 } catch (BemNaoExisteException e) {
                     System.out.println(e.getMessage());
                 }
-
-
             }
 
+        }
+    }
+
+    public void alterarNomeBem(int id, String novoNome) throws BemNaoExisteException, NullPointerException {
+        if(novoNome == null) {
+            throw new NullPointerException("Nome nulo.");
+        }
+        Bem bem = this.repositorioBens.buscarBemPorId(id);
+        if (bem != null) {
+            bem.setNome(novoNome);
+        } else {
+            throw new BemNaoExisteException("Bem não existe.");
+        }
+    }
+
+    public void alterarDescricaoBem(int id, String novaDescricao) throws BemNaoExisteException, NullPointerException {
+        if(novaDescricao == null) {
+            throw new NullPointerException("Descricao nula.");
+        }
+        Bem bem = this.repositorioBens.buscarBemPorId(id);
+        if (bem != null) {
+            bem.setDescricao(novaDescricao);
+        } else {
+            throw new BemNaoExisteException("Bem não existe.");
+        }
+    }
+
+
+    public void alterarLocalizacaoBem(int id, String novaLocalizacao) throws BemNaoExisteException, NullPointerException {
+        if(novaLocalizacao == null) {
+            throw new NullPointerException("Localizacao nula.");
+        }
+        Bem bem = this.repositorioBens.buscarBemPorId(id);
+        if (bem != null) {
+            bem.setLocalizacao(novaLocalizacao);
+        } else {
+            throw new BemNaoExisteException("Bem não existe.");
+        }
+    }
+
+    public void alterarCapacidadeBem(int id, int novaCapacidade) throws BemNaoExisteException, IllegalArgumentException {
+        if(novaCapacidade == 0) {
+            throw new IllegalArgumentException("Capacidade invalida.");
+        }
+        Bem bem = this.repositorioBens.buscarBemPorId(id);
+        if (bem != null) {
+            bem.setCapacidade(novaCapacidade);
+        } else {
+            throw new BemNaoExisteException("Bem não existe.");
         }
     }
 }

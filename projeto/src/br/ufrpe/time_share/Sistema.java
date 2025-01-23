@@ -146,7 +146,7 @@ public class Sistema {
                                     escolha = input.nextInt();
                                     switch (escolha) {
                                         case 1:
-                                            System.out.println(repositorioUsuario.buscarUsuarioPorEmail(usuario.getEmail()));
+                                            System.out.println(usuario);
                                             break;
                                         case 2:
                                             boolean sairEdicao = false;
@@ -185,7 +185,7 @@ public class Sistema {
                                                         try {
                                                             System.out.println("Digite a nova data de nascimento: ");
                                                             String novaData = input.next();
-                                                            controladorUsuario.alterarDataAniversario(usuario.getEmail(), LocalDate.parse(novaData, DateTimeFormatter.ofPattern("dd/MM/yyyy")), usuario.getTipo());
+                                                            controladorUsuario.alterarDataAniversario(usuario.getCpf(), LocalDate.parse(novaData, DateTimeFormatter.ofPattern("dd/MM/yyyy")), usuario.getTipo());
                                                         } catch (NullPointerException | UsuarioNaoExisteException |
                                                                  UsuarioNaoPermitidoException e) {
                                                             System.out.println(e.getMessage());
@@ -323,7 +323,7 @@ public class Sistema {
                                     escolha = input.nextInt();
                                     switch (escolha) {
                                         case 1:
-                                            System.out.println(repositorioUsuario.buscarUsuarioPorEmail(usuario.getEmail()));
+                                            System.out.println(usuario);
                                             break;
                                         case 2:
                                             boolean sairEdicao = false;
@@ -362,7 +362,7 @@ public class Sistema {
                                                         try {
                                                             System.out.println("Digite a nova data de nascimento: ");
                                                             String novaData = input.next();
-                                                            controladorUsuario.alterarDataAniversario(usuario.getEmail(), LocalDate.parse(novaData, DateTimeFormatter.ofPattern("dd/MM/yyyy")), usuario.getTipo());
+                                                            controladorUsuario.alterarDataAniversario(usuario.getCpf(), LocalDate.parse(novaData, DateTimeFormatter.ofPattern("dd/MM/yyyy")), usuario.getTipo());
                                                         } catch (NullPointerException | UsuarioNaoExisteException |
                                                                  UsuarioNaoPermitidoException e) {
                                                             System.out.println(e.getMessage());
@@ -475,13 +475,52 @@ public class Sistema {
                                                 escolha = input.nextInt();
                                                 switch (escolha) {
                                                     case 1:
-
+                                                        escolha = 0;
+                                                        try {
+                                                            System.out.print("Digite o id: ");
+                                                            int idBemOfertar = input.nextInt();
+                                                            System.out.println("Digite o novo nome: ");
+                                                            String novoNome = input.next();
+                                                            controladorBens.alterarNomeBem(idBemOfertar, novoNome);
+                                                        } catch (NullPointerException | BemNaoExisteException e) {
+                                                            System.out.println(e.getMessage());
+                                                        }
                                                         break;
                                                     case 2:
+                                                        escolha = 0;
+                                                        try {
+                                                            System.out.print("Digite o id: ");
+                                                            int idBemOfertar = input.nextInt();
+                                                            System.out.println("Digite a nova descricao: ");
+                                                            String novaDescricao = input.next();
+                                                            controladorBens.alterarDescricaoBem(idBemOfertar, novaDescricao);
+                                                        } catch (NullPointerException | BemNaoExisteException e) {
+                                                            System.out.println(e.getMessage());
+                                                        }
                                                         break;
                                                     case 3:
+                                                        escolha = 0;
+                                                        try {
+                                                            System.out.print("Digite o id: ");
+                                                            int idBemOfertar = input.nextInt();
+                                                            System.out.println("Digite a nova localizacao: ");
+                                                            String novaLocalizacao = input.next();
+                                                            controladorBens.alterarLocalizacaoBem(idBemOfertar, novaLocalizacao);
+                                                        } catch (NullPointerException | BemNaoExisteException e) {
+                                                            System.out.println(e.getMessage());
+                                                        }
                                                         break;
                                                     case 4:
+                                                        escolha = 0;
+                                                        try {
+                                                            System.out.print("Digite o id: ");
+                                                            int idBemOfertar = input.nextInt();
+                                                            System.out.println("Digite a nova capacidade: ");
+                                                            int novaCapacidade = input.nextInt();
+                                                            controladorBens.alterarCapacidadeBem(idBemOfertar, novaCapacidade);
+                                                        } catch (IllegalArgumentException | BemNaoExisteException e) {
+                                                            System.out.println(e.getMessage());
+                                                        }
                                                         break;
                                                     case 5:
                                                         try {
@@ -494,6 +533,13 @@ public class Sistema {
 
                                                         break;
                                                     case 6:
+                                                        try {
+                                                            System.out.print("Digite o id: ");
+                                                            int idBemOfertar = input.nextInt();
+                                                            controladorBens.remover(idBemOfertar);
+                                                        } catch (BemNaoExisteException | IllegalAccessException e) {
+                                                            System.out.println(e.getMessage());
+                                                        }
                                                         break;
                                                     case 7:
                                                         sairEdicaoBem = true;
@@ -523,6 +569,8 @@ public class Sistema {
                                         case 6:
                                             sairGerenciamentoBens = true;
                                             break;
+                                        default:
+                                            System.out.println("Opcao invalida");
                                     }
 
                                 }

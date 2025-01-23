@@ -91,9 +91,7 @@ public class ControladorUsuarioGeral {
         Usuario usuario = procurarUsuarioPorCpf(cpf);
         if (usuario != null && usuario.getTipo().equals(tipo)) {
             usuario.setNome(novoNome);
-        } else if (usuario == null) {
-            throw new UsuarioNaoExisteException("Usuario nao encontrado.");
-        } else {
+        }  else {
             throw new UsuarioNaoPermitidoException("O usuario em questao pertence a uma categoria diferente.");
         }
     }
@@ -105,8 +103,6 @@ public class ControladorUsuarioGeral {
         Usuario usuario = procurarUsuarioPorEmail(email);
         if (usuario != null && usuario.getTipo().equals(tipo)) {
             usuario.setSenha(senha);
-        } else if (usuario == null) {
-            throw new UsuarioNaoExisteException("Usuario nao encontrado.");
         } else {
             throw new UsuarioNaoPermitidoException("O usuario em questao pertence a uma categoria diferente.");
         }
