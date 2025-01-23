@@ -146,6 +146,19 @@ public class ControladorBens {
         return resultado;
     }
 
+    public ArrayList<Bem> listarBensOfertados () {
+        ArrayList<Bem> resultado = new ArrayList<>();
+
+        if (repositorioBens != null) {
+            for (Bem bem : repositorioBens.listarBens()) {
+                if (bem.isOfertado()) {
+                    resultado.add(bem);
+                }
+            }
+        }
+        return resultado;
+    }
+
     public ArrayList<Bem> listarBensDisponiveis() {
         return repositorioBens.listarBensDisponiveis();
     }

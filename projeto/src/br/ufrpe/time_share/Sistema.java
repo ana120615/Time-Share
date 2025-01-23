@@ -28,6 +28,7 @@ public class Sistema {
         ControladorUsuarioGeral controladorUsuario = new ControladorUsuarioGeral(repositorioUsuario);
         ControladorBens controladorBens = new ControladorBens(repositorioBens);
         ControladorReservas controladorReservas = new ControladorReservas(repositorioReservas);
+        ControladorVendas controladorVendas = new ControladorVendas();
 
         Usuario usuario = null; //Variavel que vai armazenar o usuario apos login
 
@@ -233,7 +234,6 @@ public class Sistema {
                                             System.out.println("Opcao invalida!");
                                             break;
                                     }
-
                                 }
                                 break;
 
@@ -296,6 +296,27 @@ public class Sistema {
                                     }
                                 }
                             case 3:
+                                boolean sairTelaBens = false;
+                                while (!sairTelaBens) {
+                                    System.out.println("\n\n-- BENS OFERTADOS -- ");
+                                    System.out.println("1 - Verificar Bens Ofertados ");
+                                    System.out.println("2 - Comprar Cotas de um Bem ");
+                                    System.out.println("3 - Voltar");
+                                    escolha = input.nextInt();
+                                    switch (escolha) {
+                                        case 1:
+                                            System.out.println(controladorBens.listarBensOfertados());
+                                            break;
+                                        case 2:
+                                            break;
+                                        case 3:
+                                            sairTelaBens = true;
+                                            break;
+                                        default:
+                                            System.out.println("Opcao invalida!");
+                                            break;
+                                    }
+                                }
                                 break;
                             case 4:
                                 break;
@@ -458,7 +479,7 @@ public class Sistema {
                                             break;
                                         case 3:
                                             System.out.println("\n\n-- LISTA DE BEM OFERTADOS --");
-                                            System.out.println(controladorBens.listarBensUsuario(usuario));
+                                            System.out.println(controladorBens.listarBensOfertadosUsuario(usuario));
                                             break;
 
                                         case 4:
