@@ -93,7 +93,7 @@ public int checkout(Estadia estadia) throws ReservaNaoExisteException, ReservaJa
             throw new ReservaJaCanceladaException("Reserva ja cancelada");
         }
         else{
-            repositorio.removerReserva(reserva.getId());
+            estadia.getReserva().setStatus(false);
         }
     }
     }
@@ -261,6 +261,7 @@ List<String> periodosDisponiveis = new ArrayList<>();
     
 
     //metodo para calcular taxa extra
+    //tambem e usado quando prolongo uma estadia
     //verifica se cota pertence ao usuario e corresponde ao periodo que deseja reservar
     public double calcularTaxaExtra(Reserva reserva) throws ReservaNaoExisteException, CotaJaReservadaException {
         double taxa = 0.00;
