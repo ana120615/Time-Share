@@ -3,10 +3,7 @@ package br.ufrpe.time_share;
 import br.ufrpe.time_share.dados.*;
 import br.ufrpe.time_share.excecoes.*;
 import br.ufrpe.time_share.negocio.*;
-import br.ufrpe.time_share.negocio.beans.Bem;
-import br.ufrpe.time_share.negocio.beans.Cota;
-import br.ufrpe.time_share.negocio.beans.TipoUsuario;
-import br.ufrpe.time_share.negocio.beans.Usuario;
+import br.ufrpe.time_share.negocio.beans.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -308,6 +305,38 @@ public class Sistema {
                                             System.out.println(controladorBens.listarBensOfertados());
                                             break;
                                         case 2:
+                                            try {
+                                                Venda v1 = controladorVendas.iniciarVenda(usuario.getCpf());
+                                                boolean parar = false;
+                                                while (!parar) {
+                                                    System.out.print("Informe o id da Cota: ");
+                                                    int idCota = input.nextInt();
+
+                                                    System.out.println("1 - adicionar || 2 - remover || 3 - finalizar ");
+                                                    int escolhaCompra = input.nextInt();
+
+                                                    if (escolhaCompra == 1) {
+                                                        try {
+                                                            controladorVendas.adicionarCotaCarrinho(idCota, v1);
+                                                        } catch (CotaNaoExisteException | CotaNaoOfertadaException e) {
+                                                            System.out.println(e.getMessage());
+                                                        }
+                                                    } else if (escolhaCompra == 2) {
+                                                        try {
+                                                            controladorVendas.removeCotaCarrinho(idCota, v1);
+                                                        } catch (CotaNaoExisteException e) {
+                                                            System.out.println(e.getMessage());
+                                                        }
+                                                    } else if (escolhaCompra == 3) {
+                                                        controladorVendas.finalizarCompra(v1);
+                                                        parar = true;
+                                                    }
+                                                }
+                                            } catch (UsuarioNaoExisteException e) {
+                                                System.out.println(e.getMessage());
+                                            }
+
+
                                             break;
                                         case 3:
                                             sairTelaBens = true;
