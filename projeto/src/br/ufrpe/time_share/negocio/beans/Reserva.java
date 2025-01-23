@@ -9,18 +9,28 @@ public class Reserva {
     private boolean status;
     private Usuario usuarioComum;
     private Bem bem;
+    private boolean cancelada;
 
     public Reserva(int id, LocalDateTime dataInicio, LocalDateTime dataFim, Usuario usuarioComum, Bem bem) {
         this.id = id;
         this.status = true;
+        this.cancelada = false;
         this.dataInicio = dataInicio;
         this.dataFim = dataFim;
         this.usuarioComum = usuarioComum;
         this.bem = bem;
     }
 
+    public boolean isCancelada() {
+        return cancelada;
+    }
+
+    public void setCancelada(boolean cancelada) {
+        this.cancelada = cancelada;
+    }
+
     public void cancelarReserva() {
-        this.status = false;
+        this.cancelada = true;
     }
 
     public Bem getBem() {
@@ -81,7 +91,8 @@ public class Reserva {
                 ", dataFim=" + dataFim +
                 ", status=" + status +
                 ", usuarioComum=" + usuarioComum +
-                ", bem=" + bem;
+                ", bem=" + bem+
+                ", Cancelada="+ cancelada;
     }
 
     @Override
