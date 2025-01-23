@@ -37,7 +37,7 @@ public class Programa {
 
         try {
             controladorBens.cadastrar(1364, "Apartamento", "Linda Casa",
-                    "Centro da cidade", 5, "12345678901", LocalDateTime.now()
+                    "Centro da cidade", 5, "12345678901", LocalDateTime.of(2024, 01, 22, 10, 10)
                     , 20, 2000);
         } catch (BemNaoExisteException | UsuarioNaoPermitidoException | NullPointerException | BemJaExisteException |
                  UsuarioNaoExisteException e) {
@@ -50,10 +50,10 @@ public class Programa {
             System.out.println(e.getMessage());
         }
 
-
+        // Teste para deslocamento
         for (int i = 0; i < 1; i++) {
             try {
-                long delay = 6000;
+                long delay = 4000;
                 Thread.sleep(delay);
             } catch (InterruptedException e) {
                 e.printStackTrace();

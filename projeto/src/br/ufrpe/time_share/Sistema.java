@@ -16,7 +16,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
 public class Sistema {
-    public static void main(String[] args) throws UsuarioNaoExisteException {
+    public static void main(String[] args) {
         Scanner input = new Scanner(System.in);
 
         //INICIALIZAR REPOSITORIOS
@@ -29,30 +29,44 @@ public class Sistema {
 
         boolean entrarSistema = false;
         boolean sairSistema = false;
+        boolean sairTelaPrincipal = false;
 
         Usuario usuario = null; //Variavel que vai armazenar o usuario apos login
-
         while (!sairSistema) {
-            while (!entrarSistema) {
-                boolean sairLogin = false;
-                System.out.println("\nBEM-VINDO AO FELX-SHARE");
-                System.out.println("Ja possui cadastro?(1 - sim/ 2 - nao)");
+            do {
+                System.out.println("\nBEM-VINDO AO FLEX-SHARE");
+                System.out.println("Já possui cadastro? (1 - sim / 2 - não)");
                 int escolha = input.nextInt();
+                input.nextLine(); // Limpa o buffer após nextInt()
+
                 if (escolha == 1) {
+                    boolean sairLogin = false;
                     while (!sairLogin) {
                         try {
                             System.out.println("-- LOGIN --");
-                            String email, password;
                             System.out.println("Informe o email: ");
-                            email = input.next();
-                            System.out.println("Informe a Senha: ");
-                            password = input.next();
+                            String email = input.next();
+                            input.nextLine(); // Limpa o buffer
+                            System.out.println("Informe a senha: ");
+                            String password = input.next();
+                            input.nextLine(); // Limpa o buffer
+
                             usuario = controladorLogin.efetuarLogin(email, password);
-                            sairLogin = true;
-                            entrarSistema = true;
+                            if (usuario != null) {
+                                System.out.println("Login realizado com sucesso!");
+                                entrarSistema = true; // Permite entrar no sistema
+                            }
+                            sairLogin = true; // Sai do loop de login
+
                         } catch (UsuarioNaoExisteException | SenhaInvalidaException e) {
                             System.out.println(e.getMessage());
-                            sairLogin = true;
+                            System.out.println("Tente novamente.");
+                            // Aqui você pode decidir se quer continuar tentando fazer login ou sair.
+                            System.out.println("Deseja tentar novamente? (s/n)");
+                            String resposta = input.nextLine();
+                            if (resposta.equals("n")) {
+                                sairLogin = true; // Força a saída do loop de login
+                            }
                         }
                     }
                 } else if (escolha == 2) {
@@ -73,14 +87,12 @@ public class Sistema {
                             dataNascimento = input.next();  // Usando next
 
                             System.out.println("\nEscolha o tipo de usuario: ");
-                            System.out.println("1 - COMUM || 2 - ADM");
+                            System.out.println("1 - ADMINISTRADOR || 2 - COMUM");
                             int tipoUsuario = input.nextInt();  // Usando nextInt para o número
 
 
-                            if (tipoUsuario == 1) {
-                                controladorUsuario.cadastrar(cpf, nome, email, senha, LocalDate.parse(dataNascimento, DateTimeFormatter.ofPattern("dd/MM/yyyy")), TipoUsuario.fromValor(1));
-                            } else if (tipoUsuario == 2) {
-                                controladorUsuario.cadastrar(cpf, nome, email, senha, LocalDate.parse(dataNascimento, DateTimeFormatter.ofPattern("dd/MM/yyyy")), TipoUsuario.fromValor(2));
+                            if (tipoUsuario == 1 || tipoUsuario == 2) {
+                                controladorUsuario.cadastrar(cpf, nome, email, senha, LocalDate.parse(dataNascimento, DateTimeFormatter.ofPattern("dd/MM/yyyy")), TipoUsuario.fromValor(tipoUsuario));
                             } else {
                                 System.out.println("Opcao invalida!");
                             }
@@ -90,11 +102,14 @@ public class Sistema {
                             sairCadastro = true;
                         }
                     }
+                } else {
+                    System.out.println("Não identificado");
                 }
-            }
+            } while (!entrarSistema);
 
-            boolean sairTelaPrincipal = false;
-            while (!sairTelaPrincipal) {
+
+
+            do {
                 if (usuario != null && usuario.getTipo().equals(TipoUsuario.COMUM)) {
                     int escolha = 0;
                     System.out.println("\n\n-- TELA USUARIO --");
@@ -213,17 +228,19 @@ public class Sistema {
                 } else if (usuario != null && usuario.getTipo().equals(TipoUsuario.ADMINISTRADOR)) {
 
                 } else {
-                    throw new UsuarioNaoExisteException("Usuario invalido");
+//                    throw new UsuarioNaoExisteException("Usuario invalido");
                 }
-            }
 
 
-            System.out.println("\n\nDeseja sair do sistema? (s/n) ");
-            sairSistema = input.next().equals("s");
-            if (!sairSistema) {
-                entrarSistema = false;
-            }
+                System.out.println("\n\nDeseja sair do sistema? (s/n) ");
+                sairSistema = input.next().equals("s");
+                if (!sairSistema) {
+                    entrarSistema = false;
+                }
+            } while (!sairTelaPrincipal);
+
         }
+
+
     }
 }
-

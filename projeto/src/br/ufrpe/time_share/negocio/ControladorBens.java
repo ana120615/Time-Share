@@ -13,7 +13,6 @@ import br.ufrpe.time_share.negocio.beans.Usuario;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Random;
-import java.util.Iterator;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -204,7 +203,7 @@ public class ControladorBens {
         };
 
         // Agenda a tarefa para rodar a cada 24 horas
-        long umDiaEmMilissegundos = 5000; // 24 * 60 * 60 * 1000
+        long umDiaEmMilissegundos = 24 * 60 * 60 * 1000; // 24 * 60 * 60 * 1000
         timer.scheduleAtFixedRate(task, 0, umDiaEmMilissegundos);
     }
 
