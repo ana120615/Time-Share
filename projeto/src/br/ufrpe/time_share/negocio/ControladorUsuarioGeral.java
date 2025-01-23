@@ -84,7 +84,10 @@ public class ControladorUsuarioGeral {
         }
     }
 
-    public void alterarNomeUsuario(String cpf, String novoNome, TipoUsuario tipo) throws UsuarioNaoExisteException, UsuarioNaoPermitidoException {
+    public void alterarNomeUsuario(String cpf, String novoNome, TipoUsuario tipo) throws UsuarioNaoExisteException, UsuarioNaoPermitidoException, NullPointerException {
+        if(novoNome == null) {
+            throw new NullPointerException("Nome nulo");
+        }
         Usuario usuario = procurarUsuarioPorCpf(cpf);
         if (usuario != null && usuario.getTipo().equals(tipo)) {
             usuario.setNome(novoNome);
@@ -95,7 +98,10 @@ public class ControladorUsuarioGeral {
         }
     }
 
-    public void alterarSenhaUsuario(String email, String senha, TipoUsuario tipo) throws UsuarioNaoExisteException, UsuarioNaoPermitidoException {
+    public void alterarSenhaUsuario(String email, String senha, TipoUsuario tipo) throws UsuarioNaoExisteException, UsuarioNaoPermitidoException, NullPointerException {
+        if(senha == null) {
+            throw new NullPointerException("Senha nula");
+        }
         Usuario usuario = procurarUsuarioPorEmail(email);
         if (usuario != null && usuario.getTipo().equals(tipo)) {
             usuario.setSenha(senha);
@@ -106,7 +112,10 @@ public class ControladorUsuarioGeral {
         }
     }
 
-    public void alterarDataAniversario(String cpf, LocalDate dataAniversario, TipoUsuario tipo) throws UsuarioNaoExisteException, UsuarioNaoPermitidoException {
+    public void alterarDataAniversario(String cpf, LocalDate dataAniversario, TipoUsuario tipo) throws UsuarioNaoExisteException, UsuarioNaoPermitidoException, NullPointerException {
+        if(dataAniversario == null) {
+            throw new NullPointerException("Data nula");
+        }
         Usuario usuario = procurarUsuarioPorCpf(cpf);
         if (usuario != null && usuario.getTipo().equals(tipo)) {
             usuario.setDataNascimento(dataAniversario);
