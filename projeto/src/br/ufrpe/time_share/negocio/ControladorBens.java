@@ -22,9 +22,9 @@ public class ControladorBens {
     private ControladorUsuarioGeral controladorUsuarioGeral;
 
 
-    public ControladorBens(IRepositorioBens instanciaIneterface) {
-        this.repositorioBens = instanciaIneterface;
-        this.repositorioCotas = RepositorioCotas.getInstancia();
+    public ControladorBens(IRepositorioBens instanciaInterfaceBens, IRepositorioCotas instanciaInterfaceCota) {
+        this.repositorioBens = instanciaInterfaceBens;
+        this.repositorioCotas = instanciaInterfaceCota;
         this.controladorUsuarioGeral = new ControladorUsuarioGeral(RepositorioUsuarios.getInstance());
     }
 
@@ -231,19 +231,13 @@ public class ControladorBens {
     }
 
     public ArrayList<Cota> listarCotasDeUmUsuario(String cpfUsuario) throws BemNaoExisteException, UsuarioNaoExisteException {
-        ArrayList<Cota> resultado = new ArrayList<>();
         Usuario usuario = controladorUsuarioGeral.procurarUsuarioPorCpf(cpfUsuario);
-
-        ArrayList<Cota> cotas = repositorioCotas.listarCotas();
-
-        if (cotas != null) {
-            for (Cota cota : cotas) {
-                if (cota.getProprietario().equals(usuario)) {
-                    resultado.add(cota);
-                }
-            }
+        if (usuario != null) {
+            return repositorioCotas.buscarCotasPorProprietario(usuario);
+        } else {
+            throw new UsuarioNaoExisteException("Não encontramos o usuário");
         }
-        return resultado;
+
     }
 
     public ArrayList<Cota> registros(String usuarioCpf) throws UsuarioNaoExisteException {

@@ -14,7 +14,7 @@ public class RepositorioCotas implements IRepositorioCotas {
     private ArrayList<Cota> listaCotas;
 
     {
-        listaCotas = new ArrayList<>(50);
+        listaCotas = new ArrayList<>();
     }
 
     // METODO PARA OBTER A INSTANCIA DO REPOSITORIO
@@ -85,7 +85,14 @@ public class RepositorioCotas implements IRepositorioCotas {
 
     @Override
     public ArrayList<Cota> buscarCotasPorProprietario(Usuario proprietario) {
-        return null;
+        ArrayList<Cota> resultado = new ArrayList<>();
+        for (Cota cota : listaCotas) {
+            if (!cota.getStatusDeDisponibilidadeParaCompra() && cota.getProprietario().equals(proprietario)) {
+                resultado.add(cota);
+            }
+        }
+
+        return resultado;
     }
 
     @Override

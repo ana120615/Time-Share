@@ -1,6 +1,7 @@
 package br.ufrpe.time_share;
 
 import br.ufrpe.time_share.dados.RepositorioBens;
+import br.ufrpe.time_share.dados.RepositorioCotas;
 import br.ufrpe.time_share.excecoes.BemJaExisteException;
 import br.ufrpe.time_share.excecoes.BemNaoExisteException;
 import br.ufrpe.time_share.excecoes.UsuarioNaoExisteException;
@@ -14,7 +15,7 @@ import java.time.LocalDateTime;
 public class ProgramaTestRepositorio {
     public static void main(String[] args) {
 
-        ControladorBens controladorBens = new ControladorBens(RepositorioBens.getInstancia());
+        ControladorBens controladorBens = new ControladorBens(RepositorioBens.getInstancia(), RepositorioCotas.getInstancia());
 
         Usuario usuario = new Usuario("555555554", "SENHA", TipoUsuario.ADMINISTRADOR);
         Usuario usuario2 = new Usuario("225512124", "S#NH@", TipoUsuario.COMUM);

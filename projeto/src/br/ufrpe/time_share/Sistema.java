@@ -24,16 +24,47 @@ public class Sistema {
         //INICIALIZANDO CONTROLADORES
         ControladorLogin controladorLogin = new ControladorLogin(repositorioUsuario);
         ControladorUsuarioGeral controladorUsuario = new ControladorUsuarioGeral(repositorioUsuario);
-        ControladorBens controladorBens = new ControladorBens(repositorioBens);
+        ControladorBens controladorBens = new ControladorBens(repositorioBens, repositorioCotas);
         ControladorReservas controladorReservas = new ControladorReservas(repositorioReservas);
         ControladorVendas controladorVendas = new ControladorVendas();
 
         Usuario usuario = null; //Variavel que vai armazenar o usuario apos login
 
         // Cadastrar Usuário Comum para facilitar na entrada do Sistema
+
+        // ADM
         try {
             controladorUsuario.cadastrar("12345678901", "Caua", "caua@gmail.com",
                     "senha123", LocalDate.of(2005, 12, 12), TipoUsuario.ADMINISTRADOR);
+        } catch (UsuarioJaExisteException | DadosInsuficientesException | UsuarioNaoPermitidoException e) {
+            System.out.println(e.getMessage());
+        }
+
+        // CADASTRANDO E OFERTANDO UM BEM
+        try {
+            controladorBens.cadastrar(1111, "Lar Doce Lar", "Familia Feliz é aqui",
+                    "Recife-PE", 5, "12345678901", LocalDateTime.now(), 20, 6000);
+        } catch (BemNaoExisteException | UsuarioNaoPermitidoException | QuantidadeDeCotasExcedidasException | BemJaExisteException | UsuarioNaoExisteException e) {
+            System.out.println(e.getMessage());
+        }
+
+        try {
+            controladorBens.ofertarBem(1111);
+        } catch (BemNaoExisteException e) {
+            System.out.println(e.getMessage());
+        }
+
+        // COMUM
+        try {
+            controladorUsuario.cadastrar("11111111211", "usuario1", "usuario1@gmail.com",
+                    "senha123", LocalDate.of(2005, 12, 12), TipoUsuario.COMUM);
+        } catch (UsuarioJaExisteException | DadosInsuficientesException | UsuarioNaoPermitidoException e) {
+            System.out.println(e.getMessage());
+        }
+
+        try {
+            controladorUsuario.cadastrar("22013311904", "usuario2", "usuario2@gmail.com",
+                    "senha123", LocalDate.of(2005, 12, 12), TipoUsuario.COMUM);
         } catch (UsuarioJaExisteException | DadosInsuficientesException | UsuarioNaoPermitidoException e) {
             System.out.println(e.getMessage());
         }

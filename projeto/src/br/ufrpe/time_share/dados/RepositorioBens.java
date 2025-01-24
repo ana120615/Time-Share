@@ -11,7 +11,7 @@ public class RepositorioBens implements IRepositorioBens {
     private ArrayList<Bem> listaBem;
 
     {
-        listaBem = new ArrayList<>(50);
+        listaBem = new ArrayList<>();
     }
 
     // METODO PARA OBTER A INSTANCIA DO REPOSITORIO

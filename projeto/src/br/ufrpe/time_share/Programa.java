@@ -2,6 +2,7 @@ package br.ufrpe.time_share;
 
 import br.ufrpe.time_share.dados.IRepositorioUsuario;
 import br.ufrpe.time_share.dados.RepositorioBens;
+import br.ufrpe.time_share.dados.RepositorioCotas;
 import br.ufrpe.time_share.dados.RepositorioUsuarios;
 import br.ufrpe.time_share.excecoes.*;
 import br.ufrpe.time_share.negocio.ControladorBens;
@@ -25,7 +26,7 @@ public class Programa {
 
 
         ControladorVendas controladorVendas = new ControladorVendas();
-        ControladorBens controladorBens = new ControladorBens(RepositorioBens.getInstancia());
+        ControladorBens controladorBens = new ControladorBens(RepositorioBens.getInstancia(), RepositorioCotas.getInstancia());
 
 
         Venda v1 = null;

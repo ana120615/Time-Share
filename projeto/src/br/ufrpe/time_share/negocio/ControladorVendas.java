@@ -1,6 +1,7 @@
 package br.ufrpe.time_share.negocio;
 
 import br.ufrpe.time_share.dados.RepositorioBens;
+import br.ufrpe.time_share.dados.RepositorioCotas;
 import br.ufrpe.time_share.dados.RepositorioUsuarios;
 import br.ufrpe.time_share.excecoes.*;
 import br.ufrpe.time_share.negocio.beans.Cota;
@@ -16,7 +17,7 @@ public class ControladorVendas {
     ControladorUsuarioGeral controladorUsuarioGeral;
 
     {
-        this.controladorBens = new ControladorBens(RepositorioBens.getInstancia());
+        this.controladorBens = new ControladorBens(RepositorioBens.getInstancia(), RepositorioCotas.getInstancia());
         this.controladorUsuarioGeral = new ControladorUsuarioGeral(RepositorioUsuarios.getInstance());
     }
 
