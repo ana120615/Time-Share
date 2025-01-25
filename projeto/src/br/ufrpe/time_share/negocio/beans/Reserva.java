@@ -1,6 +1,7 @@
 package br.ufrpe.time_share.negocio.beans;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class Reserva {
     private int id;
@@ -87,12 +88,12 @@ public class Reserva {
     public String toString() {
         return "Reserva: " +
                 "id=" + id +
-                ", dataInicio=" + dataInicio +
-                ", dataFim=" + dataFim +
+                ", dataInicio=" + dataInicio.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) +
+                ", dataFim=" + dataFim.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) +
                 ", status=" + status +
                 ", usuarioComum=" + usuarioComum +
                 ", bem=" + bem+
-                ", Cancelada="+ cancelada;
+                ", cancelada="+ cancelada;
     }
 
     @Override

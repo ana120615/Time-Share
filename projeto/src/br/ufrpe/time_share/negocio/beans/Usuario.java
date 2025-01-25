@@ -1,6 +1,7 @@
 package br.ufrpe.time_share.negocio.beans;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 
 public class Usuario {
@@ -14,15 +15,6 @@ public class Usuario {
 
     //CONSTRUTORES
     public Usuario(String cpf, String nome, String email, String senha, LocalDate dataNascimento, TipoUsuario tipo) {
-        this.setCpf(cpf);
-        this.setNome(nome);
-        this.setEmail(email);
-        this.setSenha(senha);
-        this.setDataNascimento(dataNascimento);
-        this.setTipo(tipo);
-    }
-
-    public Usuario(String cpf, String nome, String email, String senha, LocalDate dataNascimento, int tipo) {
         this.setCpf(cpf);
         this.setNome(nome);
         this.setEmail(email);
@@ -86,9 +78,6 @@ public class Usuario {
         this.tipo = tipo;
     }
 
-    public void setTipo(int tipo) {
-        this.tipo = TipoUsuario.values()[tipo];
-    }
 
     //METODO PARA CALCULAR IDADE
     public int calcularIdade() {
@@ -97,14 +86,14 @@ public class Usuario {
 
     //METODO PARA VERIFICAR ANIVERSARIO
     public boolean verificarAniversario() {
-        boolean eNiver = false;
+        boolean ehNiver = false;
         LocalDate dataAtual = LocalDate.now();
 
         if (dataAtual.getDayOfMonth() == dataNascimento.getDayOfMonth() &&
                 dataAtual.getMonth() == dataNascimento.getMonth()) {
-            eNiver = true;
+            ehNiver = true;
         }
-        return eNiver;
+        return ehNiver;
     }
 
 
@@ -116,7 +105,7 @@ public class Usuario {
                 ", email='" + email + '\'' +
                 ", senha='" + senha + '\'' +
                 ", tipo='" + tipo + '\'' +
-                ", dataNascimento=" + dataNascimento;
+                ", dataNascimento=" + dataNascimento.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
     }
 
     @Override

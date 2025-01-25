@@ -2,6 +2,7 @@ package br.ufrpe.time_share.negocio.beans;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 
 import java.util.ArrayList;
@@ -113,7 +114,7 @@ public class Venda {
         notaFiscal += "--------------------------------------\n";
         notaFiscal += "CPF: " + usuario.getCpf() + "\n";
         notaFiscal += "Valor: R$" + calcularValorTotal() + "\n";
-        notaFiscal += "Data de Emissão: " + LocalDate.now() + "\n";
+        notaFiscal += "Data de Emissão: " + LocalDate.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) + "\n";
         notaFiscal += "Cotas no carrinho: " + "\n";
         for (Cota c : carrinhoDeComprasCotas) {
             notaFiscal += c + "\n";

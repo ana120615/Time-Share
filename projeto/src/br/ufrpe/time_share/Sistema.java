@@ -5,7 +5,6 @@ import br.ufrpe.time_share.excecoes.*;
 import br.ufrpe.time_share.negocio.*;
 import br.ufrpe.time_share.negocio.beans.*;
 
-import java.sql.SQLOutput;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -375,22 +374,26 @@ public class Sistema {
                                                             System.out.println(e.getMessage());
                                                         }
                                                     } else if (escolhaCompra == 3) {
-                                                        String compra = controladorVendas.finalizarCompra(v1);
-                                                        System.out.println(compra);
-                                                        parar = true;
-                                                    }
-                                                    else if (escolhaCompra == 4) {
                                                         String resultado = controladorVendas.verificarSeUsuarioPossuiDescontos(usuario.getCpf());
-                                                        if(resultado.isEmpty()) {
-                                                            System.out.println("Sem promocoes disponiveis no momento");
-                                                        }
-                                                        else{
+                                                        if (!resultado.isEmpty()) {
+                                                            System.out.println(" - Promocoes disponiveis - ");
+                                                            System.out.println(resultado);
                                                             System.out.println(resultado);
                                                             System.out.println("Deseja aplicar promocao? (s/n)");
                                                             String resposta = input.next();
-                                                            if(resposta.equals("s")) {
+                                                            if (resposta.equals("s")) {
                                                                 controladorVendas.aplicarDesconto(v1, usuario.getCpf());
                                                             }
+                                                        }
+                                                        String compra = controladorVendas.finalizarCompra(v1);
+                                                        System.out.println(compra);
+                                                        parar = true;
+                                                    } else if (escolhaCompra == 4) {
+                                                        String resultado = controladorVendas.verificarSeUsuarioPossuiDescontos(usuario.getCpf());
+                                                        if (resultado.isEmpty()) {
+                                                            System.out.println("Sem promocoes disponiveis no momento");
+                                                        } else {
+                                                            System.out.println(resultado);
                                                         }
                                                     }
                                                 }
@@ -433,6 +436,12 @@ public class Sistema {
 
                                             try {
                                                 controladorVendas.transferenciaDeDireitos(usuario.getCpf(), cpfDestinatario, idCotaTransfetir);
+                                                System.out.println("Transferencia realizada com sucesso! Deseja gerar comprovante de transferencia? (s/n)");
+                                                String resposta = input.next();
+                                                if (resposta.equals("s")) {
+                                                    System.out.println(controladorVendas.gerarComprovanteTransferencia(usuario.getCpf(), cpfDestinatario, idCotaTransfetir));
+                                                }
+
                                             } catch (CotaNaoExisteException | UsuarioNaoExisteException |
                                                      TransferenciaInvalidaException e) {
                                                 System.out.println(e.getMessage());

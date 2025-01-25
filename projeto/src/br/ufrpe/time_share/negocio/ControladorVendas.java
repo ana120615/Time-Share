@@ -9,8 +9,11 @@ import br.ufrpe.time_share.negocio.beans.Promocao;
 import br.ufrpe.time_share.negocio.beans.Usuario;
 import br.ufrpe.time_share.negocio.beans.Venda;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Random;
+import java.util.UUID;
 
 public class ControladorVendas {
     ControladorBens controladorBens;
@@ -111,5 +114,23 @@ public class ControladorVendas {
         return resultado;
     }
 
+    public String gerarComprovanteTransferencia(String cpfUsuarioRemetente, String cpfUsuarioDestinario, int idCota) throws CotaNaoExisteException, UsuarioNaoExisteException, TransferenciaInvalidaException {
+        String resultado = "";
+        Cota cotaTransferida = controladorBens.buscarCota(idCota);
 
+        Usuario usuarioRemetente = controladorUsuarioGeral.procurarUsuarioPorCpf(cpfUsuarioRemetente);
+        Usuario usuarioDestinatario = controladorUsuarioGeral.procurarUsuarioPorCpf(cpfUsuarioDestinario);
+                resultado += "\nComprovante de Transferencia\n";
+                resultado += "Cliente Remetente: " + usuarioRemetente.getNome() + " | CPF: " + usuarioRemetente.getCpf() + "\n";
+                resultado += "Cliente Destinatario: " + usuarioDestinatario.getNome() + " | CPF: " + usuarioDestinatario.getCpf() + "\n";
+                resultado += "--------------------------------------\n";
+                resultado += " FLEX SHARE \n";
+                resultado += "--------------------------------------\n";
+                resultado += "Informacoes da Cota Transferida\n";
+                resultado += "Id: " + cotaTransferida.getId() + " | Bem associado: " + cotaTransferida.getBemAssociado() + "\n| Preco: " + cotaTransferida.getPreco() + " | Periodo Correspondente ao Ano Atual: " + cotaTransferida.getDataInicio().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) + "-" + cotaTransferida.getDataFim().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) + "\n";
+                resultado += "Data de Emissão: " + LocalDate.now() + "\n";
+                String numeroComprovante = UUID.randomUUID().toString();
+                resultado += "\nNúmero do Comprovante: " + numeroComprovante + "\n";
+                return resultado;
+    }
 }

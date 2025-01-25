@@ -1,6 +1,7 @@
 package br.ufrpe.time_share.negocio.beans;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 
 public class Estadia {
@@ -55,8 +56,8 @@ public class Estadia {
     public String toString() {
         return "Estadia: " +
                 "id=" + id +
-                ", dataInicio=" + dataInicio +
-                ", dataFim=" + dataFim +
+                ", dataInicio=" + dataInicio.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) +
+                ", dataFim=" + dataFim.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) +
                 ", bem=" + reserva.getBem().getNome() +
                 ", usuario=" + reserva.getUsuarioComum().getNome();      
     }
