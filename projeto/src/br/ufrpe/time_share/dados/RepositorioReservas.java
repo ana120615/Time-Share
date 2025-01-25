@@ -26,22 +26,8 @@ public class RepositorioReservas implements IRepositorioReservas {
     }
 
     @Override
-    public boolean removerReserva(int idReserva) {
-        boolean resultado = false;
-
-        boolean reservaExiste = false;
-        int i;
-        for (i = 0; i < this.reservas.size() && !reservaExiste; i++) {
-            if (reservas.get(i).getId() == idReserva) {
-                reservaExiste = true;
-            }
-        }
-        if (reservaExiste) {
-            this.reservas.remove(i - 1);
-            resultado = true;
-        }
-        return resultado;
-
+    public void removerReserva(Reserva reserva) {
+        this.reservas.remove(reserva);
     }
 
     @Override
@@ -93,20 +79,10 @@ public class RepositorioReservas implements IRepositorioReservas {
         return new ArrayList<>(resultado);
     }
 
-
     @Override
     public ArrayList<Reserva> listarReservas() {
         return new ArrayList<>(reservas);
     }
 
-
-    @Override
-    public void atualizarReserva(Reserva reservaAtualizada) {
-        for (int i = 0; i < reservas.size(); i++) {
-            if (reservas.get(i).getId() == reservaAtualizada.getId()) {
-                reservas.set(i, reservaAtualizada);
-            }
-        }
-    }
 
 }

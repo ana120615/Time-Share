@@ -125,9 +125,8 @@ public class ControladorReservas {
 
 
     //metodo para cancelar reserva
-    public Reserva cancelarReserva(int idReserva) throws ReservaNaoExisteException, ReservaJaCanceladaException {
-        Reserva reservaCancelada;
-        reservaCancelada = repositorio.buscarReservasPorId(idReserva);
+    public void cancelarReserva(int idReserva) throws ReservaNaoExisteException, ReservaJaCanceladaException {
+        Reserva reservaCancelada = repositorio.buscarReservasPorId(idReserva);
         if (reservaCancelada == null) {
             throw new ReservaNaoExisteException("Reserva inexistente");
         } else {
@@ -135,10 +134,9 @@ public class ControladorReservas {
                 throw new ReservaJaCanceladaException("Reserva ja cancelada");
             } else {
                 reservaCancelada.cancelarReserva();
-                repositorio.removerReserva(reservaCancelada.getId());
+                repositorio.removerReserva(reservaCancelada);
             }
         }
-        return reservaCancelada;
     }
 
     //metodo para reembolso apos cancelamento
@@ -189,7 +187,6 @@ public class ControladorReservas {
 // Atualizar dados da reserva
         reserva.setDataInicio(novaDataInicio);
         reserva.setDataFim(novaDataFim);
-        repositorio.atualizarReserva(reserva);
 
         return reserva;
     }

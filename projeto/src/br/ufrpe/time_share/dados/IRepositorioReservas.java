@@ -8,9 +8,7 @@ public interface IRepositorioReservas {
 
     void cadastrarReserva(Reserva reserva);
 
-    boolean removerReserva( int idReserva);
-
-    void atualizarReserva(Reserva reservaAtualizada);
+    void removerReserva(Reserva reserva);
 
     Reserva buscarReserva(Reserva reserva);
 
