@@ -9,7 +9,6 @@ import java.util.ArrayList;
 public class Venda {
     private int id;
     private LocalDateTime data;
-    private Cota cota;
     private Usuario usuario;
     private ArrayList<Cota> carrinhoDeComprasCotas;
     private boolean foiDescontoAplicado;
@@ -33,14 +32,6 @@ public class Venda {
 
     public int getId() {
         return this.id;
-    }
-
-    public void setCota(Cota cota) {
-        this.cota = cota;
-    }
-
-    public Cota getCota() {
-        return this.cota;
     }
 
     public void setUsuario(Usuario usuarioComum) {

@@ -53,7 +53,7 @@ public class ControladorReservas {
     }
 
     //ao passar o tempo reservado, tenho a opcao de prolongar
-//a estadia ou fazer check out
+    //a estadia ou fazer check out
     public Estadia prolongarEstadia(Estadia estadia) {
         LocalDateTime agora = LocalDateTime.now();
         LocalDateTime novaDataFim = estadia.getDataFim().plusDays(6).withHour(23).withMinute(59).withSecond(59);

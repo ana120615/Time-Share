@@ -66,15 +66,20 @@ public class ControladorVendas {
         }
     }
 
-    public boolean transferenciaDeDireitos(String cpfUsuarioRemetente, String cpfUsuarioDestinario, int idCota) throws CotaNaoExisteException, UsuarioNaoExisteException {
+    public boolean transferenciaDeDireitos(String cpfUsuarioRemetente, String cpfUsuarioDestinario, int idCota) throws CotaNaoExisteException, UsuarioNaoExisteException, TransferenciaInvalidaException {
         Cota cotaTransferida = controladorBens.buscarCota(idCota);
 
         Usuario usuarioRemetente = controladorUsuarioGeral.procurarUsuarioPorCpf(cpfUsuarioRemetente);
         Usuario usuarioDestinatario = controladorUsuarioGeral.procurarUsuarioPorCpf(cpfUsuarioDestinario);
 
         if (cotaTransferida.getProprietario().equals(usuarioRemetente)) {
-            cotaTransferida.setProprietario(usuarioDestinatario);
-            return true;
+            if (!usuarioRemetente.equals(usuarioDestinatario)) {
+                cotaTransferida.setProprietario(usuarioDestinatario);
+                return true;
+            } else {
+                throw new TransferenciaInvalidaException("Operação não permitida.");
+            }
+
         } else {
             throw new ProprietarioNaoIdentificadoException("Usuário não é o Proprietário da cota");
         }

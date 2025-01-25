@@ -2,7 +2,6 @@ package br.ufrpe.time_share.negocio;
 
 import br.ufrpe.time_share.dados.IRepositorioBens;
 import br.ufrpe.time_share.dados.IRepositorioCotas;
-import br.ufrpe.time_share.dados.RepositorioCotas;
 import br.ufrpe.time_share.dados.RepositorioUsuarios;
 import br.ufrpe.time_share.excecoes.*;
 import br.ufrpe.time_share.negocio.beans.Bem;
@@ -266,6 +265,7 @@ public class ControladorBens {
         timer.scheduleAtFixedRate(task, 0, umDiaEmMilissegundos);
     }
 
+    // TODO ajustar o deslocamento das cotas
     public void deslocarCotasAutomaticamente()  {
         ArrayList<Bem> bens = repositorioBens.listarBens();
 

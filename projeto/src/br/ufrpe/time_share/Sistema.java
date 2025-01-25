@@ -409,7 +409,7 @@ public class Sistema {
 
                                             try {
                                                 controladorVendas.transferenciaDeDireitos(usuario.getCpf(), cpfDestinatario, idCotaTransfetir);
-                                            } catch (CotaNaoExisteException | UsuarioNaoExisteException e) {
+                                            } catch (CotaNaoExisteException | UsuarioNaoExisteException | TransferenciaInvalidaException e) {
                                                 System.out.println(e.getMessage());
                                             }
                                             break;
