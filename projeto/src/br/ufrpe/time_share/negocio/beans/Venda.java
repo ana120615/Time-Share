@@ -21,8 +21,7 @@ public class Venda {
     public Venda(int id) {
         this.id = id;
         this.foiDescontoAplicado = false;
-
-
+        this.promocao = new Promocao();
     }
 
     //Métodos get e set
@@ -63,7 +62,7 @@ public class Venda {
         }
 
         if (getFoiDescontoAplicado()) {
-            resultado = resultado - (promocao.calcularTaxaPromocao(LocalDateTime.now(), usuario));
+            resultado = resultado - (resultado * promocao.calcularTaxaPromocao(LocalDateTime.now(), usuario));
         }
 
         return resultado;

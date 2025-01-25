@@ -31,7 +31,7 @@ public class ControladorVendas {
 
             return venda;
         } else {
-            throw new UsuarioNaoExisteException("Usuário não existe");
+            throw new UsuarioNaoExisteException("Usuário não existe.");
         }
     }
 
@@ -43,7 +43,6 @@ public class ControladorVendas {
         } else {
             throw new CotaNaoOfertadaException("Não está ofertada");
         }
-
     }
 
     public void removeCotaCarrinho(int idCota, Venda venda) throws CotaNaoExisteException {
@@ -59,10 +58,10 @@ public class ControladorVendas {
     public String finalizarCompra(Venda venda) {
         if (!venda.getCarrinhoDeComprasCotas().isEmpty()) {
             venda.finalizarCompra();
-            // Poderia retornar algum Arquivo (Comprovante) de compra
+            //TODO Poderia retornar algum Arquivo (Comprovante) de compra
             return venda.toString();
         } else {
-            throw new CompraNaoFinalizada("Carrinho vazio");
+            throw new CompraNaoFinalizada("Carrinho vazio.");
         }
     }
 
@@ -81,32 +80,34 @@ public class ControladorVendas {
             }
 
         } else {
-            throw new ProprietarioNaoIdentificadoException("Usuário não é o Proprietário da cota");
+            throw new ProprietarioNaoIdentificadoException("Usuário não é o Proprietário da cota.");
         }
     }
 
-    public void verificarSeUsuarioPossuiDescontos (String cpfUsuario) throws UsuarioNaoExisteException{
+    public String verificarSeUsuarioPossuiDescontos(String cpfUsuario) throws UsuarioNaoExisteException {
+        String resultado = "";
         Usuario usuario = controladorUsuarioGeral.procurarUsuarioPorCpf(cpfUsuario);
-
         Promocao promocao = new Promocao();
 
-        if (usuario.verificarAniversario()) {
-            System.out.println("Desconto aniversário de" + promocao.getTaxaPromocaoAniversario()*100+"%");
-        }
+        if (usuario.verificarAniversario() || promocao.ehAltaTemporada(LocalDateTime.now())) {
+            if (usuario.verificarAniversario()) {
+                resultado += "\nDesconto aniversário de" + promocao.getTaxaPromocaoAniversario() * 100 + "%.";
+            }
 
-        if (promocao.eAltaTemporada(LocalDateTime.now())) {
-            System.out.println("Desconto temporada de" + promocao.getTaxaPromocaoTemporada(LocalDateTime.now())*100+"%");
+            if (promocao.ehAltaTemporada(LocalDateTime.now())) {
+                resultado += "\nDesconto temporada de" + promocao.getTaxaPromocaoTemporada(LocalDateTime.now()) * 100 + "%.";
+            }
         }
+        return resultado;
     }
 
-    public boolean aplicarDesconto (Venda venda, String cpfUsuario) throws UsuarioNaoExisteException {
+    public boolean aplicarDesconto(Venda venda, String cpfUsuario) throws UsuarioNaoExisteException {
         boolean resultado = false;
 
         if (venda != null && !venda.getFoiDescontoAplicado()) {
             venda.setFoiDescontoAplicado(true);
             resultado = true;
         }
-
         return resultado;
     }
 

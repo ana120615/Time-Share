@@ -5,6 +5,7 @@ import br.ufrpe.time_share.excecoes.*;
 import br.ufrpe.time_share.negocio.*;
 import br.ufrpe.time_share.negocio.beans.*;
 
+import java.sql.SQLOutput;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -44,7 +45,8 @@ public class Sistema {
         try {
             controladorBens.cadastrar(1111, "Lar Doce Lar", "Familia Feliz é aqui",
                     "Recife-PE", 5, "12345678901", LocalDateTime.now(), 20, 6000);
-        } catch (BemNaoExisteException | UsuarioNaoPermitidoException | QuantidadeDeCotasExcedidasException | BemJaExisteException | UsuarioNaoExisteException e) {
+        } catch (BemNaoExisteException | UsuarioNaoPermitidoException | QuantidadeDeCotasExcedidasException |
+                 BemJaExisteException | UsuarioNaoExisteException e) {
             System.out.println(e.getMessage());
         }
 
@@ -139,6 +141,7 @@ public class Sistema {
 
                                 if (tipoUsuario == 1 || tipoUsuario == 2) {
                                     controladorUsuario.cadastrar(cpf, nome, email, senha, LocalDate.parse(dataNascimento, DateTimeFormatter.ofPattern("dd/MM/yyyy")), TipoUsuario.fromValor(tipoUsuario));
+                                    System.out.println("Usuario cadastrado!");
                                 } else {
                                     System.out.println("Opcao invalida!");
                                 }
@@ -194,6 +197,7 @@ public class Sistema {
                                                             System.out.println("Digite o novo nome: ");
                                                             String novoNome = input.next();
                                                             controladorUsuario.alterarNomeUsuario(usuario.getCpf(), novoNome, usuario.getTipo());
+                                                            System.out.println("Valor alterado com sucesso!");
                                                         } catch (NullPointerException | UsuarioNaoExisteException |
                                                                  UsuarioNaoPermitidoException e) {
                                                             System.out.println(e.getMessage());
@@ -205,6 +209,7 @@ public class Sistema {
                                                             System.out.println("Digite a nova senha: ");
                                                             String novaSenha = input.next();
                                                             controladorUsuario.alterarSenhaUsuario(usuario.getEmail(), novaSenha, usuario.getTipo());
+                                                            System.out.println("Valor alterado com sucesso!");
                                                         } catch (NullPointerException | UsuarioNaoExisteException |
                                                                  UsuarioNaoPermitidoException e) {
                                                             System.out.println(e.getMessage());
@@ -216,6 +221,7 @@ public class Sistema {
                                                             System.out.println("Digite a nova data de nascimento: ");
                                                             String novaData = input.next();
                                                             controladorUsuario.alterarDataAniversario(usuario.getCpf(), LocalDate.parse(novaData, DateTimeFormatter.ofPattern("dd/MM/yyyy")), usuario.getTipo());
+                                                            System.out.println("Valor alterado com sucesso!");
                                                         } catch (NullPointerException | UsuarioNaoExisteException |
                                                                  UsuarioNaoPermitidoException e) {
                                                             System.out.println(e.getMessage());
@@ -341,8 +347,10 @@ public class Sistema {
                                                 Venda v1 = controladorVendas.iniciarVenda(usuario.getCpf());
                                                 boolean parar = false;
                                                 while (!parar) {
-
-                                                    System.out.println("1 - adicionar || 2 - remover || 3 - finalizar compra ");
+                                                    System.out.println("\n\n-- *** -- ");
+                                                    System.out.println("Quantidade de itens no carrinho: " + v1.getCarrinhoDeComprasCotas().size());
+                                                    System.out.println("Valor total a ser pago: " + v1.calcularValorTotal());
+                                                    System.out.println("1 - adicionar || 2 - remover || 3 - finalizar compra || 4 - Promocoes ");
                                                     int escolhaCompra = input.nextInt();
                                                     int idCota = 0;
 
@@ -355,12 +363,14 @@ public class Sistema {
                                                     if (escolhaCompra == 1) {
                                                         try {
                                                             controladorVendas.adicionarCotaCarrinho(idCota, v1);
+                                                            System.out.println("Cota adicionada ao carrinho.");
                                                         } catch (CotaNaoExisteException | CotaNaoOfertadaException e) {
                                                             System.out.println(e.getMessage());
                                                         }
                                                     } else if (escolhaCompra == 2) {
                                                         try {
                                                             controladorVendas.removeCotaCarrinho(idCota, v1);
+                                                            System.out.println("Cota removida do carrinho.");
                                                         } catch (CotaNaoExisteException e) {
                                                             System.out.println(e.getMessage());
                                                         }
@@ -368,6 +378,20 @@ public class Sistema {
                                                         String compra = controladorVendas.finalizarCompra(v1);
                                                         System.out.println(compra);
                                                         parar = true;
+                                                    }
+                                                    else if (escolhaCompra == 4) {
+                                                        String resultado = controladorVendas.verificarSeUsuarioPossuiDescontos(usuario.getCpf());
+                                                        if(resultado.isEmpty()) {
+                                                            System.out.println("Sem promocoes disponiveis no momento");
+                                                        }
+                                                        else{
+                                                            System.out.println(resultado);
+                                                            System.out.println("Deseja aplicar promocao? (s/n)");
+                                                            String resposta = input.next();
+                                                            if(resposta.equals("s")) {
+                                                                controladorVendas.aplicarDesconto(v1, usuario.getCpf());
+                                                            }
+                                                        }
                                                     }
                                                 }
                                             } catch (UsuarioNaoExisteException e) {
@@ -409,7 +433,8 @@ public class Sistema {
 
                                             try {
                                                 controladorVendas.transferenciaDeDireitos(usuario.getCpf(), cpfDestinatario, idCotaTransfetir);
-                                            } catch (CotaNaoExisteException | UsuarioNaoExisteException | TransferenciaInvalidaException e) {
+                                            } catch (CotaNaoExisteException | UsuarioNaoExisteException |
+                                                     TransferenciaInvalidaException e) {
                                                 System.out.println(e.getMessage());
                                             }
                                             break;
@@ -461,6 +486,7 @@ public class Sistema {
                                                             System.out.println("Digite o novo nome: ");
                                                             String novoNome = input.next();
                                                             controladorUsuario.alterarNomeUsuario(usuario.getCpf(), novoNome, usuario.getTipo());
+                                                            System.out.println("Valor alterado com sucesso!");
                                                         } catch (NullPointerException | UsuarioNaoExisteException |
                                                                  UsuarioNaoPermitidoException e) {
                                                             System.out.println(e.getMessage());
@@ -472,6 +498,7 @@ public class Sistema {
                                                             System.out.println("Digite a nova senha: ");
                                                             String novaSenha = input.next();
                                                             controladorUsuario.alterarSenhaUsuario(usuario.getEmail(), novaSenha, usuario.getTipo());
+                                                            System.out.println("Valor alterado com sucesso!");
                                                         } catch (NullPointerException | UsuarioNaoExisteException |
                                                                  UsuarioNaoPermitidoException e) {
                                                             System.out.println(e.getMessage());
@@ -483,6 +510,7 @@ public class Sistema {
                                                             System.out.println("Digite a nova data de nascimento: ");
                                                             String novaData = input.next();
                                                             controladorUsuario.alterarDataAniversario(usuario.getCpf(), LocalDate.parse(novaData, DateTimeFormatter.ofPattern("dd/MM/yyyy")), usuario.getTipo());
+                                                            System.out.println("Valor alterado com sucesso!");
                                                         } catch (NullPointerException | UsuarioNaoExisteException |
                                                                  UsuarioNaoPermitidoException e) {
                                                             System.out.println(e.getMessage());
@@ -602,6 +630,7 @@ public class Sistema {
                                                             System.out.println("Digite o novo nome: ");
                                                             String novoNome = input.next();
                                                             controladorBens.alterarNomeBem(idBemOfertar, novoNome);
+                                                            System.out.println("Valor alterado com sucesso!");
                                                         } catch (NullPointerException | BemNaoExisteException e) {
                                                             System.out.println(e.getMessage());
                                                         }
@@ -614,6 +643,7 @@ public class Sistema {
                                                             System.out.println("Digite a nova descricao: ");
                                                             String novaDescricao = input.next();
                                                             controladorBens.alterarDescricaoBem(idBemOfertar, novaDescricao);
+                                                            System.out.println("Valor alterado com sucesso!");
                                                         } catch (NullPointerException | BemNaoExisteException e) {
                                                             System.out.println(e.getMessage());
                                                         }
@@ -626,6 +656,7 @@ public class Sistema {
                                                             System.out.println("Digite a nova localizacao: ");
                                                             String novaLocalizacao = input.next();
                                                             controladorBens.alterarLocalizacaoBem(idBemOfertar, novaLocalizacao);
+                                                            System.out.println("Valor alterado com sucesso!");
                                                         } catch (NullPointerException | BemNaoExisteException e) {
                                                             System.out.println(e.getMessage());
                                                         }
@@ -638,6 +669,7 @@ public class Sistema {
                                                             System.out.println("Digite a nova capacidade: ");
                                                             int novaCapacidade = input.nextInt();
                                                             controladorBens.alterarCapacidadeBem(idBemOfertar, novaCapacidade);
+                                                            System.out.println("Valor alterado com sucesso!");
                                                         } catch (IllegalArgumentException | BemNaoExisteException e) {
                                                             System.out.println(e.getMessage());
                                                         }
@@ -647,6 +679,7 @@ public class Sistema {
                                                             System.out.print("Digite o id: ");
                                                             int idBemOfertar = input.nextInt();
                                                             controladorBens.ofertarBem(idBemOfertar);
+                                                            System.out.println("Bem ofertado com sucesso!");
                                                         } catch (BemNaoExisteException e) {
                                                             System.out.println(e.getMessage());
                                                         }
@@ -655,8 +688,9 @@ public class Sistema {
                                                     case 6:
                                                         try {
                                                             System.out.print("Digite o id: ");
-                                                            int idBemOfertar = input.nextInt();
-                                                            controladorBens.remover(idBemOfertar);
+                                                            int bemASerRemovido = input.nextInt();
+                                                            controladorBens.remover(bemASerRemovido);
+                                                            System.out.println("Bem removido com sucesso!");
                                                         } catch (BemNaoExisteException | IllegalAccessException e) {
                                                             System.out.println(e.getMessage());
                                                         }
@@ -664,7 +698,6 @@ public class Sistema {
                                                     case 7:
                                                         sairEdicaoBem = true;
                                                         break;
-
                                                 }
                                             }
                                             break;

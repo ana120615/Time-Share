@@ -20,7 +20,7 @@ public class Promocao {
     }
 
     public double getTaxaPromocaoTemporada(LocalDateTime data) {
-        if (eAltaTemporada(data)) {
+        if (ehAltaTemporada(data)) {
             return 0.25d;
         } else {
             return 0.05d;
@@ -53,7 +53,7 @@ public class Promocao {
     // LOGICA DE TEMPORADA E TAXA
     private double calcularTaxaTemporada(LocalDateTime dataInicio) {
         double valorTaxa = 0;
-        if (eAltaTemporada(dataInicio)) {
+        if (ehAltaTemporada(dataInicio)) {
             valorTaxa = 0.25d;
         } else {
             valorTaxa = 0.05d;
@@ -61,7 +61,7 @@ public class Promocao {
         return valorTaxa;
     }
 
-    public boolean eAltaTemporada(LocalDateTime data) {
+    public boolean ehAltaTemporada(LocalDateTime data) {
         int mes = data.getMonthValue();
         return mes == 12 || mes == 1 || mes == 2;
     }
