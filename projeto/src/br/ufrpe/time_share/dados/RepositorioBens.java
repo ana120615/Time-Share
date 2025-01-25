@@ -1,6 +1,7 @@
 package br.ufrpe.time_share.dados;
 
 import java.util.ArrayList;
+
 import br.ufrpe.time_share.negocio.beans.Bem;
 
 public class RepositorioBens implements IRepositorioBens {
@@ -25,15 +26,6 @@ public class RepositorioBens implements IRepositorioBens {
     }
 
     @Override
-    public void editarBem(Bem bemAtualizado) {
-        for (int i = 0; i < listaBem.size(); i++) {
-            if (listaBem.get(i).getId() == bemAtualizado.getId()) {
-                listaBem.set(i, bemAtualizado);
-            }
-        }
-    }
-
-    @Override
     public void removerBem(Bem bem) {
         this.listaBem.remove(bem);
     }
@@ -50,7 +42,7 @@ public class RepositorioBens implements IRepositorioBens {
         }
 
         if (encontrado) {
-            bemProcurado = listaBem.get(i-1);
+            bemProcurado = listaBem.get(i - 1);
         }
         return bemProcurado;
     }
@@ -61,13 +53,13 @@ public class RepositorioBens implements IRepositorioBens {
         boolean encontrado = false;
         int i;
         for (i = 0; i < this.listaBem.size() && !encontrado; i++) {
-            if (this.listaBem.get(i).getNome().equals(nome)) {
+            if (this.listaBem.get(i).getNome().equalsIgnoreCase(nome)) {
                 encontrado = true;
             }
         }
 
         if (encontrado) {
-            bemProcurado = this.listaBem.get(i-1);
+            bemProcurado = this.listaBem.get(i - 1);
         }
         return bemProcurado;
     }
@@ -98,6 +90,19 @@ public class RepositorioBens implements IRepositorioBens {
     public ArrayList<Bem> listarBens() {
         return new ArrayList<>(listaBem);
     }
+
+    @Override
+    public ArrayList<Bem> listarBensByNome(String nome) {
+        ArrayList<Bem> listaBensByNome = new ArrayList<>();
+        for (Bem bem : this.listaBem) {
+            if (bem.getNome().equalsIgnoreCase(nome) || bem.getNome().contains(nome)) {
+                listaBensByNome.add(bem);
+            }
+        }
+        return listaBensByNome;
+    }
+
+
 }
 
 

@@ -7,8 +7,6 @@ public interface IRepositorioBens {
 
     void cadastrarBem(Bem bem);
 
-    void editarBem(Bem bemAtualizado);
-
     void removerBem(Bem bem);
 
     Bem buscarBemPorId(int id);
@@ -20,5 +18,7 @@ public interface IRepositorioBens {
     ArrayList<Bem> listarBensDisponiveis();
 
     ArrayList<Bem> listarBens();
+
+    ArrayList<Bem> listarBensByNome(String nome);
 
 }
