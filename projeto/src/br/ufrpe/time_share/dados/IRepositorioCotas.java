@@ -12,8 +12,6 @@ public interface IRepositorioCotas {
 
     void cadastrarCotas(ArrayList<Cota> cotas);
 
-    void alterarCota(Cota cotaAtualizada);
-
     void excluirCota(Cota cota);
 
     boolean existeCota(Cota cota);

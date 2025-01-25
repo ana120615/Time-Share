@@ -24,7 +24,7 @@ public class RepositorioCotas implements IRepositorioCotas {
 
     @Override
     public void cadastrarCota(Cota cota) {
-      listaCotas.add(cota);
+        listaCotas.add(cota);
     }
 
     @Override
@@ -33,22 +33,9 @@ public class RepositorioCotas implements IRepositorioCotas {
     }
 
     @Override
-    public void alterarCota(Cota cotaAtualizada) {
-    //no controlador seria feita a verificacao 
-    //de cada parte que seria modificada e se a cota existe, 
-    //entre outros aspectos, mas aqui ha uma substituicao direta
-    for (int i = 0; i < listaCotas.size(); i++) {
-        if (listaCotas.get(i).getId() == cotaAtualizada.getId()) {
-            listaCotas.set(i, cotaAtualizada);
-        }
-    }
-    }
-
-    @Override
     public void excluirCota(Cota cota) {
-    listaCotas.remove(cota);
+        listaCotas.remove(cota);
     }
-
 
     @Override
     public boolean existeCota(Cota cota) {
@@ -61,25 +48,14 @@ public class RepositorioCotas implements IRepositorioCotas {
         return existe;
     }
 
-//    @Override
-//    public ArrayList<Cota> buscarCotasPorProprietario(Usuario proprietario){
-//        ArrayList<Cota> resultado = new ArrayList<>();
-//        for(Cota cota : listaCotas) {
-//            if(cota.getProprietario().equals(proprietario)) {
-//                resultado.add(cota);
-//            }
-//        }
-//        return new ArrayList<>(resultado);
-//    }
-
     @Override
     public Cota buscarCotaPorId(int id) {
         Cota retorno = null;
-    for(Cota cota: listaCotas){
-        if(cota.getId()==id){
-        retorno = cota;
+        for (Cota cota : listaCotas) {
+            if (cota.getId() == id) {
+                retorno = cota;
+            }
         }
-    }
         return retorno;
     }
 
@@ -97,12 +73,12 @@ public class RepositorioCotas implements IRepositorioCotas {
 
     @Override
     public ArrayList<Cota> buscarCotasPorBem(Bem bem) {
-     ArrayList<Cota> retorno=new ArrayList<>();
-     for(Cota cota: listaCotas){
-        if(cota.getBemAssociado().equals(bem)){
-            retorno.add(cota);
+        ArrayList<Cota> retorno = new ArrayList<>();
+        for (Cota cota : listaCotas) {
+            if (cota.getBemAssociado().equals(bem)) {
+                retorno.add(cota);
+            }
         }
-     }
         return new ArrayList<>(retorno);
     }
 
@@ -110,12 +86,12 @@ public class RepositorioCotas implements IRepositorioCotas {
     public ArrayList<Cota> listarCotas() {
         return new ArrayList<>(listaCotas);
     }
-    
+
     @Override
     public ArrayList<Cota> listarCotasDisponiveisParaVenda() {
         ArrayList<Cota> resultado = new ArrayList<>();
-        for(Cota cota : listaCotas) {
-            if(cota.isStatusDeDisponibilidadeParaCompra()) {
+        for (Cota cota : listaCotas) {
+            if (cota.isStatusDeDisponibilidadeParaCompra()) {
                 resultado.add(cota);
             }
         }
