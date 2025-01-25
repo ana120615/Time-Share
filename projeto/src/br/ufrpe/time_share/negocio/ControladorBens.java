@@ -333,6 +333,16 @@ public class ControladorBens {
             throw new BemNaoExisteException("Bem não existe.");
         }
     }
+
+    public Bem buscarBemPorId (int idBem) throws BemNaoExisteException{
+        Bem bem = repositorioBens.buscarBemPorId(idBem);
+
+        if (bem == null) {
+            throw new BemNaoExisteException("Bem não existe");
+        }
+
+        return bem;
+    }
 }
 
 

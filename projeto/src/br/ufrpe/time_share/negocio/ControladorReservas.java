@@ -36,7 +36,7 @@ public class ControladorReservas {
         if (reservaRelacionada == null) {
             throw new ReservaNaoExisteException("Reserva inexistente");
         } else {
-            if (reservaRelacionada.isCancelada()||!reservaRelacionada.getStatus()) {
+            if (reservaRelacionada.isCancelada() || !reservaRelacionada.getStatus()) {
                 throw new ReservaJaCanceladaException("Reserva ja cancelada");
             } else {
                 int idAleatorio = 1001 + ThreadLocalRandom.current().nextInt(10000);
@@ -82,10 +82,11 @@ public class ControladorReservas {
             if (reserva == null) {
                 throw new ReservaNaoExisteException("Reserva inexistente");
             } else {
-                if (reserva.isCancelada()||!reserva.getStatus()) {
+                if (reserva.isCancelada() || !reserva.getStatus()) {
                     throw new ReservaJaCanceladaException("Reserva ja cancelada");
                 } else {
-                    estadia.getReserva().setStatus(false);;
+                    estadia.getReserva().setStatus(false);
+                    ;
                 }
             }
         }
@@ -130,10 +131,11 @@ public class ControladorReservas {
         if (reservaCancelada == null) {
             throw new ReservaNaoExisteException("Reserva inexistente");
         } else {
-            if (reservaCancelada.isCancelada()||!reservaCancelada.getStatus()) {
+            if (reservaCancelada.isCancelada() || !reservaCancelada.getStatus()) {
                 throw new ReservaJaCanceladaException("Reserva ja cancelada");
             } else {
                 reservaCancelada.cancelarReserva();
+                repositorio.removerReserva(reservaCancelada.getId());
             }
         }
         return reservaCancelada;
@@ -171,7 +173,7 @@ public class ControladorReservas {
             throw new ReservaNaoExisteException("Reserva inexistente");
         }
 
-        if (!reserva.getStatus()||reserva.isCancelada()) {
+        if (!reserva.getStatus() || reserva.isCancelada()) {
             throw new ReservaJaCanceladaException("Reserva ja cancelada");
         }
 
@@ -197,6 +199,12 @@ public class ControladorReservas {
         List<String> periodosDisponiveis = new ArrayList<>();
         // Buscar todas as reservas para o bem
         ArrayList<Reserva> reservas = repositorio.buscarReservasPorBem(bemId);
+
+        // Garante que o usuário não posso colocar o final do periodo antes do inicio do periodo
+        // e que o inicio do periodo não posso ser antes do dia atual
+        if (fimPeriodo.isBefore(inicioPeriodo) || inicioPeriodo.isBefore(LocalDateTime.now())) {
+            throw new IllegalArgumentException("\nInválido");
+        }
 
         if (reservas == null) {
             throw new BemNaoExisteException("Bem não existe");
@@ -307,5 +315,17 @@ public class ControladorReservas {
     public String gerarComprovanteEstadia(Estadia estadia, int duracao) {
         String estadiaToString = estadia.toString();
         return estadiaToString + ", duracao da estadia: " + String.format("%d", duracao) + " dias";
+    }
+
+    public ArrayList<Reserva> listarReservasUsuario(Usuario usuario) {
+        ArrayList<Reserva> resultado = new ArrayList<>();
+
+        for (Reserva r : repositorio.listarReservas()) {
+            if (r.getUsuarioComum().equals(usuario)) {
+                resultado.add(r);
+            }
+        }
+
+        return resultado;
     }
 }

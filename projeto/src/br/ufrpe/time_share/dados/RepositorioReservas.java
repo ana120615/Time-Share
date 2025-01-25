@@ -1,6 +1,7 @@
 package br.ufrpe.time_share.dados;
 
 import java.util.ArrayList;
+
 import br.ufrpe.time_share.negocio.beans.Reserva;
 
 public class RepositorioReservas implements IRepositorioReservas {
@@ -61,12 +62,12 @@ public class RepositorioReservas implements IRepositorioReservas {
 
     @Override
     public Reserva buscarReservasPorId(int idReserva) {
-         Reserva retorno = null;
-    for(Reserva reserva: reservas){
-        if(reserva.getId()==idReserva){
-        retorno = reserva;
+        Reserva retorno = null;
+        for (Reserva reserva : reservas) {
+            if (reserva.getId() == idReserva) {
+                retorno = reserva;
+            }
         }
-    }
         return retorno;
     }
 

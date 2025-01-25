@@ -9,6 +9,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class Sistema {
@@ -282,40 +283,77 @@ public class Sistema {
                                     switch (escolha) {
                                         case 1:
                                             System.out.println("\n\n-- *** -- ");
-                                            System.out.println("1 - Ver reservas");
-                                            System.out.println("2 - Voltar");
-                                            escolha = input.nextInt();
-                                            switch (escolha) {
-                                                case 1:
-                                                    System.out.println("Printar Reservas");
-                                                    break;
-                                                case 2:
-                                                    break;
-                                            }
+                                            System.out.println("Minhas reservas");
+                                            System.out.println(controladorReservas.listarReservasUsuario(usuario));
+                                            System.out.println(" ");
                                             break;
+
                                         case 2:
                                             boolean sairRealizarReserva = false;
                                             while (!sairRealizarReserva) {
                                                 System.out.println("\n\n-- CONSULTA -- ");
-                                                System.out.println("1 - Periodos disponiveis para reserva ");
+                                                System.out.println("1 - Periodos disponiveis para reserva");
                                                 System.out.println("2 - Realizar reserva ");
                                                 System.out.println("3 - Cancelar Reserva");
                                                 System.out.println("4 - Voltar");
                                                 escolha = input.nextInt();
                                                 switch (escolha) {
                                                     case 1:
+                                                        System.out.print("Informe o id do Bem: ");
+                                                        int idBemParaReserva = input.nextInt();
+                                                        System.out.print("Informe a data Inicial (dd/MM/yyyy): ");
+                                                        String inicioPeriodo = input.next();
+                                                        inicioPeriodo += " 00:00";
+                                                        System.out.print("Informe a data final (dd/MM/yyyy): ");
+                                                        String finalPeriodo = input.next();
+                                                        finalPeriodo += " 23:59";
 
-                                                        System.out.println("=== Bens disponíveis com suas Cotas para reserva ===");
+                                                        try {
+                                                            List<String> reservas = controladorReservas.consultarDisponibilidade(idBemParaReserva, LocalDateTime.parse(inicioPeriodo, DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")), LocalDateTime.parse(finalPeriodo, DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")));
+                                                            System.out.println("\nPeriodos disponíveis para Reserva: ");
+                                                            System.out.println(reservas);
+                                                        } catch (BemNaoExisteException | IllegalArgumentException e) {
+                                                            System.out.println(e.getMessage());
+                                                        }
 
-                                                        System.out.println("\n=== Bens disponíveis com todas as Cotas ===");
                                                         break;
 
                                                     case 2:
-                                                        System.out.println("\nInforme os dados para Criar reserva");
+                                                        System.out.println("\nInforme os dados para realizar sua reserva");
+                                                        System.out.print("Data inicial (dd/MM/yyyy): ");
+                                                        String inicioReserva = input.next();
+                                                        inicioReserva += " 00:00";
+//                                                        System.out.print("Data final (dd/MM/yyyy): ");
+//                                                        String fimReserva = input.next();
+//                                                        fimReserva += " 23:59";
+                                                        System.out.print("id Bem: ");
+                                                        int idBemReserva = input.nextInt();
+
+                                                        Bem bemReserva = null;
+                                                        try {
+                                                            bemReserva = controladorBens.buscarBemPorId(idBemReserva);
+                                                        } catch (BemNaoExisteException e) {
+                                                            System.out.println(e.getMessage());
+                                                        }
+
+                                                        try {
+                                                            controladorReservas.criarReserva(LocalDateTime.parse(inicioReserva, DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")), usuario, bemReserva);
+                                                        } catch (ReservaJaExisteException | PeriodoJaReservadoException | DadosInsuficientesException | ForaPeriodoException e) {
+                                                            System.out.println(e.getMessage());
+                                                        }
+
+
 
                                                         break;
                                                     case 3:
                                                         System.out.println("\nInforme os dados para Cancelar reserva");
+                                                        System.out.print("id Reserva: ");
+                                                        int idReserva = input.nextInt();
+                                                        try {
+                                                            controladorReservas.cancelarReserva(idReserva);
+                                                        } catch (ReservaNaoExisteException | ReservaJaCanceladaException e) {
+                                                            System.out.println(e.getMessage());
+                                                        }
 
                                                         break;
                                                     case 4:
@@ -328,6 +366,7 @@ public class Sistema {
                                             sairGerenciamentoReservas = true;
                                             break;
                                     }
+                                    break;
                                 }
                             case 3:
                                 boolean sairTelaBens = false;

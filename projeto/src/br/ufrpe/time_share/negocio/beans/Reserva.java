@@ -92,7 +92,7 @@ public class Reserva {
                 ", dataFim=" + dataFim.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) +
                 ", status=" + status +
                 ", usuarioComum=" + usuarioComum +
-                ", bem=" + bem+
+                ", bem=" + bem.getId() + " " + bem.getNome() +
                 ", cancelada="+ cancelada;
     }
 
