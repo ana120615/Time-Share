@@ -307,12 +307,18 @@ public class Sistema {
                                                         System.out.print("Informe a data final (dd/MM/yyyy): ");
                                                         String finalPeriodo = input.next();
                                                         finalPeriodo += " 23:59";
+                                                        Bem bemReservaDisponivel = null;
+                                                        try {
+                                                             bemReservaDisponivel = controladorBens.buscarBemPorId(idBemParaReserva);
+                                                        } catch (BemNaoExisteException e) {
+                                                            System.out.println(e.getMessage());
+                                                        }
 
                                                         try {
-                                                            List<String> reservas = controladorReservas.consultarDisponibilidade(idBemParaReserva, LocalDateTime.parse(inicioPeriodo, DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")), LocalDateTime.parse(finalPeriodo, DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")));
+                                                            List<String> reservas = controladorReservas.consultarDisponibilidade(bemReservaDisponivel, LocalDateTime.parse(inicioPeriodo, DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")), LocalDateTime.parse(finalPeriodo, DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")));
                                                             System.out.println("\nPeriodos disponíveis para Reserva: ");
                                                             System.out.println(reservas);
-                                                        } catch (BemNaoExisteException | IllegalArgumentException e) {
+                                                        } catch (BemNaoExisteException | IllegalArgumentException | NullPointerException e) {
                                                             System.out.println(e.getMessage());
                                                         }
 
@@ -323,9 +329,9 @@ public class Sistema {
                                                         System.out.print("Data inicial (dd/MM/yyyy): ");
                                                         String inicioReserva = input.next();
                                                         inicioReserva += " 00:00";
-//                                                        System.out.print("Data final (dd/MM/yyyy): ");
-//                                                        String fimReserva = input.next();
-//                                                        fimReserva += " 23:59";
+                                                        System.out.print("Data final (dd/MM/yyyy): ");
+                                                        String fimReserva = input.next();
+                                                        fimReserva += " 23:59";
                                                         System.out.print("id Bem: ");
                                                         int idBemReserva = input.nextInt();
 
@@ -337,8 +343,8 @@ public class Sistema {
                                                         }
 
                                                         try {
-                                                            controladorReservas.criarReserva(LocalDateTime.parse(inicioReserva, DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")), usuario, bemReserva);
-                                                        } catch (ReservaJaExisteException | PeriodoJaReservadoException | DadosInsuficientesException | ForaPeriodoException e) {
+                                                            controladorReservas.criarReserva(LocalDateTime.parse(inicioReserva, DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")), LocalDateTime.parse(fimReserva, DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")),usuario, bemReserva);
+                                                        } catch (ReservaJaExisteException | PeriodoJaReservadoException | DadosInsuficientesException | ForaPeriodoException | PeriodoNaoDisponivelParaReservaException e) {
                                                             System.out.println(e.getMessage());
                                                         }
 
@@ -366,8 +372,8 @@ public class Sistema {
                                             sairGerenciamentoReservas = true;
                                             break;
                                     }
-                                    break;
                                 }
+                                break;
                             case 3:
                                 boolean sairTelaBens = false;
                                 while (!sairTelaBens) {

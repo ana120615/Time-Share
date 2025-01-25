@@ -4,18 +4,12 @@ package br.ufrpe.time_share.negocio;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
+import br.ufrpe.time_share.dados.IRepositorioCotas;
 import br.ufrpe.time_share.dados.IRepositorioReservas;
-import br.ufrpe.time_share.excecoes.BemNaoExisteException;
-import br.ufrpe.time_share.excecoes.ForaPeriodoException;
-import br.ufrpe.time_share.excecoes.CotaJaReservadaException;
-import br.ufrpe.time_share.excecoes.DadosInsuficientesException;
-import br.ufrpe.time_share.excecoes.PeriodoJaReservadoException;
-import br.ufrpe.time_share.excecoes.ReservaJaCanceladaException;
-import br.ufrpe.time_share.excecoes.ReservaJaExisteException;
-import br.ufrpe.time_share.excecoes.ReservaNaoExisteException;
-import br.ufrpe.time_share.excecoes.ReservaNaoReembolsavelException;
+import br.ufrpe.time_share.excecoes.*;
 import br.ufrpe.time_share.negocio.beans.Bem;
 import br.ufrpe.time_share.negocio.beans.Cota;
 import br.ufrpe.time_share.negocio.beans.Estadia;
@@ -24,14 +18,15 @@ import br.ufrpe.time_share.negocio.beans.Reserva;
 import br.ufrpe.time_share.negocio.beans.Usuario;
 
 public class ControladorReservas {
-    private IRepositorioReservas repositorio;
+    private IRepositorioReservas repositorioReservas;
+
 
     public ControladorReservas(IRepositorioReservas instanciaInterface) {
-        this.repositorio = instanciaInterface;
+        this.repositorioReservas = instanciaInterface;
     }
 
     public Estadia checkin(int idReserva, LocalDateTime dataInicio) throws ReservaNaoExisteException, ReservaJaCanceladaException, ForaPeriodoException {
-        Reserva reservaRelacionada = repositorio.buscarReservasPorId(idReserva);
+        Reserva reservaRelacionada = repositorioReservas.buscarReservasPorId(idReserva);
         Estadia estadia = null;
         if (reservaRelacionada == null) {
             throw new ReservaNaoExisteException("Reserva inexistente");
@@ -78,7 +73,7 @@ public class ControladorReservas {
         Reserva reserva = null;
         LocalDateTime agora = LocalDateTime.now();
         if (estadia.getDataFim().equals(agora) || estadia.getDataFim().isBefore(agora)) {
-            reserva = repositorio.buscarReserva(estadia.getReserva());
+            reserva = repositorioReservas.buscarReserva(estadia.getReserva());
             if (reserva == null) {
                 throw new ReservaNaoExisteException("Reserva inexistente");
             } else {
@@ -94,17 +89,28 @@ public class ControladorReservas {
     }
 
     //metodo para criar reserva/ reservar
-    public Reserva criarReserva(LocalDateTime dataInicio, Usuario usuarioComum, Bem bem)
-            throws ReservaJaExisteException, PeriodoJaReservadoException, DadosInsuficientesException, ForaPeriodoException {
-        if (bem == null || dataInicio == null || usuarioComum == null) {
+    public Reserva criarReserva(LocalDateTime dataInicio, LocalDateTime dataFim, Usuario usuarioComum, Bem bem)
+            throws ReservaJaExisteException, PeriodoJaReservadoException, DadosInsuficientesException, ForaPeriodoException, PeriodoNaoDisponivelParaReservaException {
+
+
+        if (bem == null || dataInicio == null || dataFim == null || usuarioComum == null) {
             throw new DadosInsuficientesException("Bem, data de início ou usuário não podem ser nulos.");
         }
 
-        int id = 1001 + ThreadLocalRandom.current().nextInt(10000);
-        LocalDateTime dataFim = dataInicio.plusDays(6).withHour(23).withMinute(59).withSecond(59);
-        Reserva reserva = new Reserva(id, dataInicio, dataFim, usuarioComum, bem);
+        Random random = new Random();
+        int idNumeroReserva = 0;
 
-        Reserva reservaExistente = repositorio.buscarReserva(reserva);
+        // Garante ID diferente
+        for (int i = 0; i < 1; ) {
+            idNumeroReserva = 1001 + random.nextInt(99999);
+            if (repositorioReservas.buscarReservasPorId(idNumeroReserva) == null) {
+                i++;
+            }
+        }
+
+        Reserva reserva = new Reserva(idNumeroReserva, dataInicio, dataFim, usuarioComum, bem);
+
+        Reserva reservaExistente = repositorioReservas.buscarReserva(reserva);
         if (reservaExistente != null) {
             throw new ReservaJaExisteException("Reserva ja existe.");
         }
@@ -113,20 +119,36 @@ public class ControladorReservas {
             throw new ForaPeriodoException("Data de inicio apos data final");
         }
 
-        for (Reserva buscar : repositorio.listarReservas()) {
+        for (Reserva buscar : repositorioReservas.listarReservas()) {
             if (buscar.getStatus() &&
                     !(reserva.getDataFim().isBefore(buscar.getDataInicio()) || reserva.getDataInicio().isAfter(buscar.getDataFim()))) {
                 throw new PeriodoJaReservadoException("Periodo ja reservado.");
             }
         }
-        repositorio.cadastrarReserva(reserva);
+
+        ArrayList<Cota> cotasBemAssociadoReserva = bem.getCotas();
+        for (Cota cota : cotasBemAssociadoReserva) {
+            if (!cota.getStatusDeDisponibilidadeParaCompra() && !usuarioComum.equals(cota.getProprietario())) {
+                if (((reserva.getDataInicio().getYear() == cota.getDataInicio().getYear() &&
+                        (reserva.getDataInicio().getMonth() == cota.getDataInicio().getMonth()) &&
+                        (reserva.getDataInicio().getDayOfYear() >= cota.getDataInicio().getDayOfYear() && reserva.getDataInicio().getDayOfYear() <= cota.getDataFim().getDayOfYear()))
+                        ||
+                        ((reserva.getDataFim().getYear() == cota.getDataFim().getYear()) &&
+                                reserva.getDataFim().getMonth() == cota.getDataFim().getMonth() &&
+                                (reserva.getDataFim().getDayOfYear() <= cota.getDataFim().getDayOfYear() && reserva.getDataFim().getDayOfYear() >= cota.getDataInicio().getDayOfYear())))) {
+                    throw new PeriodoNaoDisponivelParaReservaException("Esse período está incluso numa cota vendida.");
+                }
+            }
+
+        }
+        repositorioReservas.cadastrarReserva(reserva);
         return reserva;
     }
 
 
     //metodo para cancelar reserva
     public void cancelarReserva(int idReserva) throws ReservaNaoExisteException, ReservaJaCanceladaException {
-        Reserva reservaCancelada = repositorio.buscarReservasPorId(idReserva);
+        Reserva reservaCancelada = repositorioReservas.buscarReservasPorId(idReserva);
         if (reservaCancelada == null) {
             throw new ReservaNaoExisteException("Reserva inexistente");
         } else {
@@ -134,7 +156,7 @@ public class ControladorReservas {
                 throw new ReservaJaCanceladaException("Reserva ja cancelada");
             } else {
                 reservaCancelada.cancelarReserva();
-                repositorio.removerReserva(reservaCancelada);
+                repositorioReservas.removerReserva(reservaCancelada);
             }
         }
     }
@@ -165,7 +187,7 @@ public class ControladorReservas {
     public Reserva alterarPeriodoReserva(int idReserva, LocalDateTime novaDataInicio, LocalDateTime novaDataFim)
             throws ReservaNaoExisteException, ReservaJaCanceladaException, PeriodoJaReservadoException {
 
-        Reserva reserva = repositorio.buscarReservasPorId(idReserva);
+        Reserva reserva = repositorioReservas.buscarReservasPorId(idReserva);
 
         if (reserva == null) {
             throw new ReservaNaoExisteException("Reserva inexistente");
@@ -176,7 +198,7 @@ public class ControladorReservas {
         }
 
 // Verificar sobreposição de períodos com outras reservas
-        for (Reserva buscar : repositorio.listarReservas()) {
+        for (Reserva buscar : repositorioReservas.listarReservas()) {
             if (buscar.getId() != reserva.getId() && buscar.getStatus()) {
                 if (!(novaDataFim.isBefore(buscar.getDataInicio()) || novaDataInicio.isAfter(buscar.getDataFim()))) {
                     throw new PeriodoJaReservadoException("Periodo ja reservado");
@@ -192,10 +214,11 @@ public class ControladorReservas {
     }
 
 
-    public List<String> consultarDisponibilidade(int bemId, LocalDateTime inicioPeriodo, LocalDateTime fimPeriodo) throws BemNaoExisteException {
+    public List<String> consultarDisponibilidade(Bem bem, LocalDateTime inicioPeriodo, LocalDateTime fimPeriodo) throws BemNaoExisteException {
         List<String> periodosDisponiveis = new ArrayList<>();
+
         // Buscar todas as reservas para o bem
-        ArrayList<Reserva> reservas = repositorio.buscarReservasPorBem(bemId);
+        ArrayList<Reserva> reservas = repositorioReservas.buscarReservasPorBem(bem.getId());
 
         // Garante que o usuário não posso colocar o final do periodo antes do inicio do periodo
         // e que o inicio do periodo não posso ser antes do dia atual
@@ -203,46 +226,30 @@ public class ControladorReservas {
             throw new IllegalArgumentException("\nInválido");
         }
 
-        if (reservas == null) {
-            throw new BemNaoExisteException("Bem não existe");
-        } else {
-            LocalDateTime inicioAtual = inicioPeriodo;
-            LocalDateTime fimAtual;
-            while (!inicioAtual.isAfter(fimPeriodo)) {
-                fimAtual = inicioAtual.plusDays(6).withHour(23).withMinute(59).withSecond(59);//1 semana
-                if (fimAtual.isAfter(fimPeriodo)) {
-                    fimAtual = fimPeriodo;
-                }
+        LocalDateTime inicioAtual = inicioPeriodo;
 
+        while (!inicioAtual.isAfter(fimPeriodo)) {
+            periodosDisponiveis.add(inicioAtual.toString());
+            ArrayList<Cota> cotasBemAssociado = bem.getCotas();
+            for (Cota cota : cotasBemAssociado) {
+                if (!cota.getStatusDeDisponibilidadeParaCompra()) {
+                    if (((inicioAtual.getYear() == cota.getDataInicio().getYear() &&
+                            (inicioAtual.getMonth() == cota.getDataInicio().getMonth()) &&
+                            (inicioAtual.getDayOfYear() >= cota.getDataInicio().getDayOfYear() && inicioAtual.getDayOfYear() <= cota.getDataFim().getDayOfYear()))
+                            ||
+                            ((inicioAtual.getYear() == cota.getDataFim().getYear()) &&
+                                    inicioAtual.getMonth() == cota.getDataFim().getMonth() &&
+                                    (inicioAtual.getDayOfYear() <= cota.getDataFim().getDayOfYear() && inicioAtual.getDayOfYear() >= cota.getDataInicio().getDayOfYear())))) {
+                            periodosDisponiveis.remove(inicioAtual.toString());
 
-                boolean disponivel = true;
-
-                //verificando reservas
-                for (Reserva reservaBusca : reservas) {
-                    if ((inicioAtual.isBefore(reservaBusca.getDataFim()) || inicioAtual.equals(reservaBusca.getDataFim())) &&
-                            (fimAtual.isAfter(reservaBusca.getDataInicio()) || fimAtual.equals(reservaBusca.getDataInicio())) || !(reservaBusca.getStatus())) {
-                        disponivel = false;
-                        break;
-                    }
-
-                    //verificando cotas
-                    for (Cota cota : reservaBusca.getBem().getCotas()) {
-                        if (!(cota.isStatusDeDisponibilidadeParaReserva()) && (inicioAtual.isBefore(cota.getDataFim()) || inicioAtual.equals(cota.getDataFim())) &&
-                                (fimAtual.isAfter(cota.getDataInicio()) || fimAtual.equals(cota.getDataInicio()))) {
-                            disponivel = false;
-                            break;
-                        }
                     }
                 }
 
-                if (disponivel) {
-                    String periodoFormatado = inicioAtual.toLocalDate() + " " + inicioAtual.toLocalTime() + " - " + fimAtual.toLocalDate() + " " + fimAtual.toLocalTime();
-                    periodosDisponiveis.add(periodoFormatado);
-                }
-
-                inicioAtual = fimAtual.plusSeconds(1);
             }
+
+            inicioAtual = inicioAtual.plusDays(1);
         }
+
         return periodosDisponiveis;
     }
 
@@ -259,7 +266,7 @@ public class ControladorReservas {
             throw new NullPointerException("Reserva nao pode ser nula");
         }
 
-        if (repositorio.buscarReserva(reserva) == null) {
+        if (repositorioReservas.buscarReserva(reserva) == null) {
             throw new ReservaNaoExisteException("Reserva inexistente");
         }
 
@@ -317,7 +324,7 @@ public class ControladorReservas {
     public ArrayList<Reserva> listarReservasUsuario(Usuario usuario) {
         ArrayList<Reserva> resultado = new ArrayList<>();
 
-        for (Reserva r : repositorio.listarReservas()) {
+        for (Reserva r : repositorioReservas.listarReservas()) {
             if (r.getUsuarioComum().equals(usuario)) {
                 resultado.add(r);
             }
