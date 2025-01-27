@@ -4,16 +4,17 @@ import br.ufrpe.time_share.negocio.beans.Bem;
 import br.ufrpe.time_share.negocio.beans.Cota;
 import br.ufrpe.time_share.negocio.beans.Usuario;
 
-import java.util.ArrayList;
+
+import java.util.List;
 
 public interface IRepositorioCotas extends IRepositorio<Cota> {
 
-    void cadastrarCotas(ArrayList<Cota> cotas);
+    void cadastrarCotas(List<Cota> cotas);
 
-    ArrayList<Cota> buscarCotasPorProprietario(Usuario proprietario);
+    List<Cota> buscarCotasPorProprietario(Usuario proprietario);
 
-    ArrayList<Cota> buscarCotasPorBem(Bem bem);
+    List<Cota> buscarCotasPorBem(Bem bem);
 
-    ArrayList<Cota> listarCotasDisponiveisParaVenda();
+    List<Cota> listarCotasDisponiveisParaVenda();
 
 }

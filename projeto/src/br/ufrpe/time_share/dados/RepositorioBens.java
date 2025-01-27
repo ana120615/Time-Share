@@ -1,6 +1,7 @@
 package br.ufrpe.time_share.dados;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import br.ufrpe.time_share.negocio.beans.Bem;
 
@@ -45,25 +46,39 @@ public class RepositorioBens extends RepositorioGenerico<Bem> implements IReposi
 
 
     @Override
-    public ArrayList<Bem> listarBensDisponiveis() {
-        ArrayList<Bem> listaBensDisponiveis = new ArrayList<>();
+    public List<Bem> listarBensDisponiveis() {
+        List<Bem> listaBensDisponiveis = new ArrayList<>();
         for (Bem bem : lista) {
             if (bem.isOfertado()) {
                 listaBensDisponiveis.add(bem);
             }
         }
-        return new ArrayList<>(listaBensDisponiveis);
+        return listaBensDisponiveis;
     }
 
     @Override
-    public ArrayList<Bem> listarBensByNome(String nome) {
-        ArrayList<Bem> listaBensByNome = new ArrayList<>();
+    public List<Bem> listarBensByNome(String nome) {
+        List<Bem> listaBensByNome = new ArrayList<>();
         for (Bem bem : lista) {
             if (bem.getNome().equalsIgnoreCase(nome) || bem.getNome().contains(nome)) {
                 listaBensByNome.add(bem);
             }
         }
         return listaBensByNome;
+    }
+
+    @Override
+    public List<Bem> listarBensPorAdm(long cpfAdm) {
+        List<Bem> listaBens = new ArrayList<>();
+
+        for (Bem bem : lista) {
+            if (bem.getCadastradoPor().getId() == cpfAdm) {
+                listaBens.add(bem);
+            }
+        }
+
+        return listaBens;
+
     }
 
 

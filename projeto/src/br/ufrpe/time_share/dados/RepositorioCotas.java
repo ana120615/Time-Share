@@ -1,6 +1,7 @@
 package br.ufrpe.time_share.dados;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import br.ufrpe.time_share.negocio.beans.Bem;
 import br.ufrpe.time_share.negocio.beans.Cota;
@@ -29,14 +30,14 @@ public class RepositorioCotas extends RepositorioGenerico<Cota> implements IRepo
 
 
     @Override
-    public void cadastrarCotas(ArrayList<Cota> cotas) {
+    public void cadastrarCotas(List<Cota> cotas) {
         lista.addAll(cotas);
     }
 
 
     @Override
-    public ArrayList<Cota> buscarCotasPorProprietario(Usuario proprietario) {
-        ArrayList<Cota> resultado = new ArrayList<>();
+    public List<Cota> buscarCotasPorProprietario(Usuario proprietario) {
+        List<Cota> resultado = new ArrayList<>();
         for (Cota cota : lista) {
             if (!cota.getStatusDeDisponibilidadeParaCompra() && cota.getProprietario().equals(proprietario)) {
                 resultado.add(cota);
@@ -47,24 +48,24 @@ public class RepositorioCotas extends RepositorioGenerico<Cota> implements IRepo
     }
 
     @Override
-    public ArrayList<Cota> buscarCotasPorBem(Bem bem) {
-        ArrayList<Cota> retorno = new ArrayList<>();
+    public List<Cota> buscarCotasPorBem(Bem bem) {
+        List<Cota> retorno = new ArrayList<>();
         for (Cota cota : lista) {
             if (cota.getBemAssociado().equals(bem)) {
                 retorno.add(cota);
             }
         }
-        return new ArrayList<>(retorno);
+        return retorno;
     }
 
     @Override
-    public ArrayList<Cota> listarCotasDisponiveisParaVenda() {
-        ArrayList<Cota> resultado = new ArrayList<>();
+    public List<Cota> listarCotasDisponiveisParaVenda() {
+        List<Cota> resultado = new ArrayList<>();
         for (Cota cota : lista) {
             if (cota.isStatusDeDisponibilidadeParaCompra()) {
                 resultado.add(cota);
             }
         }
-        return new ArrayList<>(resultado);
+        return resultado;
     }
 }
