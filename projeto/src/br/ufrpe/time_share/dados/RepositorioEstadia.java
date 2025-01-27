@@ -1,7 +1,6 @@
 package br.ufrpe.time_share.dados;
 
 import br.ufrpe.time_share.negocio.beans.Estadia;
-import br.ufrpe.time_share.negocio.beans.Reserva;
 
 import java.util.ArrayList;
 
@@ -53,7 +52,7 @@ public class RepositorioEstadia implements IRepositorioEstadia {
         ArrayList<Estadia> estadia = new ArrayList<>();
 
         for (Estadia est : this.estadias) {
-            if (est.getReserva().getUsuarioComum().getCpf().equals(cpfUsuario)) {
+            if (est.getReserva().getUsuarioComum().getId().equals(cpfUsuario)) {
                 estadia.add(est);
             }
         }

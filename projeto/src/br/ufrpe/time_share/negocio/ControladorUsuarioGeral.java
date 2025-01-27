@@ -33,8 +33,8 @@ public class ControladorUsuarioGeral {
         if (usuario == null) {
             throw new UsuarioNaoPermitidoException("O usuario não pode ser nulo.");
         }
-        if (usuario.getCpf() != null) {
-            char[] verificador = usuario.getCpf().toCharArray();
+        if (usuario.getId() != null) {
+            char[] verificador = usuario.getId().toCharArray();
             if (verificador.length != 11) {
                 throw new UsuarioNaoPermitidoException("CPF invalido.");
             }
@@ -47,7 +47,7 @@ public class ControladorUsuarioGeral {
         }
 
         if (this.repositorio.existe(usuario)) {
-            throw new UsuarioJaExisteException("Usuário já cadastrado.", usuario.getCpf(), usuario.getEmail());
+            throw new UsuarioJaExisteException("Usuário já cadastrado.", usuario.getId(), usuario.getEmail());
         }
 
         if (LocalDate.now().getYear() - usuario.getDataNascimento().getYear() < 18) {

@@ -5,7 +5,7 @@ import br.ufrpe.time_share.negocio.beans.Reserva;
 
 import java.util.ArrayList;
 
-public interface IRepositorioEstadia {
+public interface IRepositorioEstadia extends IRepositorio<Estadia> {
 
     void cadastrarEstadia(Estadia estadia);
 

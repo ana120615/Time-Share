@@ -121,8 +121,8 @@ public class ControladorVendas {
         Usuario usuarioRemetente = controladorUsuarioGeral.procurarUsuarioPorCpf(cpfUsuarioRemetente);
         Usuario usuarioDestinatario = controladorUsuarioGeral.procurarUsuarioPorCpf(cpfUsuarioDestinario);
                 resultado += "\nComprovante de Transferencia\n";
-                resultado += "Cliente Remetente: " + usuarioRemetente.getNome() + " | CPF: " + usuarioRemetente.getCpf() + "\n";
-                resultado += "Cliente Destinatario: " + usuarioDestinatario.getNome() + " | CPF: " + usuarioDestinatario.getCpf() + "\n";
+                resultado += "Cliente Remetente: " + usuarioRemetente.getNome() + " | CPF: " + usuarioRemetente.getId() + "\n";
+                resultado += "Cliente Destinatario: " + usuarioDestinatario.getNome() + " | CPF: " + usuarioDestinatario.getId() + "\n";
                 resultado += "--------------------------------------\n";
                 resultado += " FLEX SHARE \n";
                 resultado += "--------------------------------------\n";

@@ -30,13 +30,13 @@ public class RepositorioUsuarios implements IRepositorioUsuario {
         usuarios.remove(usuario);
     }
 
-    public Usuario buscarUsuarioPorCpf(String cpf){
+    public Usuario buscarUsuarioPorCpf(long cpf){
         Usuario resultado = null;
 
         boolean usuarioComEsseCpfExiste = false;
         int i;
         for (i = 0; i < usuarios.size() && !usuarioComEsseCpfExiste; i++) {
-            if (usuarios.get(i).getCpf().equals(cpf)) {
+            if (usuarios.get(i).getId() == cpf) {
                 usuarioComEsseCpfExiste = true;
             }
         }

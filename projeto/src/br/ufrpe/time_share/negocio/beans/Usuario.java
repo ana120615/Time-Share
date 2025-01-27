@@ -6,7 +6,7 @@ import java.time.temporal.ChronoUnit;
 
 public class Usuario {
 
-    private String cpf;
+    private long id;
     private String nome;
     private String email;
     private String senha;
@@ -14,8 +14,8 @@ public class Usuario {
     private TipoUsuario tipo;
 
     //CONSTRUTORES
-    public Usuario(String cpf, String nome, String email, String senha, LocalDate dataNascimento, TipoUsuario tipo) {
-        this.setCpf(cpf);
+    public Usuario(long cpf, String nome, String email, String senha, LocalDate dataNascimento, TipoUsuario tipo) {
+        this.setId(cpf);
         this.setNome(nome);
         this.setEmail(email);
         this.setSenha(senha);
@@ -23,19 +23,19 @@ public class Usuario {
         this.setTipo(tipo);
     }
 
-    public Usuario(String cpf, String senha, TipoUsuario tipo) {
-        this.setCpf(cpf);
+    public Usuario(long cpf, String senha, TipoUsuario tipo) {
+        this.setId(cpf);
         this.setSenha(senha);
         this.setTipo(tipo);
     }
 
     //METODOS GET E SET
-    public String getCpf() {
-        return cpf;
+    public long getId() {
+        return id;
     }
 
-    public void setCpf(String cpf) {
-        this.cpf = cpf;
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getNome() {
@@ -100,7 +100,7 @@ public class Usuario {
     @Override
     public String toString() {
         return "\n" +
-                "cpf=" + cpf +
+                "cpf=" + id +
                 ", nome='" + nome + '\'' +
                 ", email='" + email + '\'' +
                 ", senha='" + senha + '\'' +
@@ -113,7 +113,7 @@ public class Usuario {
         boolean ret = false;
         if (obj instanceof Usuario) {
             Usuario usuario = (Usuario) obj;
-            if (this.cpf.equals(usuario.getCpf()) || this.email.equals(usuario.getEmail())) {
+            if (this.id == usuario.getId() || this.email.equals(usuario.getEmail())) {
                 ret = true;
             }
         }

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import br.ufrpe.time_share.negocio.beans.Reserva;
 
-public class RepositorioReservas implements IRepositorioReservas {
+public class RepositorioReservas extends RepositorioGenerico<Reserva> implements IRepositorioReservas {
 
     // INSTANCIA UNICA DO REPOSITORIO
     public static final RepositorioReservas INSTANCE = new RepositorioReservas();

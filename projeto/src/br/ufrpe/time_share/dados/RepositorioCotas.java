@@ -6,63 +6,38 @@ import br.ufrpe.time_share.negocio.beans.Bem;
 import br.ufrpe.time_share.negocio.beans.Cota;
 import br.ufrpe.time_share.negocio.beans.Usuario;
 
-public class RepositorioCotas implements IRepositorioCotas {
+public class RepositorioCotas extends RepositorioGenerico<Cota> implements IRepositorioCotas {
 
     // INSTANCIA UNICA DO REPOSITORIO
-    private static final RepositorioCotas INSTANCE = new RepositorioCotas();
+    private static RepositorioCotas instancia;
 
-    private ArrayList<Cota> listaCotas;
-
-    {
-        listaCotas = new ArrayList<>();
+    public RepositorioCotas() {
+        super();
     }
 
     // METODO PARA OBTER A INSTANCIA DO REPOSITORIO
     public static RepositorioCotas getInstancia() {
-        return INSTANCE;
+        if (instancia == null) {
+            synchronized (RepositorioCotas.class) { // Thread-safe
+                if (instancia == null) {
+                    instancia = new RepositorioCotas();
+                }
+            }
+        }
+        return instancia;
     }
 
-    @Override
-    public void cadastrarCota(Cota cota) {
-        listaCotas.add(cota);
-    }
 
     @Override
     public void cadastrarCotas(ArrayList<Cota> cotas) {
-        listaCotas.addAll(cotas);
+        lista.addAll(cotas);
     }
 
-    @Override
-    public void excluirCota(Cota cota) {
-        listaCotas.remove(cota);
-    }
-
-    @Override
-    public boolean existeCota(Cota cota) {
-        boolean existe = false;
-        for (int i = 0; i < this.listaCotas.size() && !existe; i++) {
-            if (this.listaCotas.get(i).equals(cota)) {
-                existe = true;
-            }
-        }
-        return existe;
-    }
-
-    @Override
-    public Cota buscarCotaPorId(int id) {
-        Cota retorno = null;
-        for (Cota cota : listaCotas) {
-            if (cota.getId() == id) {
-                retorno = cota;
-            }
-        }
-        return retorno;
-    }
 
     @Override
     public ArrayList<Cota> buscarCotasPorProprietario(Usuario proprietario) {
         ArrayList<Cota> resultado = new ArrayList<>();
-        for (Cota cota : listaCotas) {
+        for (Cota cota : lista) {
             if (!cota.getStatusDeDisponibilidadeParaCompra() && cota.getProprietario().equals(proprietario)) {
                 resultado.add(cota);
             }
@@ -74,7 +49,7 @@ public class RepositorioCotas implements IRepositorioCotas {
     @Override
     public ArrayList<Cota> buscarCotasPorBem(Bem bem) {
         ArrayList<Cota> retorno = new ArrayList<>();
-        for (Cota cota : listaCotas) {
+        for (Cota cota : lista) {
             if (cota.getBemAssociado().equals(bem)) {
                 retorno.add(cota);
             }
@@ -83,14 +58,9 @@ public class RepositorioCotas implements IRepositorioCotas {
     }
 
     @Override
-    public ArrayList<Cota> listarCotas() {
-        return new ArrayList<>(listaCotas);
-    }
-
-    @Override
     public ArrayList<Cota> listarCotasDisponiveisParaVenda() {
         ArrayList<Cota> resultado = new ArrayList<>();
-        for (Cota cota : listaCotas) {
+        for (Cota cota : lista) {
             if (cota.isStatusDeDisponibilidadeParaCompra()) {
                 resultado.add(cota);
             }

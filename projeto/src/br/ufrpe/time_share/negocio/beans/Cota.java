@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 
-public class Cota implements Cloneable{
+public class Cota extends Entidade implements Cloneable{
     private int id;
     private double preco;
     private Usuario proprietario;
@@ -61,7 +61,7 @@ public class Cota implements Cloneable{
     }
 
 
-    public int getId() {
+    public long getId() {
         return this.id;
     }
 
@@ -108,7 +108,7 @@ public class Cota implements Cloneable{
                 ", dataInicio=" + dataInicio.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) +
                 ", dataFim=" + dataFim.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) +
                 ", preco=" + preco +
-                ", proprietarioCPF=" + (proprietario != null ? proprietario.getCpf() : "null") +
+                ", proprietarioCPF=" + (proprietario != null ? proprietario.getId() : "null") +
                 ", statusDeDisponibilidadeParaCompra=" + statusDeDisponibilidadeParaCompra +
                 ", bemAssociado=" + (bemAssociado != null ? bemAssociado.getId() : "null") +
                 '}';

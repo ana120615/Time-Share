@@ -8,9 +8,9 @@ public interface IRepositorio<T> {
 
     void remover(T obj);
 
-    T buscarPorId(String id);
+    T buscar(long id);
 
     boolean existe(T obj);
 
-    List<T> listarTodos();
+    List<T> listar();
 }

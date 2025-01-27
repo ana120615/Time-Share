@@ -7,7 +7,7 @@ import java.util.UUID;
 
 import java.util.ArrayList;
 
-public class Venda {
+public class Venda extends Entidade{
     private int id;
     private LocalDateTime data;
     private Usuario usuario;
@@ -30,7 +30,7 @@ public class Venda {
         this.id = id;
     }
 
-    public int getId() {
+    public long getId() {
         return this.id;
     }
 
@@ -112,7 +112,7 @@ public class Venda {
         notaFiscal += "--------------------------------------\n";
         notaFiscal += " FLEX SHARE \n";
         notaFiscal += "--------------------------------------\n";
-        notaFiscal += "CPF: " + usuario.getCpf() + "\n";
+        notaFiscal += "CPF: " + usuario.getId() + "\n";
         notaFiscal += "Valor: R$" + calcularValorTotal() + "\n";
         notaFiscal += "Data de Emissão: " + LocalDate.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) + "\n";
         notaFiscal += "Cotas no carrinho: " + "\n";

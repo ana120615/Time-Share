@@ -196,7 +196,7 @@ public class Sistema {
                                                         try {
                                                             System.out.println("Digite o novo nome: ");
                                                             String novoNome = input.next();
-                                                            controladorUsuario.alterarNomeUsuario(usuario.getCpf(), novoNome, usuario.getTipo());
+                                                            controladorUsuario.alterarNomeUsuario(usuario.getId(), novoNome, usuario.getTipo());
                                                             System.out.println("Valor alterado com sucesso!");
                                                         } catch (NullPointerException | UsuarioNaoExisteException |
                                                                  UsuarioNaoPermitidoException e) {
@@ -220,7 +220,7 @@ public class Sistema {
                                                         try {
                                                             System.out.println("Digite a nova data de nascimento: ");
                                                             String novaData = input.next();
-                                                            controladorUsuario.alterarDataAniversario(usuario.getCpf(), LocalDate.parse(novaData, DateTimeFormatter.ofPattern("dd/MM/yyyy")), usuario.getTipo());
+                                                            controladorUsuario.alterarDataAniversario(usuario.getId(), LocalDate.parse(novaData, DateTimeFormatter.ofPattern("dd/MM/yyyy")), usuario.getTipo());
                                                             System.out.println("Valor alterado com sucesso!");
                                                         } catch (NullPointerException | UsuarioNaoExisteException |
                                                                  UsuarioNaoPermitidoException e) {
@@ -388,7 +388,7 @@ public class Sistema {
                                             break;
                                         case 2:
                                             try {
-                                                Venda v1 = controladorVendas.iniciarVenda(usuario.getCpf());
+                                                Venda v1 = controladorVendas.iniciarVenda(usuario.getId());
                                                 boolean parar = false;
                                                 while (!parar) {
                                                     System.out.println("\n\n-- *** -- ");
@@ -419,7 +419,7 @@ public class Sistema {
                                                             System.out.println(e.getMessage());
                                                         }
                                                     } else if (escolhaCompra == 3) {
-                                                        String resultado = controladorVendas.verificarSeUsuarioPossuiDescontos(usuario.getCpf());
+                                                        String resultado = controladorVendas.verificarSeUsuarioPossuiDescontos(usuario.getId());
                                                         if (!resultado.isEmpty()) {
                                                             System.out.println(" - Promocoes disponiveis - ");
                                                             System.out.println(resultado);
@@ -427,14 +427,14 @@ public class Sistema {
                                                             System.out.println("Deseja aplicar promocao? (s/n)");
                                                             String resposta = input.next();
                                                             if (resposta.equals("s")) {
-                                                                controladorVendas.aplicarDesconto(v1, usuario.getCpf());
+                                                                controladorVendas.aplicarDesconto(v1, usuario.getId());
                                                             }
                                                         }
                                                         String compra = controladorVendas.finalizarCompra(v1);
                                                         System.out.println(compra);
                                                         parar = true;
                                                     } else if (escolhaCompra == 4) {
-                                                        String resultado = controladorVendas.verificarSeUsuarioPossuiDescontos(usuario.getCpf());
+                                                        String resultado = controladorVendas.verificarSeUsuarioPossuiDescontos(usuario.getId());
                                                         if (resultado.isEmpty()) {
                                                             System.out.println("Sem promocoes disponiveis no momento");
                                                         } else {
@@ -462,7 +462,7 @@ public class Sistema {
                                 while (!pararMinhasCotas) {
                                     System.out.println("\n\nMINHAS COTAS");
                                     try {
-                                        System.out.println(controladorBens.listarCotasDeUmUsuario(usuario.getCpf()));
+                                        System.out.println(controladorBens.listarCotasDeUmUsuario(usuario.getId()));
                                     } catch (BemNaoExisteException | UsuarioNaoExisteException e) {
                                         System.out.println(e.getMessage());
                                     }
@@ -480,11 +480,11 @@ public class Sistema {
                                             String cpfDestinatario = input.next();
 
                                             try {
-                                                controladorVendas.transferenciaDeDireitos(usuario.getCpf(), cpfDestinatario, idCotaTransfetir);
+                                                controladorVendas.transferenciaDeDireitos(usuario.getId(), cpfDestinatario, idCotaTransfetir);
                                                 System.out.println("Transferencia realizada com sucesso! Deseja gerar comprovante de transferencia? (s/n)");
                                                 String resposta = input.next();
                                                 if (resposta.equals("s")) {
-                                                    System.out.println(controladorVendas.gerarComprovanteTransferencia(usuario.getCpf(), cpfDestinatario, idCotaTransfetir));
+                                                    System.out.println(controladorVendas.gerarComprovanteTransferencia(usuario.getId(), cpfDestinatario, idCotaTransfetir));
                                                 }
 
                                             } catch (CotaNaoExisteException | UsuarioNaoExisteException |
@@ -539,7 +539,7 @@ public class Sistema {
                                                         try {
                                                             System.out.println("Digite o novo nome: ");
                                                             String novoNome = input.next();
-                                                            controladorUsuario.alterarNomeUsuario(usuario.getCpf(), novoNome, usuario.getTipo());
+                                                            controladorUsuario.alterarNomeUsuario(usuario.getId(), novoNome, usuario.getTipo());
                                                             System.out.println("Valor alterado com sucesso!");
                                                         } catch (NullPointerException | UsuarioNaoExisteException |
                                                                  UsuarioNaoPermitidoException e) {
@@ -563,7 +563,7 @@ public class Sistema {
                                                         try {
                                                             System.out.println("Digite a nova data de nascimento: ");
                                                             String novaData = input.next();
-                                                            controladorUsuario.alterarDataAniversario(usuario.getCpf(), LocalDate.parse(novaData, DateTimeFormatter.ofPattern("dd/MM/yyyy")), usuario.getTipo());
+                                                            controladorUsuario.alterarDataAniversario(usuario.getId(), LocalDate.parse(novaData, DateTimeFormatter.ofPattern("dd/MM/yyyy")), usuario.getTipo());
                                                             System.out.println("Valor alterado com sucesso!");
                                                         } catch (NullPointerException | UsuarioNaoExisteException |
                                                                  UsuarioNaoPermitidoException e) {
@@ -646,7 +646,7 @@ public class Sistema {
                                             System.out.print("Preço de uma Cota R$: ");
                                             double precoCota = input.nextDouble();
                                             try {
-                                                controladorBens.cadastrar(idBem, nome, descricao, localizacao, capacidade, usuario.getCpf(), LocalDateTime.parse(dataInicial, DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")), quantidadeCotas, precoCota);
+                                                controladorBens.cadastrar(idBem, nome, descricao, localizacao, capacidade, usuario.getId(), LocalDateTime.parse(dataInicial, DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")), quantidadeCotas, precoCota);
                                                 System.out.println("Bem cadastrado com Sucesso!");
                                             } catch (BemNaoExisteException | UsuarioNaoPermitidoException |
                                                      QuantidadeDeCotasExcedidasException | BemJaExisteException |

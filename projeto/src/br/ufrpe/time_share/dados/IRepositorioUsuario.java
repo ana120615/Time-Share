@@ -4,7 +4,7 @@ import br.ufrpe.time_share.negocio.beans.Usuario;
 
 import java.util.ArrayList;
 
-public interface IRepositorioUsuario {
+public interface IRepositorioUsuario extends IRepositorio<Usuario> {
 
     void cadastrar(Usuario usuario);
 

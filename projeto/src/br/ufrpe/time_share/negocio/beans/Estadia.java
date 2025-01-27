@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 
-public class Estadia {
+public class Estadia extends Entidade {
     private int id;
     private LocalDateTime dataInicio;
     private LocalDateTime dataFim;
@@ -31,7 +31,7 @@ public class Estadia {
         this.dataFim = dataFim;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 

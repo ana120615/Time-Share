@@ -3,7 +3,7 @@ package br.ufrpe.time_share.negocio.beans;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
-public class Bem implements Cloneable {
+public class Bem extends Entidade implements Cloneable {
     private int id;
     private String nome;
     private String descricao;
@@ -41,7 +41,7 @@ public class Bem implements Cloneable {
         this.diaInicial = diaInicial;
     }
 
-    public int getId() {
+    public long getId() {
         return this.id;
     }
 

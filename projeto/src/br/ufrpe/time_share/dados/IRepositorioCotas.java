@@ -6,24 +6,14 @@ import br.ufrpe.time_share.negocio.beans.Usuario;
 
 import java.util.ArrayList;
 
-public interface IRepositorioCotas {
-
-    void cadastrarCota(Cota cota);
+public interface IRepositorioCotas extends IRepositorio<Cota> {
 
     void cadastrarCotas(ArrayList<Cota> cotas);
-
-    void excluirCota(Cota cota);
-
-    boolean existeCota(Cota cota);
-
-    Cota buscarCotaPorId(int id);
 
     ArrayList<Cota> buscarCotasPorProprietario(Usuario proprietario);
 
     ArrayList<Cota> buscarCotasPorBem(Bem bem);
 
-    ArrayList<Cota> listarCotas();
-    
-    ArrayList<Cota>listarCotasDisponiveisParaVenda();
+    ArrayList<Cota> listarCotasDisponiveisParaVenda();
 
 }
