@@ -3,6 +3,7 @@ package br.ufrpe.time_share.dados;
 import br.ufrpe.time_share.negocio.beans.Estadia;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class RepositorioEstadia extends RepositorioGenerico<Estadia> implements IRepositorioEstadia {
 
@@ -27,8 +28,8 @@ public class RepositorioEstadia extends RepositorioGenerico<Estadia> implements 
 
 
     @Override
-    public ArrayList<Estadia> buscarEstadiaPorUsuario(long cpfUsuario) {
-        ArrayList<Estadia> estadia = new ArrayList<>();
+    public List<Estadia> buscarEstadiaPorUsuario(long cpfUsuario) {
+        List<Estadia> estadia = new ArrayList<>();
 
         for (Estadia est : lista) {
             if (est.getReserva().getUsuarioComum().getId() == cpfUsuario) {
@@ -39,8 +40,8 @@ public class RepositorioEstadia extends RepositorioGenerico<Estadia> implements 
     }
 
     @Override
-    public ArrayList<Estadia> buscarEstadiasPorBem(int idBem) {
-        ArrayList<Estadia> estadia = new ArrayList<>();
+    public List<Estadia> buscarEstadiasPorBem(int idBem) {
+        List<Estadia> estadia = new ArrayList<>();
 
         for (Estadia est : lista) {
             if (est.getReserva().getBem().getId() == idBem) {
@@ -51,8 +52,8 @@ public class RepositorioEstadia extends RepositorioGenerico<Estadia> implements 
     }
 
     @Override
-    public ArrayList<Estadia> buscarEstadiaPorReserva(int idReserva) {
-        ArrayList<Estadia> estadia = new ArrayList<>();
+    public List<Estadia> buscarEstadiaPorReserva(int idReserva) {
+        List<Estadia> estadia = new ArrayList<>();
 
         for (Estadia est : lista) {
             if (est.getReserva().getId() == idReserva) {

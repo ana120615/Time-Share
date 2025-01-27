@@ -1,6 +1,7 @@
 package br.ufrpe.time_share.dados;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import br.ufrpe.time_share.negocio.beans.Reserva;
 
@@ -44,26 +45,29 @@ public class RepositorioReservas extends RepositorioGenerico<Reserva> implements
 
 
     @Override
-    public ArrayList<Reserva> buscarReservasPorUsuario(int idUsuario) {
-        ArrayList<Reserva> resultado = new ArrayList<>();
+    public List<Reserva> buscarReservasPorUsuario(int idUsuario) {
+        List<Reserva> resultado = new ArrayList<>();
         for (Reserva reservaUser : lista) {
             if (reservaUser.getId() == idUsuario) {
                 resultado.add(reservaUser);
             }
         }
-        return new ArrayList<>(resultado);
+        return resultado;
     }
 
     @Override
-    public ArrayList<Reserva> buscarReservasPorBem(int idBem) {
-        ArrayList<Reserva> resultado = new ArrayList<>();
+    public List<Reserva> buscarReservasPorBem(int idBem) {
+        List<Reserva> resultado = new ArrayList<>();
         for (Reserva reservaBem : lista) {
             if (reservaBem.getId() == idBem) {
                 resultado.add(reservaBem);
             }
         }
-        return new ArrayList<>(resultado);
+        return resultado;
     }
-
-
 }
+
+
+
+
+
