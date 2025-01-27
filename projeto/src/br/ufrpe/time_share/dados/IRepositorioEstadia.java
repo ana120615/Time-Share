@@ -4,20 +4,15 @@ import br.ufrpe.time_share.negocio.beans.Estadia;
 import br.ufrpe.time_share.negocio.beans.Reserva;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public interface IRepositorioEstadia extends IRepositorio<Estadia> {
 
-    void cadastrarEstadia(Estadia estadia);
 
-    void removerEstadia(Estadia estadia);
+    List<Estadia> buscarEstadiaPorUsuario(long cpfUsuario);
 
-    Estadia buscarEstadiaPorId(int id);
+    List<Estadia> buscarEstadiasPorBem(int idBem);
 
-    ArrayList<Estadia> buscarEstadiaPorUsuario(String cpfUsuario);
+    List<Estadia> buscarEstadiaPorReserva(int idReserva);
 
-    ArrayList<Estadia> buscarEstadiasPorBem(int idBem);
-
-    ArrayList<Estadia> buscarEstadiaPorReserva(int idReserva);
-
-    ArrayList<Estadia> listarEstadias();
 }
