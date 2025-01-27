@@ -4,55 +4,34 @@ import br.ufrpe.time_share.negocio.beans.Estadia;
 
 import java.util.ArrayList;
 
-public class RepositorioEstadia implements IRepositorioEstadia {
+public class RepositorioEstadia extends RepositorioGenerico<Estadia> implements IRepositorioEstadia {
 
     // INSTANCIA UNICA DO REPOSITORIO
-    public static final RepositorioEstadia INSTANCE = new RepositorioEstadia();
+    private static RepositorioEstadia instancia;
 
-    private ArrayList<Estadia> estadias;
-
-    {
-        this.estadias = new ArrayList<>();
+    public RepositorioEstadia() {
+        super();
     }
 
     // METODO PARA OBTER A INSTANCIA DO REPOSITORIO
-    public static RepositorioEstadia getInstance() {
-        return INSTANCE;
-    }
-
-    @Override
-    public void cadastrarEstadia(Estadia estadia) {
-        this.estadias.add(estadia);
-    }
-
-    @Override
-    public void removerEstadia(Estadia estadia) {
-        this.estadias.remove(estadia);
-    }
-
-    @Override
-    public Estadia buscarEstadiaPorId(int id) {
-        Estadia estadia = null;
-        boolean encontrado = false;
-        int i;
-        for (i = 0; i < this.estadias.size() && !encontrado; i++) {
-            if (this.estadias.get(i).getId() == id) {
-                encontrado = true;
+    public static RepositorioEstadia getInstancia() {
+        if (instancia == null) {
+            synchronized (RepositorioEstadia.class) { // Thread-safe
+                if (instancia == null) {
+                    instancia = new RepositorioEstadia();
+                }
             }
         }
-
-        if (encontrado) {
-            estadia = this.estadias.get(i - 1);
-        }
-        return estadia;
+        return instancia;
     }
 
+
     @Override
-    public ArrayList<Estadia> buscarEstadiaPorUsuario(String cpfUsuario) {
+    public ArrayList<Estadia> buscarEstadiaPorUsuario(long cpfUsuario) {
         ArrayList<Estadia> estadia = new ArrayList<>();
 
-        for (Estadia est : this.estadias) {
-            if (est.getReserva().getUsuarioComum().getId().equals(cpfUsuario)) {
+        for (Estadia est : lista) {
+            if (est.getReserva().getUsuarioComum().getId() == cpfUsuario) {
                 estadia.add(est);
             }
         }
@@ -63,7 +42,7 @@ public class RepositorioEstadia implements IRepositorioEstadia {
     public ArrayList<Estadia> buscarEstadiasPorBem(int idBem) {
         ArrayList<Estadia> estadia = new ArrayList<>();
 
-        for (Estadia est : this.estadias) {
+        for (Estadia est : lista) {
             if (est.getReserva().getBem().getId() == idBem) {
                 estadia.add(est);
             }
@@ -75,7 +54,7 @@ public class RepositorioEstadia implements IRepositorioEstadia {
     public ArrayList<Estadia> buscarEstadiaPorReserva(int idReserva) {
         ArrayList<Estadia> estadia = new ArrayList<>();
 
-        for (Estadia est : this.estadias) {
+        for (Estadia est : lista) {
             if (est.getReserva().getId() == idReserva) {
                 estadia.add(est);
             }
@@ -83,8 +62,4 @@ public class RepositorioEstadia implements IRepositorioEstadia {
         return estadia;
     }
 
-    @Override
-    public ArrayList<Estadia> listarEstadias() {
-        return this.estadias;
-    }
 }
