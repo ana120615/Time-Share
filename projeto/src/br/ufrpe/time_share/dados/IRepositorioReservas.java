@@ -9,9 +9,9 @@ public interface IRepositorioReservas extends IRepositorio<Reserva> {
 
     Reserva buscarReserva(Reserva reserva);
 
-    List<Reserva> buscarReservasPorUsuario(int idUsuario);
+    List<Reserva> buscarReservasPorUsuario(long idUsuario);
 
-    List<Reserva> buscarReservasPorBem(int idBem);
+    List<Reserva> buscarReservasPorBem(long idBem);
 
 
 }

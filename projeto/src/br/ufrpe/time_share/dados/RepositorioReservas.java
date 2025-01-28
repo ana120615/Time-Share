@@ -45,7 +45,7 @@ public class RepositorioReservas extends RepositorioGenerico<Reserva> implements
 
 
     @Override
-    public List<Reserva> buscarReservasPorUsuario(int idUsuario) {
+    public List<Reserva> buscarReservasPorUsuario(long idUsuario) {
         List<Reserva> resultado = new ArrayList<>();
         for (Reserva reservaUser : lista) {
             if (reservaUser.getId() == idUsuario) {
@@ -56,7 +56,7 @@ public class RepositorioReservas extends RepositorioGenerico<Reserva> implements
     }
 
     @Override
-    public List<Reserva> buscarReservasPorBem(int idBem) {
+    public List<Reserva> buscarReservasPorBem(long idBem) {
         List<Reserva> resultado = new ArrayList<>();
         for (Reserva reservaBem : lista) {
             if (reservaBem.getId() == idBem) {

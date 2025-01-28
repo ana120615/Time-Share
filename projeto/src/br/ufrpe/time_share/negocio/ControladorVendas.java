@@ -21,10 +21,10 @@ public class ControladorVendas {
 
     {
         this.controladorBens = new ControladorBens(RepositorioBens.getInstancia(), RepositorioCotas.getInstancia());
-        this.controladorUsuarioGeral = new ControladorUsuarioGeral(RepositorioUsuarios.getInstance());
+        this.controladorUsuarioGeral = new ControladorUsuarioGeral(RepositorioUsuarios.getInstancia());
     }
 
-    public Venda iniciarVenda(String cpfUsuario) throws UsuarioNaoExisteException {
+    public Venda iniciarVenda(long cpfUsuario) throws UsuarioNaoExisteException {
         Usuario comprador = controladorUsuarioGeral.procurarUsuarioPorCpf(cpfUsuario);
         Random random = new Random();
         if (comprador != null) {
@@ -68,7 +68,7 @@ public class ControladorVendas {
         }
     }
 
-    public boolean transferenciaDeDireitos(String cpfUsuarioRemetente, String cpfUsuarioDestinario, int idCota) throws CotaNaoExisteException, UsuarioNaoExisteException, TransferenciaInvalidaException {
+    public boolean transferenciaDeDireitos(long cpfUsuarioRemetente, long cpfUsuarioDestinario, int idCota) throws CotaNaoExisteException, UsuarioNaoExisteException, TransferenciaInvalidaException {
         Cota cotaTransferida = controladorBens.buscarCota(idCota);
 
         Usuario usuarioRemetente = controladorUsuarioGeral.procurarUsuarioPorCpf(cpfUsuarioRemetente);
@@ -87,7 +87,7 @@ public class ControladorVendas {
         }
     }
 
-    public String verificarSeUsuarioPossuiDescontos(String cpfUsuario) throws UsuarioNaoExisteException {
+    public String verificarSeUsuarioPossuiDescontos(long cpfUsuario) throws UsuarioNaoExisteException {
         String resultado = "";
         Usuario usuario = controladorUsuarioGeral.procurarUsuarioPorCpf(cpfUsuario);
         Promocao promocao = new Promocao();
@@ -104,7 +104,7 @@ public class ControladorVendas {
         return resultado;
     }
 
-    public boolean aplicarDesconto(Venda venda, String cpfUsuario) throws UsuarioNaoExisteException {
+    public boolean aplicarDesconto(Venda venda, long cpfUsuario) throws UsuarioNaoExisteException {
         boolean resultado = false;
 
         if (venda != null && !venda.getFoiDescontoAplicado()) {
@@ -114,7 +114,7 @@ public class ControladorVendas {
         return resultado;
     }
 
-    public String gerarComprovanteTransferencia(String cpfUsuarioRemetente, String cpfUsuarioDestinario, int idCota) throws CotaNaoExisteException, UsuarioNaoExisteException, TransferenciaInvalidaException {
+    public String gerarComprovanteTransferencia(long cpfUsuarioRemetente, long cpfUsuarioDestinario, int idCota) throws CotaNaoExisteException, UsuarioNaoExisteException, TransferenciaInvalidaException {
         String resultado = "";
         Cota cotaTransferida = controladorBens.buscarCota(idCota);
 

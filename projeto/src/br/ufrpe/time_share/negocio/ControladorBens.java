@@ -10,10 +10,7 @@ import br.ufrpe.time_share.negocio.beans.TipoUsuario;
 import br.ufrpe.time_share.negocio.beans.Usuario;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Random;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 
 public class ControladorBens {
     private IRepositorioBens repositorioBens;
@@ -24,14 +21,14 @@ public class ControladorBens {
     public ControladorBens(IRepositorioBens instanciaInterfaceBens, IRepositorioCotas instanciaInterfaceCota) {
         this.repositorioBens = instanciaInterfaceBens;
         this.repositorioCotas = instanciaInterfaceCota;
-        this.controladorUsuarioGeral = new ControladorUsuarioGeral(RepositorioUsuarios.getInstance());
+        this.controladorUsuarioGeral = new ControladorUsuarioGeral(RepositorioUsuarios.getInstancia());
     }
 
 
     // Cadastrar bem e inicializar as cotas dado a quantidade de cotas, a data inicial e quantidadeDeDiasPorCota
 
     public void cadastrar(int id, String nome, String descricao,
-                          String localizacao, int capacidade, String cpfUsuario,
+                          String localizacao, int capacidade, long cpfUsuario,
                           LocalDateTime diaInicial, int quantidadeDeCotas,
                           double precoDeUmaCota) throws BemNaoExisteException, UsuarioNaoPermitidoException, QuantidadeDeCotasExcedidasException, BemJaExisteException, UsuarioNaoExisteException {
 
@@ -60,9 +57,9 @@ public class ControladorBens {
 
                     for (int i = 0; i < quantidadeDeCotas; ) {
                         int randomNumberCota = 1000 + random.nextInt(9999);
-                        Cota c = repositorioCotas.buscarCotaPorId(randomNumberCota);
+                        Cota c = repositorioCotas.buscar(randomNumberCota);
 
-                        if (!repositorioCotas.existeCota(c)) {
+                        if (!repositorioCotas.existe(c)) {
                             cotas.add(i, new Cota(randomNumberCota, dataInicio, dataFim, precoDeUmaCota, newBem));
                             i++;
                         }
@@ -73,7 +70,7 @@ public class ControladorBens {
                     }
                     newBem.setCotas(cotas);
                     repositorioCotas.cadastrarCotas(cotas);
-                    repositorioBens.cadastrarBem(newBem);
+                    repositorioBens.cadastrar(newBem);
                 }
 
 
@@ -87,22 +84,21 @@ public class ControladorBens {
 
 
     public void remover(int id) throws BemNaoExisteException, IllegalAccessException {
-        Bem removido = repositorioBens.buscarBemPorId(id);
+        Bem removido = repositorioBens.buscar(id);
         if (removido != null && !removido.isOfertado()) {
             for (Cota c : removido.getCotas()) {
-                repositorioCotas.excluirCota(c);
+                repositorioCotas.remover(c);
             }
-            repositorioBens.removerBem(removido);
-        } else if(removido == null) {
+            repositorioBens.remover(removido);
+        } else if (removido == null) {
             throw new BemNaoExisteException("Bem não existe");
-        }
-        else{
+        } else {
             throw new IllegalAccessException("Bem ja foi ofertado");
         }
     }
 
     public void ofertarBem(int id) throws BemNaoExisteException {
-        Bem bem = repositorioBens.buscarBemPorId(id);
+        Bem bem = repositorioBens.buscar(id);
 
         if (bem != null) {
             bem.setOfertado(true);
@@ -114,15 +110,15 @@ public class ControladorBens {
         }
     }
 
-    public ArrayList<Bem> listarBens() {
-        return repositorioBens.listarBens();
+    public List<Bem> listarBens() {
+        return repositorioBens.listar();
     }
 
-    public ArrayList<Bem> listarBensUsuario (Usuario usuario) {
-        ArrayList<Bem> resultado = new ArrayList<>();
+    public List<Bem> listarBensUsuario(Usuario usuario) {
+        List<Bem> resultado = new ArrayList<>();
 
         if (repositorioBens != null && usuario != null) {
-            for (Bem bem : repositorioBens.listarBens()) {
+            for (Bem bem : repositorioBens.listar()) {
                 if (bem.getCadastradoPor().equals(usuario)) {
                     resultado.add(bem);
                 }
@@ -131,11 +127,12 @@ public class ControladorBens {
         return resultado;
     }
 
-    public ArrayList<Bem> listarBensOfertadosUsuario (Usuario usuario) {
-        ArrayList<Bem> resultado = new ArrayList<>();
+
+    public List<Bem> listarBensOfertadosUsuario(Usuario usuario) {
+        List<Bem> resultado = new ArrayList<>();
 
         if (repositorioBens != null && usuario != null) {
-            for (Bem bem : repositorioBens.listarBens()) {
+            for (Bem bem : repositorioBens.listar()) {
                 if (bem.getCadastradoPor().equals(usuario) && bem.isOfertado()) {
                     resultado.add(bem);
                 }
@@ -145,34 +142,22 @@ public class ControladorBens {
         return resultado;
     }
 
-    public ArrayList<Bem> listarBensOfertados () {
-        ArrayList<Bem> resultado = new ArrayList<>();
-
-        if (repositorioBens != null) {
-            for (Bem bem : repositorioBens.listarBens()) {
-                if (bem.isOfertado()) {
-                    resultado.add(bem);
-                }
-            }
-        }
-        return resultado;
-    }
-
-    public ArrayList<Bem> listarBensDisponiveis() {
+    public List<Bem> listarBensOfertados() {
         return repositorioBens.listarBensDisponiveis();
     }
 
+
     public void listarCotasDisponiveis() {
-        ArrayList<Cota> cotas =  repositorioCotas.listarCotasDisponiveisParaVenda();
+        List<Cota> cotas = repositorioCotas.listarCotasDisponiveisParaVenda();
 
         for (Cota cota : cotas) {
             System.out.println(cota + "\n");
         }
     }
 
-    public ArrayList<Cota> calcularDeslocamentoDasCotas(int bemId, int anoParaDeslocamento) throws BemNaoExisteException {
+    public ArrayList<Cota> calcularDeslocamentoDasCotas(long bemId, int anoParaDeslocamento) throws BemNaoExisteException {
 
-        Bem bem = repositorioBens.buscarBemPorId(bemId);
+        Bem bem = repositorioBens.buscar(bemId);
 
         if (bem == null) {
             throw new BemNaoExisteException("Bem não existe");
@@ -206,7 +191,7 @@ public class ControladorBens {
     }
 
     public Cota buscarCota(int idCota) throws CotaNaoExisteException {
-        Cota cota = repositorioCotas.buscarCotaPorId(idCota);
+        Cota cota = repositorioCotas.buscar(idCota);
 
         if (cota == null) {
             throw new CotaNaoExisteException("Cota não existe");
@@ -217,7 +202,7 @@ public class ControladorBens {
 
     public void listarCotasDeUmBem(int idBem) throws BemNaoExisteException {
         ArrayList<Cota> resultado = new ArrayList<>();
-        Bem bem = repositorioBens.buscarBemPorId(idBem);
+        Bem bem = repositorioBens.buscar(idBem);
 
         if (bem == null) {
             throw new BemNaoExisteException("Bem não existe");
@@ -229,7 +214,7 @@ public class ControladorBens {
 
     }
 
-    public ArrayList<Cota> listarCotasDeUmUsuario(String cpfUsuario) throws BemNaoExisteException, UsuarioNaoExisteException {
+    public List<Cota> listarCotasDeUmUsuario(long cpfUsuario) throws BemNaoExisteException, UsuarioNaoExisteException {
         Usuario usuario = controladorUsuarioGeral.procurarUsuarioPorCpf(cpfUsuario);
         if (usuario != null) {
             return repositorioCotas.buscarCotasPorProprietario(usuario);
@@ -239,11 +224,11 @@ public class ControladorBens {
 
     }
 
-    public ArrayList<Cota> registros(String usuarioCpf) throws UsuarioNaoExisteException {
-        ArrayList<Cota> resultado = new ArrayList<>();
+    public List<Cota> registros(long usuarioCpf) throws UsuarioNaoExisteException {
+        List<Cota> resultado = new ArrayList<>();
         Usuario usuario = controladorUsuarioGeral.procurarUsuarioPorCpf(usuarioCpf);
 
-        for (Cota cota : repositorioCotas.listarCotas()) {
+        for (Cota cota : repositorioCotas.listar()) {
             if (cota.getProprietario().equals(usuario)) {
                 resultado.add(cota);
             }
@@ -266,8 +251,8 @@ public class ControladorBens {
     }
 
     // TODO ajustar o deslocamento das cotas
-    public void deslocarCotasAutomaticamente()  {
-        ArrayList<Bem> bens = repositorioBens.listarBens();
+    public void deslocarCotasAutomaticamente() {
+        List<Bem> bens = repositorioBens.listar();
 
         for (Bem bem : bens) {
             LocalDateTime agora = LocalDateTime.now();
@@ -286,10 +271,10 @@ public class ControladorBens {
     }
 
     public void alterarNomeBem(int id, String novoNome) throws BemNaoExisteException, NullPointerException {
-        if(novoNome == null) {
+        if (novoNome == null) {
             throw new NullPointerException("Nome nulo.");
         }
-        Bem bem = this.repositorioBens.buscarBemPorId(id);
+        Bem bem = this.repositorioBens.buscar(id);
         if (bem != null) {
             bem.setNome(novoNome);
         } else {
@@ -298,10 +283,10 @@ public class ControladorBens {
     }
 
     public void alterarDescricaoBem(int id, String novaDescricao) throws BemNaoExisteException, NullPointerException {
-        if(novaDescricao == null) {
+        if (novaDescricao == null) {
             throw new NullPointerException("Descricao nula.");
         }
-        Bem bem = this.repositorioBens.buscarBemPorId(id);
+        Bem bem = this.repositorioBens.buscar(id);
         if (bem != null) {
             bem.setDescricao(novaDescricao);
         } else {
@@ -311,10 +296,10 @@ public class ControladorBens {
 
 
     public void alterarLocalizacaoBem(int id, String novaLocalizacao) throws BemNaoExisteException, NullPointerException {
-        if(novaLocalizacao == null) {
+        if (novaLocalizacao == null) {
             throw new NullPointerException("Localizacao nula.");
         }
-        Bem bem = this.repositorioBens.buscarBemPorId(id);
+        Bem bem = this.repositorioBens.buscar(id);
         if (bem != null) {
             bem.setLocalizacao(novaLocalizacao);
         } else {
@@ -323,10 +308,10 @@ public class ControladorBens {
     }
 
     public void alterarCapacidadeBem(int id, int novaCapacidade) throws BemNaoExisteException, IllegalArgumentException {
-        if(novaCapacidade == 0) {
+        if (novaCapacidade == 0) {
             throw new IllegalArgumentException("Capacidade invalida.");
         }
-        Bem bem = this.repositorioBens.buscarBemPorId(id);
+        Bem bem = this.repositorioBens.buscar(id);
         if (bem != null) {
             bem.setCapacidade(novaCapacidade);
         } else {
@@ -334,8 +319,8 @@ public class ControladorBens {
         }
     }
 
-    public Bem buscarBemPorId (int idBem) throws BemNaoExisteException{
-        Bem bem = repositorioBens.buscarBemPorId(idBem);
+    public Bem buscarBemPorId(int idBem) throws BemNaoExisteException {
+        Bem bem = repositorioBens.buscar(idBem);
 
         if (bem == null) {
             throw new BemNaoExisteException("Bem não existe");

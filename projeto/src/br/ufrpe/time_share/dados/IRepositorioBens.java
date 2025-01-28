@@ -12,5 +12,4 @@ public interface IRepositorioBens extends IRepositorio<Bem> {
 
     List<Bem> listarBensByNome(String nome);
 
-    List<Bem> listarBensPorAdm(long cpfAdm);
 }

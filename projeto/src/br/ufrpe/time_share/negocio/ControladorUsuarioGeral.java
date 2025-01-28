@@ -7,6 +7,7 @@ import br.ufrpe.time_share.negocio.beans.Usuario;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 
 public class ControladorUsuarioGeral {
     private IRepositorioUsuario repositorio;
@@ -15,8 +16,8 @@ public class ControladorUsuarioGeral {
         this.repositorio = instanciaInterface;
     }
 
-    public void cadastrar(String cpf, String nome, String email, String senha, LocalDate dataNascimento, TipoUsuario tipo) throws UsuarioJaExisteException, UsuarioNaoPermitidoException, DadosInsuficientesException {
-        if (cpf == null || nome == null || email == null || senha == null || dataNascimento == null) {
+    public void cadastrar(long cpf, String nome, String email, String senha, LocalDate dataNascimento, TipoUsuario tipo) throws UsuarioJaExisteException, UsuarioNaoPermitidoException, DadosInsuficientesException {
+        if (cpf == 0 || nome == null || email == null || senha == null || dataNascimento == null) {
             throw new DadosInsuficientesException("Informacao insuficiente.");
         }
         Usuario usuario = new Usuario(cpf, nome, email, senha, dataNascimento, tipo);
@@ -33,8 +34,9 @@ public class ControladorUsuarioGeral {
         if (usuario == null) {
             throw new UsuarioNaoPermitidoException("O usuario não pode ser nulo.");
         }
-        if (usuario.getId() != null) {
-            char[] verificador = usuario.getId().toCharArray();
+        if (usuario.getId() != 0) {
+            String num = Long.toString(usuario.getId());
+            char[] verificador = num.toCharArray();
             if (verificador.length != 11) {
                 throw new UsuarioNaoPermitidoException("CPF invalido.");
             }
@@ -55,8 +57,8 @@ public class ControladorUsuarioGeral {
         }
     }
 
-    public Usuario procurarUsuarioPorCpf(String cpf) throws UsuarioNaoExisteException {
-        Usuario usuario = this.repositorio.buscarUsuarioPorCpf(cpf);
+    public Usuario procurarUsuarioPorCpf(long cpf) throws UsuarioNaoExisteException {
+        Usuario usuario = this.repositorio.buscar(cpf);
         if (usuario == null) {
             throw new UsuarioNaoExisteException("Usuario nao encontrado.");
         }
@@ -71,7 +73,7 @@ public class ControladorUsuarioGeral {
         return usuario;
     }
 
-    public void remover(String cpf, TipoUsuario tipo) throws UsuarioNaoExisteException, UsuarioNaoPermitidoException {
+    public void remover(long cpf, TipoUsuario tipo) throws UsuarioNaoExisteException, UsuarioNaoPermitidoException {
         Usuario usuario = procurarUsuarioPorCpf(cpf);
         if (usuario != null) {
             if (usuario.getTipo().equals(tipo)) {
@@ -84,7 +86,7 @@ public class ControladorUsuarioGeral {
         }
     }
 
-    public void alterarNomeUsuario(String cpf, String novoNome, TipoUsuario tipo) throws UsuarioNaoExisteException, UsuarioNaoPermitidoException, NullPointerException {
+    public void alterarNomeUsuario(long cpf, String novoNome, TipoUsuario tipo) throws UsuarioNaoExisteException, UsuarioNaoPermitidoException, NullPointerException {
         if(novoNome == null) {
             throw new NullPointerException("Nome nulo");
         }
@@ -108,7 +110,7 @@ public class ControladorUsuarioGeral {
         }
     }
 
-    public void alterarDataAniversario(String cpf, LocalDate dataAniversario, TipoUsuario tipo) throws UsuarioNaoExisteException, UsuarioNaoPermitidoException, NullPointerException {
+    public void alterarDataAniversario(long cpf, LocalDate dataAniversario, TipoUsuario tipo) throws UsuarioNaoExisteException, UsuarioNaoPermitidoException, NullPointerException {
         if(dataAniversario == null) {
             throw new NullPointerException("Data nula");
         }
@@ -122,11 +124,11 @@ public class ControladorUsuarioGeral {
         }
     }
 
-    public ArrayList<Usuario> listarAdm() {
+    public List<Usuario> listarAdm() {
         return this.repositorio.listarUsuarioAdm();
     }
 
-    public ArrayList<Usuario> listarUsuarioComum() {
+    public List<Usuario> listarUsuarioComum() {
         return this.repositorio.listarUsuarioComum();
     }
 

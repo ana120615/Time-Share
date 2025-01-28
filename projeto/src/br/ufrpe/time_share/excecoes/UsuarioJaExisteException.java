@@ -4,7 +4,7 @@ public class UsuarioJaExisteException extends Exception {
     private String cpfUsuario;
     private String emailUsuario;
 
-    public UsuarioJaExisteException(String message, String cpf, String emailUsuario) {
+    public UsuarioJaExisteException(String message, long cpf, String emailUsuario) {
         super(message);
         this.cpfUsuario = cpf;
         this.emailUsuario = emailUsuario;

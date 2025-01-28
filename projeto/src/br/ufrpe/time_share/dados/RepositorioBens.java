@@ -67,21 +67,6 @@ public class RepositorioBens extends RepositorioGenerico<Bem> implements IReposi
         return listaBensByNome;
     }
 
-    @Override
-    public List<Bem> listarBensPorAdm(long cpfAdm) {
-        List<Bem> listaBens = new ArrayList<>();
-
-        for (Bem bem : lista) {
-            if (bem.getCadastradoPor().getId() == cpfAdm) {
-                listaBens.add(bem);
-            }
-        }
-
-        return listaBens;
-
-    }
-
-
 }
 
 

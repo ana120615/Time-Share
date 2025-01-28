@@ -26,7 +26,7 @@ public class ControladorReservas {
     }
 
     public Estadia checkin(int idReserva, LocalDateTime dataInicio) throws ReservaNaoExisteException, ReservaJaCanceladaException, ForaPeriodoException {
-        Reserva reservaRelacionada = repositorioReservas.buscarReservasPorId(idReserva);
+        Reserva reservaRelacionada = repositorioReservas.buscar(idReserva);
         Estadia estadia = null;
         if (reservaRelacionada == null) {
             throw new ReservaNaoExisteException("Reserva inexistente");
@@ -103,7 +103,7 @@ public class ControladorReservas {
         // Garante ID diferente
         for (int i = 0; i < 1; ) {
             idNumeroReserva = 1001 + random.nextInt(99999);
-            if (repositorioReservas.buscarReservasPorId(idNumeroReserva) == null) {
+            if (repositorioReservas.buscar(idNumeroReserva) == null) {
                 i++;
             }
         }
@@ -119,7 +119,7 @@ public class ControladorReservas {
             throw new ForaPeriodoException("Data de inicio apos data final");
         }
 
-        for (Reserva buscar : repositorioReservas.listarReservas()) {
+        for (Reserva buscar : repositorioReservas.listar()) {
             if (buscar.getStatus() &&
                     !(reserva.getDataFim().isBefore(buscar.getDataInicio()) || reserva.getDataInicio().isAfter(buscar.getDataFim()))) {
                 throw new PeriodoJaReservadoException("Periodo ja reservado.");
@@ -141,14 +141,14 @@ public class ControladorReservas {
             }
 
         }
-        repositorioReservas.cadastrarReserva(reserva);
+        repositorioReservas.cadastrar(reserva);
         return reserva;
     }
 
 
     //metodo para cancelar reserva
     public void cancelarReserva(int idReserva) throws ReservaNaoExisteException, ReservaJaCanceladaException {
-        Reserva reservaCancelada = repositorioReservas.buscarReservasPorId(idReserva);
+        Reserva reservaCancelada = repositorioReservas.buscar(idReserva);
         if (reservaCancelada == null) {
             throw new ReservaNaoExisteException("Reserva inexistente");
         } else {
@@ -156,7 +156,7 @@ public class ControladorReservas {
                 throw new ReservaJaCanceladaException("Reserva ja cancelada");
             } else {
                 reservaCancelada.cancelarReserva();
-                repositorioReservas.removerReserva(reservaCancelada);
+                repositorioReservas.remover(reservaCancelada);
             }
         }
     }
@@ -184,10 +184,10 @@ public class ControladorReservas {
     }
 
     //metodo para alterar periodo da reserva
-    public Reserva alterarPeriodoReserva(int idReserva, LocalDateTime novaDataInicio, LocalDateTime novaDataFim)
+    public Reserva alterarPeriodoReserva(long idReserva, LocalDateTime novaDataInicio, LocalDateTime novaDataFim)
             throws ReservaNaoExisteException, ReservaJaCanceladaException, PeriodoJaReservadoException {
 
-        Reserva reserva = repositorioReservas.buscarReservasPorId(idReserva);
+        Reserva reserva = repositorioReservas.buscar(idReserva);
 
         if (reserva == null) {
             throw new ReservaNaoExisteException("Reserva inexistente");
@@ -198,7 +198,7 @@ public class ControladorReservas {
         }
 
 // Verificar sobreposição de períodos com outras reservas
-        for (Reserva buscar : repositorioReservas.listarReservas()) {
+        for (Reserva buscar : repositorioReservas.listar()) {
             if (buscar.getId() != reserva.getId() && buscar.getStatus()) {
                 if (!(novaDataFim.isBefore(buscar.getDataInicio()) || novaDataInicio.isAfter(buscar.getDataFim()))) {
                     throw new PeriodoJaReservadoException("Periodo ja reservado");
@@ -218,7 +218,7 @@ public class ControladorReservas {
         List<String> periodosDisponiveis = new ArrayList<>();
 
         // Buscar todas as reservas para o bem
-        ArrayList<Reserva> reservas = repositorioReservas.buscarReservasPorBem(bem.getId());
+        List<Reserva> reservas = repositorioReservas.buscarReservasPorBem(bem.getId());
 
         // Garante que o usuário não posso colocar o final do periodo antes do inicio do periodo
         // e que o inicio do periodo não posso ser antes do dia atual
@@ -321,10 +321,10 @@ public class ControladorReservas {
         return estadiaToString + ", duracao da estadia: " + String.format("%d", duracao) + " dias";
     }
 
-    public ArrayList<Reserva> listarReservasUsuario(Usuario usuario) {
-        ArrayList<Reserva> resultado = new ArrayList<>();
+    public List<Reserva> listarReservasUsuario(Usuario usuario) {
+        List<Reserva> resultado = new ArrayList<>();
 
-        for (Reserva r : repositorioReservas.listarReservas()) {
+        for (Reserva r : repositorioReservas.listar()) {
             if (r.getUsuarioComum().equals(usuario)) {
                 resultado.add(r);
             }
