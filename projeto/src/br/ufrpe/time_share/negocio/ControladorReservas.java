@@ -254,6 +254,8 @@ public class ControladorReservas {
 
 //talvez metodo para verificar disponibilidade para usuario especifico
 
+
+//consulta de periodos disponiveis para reserva
     public List<String> consultarDisponibilidade(Bem bem, LocalDateTime inicioPeriodo, LocalDateTime fimPeriodo) throws BemNaoExisteException {
         List<String> periodosDisponiveis = new ArrayList<>();
         LocalDateTime inicioAtual = inicioPeriodo;
@@ -308,7 +310,8 @@ public class ControladorReservas {
     //metodo para calcular taxa extra
     //tambem e usado quando prolongo uma estadia
     //verifica se cota pertence ao usuario e corresponde ao periodo que deseja reservar
-    public double calcularTaxaExtra(Reserva reserva) throws ReservaNaoExisteException, CotaJaReservadaException {
+    public double calcularTaxaExtra(Reserva reserva, int quantidadeDias) throws ReservaNaoExisteException, CotaJaReservadaException {
+        //taxa e uma porcentagem do preco de uma cota do bem
         double taxa = 0.00;
         boolean reservaTaxada = true;
         Promocao promocao = new Promocao();
@@ -321,8 +324,16 @@ public class ControladorReservas {
             throw new ReservaNaoExisteException("Reserva inexistente");
         }
 
+    //deve verificar se ha alguma cota no periodo
+    //se nao houver, a taxa sera automaticamente aplicada
+    List<Cota> cotas = reserva.getBem().getCotas();
+    if(cotas==null){
+        reservaTaxada = true;
+    }
+
         // Verifica se a cota cobre a reserva
-        for (Cota cota : reserva.getBem().getCotas()) {
+        else{
+        for (Cota cota : cotas) {
             if (cota.getProprietario().equals(reserva.getUsuarioComum())) {
                 boolean datasIguais = cota.getDataInicio().isEqual(reserva.getDataInicio()) &&
                         cota.getDataFim().isEqual(reserva.getDataFim());
@@ -346,10 +357,12 @@ public class ControladorReservas {
                 }
             }
         }
+    }
 
-
+    //calcula a taxa baseada no preco de 1 cota e na quantidade de dias da reserva
+    //0.15% ao dia
         if (reservaTaxada) {
-            taxa = 150.00;
+            taxa = cotas.get(0).getPreco()*0.0015*quantidadeDias;
             double taxaPromocional = promocao.calcularTaxaPromocao(reserva.getDataInicio(), reserva.getUsuarioComum());
             double desconto = taxa * taxaPromocional;
             taxa -= desconto;
@@ -360,6 +373,7 @@ public class ControladorReservas {
     }
 
 
+    
     //metodo para gerar comprovante da reserva
     public String gerarComprovanteReserva(Reserva reserva, double taxa) {
         String reservaToString = reserva.toString();
