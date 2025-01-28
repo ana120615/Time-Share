@@ -1,6 +1,7 @@
 package br.ufrpe.time_share.dados;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import br.ufrpe.time_share.negocio.beans.Bem;
@@ -44,6 +45,7 @@ public class RepositorioCotas extends RepositorioGenerico<Cota> implements IRepo
             }
         }
 
+        Collections.sort(resultado);
         return resultado;
     }
 
@@ -55,6 +57,8 @@ public class RepositorioCotas extends RepositorioGenerico<Cota> implements IRepo
                 retorno.add(cota);
             }
         }
+
+        Collections.sort(retorno);
         return retorno;
     }
 
@@ -66,6 +70,8 @@ public class RepositorioCotas extends RepositorioGenerico<Cota> implements IRepo
                 resultado.add(cota);
             }
         }
+
+        Collections.sort(resultado);
         return resultado;
     }
 }

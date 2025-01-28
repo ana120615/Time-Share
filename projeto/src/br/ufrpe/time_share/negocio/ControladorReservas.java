@@ -2,6 +2,7 @@ package br.ufrpe.time_share.negocio;
 
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -217,6 +218,8 @@ public class ControladorReservas {
     public List<String> consultarDisponibilidade(Bem bem, LocalDateTime inicioPeriodo, LocalDateTime fimPeriodo) throws BemNaoExisteException {
         List<String> periodosDisponiveis = new ArrayList<>();
 
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+
         // Buscar todas as reservas para o bem
         List<Reserva> reservas = repositorioReservas.buscarReservasPorBem(bem.getId());
 
@@ -229,7 +232,7 @@ public class ControladorReservas {
         LocalDateTime inicioAtual = inicioPeriodo;
 
         while (!inicioAtual.isAfter(fimPeriodo)) {
-            periodosDisponiveis.add(inicioAtual.toString());
+            periodosDisponiveis.add(inicioAtual.format(formatter));
             ArrayList<Cota> cotasBemAssociado = bem.getCotas();
             for (Cota cota : cotasBemAssociado) {
                 if (!cota.getStatusDeDisponibilidadeParaCompra()) {

@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 
-public class Cota extends Entidade implements Cloneable{
+public class Cota extends Entidade implements Cloneable, Comparable<Cota> {
     private int id;
     private double preco;
     private Usuario proprietario;
@@ -131,6 +131,12 @@ public class Cota extends Entidade implements Cloneable{
                     dataFim.equals(cota.getDataFim()) && bemAssociado.equals(cota.getBemAssociado());
         }
         return false;
+    }
+
+    @Override
+    public int compareTo(Cota cota) {
+
+        return this.dataInicio.compareTo(cota.getDataInicio());
     }
 
 }

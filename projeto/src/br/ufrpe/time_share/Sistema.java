@@ -44,7 +44,7 @@ public class Sistema {
         // CADASTRANDO E OFERTANDO UM BEM
         try {
             controladorBens.cadastrar(1111, "Lar Doce Lar", "Familia Feliz é aqui",
-                    "Recife-PE", 5, 12345678901L, LocalDateTime.now(), 20, 6000);
+                    "Recife-PE", 5, 12345678901L, LocalDateTime.of(2025, 01, 01, 12, 00), 20, 6000);
         } catch (BemNaoExisteException | UsuarioNaoPermitidoException | QuantidadeDeCotasExcedidasException |
                  BemJaExisteException | UsuarioNaoExisteException e) {
             System.out.println(e.getMessage());
@@ -122,10 +122,10 @@ public class Sistema {
                         while (!sairCadastro) {
                             try {
                                 System.out.println("\n-- CADASTRO USUARIO --");
-                                String nome,email, senha, dataNascimento;
+                                String nome, email, senha, dataNascimento;
                                 Long cpf;
                                 System.out.println("Informe o nome: ");
-                                nome = input.next();  // Usando next
+                                nome = input.nextLine();  // Usando next
                                 System.out.println("Informe o cpf: ");
                                 cpf = input.nextLong();  // Usando next
                                 System.out.println("Informe a Senha: ");
@@ -160,14 +160,13 @@ public class Sistema {
 
                 do {
                     if (usuario != null && usuario.getTipo().equals(TipoUsuario.COMUM)) {
-                        int escolha = 0;
                         System.out.println("\n\n-- TELA USUARIO --");
                         System.out.println("1 - Configuracoes");
                         System.out.println("2 - Gerenciamento de Reservas");
                         System.out.println("3 - Bens Ofertados");
                         System.out.println("4 - Minhas Cotas");
                         System.out.println("5 - Sair tela de Usuário");
-                        escolha = input.nextInt();
+                        int escolha = input.nextInt();
                         switch (escolha) {
                             case 1:
                                 boolean sairConfiguracoes = false;
@@ -193,7 +192,6 @@ public class Sistema {
                                                 escolha = input.nextInt();
                                                 switch (escolha) {
                                                     case 1:
-                                                        escolha = 0;
                                                         try {
                                                             System.out.println("Digite o novo nome: ");
                                                             String novoNome = input.next();
@@ -205,7 +203,6 @@ public class Sistema {
                                                         }
                                                         break;
                                                     case 2:
-                                                        escolha = 0;
                                                         try {
                                                             System.out.println("Digite a nova senha: ");
                                                             String novaSenha = input.next();
@@ -217,7 +214,6 @@ public class Sistema {
                                                         }
                                                         break;
                                                     case 3:
-                                                        escolha = 0;
                                                         try {
                                                             System.out.println("Digite a nova data de nascimento: ");
                                                             String novaData = input.next();
@@ -310,7 +306,7 @@ public class Sistema {
                                                         finalPeriodo += " 23:59";
                                                         Bem bemReservaDisponivel = null;
                                                         try {
-                                                             bemReservaDisponivel = controladorBens.buscarBemPorId(idBemParaReserva);
+                                                            bemReservaDisponivel = controladorBens.buscarBemPorId(idBemParaReserva);
                                                         } catch (BemNaoExisteException e) {
                                                             System.out.println(e.getMessage());
                                                         }
@@ -319,9 +315,14 @@ public class Sistema {
                                                             List<String> reservas = controladorReservas.consultarDisponibilidade(bemReservaDisponivel, LocalDateTime.parse(inicioPeriodo, DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")), LocalDateTime.parse(finalPeriodo, DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")));
                                                             System.out.println("\nPeriodos disponíveis para Reserva: ");
                                                             System.out.println(reservas);
-                                                        } catch (BemNaoExisteException | IllegalArgumentException | NullPointerException e) {
+
+                                                            System.out.println("\nSuas cotas nesse Bem: ");
+                                                            System.out.println(controladorBens.listarCotasDeUmUsuarioEmUmBem(usuario, idBemParaReserva));
+                                                        } catch (BemNaoExisteException | IllegalArgumentException |
+                                                                 NullPointerException e) {
                                                             System.out.println(e.getMessage());
                                                         }
+
 
                                                         break;
 
@@ -344,11 +345,13 @@ public class Sistema {
                                                         }
 
                                                         try {
-                                                            controladorReservas.criarReserva(LocalDateTime.parse(inicioReserva, DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")), LocalDateTime.parse(fimReserva, DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")),usuario, bemReserva);
-                                                        } catch (ReservaJaExisteException | PeriodoJaReservadoException | DadosInsuficientesException | ForaPeriodoException | PeriodoNaoDisponivelParaReservaException e) {
+                                                            controladorReservas.criarReserva(LocalDateTime.parse(inicioReserva, DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")), LocalDateTime.parse(fimReserva, DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")), usuario, bemReserva);
+                                                        } catch (ReservaJaExisteException |
+                                                                 PeriodoJaReservadoException |
+                                                                 DadosInsuficientesException | ForaPeriodoException |
+                                                                 PeriodoNaoDisponivelParaReservaException e) {
                                                             System.out.println(e.getMessage());
                                                         }
-
 
 
                                                         break;
@@ -358,7 +361,8 @@ public class Sistema {
                                                         int idReserva = input.nextInt();
                                                         try {
                                                             controladorReservas.cancelarReserva(idReserva);
-                                                        } catch (ReservaNaoExisteException | ReservaJaCanceladaException e) {
+                                                        } catch (ReservaNaoExisteException |
+                                                                 ReservaJaCanceladaException e) {
                                                             System.out.println(e.getMessage());
                                                         }
 
@@ -536,7 +540,7 @@ public class Sistema {
                                                 escolha = input.nextInt();
                                                 switch (escolha) {
                                                     case 1:
-                                                        escolha = 0;
+
                                                         try {
                                                             System.out.println("Digite o novo nome: ");
                                                             String novoNome = input.next();
@@ -548,7 +552,6 @@ public class Sistema {
                                                         }
                                                         break;
                                                     case 2:
-                                                        escolha = 0;
                                                         try {
                                                             System.out.println("Digite a nova senha: ");
                                                             String novaSenha = input.next();
@@ -560,7 +563,6 @@ public class Sistema {
                                                         }
                                                         break;
                                                     case 3:
-                                                        escolha = 0;
                                                         try {
                                                             System.out.println("Digite a nova data de nascimento: ");
                                                             String novaData = input.next();
@@ -631,14 +633,16 @@ public class Sistema {
                                             System.out.println("\n\n-- CADASTRO DE BEM --");
                                             System.out.print("Informe um id para o Bem:");
                                             int idBem = input.nextInt();
+                                            input.nextLine();
                                             System.out.print("Nome: ");
-                                            String nome = input.next();
+                                            String nome = input.nextLine();
                                             System.out.print("Descrição: ");
-                                            String descricao = input.next();
+                                            String descricao = input.nextLine();
                                             System.out.print("Localização: ");
-                                            String localizacao = input.next();
+                                            String localizacao = input.nextLine();
                                             System.out.print("Capacidade de pessoas: ");
                                             int capacidade = input.nextInt();
+                                            input.nextLine();
                                             System.out.print("Informe a data Inicial das cotas (dd/MM/yyyy): ");
                                             String dataInicial = input.next();
                                             dataInicial += " 00:00";
@@ -678,7 +682,6 @@ public class Sistema {
                                                 escolha = input.nextInt();
                                                 switch (escolha) {
                                                     case 1:
-                                                        escolha = 0;
                                                         try {
                                                             System.out.print("Digite o id: ");
                                                             int idBemOfertar = input.nextInt();
@@ -691,7 +694,6 @@ public class Sistema {
                                                         }
                                                         break;
                                                     case 2:
-                                                        escolha = 0;
                                                         try {
                                                             System.out.print("Digite o id: ");
                                                             int idBemOfertar = input.nextInt();
@@ -704,7 +706,6 @@ public class Sistema {
                                                         }
                                                         break;
                                                     case 3:
-                                                        escolha = 0;
                                                         try {
                                                             System.out.print("Digite o id: ");
                                                             int idBemOfertar = input.nextInt();
@@ -717,7 +718,6 @@ public class Sistema {
                                                         }
                                                         break;
                                                     case 4:
-                                                        escolha = 0;
                                                         try {
                                                             System.out.print("Digite o id: ");
                                                             int idBemOfertar = input.nextInt();
@@ -802,8 +802,9 @@ public class Sistema {
                     sairTelaPrincipalAdministrador = false;
                     sairTelaPrincipalUsuario = false;
 
-                } else {
+                } else if (decisao == 'n') {
                     finalizarPrograma = true;
+                    break;
                 }
 
 

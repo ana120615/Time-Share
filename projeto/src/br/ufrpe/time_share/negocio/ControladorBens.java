@@ -187,6 +187,8 @@ public class ControladorBens {
             }
         }
 
+        deslocarCotasAutomaticamente(resultado);
+        Collections.sort(resultado);
         return resultado;
     }
 
@@ -236,35 +238,33 @@ public class ControladorBens {
         return resultado;
     }
 
-    public void iniciarDeslocamentoAutomatico() {
-        Timer timer = new Timer(true);
-        TimerTask task = new TimerTask() {
-            @Override
-            public void run() {
-                deslocarCotasAutomaticamente();
-            }
-        };
-
-        // Agenda a tarefa para rodar a cada 24 horas
-        long umDiaEmMilissegundos = 24 * 60 * 60 * 1000; // 24 * 60 * 60 * 1000
-        timer.scheduleAtFixedRate(task, 0, umDiaEmMilissegundos);
-    }
+//    public void iniciarDeslocamentoAutomatico() {
+//        Timer timer = new Timer(true);
+//        TimerTask task = new TimerTask() {
+//            @Override
+//            public void run() {
+//                deslocarCotasAutomaticamente();
+//            }
+//        };
+//
+//        // Agenda a tarefa para rodar a cada 24 horas
+//        long umDiaEmMilissegundos = 24 * 60 * 60 * 1000; // 24 * 60 * 60 * 1000
+//        timer.scheduleAtFixedRate(task, 0, umDiaEmMilissegundos);
+//    }
 
     // TODO ajustar o deslocamento das cotas
-    public void deslocarCotasAutomaticamente() {
-        List<Bem> bens = repositorioBens.listar();
+    public void deslocarCotasAutomaticamente(List<Cota> cotas) {
 
-        for (Bem bem : bens) {
+        for (Cota cota : cotas) {
             LocalDateTime agora = LocalDateTime.now();
-            LocalDateTime dataInicialBem = bem.getDiaInicial();
+            LocalDateTime dataInicialCota = cota.getDataInicio();
+            LocalDateTime dataFinalCota = cota.getDataFim();
 
-            // Verifica se passou 1 ano da data inicial do bem
-            if (agora.isAfter(dataInicialBem.plusYears(1))) {
-                try {
-                    bem.setCotas(calcularDeslocamentoDasCotas(bem.getId(), agora.getYear()));
-                } catch (BemNaoExisteException e) {
-                    System.out.println(e.getMessage());
-                }
+            // Verifica se passou 1 ano da data inicial de uma única Cota
+            if (agora.isAfter(dataFinalCota)) {
+
+                cota.setDataInicio(dataInicialCota.plusYears(1).plusDays(7));
+                cota.setDataFim(cota.getDataInicio().plusDays(6));  // Atualiza a data final
             }
 
         }
@@ -327,6 +327,19 @@ public class ControladorBens {
         }
 
         return bem;
+    }
+
+    public List<Cota> listarCotasDeUmUsuarioEmUmBem(Usuario usuario, int idBemParaReserva) {
+        List<Cota> resultado = new ArrayList<>();
+        Bem bem = repositorioBens.buscar(idBemParaReserva);
+
+        for (Cota c : repositorioCotas.buscarCotasPorProprietario(usuario)) {
+            if (c.getBemAssociado().equals(bem)) {
+                resultado.add(c);
+            }
+        }
+
+        return resultado;
     }
 }
 

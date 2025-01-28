@@ -68,6 +68,7 @@ public class ControladorVendas {
         }
     }
 
+    // TODO: Usuario não pode transferir uma cota que já realizou reserva
     public boolean transferenciaDeDireitos(long cpfUsuarioRemetente, long cpfUsuarioDestinario, int idCota) throws CotaNaoExisteException, UsuarioNaoExisteException, TransferenciaInvalidaException {
         Cota cotaTransferida = controladorBens.buscarCota(idCota);
 
