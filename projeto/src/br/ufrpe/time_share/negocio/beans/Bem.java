@@ -2,7 +2,6 @@ package br.ufrpe.time_share.negocio.beans;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Collections;
 
 public class Bem extends Entidade implements Cloneable {
     private int id;
