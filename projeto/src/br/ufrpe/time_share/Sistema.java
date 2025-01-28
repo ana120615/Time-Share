@@ -336,44 +336,93 @@ public class Sistema {
                                                         break;
 
                                                     case 2:
-                                                        System.out.println("\nInforme os dados para realizar sua reserva");
-                                                        System.out.print("Data inicial (dd/MM/yyyy): ");
-                                                        String inicioReserva = input.next();
-                                                        inicioReserva += " 00:00";
-                                                        System.out.print("Data final (dd/MM/yyyy): ");
-                                                        String fimReserva = input.next();
-                                                        fimReserva += " 23:59";
-                                                        System.out.print("id Bem: ");
-                                                        int idBemReserva = input.nextInt();
+                                                        System.out.println("Reservar a cota (s/n)");
+                                                        char esc = input.next().charAt(0);
+                                                        if (esc == 'n') {
+                                                            System.out.println("\nInforme os dados para realizar sua reserva");
+                                                            System.out.print("Data inicial (dd/MM/yyyy): ");
+                                                            String inicioReserva = input.next();
+                                                            inicioReserva += " 00:00";
+                                                            System.out.print("Data final (dd/MM/yyyy): ");
+                                                            String fimReserva = input.next();
+                                                            fimReserva += " 23:59";
+                                                            System.out.print("id Bem: ");
+                                                            int idBemReserva = input.nextInt();
 
-                                                        Bem bemReserva = null;
-                                                        try {
-                                                            bemReserva = controladorBens.buscarBemPorId(idBemReserva);
-                                                        } catch (BemNaoExisteException e) {
-                                                            System.out.println(e.getMessage());
-                                                        }
+                                                            Bem bemReserva = null;
+                                                            try {
+                                                                bemReserva = controladorBens.buscarBemPorId(idBemReserva);
+                                                            } catch (BemNaoExisteException e) {
+                                                                System.out.println(e.getMessage());
+                                                            }
 
-                                                        try {
-                                                            controladorReservas.criarReserva(LocalDateTime.parse(inicioReserva, DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")), LocalDateTime.parse(fimReserva, DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")), usuario, bemReserva);
-                                                        } catch (ReservaJaExisteException |
-                                                                 PeriodoJaReservadoException |
-                                                                 DadosInsuficientesException | ForaPeriodoException |
-                                                                 PeriodoNaoDisponivelParaReservaException e) {
-                                                            System.out.println(e.getMessage());
+                                                            try {
+                                                                controladorReservas.criarReserva(LocalDateTime.parse(inicioReserva, DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")), LocalDateTime.parse(fimReserva, DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")), usuario, bemReserva);
+                                                            } catch (ReservaJaExisteException |
+                                                                     PeriodoJaReservadoException |
+                                                                     DadosInsuficientesException |
+                                                                     ForaPeriodoException |
+                                                                     PeriodoNaoDisponivelParaReservaException e) {
+                                                                System.out.println(e.getMessage());
+                                                            }
+                                                        } else if (esc == 's') {
+                                                            System.out.println("Informe o id da cota: ");
+                                                            int idCota = input.nextInt();
+
+                                                            try {
+                                                                Cota cota = controladorBens.buscarCota(idCota);
+
+                                                                try {
+                                                                    controladorReservas.reservaPeriodoCota(cota);
+                                                                } catch (ProprietarioNaoIdentificadoException e) {
+                                                                    System.out.println(e.getMessage());
+                                                                }
+
+                                                            } catch (CotaNaoExisteException e) {
+                                                                System.out.println(e.getMessage());
+                                                            }
                                                         }
 
 
                                                         break;
                                                     case 3:
                                                         System.out.println("\nInforme os dados para Cancelar reserva");
-                                                        System.out.print("id Reserva: ");
-                                                        int idReserva = input.nextInt();
-                                                        try {
-                                                            controladorReservas.cancelarReserva(idReserva);
-                                                        } catch (ReservaNaoExisteException |
-                                                                 ReservaJaCanceladaException e) {
-                                                            System.out.println(e.getMessage());
+                                                        System.out.println("É uma reserva de uma cota? (s/n)");
+                                                        char resposta = input.next().charAt(0);
+                                                        if (resposta == 'n') {
+                                                            System.out.print("id Reserva: ");
+                                                            int idReserva = input.nextInt();
+                                                            try {
+                                                                controladorReservas.cancelarReserva(idReserva);
+                                                            } catch (ReservaNaoExisteException |
+                                                                     ReservaJaCanceladaException e) {
+                                                                System.out.println(e.getMessage());
+                                                            }
+                                                        } else if (resposta == 's') {
+                                                            System.out.print("id Reserva: ");
+                                                            int idReserva = input.nextInt();
+                                                            System.out.print("id Cota: ");
+                                                            int idCota = input.nextInt();
+
+                                                            try {
+                                                                Cota cota = controladorBens.buscarCota(idCota);
+                                                                if (cota.getProprietario().equals(usuario)) {
+
+                                                                    try {
+                                                                        controladorReservas.liberarPeriodoCota(cota, idReserva);
+                                                                    } catch (ReservaJaCanceladaException | ReservaNaoExisteException e) {
+                                                                        System.out.println(e.getMessage());
+                                                                    }
+
+                                                                } else {
+                                                                    System.out.println("Você não é o proprietário dessa cota.");
+                                                                }
+
+                                                            } catch (CotaNaoExisteException e) {
+                                                                System.out.println(e.getMessage());
+                                                            }
                                                         }
+
 
                                                         break;
                                                     case 4:

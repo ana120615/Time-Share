@@ -335,4 +335,32 @@ public class ControladorReservas {
 
         return resultado;
     }
+
+    public void reservaPeriodoCota (Cota cota) throws CotaNaoExisteException, ProprietarioNaoIdentificadoException{
+        if (cota == null) {
+            throw new CotaNaoExisteException("Cota inexistente");
+        }
+
+        if (cota.getProprietario() == null) {
+            throw new ProprietarioNaoIdentificadoException("Cota sem proprietário");
+        }
+
+        try {
+            criarReserva(cota.getDataInicio(), cota.getDataFim(), cota.getProprietario(), cota.getBemAssociado());
+            cota.setStatusDeDisponibilidadeParaReserva(false);
+        } catch (ReservaJaExisteException | PeriodoJaReservadoException | DadosInsuficientesException | ForaPeriodoException | PeriodoNaoDisponivelParaReservaException e) {
+            System.out.println(e.getMessage());
+
+        }
+    }
+
+    public void liberarPeriodoCota (Cota cota, int idReserva) throws ReservaNaoExisteException, ReservaJaCanceladaException {
+        try {
+            cancelarReserva(idReserva);
+            cota.setStatusDeDisponibilidadeParaReserva(true);
+        } catch (ReservaNaoExisteException | ReservaJaCanceladaException e) {
+            throw e;
+        }
+
+    }
 }

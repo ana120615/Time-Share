@@ -20,7 +20,6 @@ public class ControladorVendas {
     ControladorUsuarioGeral controladorUsuarioGeral;
 
     {
-        // TODO Remover ControladorBem e ControladorUsuarioGeral do ControladorVendas
         this.controladorBens = new ControladorBens(RepositorioBens.getInstancia(), RepositorioCotas.getInstancia());
         this.controladorUsuarioGeral = new ControladorUsuarioGeral(RepositorioUsuarios.getInstancia());
     }
@@ -62,7 +61,6 @@ public class ControladorVendas {
     public String finalizarCompra(Venda venda) {
         if (!venda.getCarrinhoDeComprasCotas().isEmpty()) {
             venda.finalizarCompra();
-            //TODO Poderia retornar algum Arquivo (Comprovante) de compra
             return venda.toString();
         } else {
             throw new CompraNaoFinalizada("Carrinho vazio.");
@@ -75,6 +73,10 @@ public class ControladorVendas {
 
         Usuario usuarioRemetente = controladorUsuarioGeral.procurarUsuarioPorCpf(cpfUsuarioRemetente);
         Usuario usuarioDestinatario = controladorUsuarioGeral.procurarUsuarioPorCpf(cpfUsuarioDestinario);
+
+        if (!cotaTransferida.isStatusDeDisponibilidadeParaReserva()) {
+            throw new TransferenciaInvalidaException("Não é possível transferir uma cota que já foi reservada.");
+        }
 
         if (cotaTransferida.getProprietario().equals(usuarioRemetente)) {
             if (!usuarioRemetente.equals(usuarioDestinatario)) {
