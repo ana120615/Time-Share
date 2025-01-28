@@ -9,6 +9,7 @@ import br.ufrpe.time_share.negocio.beans.Cota;
 import br.ufrpe.time_share.negocio.beans.TipoUsuario;
 import br.ufrpe.time_share.negocio.beans.Usuario;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.*;
@@ -156,7 +157,7 @@ public class ControladorBens {
         }
     }
 
-    public ArrayList<Cota> calcularDeslocamentoDasCotas(long bemId, int anoParaDeslocamento) throws BemNaoExisteException {
+    public ArrayList<Cota> calcularDeslocamentoDasCotas(long bemId, LocalDateTime dataParaDeslocamento) throws BemNaoExisteException {
 
         Bem bem = repositorioBens.buscar(bemId);
 
@@ -165,30 +166,30 @@ public class ControladorBens {
         }
 
         Bem bemClonado = bem.clone();
-        ArrayList<Cota> resultado = new ArrayList<>();
 
-        if (anoParaDeslocamento < bem.getDiaInicial().getYear()) {
-            throw new IllegalArgumentException("Não permitido");
-        } else {
+        for (Cota cota : bemClonado.getCotas()) {
 
-            int delta = anoParaDeslocamento - bem.getDiaInicial().getYear();
+            LocalDateTime dataInicialCota = cota.getDataInicio();
+            LocalDateTime dataFinalCota = cota.getDataFim();
 
-            LocalDateTime dataInicio = bem.getDiaInicial();
-            dataInicio = dataInicio.plusDays(7 * delta).plusYears(delta); // Deslocamento inicial baseado em delta
-            LocalDateTime dataFinal = dataInicio.plusDays(6);
+            // Verifica se passou 1 ano da data inicial de uma única Cota
+            if (dataParaDeslocamento.isAfter(dataFinalCota)) {
 
-            for (Cota c : bemClonado.getCotas()) {
-                c.setDataInicio(dataInicio);
-                c.setDataFim(dataFinal);
-                resultado.add(c);
+                Bem bemDaCota = cota.getBemAssociado();
+                // Bem remove a cota
+                bemDaCota.getCotas().remove(cota);
 
-                // Atualiza a nova data inicial para 7 dias depois do início atual
-                dataInicio = dataInicio.plusDays(7);
-                dataFinal = dataInicio.plusDays(6);
+                cota.setDataInicio(dataInicialCota.plusYears(1).plusDays(7));
+                cota.setDataFim(cota.getDataInicio().plusDays(6));
+
+                // Joga para o final da lista de cotas do bem
+                bemDaCota.getCotas().add(cota);// Atualiza a data final
             }
+
         }
 
-        return resultado;
+        Collections.sort(bemClonado.getCotas());
+        return bemClonado.getCotas();
     }
 
     public Cota buscarCota(int idCota) throws CotaNaoExisteException {

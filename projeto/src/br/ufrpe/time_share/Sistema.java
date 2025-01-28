@@ -762,11 +762,11 @@ public class Sistema {
                                             System.out.println("\n\n-- CÁLCULO DE DESLOCAMENTO DE COTAS --");
                                             System.out.print("Informe o ID do bem: ");
                                             int id = input.nextInt();
-                                            System.out.println("Ano para o qual quer deslocar: ");
-                                            int ano = input.nextInt();
-
+                                            System.out.println("Data para Deslocamento (dd/MM/yyyy): ");
+                                            String data = input.next();
+                                            data += " 23:59";
                                             try {
-                                                ArrayList<Cota> cotas = controladorBens.calcularDeslocamentoDasCotas(id, ano);
+                                                ArrayList<Cota> cotas = controladorBens.calcularDeslocamentoDasCotas(id, LocalDateTime.parse(data, DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")));
                                                 for (Cota cota : cotas) {
                                                     System.out.println(cota + "\n");
                                                 }
