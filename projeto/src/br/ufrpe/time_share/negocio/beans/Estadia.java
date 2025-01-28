@@ -1,11 +1,10 @@
 package br.ufrpe.time_share.negocio.beans;
 
-
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 
-public class Estadia {
+public class Estadia extends Entidade {
     private int id;
     private LocalDateTime dataInicio;
     private LocalDateTime dataFim;
@@ -32,7 +31,7 @@ public class Estadia {
         this.dataFim = dataFim;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
@@ -57,8 +56,8 @@ public class Estadia {
     public String toString() {
         return "Estadia: " +
                 "id=" + id +
-                ", dataInicio=" +  dataInicio.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) +
-                ", dataFim=" +  dataFim.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) +
+                ", dataInicio=" + dataInicio.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) +
+                ", dataFim=" + dataFim.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) +
                 ", bem=" + reserva.getBem().getNome() +
                 ", usuario=" + reserva.getUsuarioComum().getNome();      
     }

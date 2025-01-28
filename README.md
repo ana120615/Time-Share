@@ -86,7 +86,7 @@ MVP2 - Operações de Venda -
 [REQ5, REQ6]
 
 Descrição: Desenvolvimento das funcionalidades de compra e venda das cotas, com controle automático de disponibilidade e atualização dos registros.
-Justificativa: Após o cadastro dos dados, é essencial viabilizar a principal operação do sistema, que é a comercialização de direitos de uso.
+Justificativa: Após o cadastro dos br.ufrpe.time_share.dados, é essencial viabilizar a principal operação do sistema, que é a comercialização de direitos de uso.
 
 MVP3 - Operações de Reserva -
 [REQ7, REQ8, REQ9, REQ10]
@@ -102,4 +102,4 @@ Justificativa: As consultas e relatórios fornecem informações estratégicas p
 MVP5 - Validação e Controle - [REQ14, REQ15]
 
 Descrição: Desenvolvimento de mecanismos automáticos para validar conflitos de datas, aplicar taxas adicionais e ajustar o deslocamento de frações de semanas no início de cada ano.
-Justificativa: Esse módulo garante que o sistema mantenha a consistência e integridade dos dados ao longo do tempo, corrigindo automaticamente as mudanças de períodos.
+Justificativa: Esse módulo garante que o sistema mantenha a consistência e integridade dos br.ufrpe.time_share.dados ao longo do tempo, corrigindo automaticamente as mudanças de períodos.

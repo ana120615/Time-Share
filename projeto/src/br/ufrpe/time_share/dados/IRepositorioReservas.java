@@ -1,26 +1,17 @@
 package br.ufrpe.time_share.dados;
 
 import br.ufrpe.time_share.negocio.beans.Reserva;
-import br.ufrpe.time_share.negocio.beans.Usuario;
 
 import java.util.ArrayList;
+import java.util.List;
 
-public interface IRepositorioReservas {
-
-    void cadastrarReserva(Reserva reserva);
-
-    void removerReserva(Reserva reserva);
-
-    void atualizarReserva(Reserva reservaAtualizada);
+public interface IRepositorioReservas extends IRepositorio<Reserva> {
 
     Reserva buscarReserva(Reserva reserva);
 
-    ArrayList<Reserva> buscarReservasPorUsuario(Usuario usuario);
+    List<Reserva> buscarReservasPorUsuario(long idUsuario);
 
-    ArrayList<Reserva> buscarReservasPorBem(int idBem);
+    List<Reserva> buscarReservasPorBem(long idBem);
 
-    Reserva buscarReservasPorId(int idReserva);
-
-    ArrayList<Reserva> listarReservas();
 
 }

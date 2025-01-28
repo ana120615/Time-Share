@@ -3,16 +3,18 @@ package br.ufrpe.time_share.negocio.beans;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-public class Reserva {
+public class Reserva extends Entidade{
     private int id;
     private LocalDateTime dataInicio;
     private LocalDateTime dataFim;
+    private boolean status;
     private Usuario usuarioComum;
     private Bem bem;
     private boolean cancelada;
 
     public Reserva(int id, LocalDateTime dataInicio, LocalDateTime dataFim, Usuario usuarioComum, Bem bem) {
         this.id = id;
+        this.status = true;
         this.cancelada = false;
         this.dataInicio = dataInicio;
         this.dataFim = dataFim;
@@ -40,6 +42,14 @@ public class Reserva {
         this.bem = bem;
     }
 
+    public void setStatus(boolean status) {
+        this.status = status;
+    }
+
+    public boolean getStatus() {
+        return this.status;
+    }
+
     public LocalDateTime getDataInicio() {
         return dataInicio;
     }
@@ -56,7 +66,7 @@ public class Reserva {
         this.dataFim = dataFim;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
@@ -78,10 +88,11 @@ public class Reserva {
     public String toString() {
         return "Reserva: " +
                 "id=" + id +
-                ", dataInicio=" + dataInicio.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))+
+                ", dataInicio=" + dataInicio.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) +
                 ", dataFim=" + dataFim.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) +
+                ", status=" + status +
                 ", usuarioComum=" + usuarioComum +
-                ", bem=" + bem.getId()+ " " + bem.getNome()+
+                ", bem=" + bem.getId() + " " + bem.getNome() +
                 ", cancelada="+ cancelada;
     }
 
