@@ -191,7 +191,7 @@ public class ControladorBens {
 
         }
 
-
+        Collections.sort(bemClonado.getCotas());
         return bemClonado.getCotas();
     }
 
