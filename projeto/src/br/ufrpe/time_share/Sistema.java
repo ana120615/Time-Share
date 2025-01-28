@@ -80,6 +80,7 @@ public class Sistema {
 
 
         while (!finalizarPrograma) {
+            controladorBens.deslocarCotasAutomaticamente();
             while (!sairSistema) {
                 do {
                     System.out.println("\nBEM-VINDO AO FLEX-SHARE");

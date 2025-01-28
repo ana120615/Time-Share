@@ -10,6 +10,7 @@ import br.ufrpe.time_share.negocio.beans.TipoUsuario;
 import br.ufrpe.time_share.negocio.beans.Usuario;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.*;
 
 public class ControladorBens {
@@ -53,7 +54,7 @@ public class ControladorBens {
                     ArrayList<Cota> cotas = new ArrayList<>();
                     Random random = new Random();
                     LocalDateTime dataInicio = diaInicial;
-                    LocalDateTime dataFim = dataInicio.plusDays(6);
+                    LocalDateTime dataFim = dataInicio.plusDays(6).toLocalDate().atTime(LocalTime.MAX);
 
                     for (int i = 0; i < quantidadeDeCotas; ) {
                         int randomNumberCota = 1000 + random.nextInt(9999);
@@ -187,8 +188,6 @@ public class ControladorBens {
             }
         }
 
-        deslocarCotasAutomaticamente(resultado);
-        Collections.sort(resultado);
         return resultado;
     }
 
@@ -253,7 +252,8 @@ public class ControladorBens {
 //    }
 
     // TODO ajustar o deslocamento das cotas
-    public void deslocarCotasAutomaticamente(List<Cota> cotas) {
+    public void deslocarCotasAutomaticamente() {
+        List<Cota> cotas = repositorioCotas.listar();
 
         for (Cota cota : cotas) {
             LocalDateTime agora = LocalDateTime.now();
@@ -263,8 +263,15 @@ public class ControladorBens {
             // Verifica se passou 1 ano da data inicial de uma única Cota
             if (agora.isAfter(dataFinalCota)) {
 
+                Bem bemDaCota = cota.getBemAssociado();
+                // Bem remove a cota
+                bemDaCota.getCotas().remove(cota);
+
                 cota.setDataInicio(dataInicialCota.plusYears(1).plusDays(7));
-                cota.setDataFim(cota.getDataInicio().plusDays(6));  // Atualiza a data final
+                cota.setDataFim(cota.getDataInicio().plusDays(6));
+
+                // Joga para o final da lista de cotas do bem
+                bemDaCota.getCotas().add(cota);// Atualiza a data final
             }
 
         }

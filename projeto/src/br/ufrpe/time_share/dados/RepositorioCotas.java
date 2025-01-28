@@ -45,7 +45,6 @@ public class RepositorioCotas extends RepositorioGenerico<Cota> implements IRepo
             }
         }
 
-        Collections.sort(resultado);
         return resultado;
     }
 
@@ -58,7 +57,6 @@ public class RepositorioCotas extends RepositorioGenerico<Cota> implements IRepo
             }
         }
 
-        Collections.sort(retorno);
         return retorno;
     }
 
@@ -71,7 +69,6 @@ public class RepositorioCotas extends RepositorioGenerico<Cota> implements IRepo
             }
         }
 
-        Collections.sort(resultado);
         return resultado;
     }
 }
