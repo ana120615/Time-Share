@@ -93,9 +93,8 @@ public class ControladorReservas {
     public Reserva criarReserva(LocalDateTime dataInicio, LocalDateTime dataFim, Usuario usuarioComum, Bem bem)
             throws ReservaJaExisteException, PeriodoJaReservadoException, DadosInsuficientesException, ForaPeriodoException, PeriodoNaoDisponivelParaReservaException {
 
-
         if (bem == null || dataInicio == null || dataFim == null || usuarioComum == null) {
-            throw new DadosInsuficientesException("Bem, data de início ou usuário não podem ser nulos.");
+            throw new DadosInsuficientesException("Bem, data de inicio, data final ou usuario nao podem ser nulos.");
         }
 
         Random random = new Random();
@@ -109,58 +108,62 @@ public class ControladorReservas {
             }
         }
 
+        //cria reserva
         Reserva reserva = new Reserva(idNumeroReserva, dataInicio, dataFim, usuarioComum, bem);
 
+        //verifica se reserva ja existe
         Reserva reservaExistente = repositorioReservas.buscarReserva(reserva);
         if (reservaExistente != null) {
             throw new ReservaJaExisteException("Reserva ja existe.");
         }
 
-        if (dataInicio.isAfter(dataFim)) {
-            throw new ForaPeriodoException("Data de inicio apos data final");
+        //verifica se periodo e valido
+        if (dataInicio.isAfter(dataFim)||dataInicio.isBefore(LocalDateTime.now())) {
+            throw new ForaPeriodoException("A data inicial nao pode ser depois da data final ou antes da data atual");
         }
 
+        //busca de reserva existente para o bem no periodo requisitado
+        //verifica se reserva pertence ao mesmo bem e se esta ativa
         for (Reserva buscar : repositorioReservas.listar()) {
-            if (buscar.getStatus() &&
+            if (!buscar.isCancelada() && buscar.getBem().equals(reserva.getBem()) &&
                     !(reserva.getDataFim().isBefore(buscar.getDataInicio()) || reserva.getDataInicio().isAfter(buscar.getDataFim()))) {
                 throw new PeriodoJaReservadoException("Periodo ja reservado.");
             }
         }
 
+        //Verifica se periodo requisitado pertence a cota de outro usuario
         ArrayList<Cota> cotasBemAssociadoReserva = bem.getCotas();
         for (Cota cota : cotasBemAssociadoReserva) {
             if (!cota.getStatusDeDisponibilidadeParaCompra() && !usuarioComum.equals(cota.getProprietario())) {
-                if (((reserva.getDataInicio().getYear() == cota.getDataInicio().getYear() &&
-                        (reserva.getDataInicio().getMonth() == cota.getDataInicio().getMonth()) &&
-                        (reserva.getDataInicio().getDayOfYear() >= cota.getDataInicio().getDayOfYear() && reserva.getDataInicio().getDayOfYear() <= cota.getDataFim().getDayOfYear()))
-                        ||
-                        ((reserva.getDataFim().getYear() == cota.getDataFim().getYear()) &&
-                                reserva.getDataFim().getMonth() == cota.getDataFim().getMonth() &&
-                                (reserva.getDataFim().getDayOfYear() <= cota.getDataFim().getDayOfYear() && reserva.getDataFim().getDayOfYear() >= cota.getDataInicio().getDayOfYear())))) {
+                if ( (reserva.getDataInicio().isBefore(cota.getDataFim()) || reserva.getDataInicio().isEqual(cota.getDataFim())) &&
+                (reserva.getDataFim().isAfter(cota.getDataInicio()) || reserva.getDataFim().isEqual(cota.getDataInicio()))) {
                     throw new PeriodoNaoDisponivelParaReservaException("Esse período está incluso numa cota vendida.");
                 }
             }
 
         }
+
+        //cadastra reserva no repositorio
         repositorioReservas.cadastrar(reserva);
         return reserva;
     }
 
 
+    //TALVEZ COLOCAR ALGO PARA VERIFICAR SE PERIODO DA RESERVA JA EXPIROU
     //metodo para cancelar reserva
     public void cancelarReserva(int idReserva) throws ReservaNaoExisteException, ReservaJaCanceladaException {
         Reserva reservaCancelada = repositorioReservas.buscar(idReserva);
         if (reservaCancelada == null) {
             throw new ReservaNaoExisteException("Reserva inexistente");
         } else {
-            if (reservaCancelada.isCancelada() || !reservaCancelada.getStatus()) {
+            if (reservaCancelada.isCancelada()) {
                 throw new ReservaJaCanceladaException("Reserva ja cancelada");
             } else {
                 reservaCancelada.cancelarReserva();
-                repositorioReservas.remover(reservaCancelada);
             }
         }
     }
+
 
     //metodo para reembolso apos cancelamento
     public double reembolsar(Reserva reserva) throws ReservaNaoReembolsavelException {
@@ -176,7 +179,6 @@ public class ControladorReservas {
                 System.out.println(e.getMessage());
             } catch (ReservaNaoExisteException e) {
                 System.out.println(e.getMessage());
-
             } catch (CotaJaReservadaException e) {
                 System.out.println(e.getMessage());
             }
@@ -184,33 +186,54 @@ public class ControladorReservas {
         return reembolso;
     }
 
+
+    //fazer um metodo boolean para verificar o periodo
+
+
     //metodo para alterar periodo da reserva
     public Reserva alterarPeriodoReserva(long idReserva, LocalDateTime novaDataInicio, LocalDateTime novaDataFim)
-            throws ReservaNaoExisteException, ReservaJaCanceladaException, PeriodoJaReservadoException {
-
+            throws ReservaNaoExisteException, ReservaJaCanceladaException, PeriodoJaReservadoException, ForaPeriodoException, PeriodoNaoDisponivelParaReservaException {
+        
+        //busca reserva pelo id
         Reserva reserva = repositorioReservas.buscar(idReserva);
 
         if (reserva == null) {
             throw new ReservaNaoExisteException("Reserva inexistente");
         }
 
-        if (!reserva.getStatus() || reserva.isCancelada()) {
+        if (reserva.isCancelada()) {
             throw new ReservaJaCanceladaException("Reserva ja cancelada");
         }
+       
+        //verifica se periodo e valido
+         if (novaDataInicio.isAfter(novaDataFim)||novaDataInicio.isBefore(LocalDateTime.now())) {
+             throw new ForaPeriodoException("A data inicial nao pode ser depois da data final ou antes da data atual");
+         }
 
-// Verificar sobreposição de períodos com outras reservas
+        //busca de reserva existente para o bem no periodo requisitado
+        //verifica se reserva pertence ao mesmo bem e se esta ativa
         for (Reserva buscar : repositorioReservas.listar()) {
-            if (buscar.getId() != reserva.getId() && buscar.getStatus()) {
-                if (!(novaDataFim.isBefore(buscar.getDataInicio()) || novaDataInicio.isAfter(buscar.getDataFim()))) {
-                    throw new PeriodoJaReservadoException("Periodo ja reservado");
-                }
+            if (!buscar.isCancelada() && buscar.getBem().equals(reserva.getBem()) &&
+                    !(reserva.getDataFim().isBefore(buscar.getDataInicio()) || reserva.getDataInicio().isAfter(buscar.getDataFim()))) {
+                throw new PeriodoJaReservadoException("Periodo ja reservado.");
             }
         }
 
-// Atualizar dados da reserva
+        //Verifica se periodo requisitado pertence a cota de outro usuario
+        ArrayList<Cota> cotasBemAssociadoReserva = reserva.getBem().getCotas();
+        for (Cota cota : cotasBemAssociadoReserva) {
+            if (!cota.getStatusDeDisponibilidadeParaCompra() && !reserva.getUsuarioComum().equals(cota.getProprietario())) {
+                if ( (reserva.getDataInicio().isBefore(cota.getDataFim()) || reserva.getDataInicio().isEqual(cota.getDataFim())) &&
+                (reserva.getDataFim().isAfter(cota.getDataInicio()) || reserva.getDataFim().isEqual(cota.getDataInicio()))) {
+                    throw new PeriodoNaoDisponivelParaReservaException("Esse período está incluso numa cota vendida.");
+                }
+            }
+
+        }
+
+// Atualizar dados da reserva    
         reserva.setDataInicio(novaDataInicio);
         reserva.setDataFim(novaDataFim);
-
         return reserva;
     }
 

@@ -7,14 +7,12 @@ public class Reserva extends Entidade{
     private int id;
     private LocalDateTime dataInicio;
     private LocalDateTime dataFim;
-    private boolean status;
     private Usuario usuarioComum;
     private Bem bem;
     private boolean cancelada;
 
     public Reserva(int id, LocalDateTime dataInicio, LocalDateTime dataFim, Usuario usuarioComum, Bem bem) {
         this.id = id;
-        this.status = true;
         this.cancelada = false;
         this.dataInicio = dataInicio;
         this.dataFim = dataFim;
@@ -40,14 +38,6 @@ public class Reserva extends Entidade{
 
     public void setBem(Bem bem) {
         this.bem = bem;
-    }
-
-    public void setStatus(boolean status) {
-        this.status = status;
-    }
-
-    public boolean getStatus() {
-        return this.status;
     }
 
     public LocalDateTime getDataInicio() {
@@ -90,7 +80,6 @@ public class Reserva extends Entidade{
                 "id=" + id +
                 ", dataInicio=" + dataInicio.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) +
                 ", dataFim=" + dataFim.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) +
-                ", status=" + status +
                 ", usuarioComum=" + usuarioComum +
                 ", bem=" + bem.getId() + " " + bem.getNome() +
                 ", cancelada="+ cancelada;
