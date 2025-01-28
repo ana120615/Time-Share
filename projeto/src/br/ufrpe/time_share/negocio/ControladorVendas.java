@@ -20,6 +20,7 @@ public class ControladorVendas {
     ControladorUsuarioGeral controladorUsuarioGeral;
 
     {
+        // TODO Remover ControladorBem e ControladorUsuarioGeral do ControladorVendas
         this.controladorBens = new ControladorBens(RepositorioBens.getInstancia(), RepositorioCotas.getInstancia());
         this.controladorUsuarioGeral = new ControladorUsuarioGeral(RepositorioUsuarios.getInstancia());
     }

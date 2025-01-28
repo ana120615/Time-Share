@@ -19,7 +19,7 @@ public class ControladorBens {
     private IRepositorioCotas repositorioCotas;
     private ControladorUsuarioGeral controladorUsuarioGeral;
 
-
+    // TODO Remover ControladorUsuarioGeral do ControladorBens
     public ControladorBens(IRepositorioBens instanciaInterfaceBens, IRepositorioCotas instanciaInterfaceCota) {
         this.repositorioBens = instanciaInterfaceBens;
         this.repositorioCotas = instanciaInterfaceCota;
