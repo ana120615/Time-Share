@@ -186,10 +186,38 @@ public class ControladorReservas {
         return reembolso;
     }
 
+    //verifica se periodo da reserva e valido
+    public void verificarPeriodo(Reserva reserva, LocalDateTime dataInicial, LocalDateTime dataFinal) throws PeriodoJaReservadoException, ForaPeriodoException, PeriodoNaoDisponivelParaReservaException{
+        
+        //verifica se datas sao validas
+        if (dataInicial.isAfter(dataFinal)||dataInicial.isBefore(LocalDateTime.now())) {
+            throw new ForaPeriodoException("A data inicial nao pode ser depois da data final ou antes da data atual");
+        }
 
-    //fazer um metodo boolean para verificar o periodo
+       //busca de reserva existente para o bem no periodo requisitado
+       //verifica se reserva pertence ao mesmo bem e se esta ativa
+       for (Reserva buscar : repositorioReservas.listar()) {
+           if (!buscar.isCancelada() && buscar.getBem().equals(reserva.getBem()) &&
+                   !(reserva.getDataFim().isBefore(buscar.getDataInicio()) || reserva.getDataInicio().isAfter(buscar.getDataFim()))) {
+               throw new PeriodoJaReservadoException("Periodo ja reservado.");
+           }
+       }
+
+       //Verifica se periodo requisitado pertence a cota de outro usuario
+       ArrayList<Cota> cotasBemAssociadoReserva = reserva.getBem().getCotas();
+       for (Cota cota : cotasBemAssociadoReserva) {
+           if (!cota.getStatusDeDisponibilidadeParaCompra() && !reserva.getUsuarioComum().equals(cota.getProprietario())) {
+               if ( (reserva.getDataInicio().isBefore(cota.getDataFim()) || reserva.getDataInicio().isEqual(cota.getDataFim())) &&
+               (reserva.getDataFim().isAfter(cota.getDataInicio()) || reserva.getDataFim().isEqual(cota.getDataInicio()))) {
+                   throw new PeriodoNaoDisponivelParaReservaException("Esse período está incluso numa cota vendida.");
+               }
+           }
+
+       }
+    }
 
 
+    
     //metodo para alterar periodo da reserva
     public Reserva alterarPeriodoReserva(long idReserva, LocalDateTime novaDataInicio, LocalDateTime novaDataFim)
             throws ReservaNaoExisteException, ReservaJaCanceladaException, PeriodoJaReservadoException, ForaPeriodoException, PeriodoNaoDisponivelParaReservaException {
