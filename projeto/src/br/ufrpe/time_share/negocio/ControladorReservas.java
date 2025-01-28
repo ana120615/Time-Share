@@ -252,18 +252,29 @@ public class ControladorReservas {
         return reserva;
     }
 
+//talvez metodo para verificar disponibilidade para usuario especifico
 
-    
     public List<String> consultarDisponibilidade(Bem bem, LocalDateTime inicioPeriodo, LocalDateTime fimPeriodo) throws BemNaoExisteException {
         List<String> periodosDisponiveis = new ArrayList<>();
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
 
+       //verifica periodos em que ha reservas ativas
+       boolean existeReservaAtiva() {
+        boolean resultado = false;
+        return resultado;
+      }
+
+      //verifica periodos em que ha cotas que ja foram vendidas
+      //e nao podem ser usadas para reservas de todos
+      boolean existeCotaOcupada(){
+        boolean resultado = false;
+        return resultado;
+      }
+
         // Buscar todas as reservas para o bem
         List<Reserva> reservas = repositorioReservas.buscarReservasPorBem(bem.getId());
-
-        // Garante que o usuário não posso colocar o final do periodo antes do inicio do periodo
-        // e que o inicio do periodo não posso ser antes do dia atual
+        
         if (fimPeriodo.isBefore(inicioPeriodo) || inicioPeriodo.isBefore(LocalDateTime.now())) {
             throw new IllegalArgumentException("\nInválido");
         }
