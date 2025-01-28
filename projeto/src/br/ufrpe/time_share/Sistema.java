@@ -41,10 +41,18 @@ public class Sistema {
             System.out.println(e.getMessage());
         }
 
+        Usuario usuarioAdm = null;
+        try {
+            usuarioAdm = controladorUsuario.procurarUsuarioPorCpf(12345678901L);
+        } catch (UsuarioNaoExisteException e) {
+            System.out.println(e.getMessage());
+        }
+
+
         // CADASTRANDO E OFERTANDO UM BEM
         try {
             controladorBens.cadastrar(1111, "Lar Doce Lar", "Familia Feliz é aqui",
-                    "Recife-PE", 5, 12345678901L, LocalDateTime.of(2025, 01, 01, 12, 00), 20, 6000);
+                    "Recife-PE", 5, usuarioAdm, LocalDateTime.of(2025, 01, 01, 12, 00), 20, 6000);
         } catch (BemNaoExisteException | UsuarioNaoPermitidoException | QuantidadeDeCotasExcedidasException |
                  BemJaExisteException | UsuarioNaoExisteException e) {
             System.out.println(e.getMessage());
@@ -468,7 +476,7 @@ public class Sistema {
                                 while (!pararMinhasCotas) {
                                     System.out.println("\n\nMINHAS COTAS");
                                     try {
-                                        System.out.println(controladorBens.listarCotasDeUmUsuario(usuario.getId()));
+                                        System.out.println(controladorBens.listarCotasDeUmUsuario(usuario));
                                     } catch (BemNaoExisteException | UsuarioNaoExisteException e) {
                                         System.out.println(e.getMessage());
                                     }
@@ -652,7 +660,7 @@ public class Sistema {
                                             System.out.print("Preço de uma Cota R$: ");
                                             double precoCota = input.nextDouble();
                                             try {
-                                                controladorBens.cadastrar(idBem, nome, descricao, localizacao, capacidade, usuario.getId(), LocalDateTime.parse(dataInicial, DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")), quantidadeCotas, precoCota);
+                                                controladorBens.cadastrar(idBem, nome, descricao, localizacao, capacidade, usuario, LocalDateTime.parse(dataInicial, DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")), quantidadeCotas, precoCota);
                                                 System.out.println("Bem cadastrado com Sucesso!");
                                             } catch (BemNaoExisteException | UsuarioNaoPermitidoException |
                                                      QuantidadeDeCotasExcedidasException | BemJaExisteException |

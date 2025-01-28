@@ -9,7 +9,7 @@ import br.ufrpe.time_share.negocio.beans.Cota;
 import br.ufrpe.time_share.negocio.beans.TipoUsuario;
 import br.ufrpe.time_share.negocio.beans.Usuario;
 
-import java.time.LocalDate;
+
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.*;
@@ -17,24 +17,22 @@ import java.util.*;
 public class ControladorBens {
     private IRepositorioBens repositorioBens;
     private IRepositorioCotas repositorioCotas;
-    private ControladorUsuarioGeral controladorUsuarioGeral;
 
-    // TODO Remover ControladorUsuarioGeral do ControladorBens
+
     public ControladorBens(IRepositorioBens instanciaInterfaceBens, IRepositorioCotas instanciaInterfaceCota) {
         this.repositorioBens = instanciaInterfaceBens;
         this.repositorioCotas = instanciaInterfaceCota;
-        this.controladorUsuarioGeral = new ControladorUsuarioGeral(RepositorioUsuarios.getInstancia());
     }
 
 
     // Cadastrar bem e inicializar as cotas dado a quantidade de cotas, a data inicial e quantidadeDeDiasPorCota
 
     public void cadastrar(int id, String nome, String descricao,
-                          String localizacao, int capacidade, long cpfUsuario,
+                          String localizacao, int capacidade, Usuario usuario,
                           LocalDateTime diaInicial, int quantidadeDeCotas,
                           double precoDeUmaCota) throws BemNaoExisteException, UsuarioNaoPermitidoException, QuantidadeDeCotasExcedidasException, BemJaExisteException, UsuarioNaoExisteException {
 
-        Usuario usuario = controladorUsuarioGeral.procurarUsuarioPorCpf(cpfUsuario);
+
         Bem newBem = new Bem(id, nome, descricao, localizacao, capacidade, usuario);
 
         if (usuario == null || newBem == null) {
@@ -165,9 +163,15 @@ public class ControladorBens {
             throw new BemNaoExisteException("Bem não existe");
         }
 
+
         Bem bemClonado = bem.clone();
+        List<Cota> cotasClonadas = new ArrayList<>();
 
         for (Cota cota : bemClonado.getCotas()) {
+            cotasClonadas.add(cota.clone());
+        }
+
+        for (Cota cota : cotasClonadas) {
 
             LocalDateTime dataInicialCota = cota.getDataInicio();
             LocalDateTime dataFinalCota = cota.getDataFim();
@@ -175,20 +179,19 @@ public class ControladorBens {
             // Verifica se passou 1 ano da data inicial de uma única Cota
             if (dataParaDeslocamento.isAfter(dataFinalCota)) {
 
-                Bem bemDaCota = cota.getBemAssociado();
                 // Bem remove a cota
-                bemDaCota.getCotas().remove(cota);
+                bemClonado.getCotas().remove(cota);
 
                 cota.setDataInicio(dataInicialCota.plusYears(1).plusDays(7));
                 cota.setDataFim(cota.getDataInicio().plusDays(6));
 
                 // Joga para o final da lista de cotas do bem
-                bemDaCota.getCotas().add(cota);// Atualiza a data final
+                bemClonado.getCotas().add(cota);// Atualiza a data final
             }
 
         }
 
-        Collections.sort(bemClonado.getCotas());
+
         return bemClonado.getCotas();
     }
 
@@ -216,8 +219,8 @@ public class ControladorBens {
 
     }
 
-    public List<Cota> listarCotasDeUmUsuario(long cpfUsuario) throws BemNaoExisteException, UsuarioNaoExisteException {
-        Usuario usuario = controladorUsuarioGeral.procurarUsuarioPorCpf(cpfUsuario);
+    public List<Cota> listarCotasDeUmUsuario(Usuario usuario) throws BemNaoExisteException, UsuarioNaoExisteException {
+
         if (usuario != null) {
             return repositorioCotas.buscarCotasPorProprietario(usuario);
         } else {
@@ -226,9 +229,8 @@ public class ControladorBens {
 
     }
 
-    public List<Cota> registros(long usuarioCpf) throws UsuarioNaoExisteException {
+    public List<Cota> registros(Usuario usuario) throws UsuarioNaoExisteException {
         List<Cota> resultado = new ArrayList<>();
-        Usuario usuario = controladorUsuarioGeral.procurarUsuarioPorCpf(usuarioCpf);
 
         for (Cota cota : repositorioCotas.listar()) {
             if (cota.getProprietario().equals(usuario)) {
@@ -238,21 +240,6 @@ public class ControladorBens {
         return resultado;
     }
 
-//    public void iniciarDeslocamentoAutomatico() {
-//        Timer timer = new Timer(true);
-//        TimerTask task = new TimerTask() {
-//            @Override
-//            public void run() {
-//                deslocarCotasAutomaticamente();
-//            }
-//        };
-//
-//        // Agenda a tarefa para rodar a cada 24 horas
-//        long umDiaEmMilissegundos = 24 * 60 * 60 * 1000; // 24 * 60 * 60 * 1000
-//        timer.scheduleAtFixedRate(task, 0, umDiaEmMilissegundos);
-//    }
-
-    // TODO ajustar o deslocamento das cotas
     public void deslocarCotasAutomaticamente() {
         List<Cota> cotas = repositorioCotas.listar();
 
