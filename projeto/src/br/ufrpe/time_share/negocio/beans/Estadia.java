@@ -54,11 +54,16 @@ public class Estadia extends Entidade {
 
     @Override
     public String toString() {
-        return "Estadia: " +
-                "id=" + id +
-                ", dataInicio=" + dataInicio.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) +
-                ", dataFim=" + dataFim.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) +
-                ", bem=" + reserva.getBem().getNome() +
-                ", usuario=" + reserva.getUsuarioComum().getNome();      
+    String   comprovanteEstadia = "FLEX SHARE\n ";
+    comprovanteEstadia += "--------------------------------------\n";
+    comprovanteEstadia += "Data e hora de emissão: " + LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"))+"\n";
+    comprovanteEstadia += "--------------------------------------\n";
+    comprovanteEstadia +=  "Comprovante da estadia: " + id + "\n";
+    comprovanteEstadia += "--------------------------------------\n";
+    comprovanteEstadia += "Cliente: " + reserva.getUsuarioComum().getNome()+"\n";
+    comprovanteEstadia +=  "CPF: " + reserva.getUsuarioComum().getId() + "\n";
+    comprovanteEstadia+= "Bem: " + reserva.getBem().getId() + "-" + reserva.getBem().getNome()+"\n";
+    comprovanteEstadia += "Periodo da estadia: " + dataInicio.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))+ " até " + dataFim.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))+"\n";
+        return comprovanteEstadia;      
     }
 }
