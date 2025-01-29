@@ -3,6 +3,7 @@ package br.ufrpe.time_share.negocio;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -32,7 +33,7 @@ public class ControladorReservas {
         if (reservaRelacionada == null) {
             throw new ReservaNaoExisteException("Reserva inexistente");
         } else {
-            if (reservaRelacionada.isCancelada() || !reservaRelacionada.getStatus()) {
+            if (reservaRelacionada.isCancelada()) {
                 throw new ReservaJaCanceladaException("Reserva ja cancelada");
             } else {
                 int idAleatorio = 1001 + ThreadLocalRandom.current().nextInt(10000);
@@ -63,9 +64,7 @@ public class ControladorReservas {
 
             } catch (ReservaJaCanceladaException e) {
                 System.out.println(e.getMessage());
-            } catch (PeriodoJaReservadoException e) {
-                System.out.println(e.getMessage());
-            }
+            } 
         }
         return estadia;
     }
@@ -78,11 +77,11 @@ public class ControladorReservas {
             if (reserva == null) {
                 throw new ReservaNaoExisteException("Reserva inexistente");
             } else {
-                if (reserva.isCancelada() || !reserva.getStatus()) {
+                if (reserva.isCancelada() ) {
                     throw new ReservaJaCanceladaException("Reserva ja cancelada");
                 } else {
                     estadia.getReserva().setStatus(false);
-                    ;
+                    
                 }
             }
         }
@@ -143,13 +142,37 @@ public class ControladorReservas {
 
         }
 
-        //cadastra reserva no repositorio
+        //cadastra reserva no repositorio e calcula taxa
+        int dias = reserva.calcularDuracaoReserva();
         repositorioReservas.cadastrar(reserva);
+        try {
+            calcularTaxaExtra(reserva, dias);
+        } catch (ReservaNaoExisteException | CotaJaReservadaException e) {
+            e.printStackTrace();
+        }
         return reserva;
     }
 
 
-    //TALVEZ COLOCAR ALGO PARA VERIFICAR SE PERIODO DA RESERVA JA EXPIROU
+//metodo para reservar o periodo completo de 1 cota
+public void reservaPeriodoCota (Cota cota) throws CotaNaoExisteException, ProprietarioNaoIdentificadoException{
+    if (cota == null) {
+        throw new CotaNaoExisteException("Cota inexistente");
+    }
+
+    if (cota.getProprietario() == null) {
+        throw new ProprietarioNaoIdentificadoException("Cota sem proprietário");
+    }
+
+    try {
+        criarReserva(cota.getDataInicio(), cota.getDataFim(), cota.getProprietario(), cota.getBemAssociado());
+    } catch (ReservaJaExisteException | PeriodoJaReservadoException | DadosInsuficientesException | ForaPeriodoException | PeriodoNaoDisponivelParaReservaException e) {
+        System.out.println(e.getMessage());
+
+    }
+}
+
+
     //metodo para cancelar reserva
     public void cancelarReserva(int idReserva) throws ReservaNaoExisteException, ReservaJaCanceladaException {
         Reserva reservaCancelada = repositorioReservas.buscar(idReserva);
@@ -160,6 +183,11 @@ public class ControladorReservas {
                 throw new ReservaJaCanceladaException("Reserva ja cancelada");
             } else {
                 reservaCancelada.cancelarReserva();
+                try {
+                    reembolsar(reservaCancelada);
+                } catch (ReservaNaoReembolsavelException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }
@@ -168,13 +196,15 @@ public class ControladorReservas {
     //metodo para reembolso apos cancelamento
     public double reembolsar(Reserva reserva) throws ReservaNaoReembolsavelException {
         double reembolso = 0.00;
+        int dias = reserva.calcularDuracaoReserva();
         if (reserva.isCancelada()) {
+            if(reserva.getDataFim().isBefore(LocalDateTime.now())){
+                throw new ReservaNaoReembolsavelException("Periodo da reserva expirado. Nao reembolsavel");
+            }
             try {
-                if (calcularTaxaExtra(reserva) != 0) {
-                    reembolso += (calcularTaxaExtra(reserva)) * 0.30;
-                } else {
-                    throw new ReservaNaoReembolsavelException("Reserva nao reembolsavel");
-                }
+                if (calcularTaxaExtra(reserva, dias) != 0) {
+                    reembolso += (calcularTaxaExtra(reserva, dias)) * 0.30;
+                } 
             } catch (NullPointerException e) {
                 System.out.println(e.getMessage());
             } catch (ReservaNaoExisteException e) {
@@ -373,7 +403,7 @@ public class ControladorReservas {
     }
 
 
-    
+
     //metodo para gerar comprovante da reserva
     public String gerarComprovanteReserva(Reserva reserva, double taxa) {
         String reservaToString = reserva.toString();
@@ -388,7 +418,6 @@ public class ControladorReservas {
 
     public List<Reserva> listarReservasUsuario(Usuario usuario) {
         List<Reserva> resultado = new ArrayList<>();
-
         for (Reserva r : repositorioReservas.listar()) {
             if (r.getUsuarioComum().equals(usuario)) {
                 resultado.add(r);
@@ -397,4 +426,6 @@ public class ControladorReservas {
 
         return resultado;
     }
+
+
 }
