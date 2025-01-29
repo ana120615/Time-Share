@@ -27,6 +27,9 @@ public class ControladorReservas {
         this.repositorioReservas = instanciaInterface;
     }
 
+    //fazer parte do repositorio de estadias
+    //check in
+    //check out
     public Estadia checkin(int idReserva, LocalDateTime dataInicio) throws ReservaNaoExisteException, ReservaJaCanceladaException, ForaPeriodoException {
         Reserva reservaRelacionada = repositorioReservas.buscar(idReserva);
         Estadia estadia = null;
@@ -89,9 +92,9 @@ public class ControladorReservas {
     }
 
     //metodo para criar reserva/ reservar
-    public Reserva criarReserva(LocalDateTime dataInicio, LocalDateTime dataFim, Usuario usuarioComum, Bem bem)
+    public String criarReserva(LocalDateTime dataInicio, LocalDateTime dataFim, Usuario usuarioComum, Bem bem)
             throws ReservaJaExisteException, PeriodoJaReservadoException, DadosInsuficientesException, ForaPeriodoException, PeriodoNaoDisponivelParaReservaException {
-
+                double taxa = 0.00;
         if (bem == null || dataInicio == null || dataFim == null || usuarioComum == null) {
             throw new DadosInsuficientesException("Bem, data de inicio, data final ou usuario nao podem ser nulos.");
         }
@@ -116,41 +119,27 @@ public class ControladorReservas {
             throw new ReservaJaExisteException("Reserva ja existe.");
         }
 
-        //verifica se periodo e valido
-        if (dataInicio.isAfter(dataFim)||dataInicio.isBefore(LocalDateTime.now())) {
-            throw new ForaPeriodoException("A data inicial nao pode ser depois da data final ou antes da data atual");
+        try {
+            verificarPeriodo(reservaExistente, dataInicio, dataFim);
+        } catch (ForaPeriodoException e) {
+            e.getMessage();
         }
-
-        //busca de reserva existente para o bem no periodo requisitado
-        //verifica se reserva pertence ao mesmo bem e se esta ativa
-        for (Reserva buscar : repositorioReservas.listar()) {
-            if (!buscar.isCancelada() && buscar.getBem().equals(reserva.getBem()) &&
-                    !(reserva.getDataFim().isBefore(buscar.getDataInicio()) || reserva.getDataInicio().isAfter(buscar.getDataFim()))) {
-                throw new PeriodoJaReservadoException("Periodo ja reservado.");
-            }
+        catch(PeriodoJaReservadoException e){
+            e.getMessage();
         }
-
-        //Verifica se periodo requisitado pertence a cota de outro usuario
-        ArrayList<Cota> cotasBemAssociadoReserva = bem.getCotas();
-        for (Cota cota : cotasBemAssociadoReserva) {
-            if (!cota.getStatusDeDisponibilidadeParaCompra() && !usuarioComum.equals(cota.getProprietario())) {
-                if ( (reserva.getDataInicio().isBefore(cota.getDataFim()) || reserva.getDataInicio().isEqual(cota.getDataFim())) &&
-                (reserva.getDataFim().isAfter(cota.getDataInicio()) || reserva.getDataFim().isEqual(cota.getDataInicio()))) {
-                    throw new PeriodoNaoDisponivelParaReservaException("Esse período está incluso numa cota vendida.");
-                }
-            }
-
+        catch(PeriodoNaoDisponivelParaReservaException e){
+            e.getMessage();
         }
 
         //cadastra reserva no repositorio e calcula taxa
         int dias = reserva.calcularDuracaoReserva();
         repositorioReservas.cadastrar(reserva);
         try {
-            calcularTaxaExtra(reserva, dias);
+            taxa = calcularTaxaExtra(reserva, dias);
         } catch (ReservaNaoExisteException | CotaJaReservadaException e) {
             e.printStackTrace();
         }
-        return reserva;
+        return gerarComprovanteReserva(reserva,taxa);
     }
 
 
@@ -408,13 +397,13 @@ public void reservaPeriodoCota (Cota cota) throws CotaNaoExisteException, Propri
     //metodo para gerar comprovante da reserva
     public String gerarComprovanteReserva(Reserva reserva, double taxa) {
         String reservaToString = reserva.toString();
-        return reservaToString + ", taxa extra: R$" + String.format("%.2f", taxa);
+        return reservaToString + "Taxa extra: R$" + String.format("%.2f", taxa);
     }
 
     //metodo para gerar comprovante da estadia
     public String gerarComprovanteEstadia(Estadia estadia, int duracao) {
         String estadiaToString = estadia.toString();
-        return estadiaToString + ", duracao da estadia: " + String.format("%d", duracao) + " dias";
+        return estadiaToString + "Duracao da estadia: " + String.format("%d", duracao) + " dias";
     }
 
     public List<Reserva> listarReservasUsuario(Usuario usuario) {
