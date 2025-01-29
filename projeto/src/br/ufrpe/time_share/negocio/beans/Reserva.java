@@ -1,7 +1,11 @@
 package br.ufrpe.time_share.negocio.beans;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.Year;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
+import java.util.UUID;
 
 public class Reserva extends Entidade{
     private int id;
@@ -74,15 +78,23 @@ public class Reserva extends Entidade{
         this.usuarioComum = usuarioComum;
     }
 
+    public int calcularDuracaoReserva(){
+        return (int) this.getDataInicio().until(this.getDataFim(), ChronoUnit.DAYS)
+    }
+
     @Override
     public String toString() {
-        return "Reserva: " +
-                "id=" + id +
-                ", dataInicio=" + dataInicio.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) +
-                ", dataFim=" + dataFim.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) +
-                ", usuarioComum=" + usuarioComum +
-                ", bem=" + bem.getId() + " " + bem.getNome() +
-                ", cancelada="+ cancelada;
+     String comprovanteReserva = "FLEX SHARE\n ";
+     comprovanteReserva += "--------------------------------------\n";
+     comprovanteReserva +=  "Comprovante da reserva: " + id + "\n";
+     comprovanteReserva += "--------------------------------------\n";
+     comprovanteReserva += "Cliente: " + usuarioComum.getNome()+"\n";
+     comprovanteReserva +=  "CPF: " + usuarioComum.getId() + "\n";
+     comprovanteReserva += "Periodo reservado: " + dataInicio.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))+ " até " + dataFim.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))+"\n";
+     comprovanteReserva+= "Bem reservado: " + bem.getId() + "-" + bem.getNome()+"\n";
+     comprovanteReserva += "Data e hora de emissão: " + LocalDate.now()+"\n";
+     
+        return comprovanteReserva;
     }
 
     @Override

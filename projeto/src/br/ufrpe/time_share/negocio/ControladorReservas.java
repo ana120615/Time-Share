@@ -174,6 +174,7 @@ public void reservaPeriodoCota (Cota cota) throws CotaNaoExisteException, Propri
 
 
     //metodo para cancelar reserva
+    //e fazer verificar reembolso
     public void cancelarReserva(int idReserva) throws ReservaNaoExisteException, ReservaJaCanceladaException {
         Reserva reservaCancelada = repositorioReservas.buscar(idReserva);
         if (reservaCancelada == null) {
