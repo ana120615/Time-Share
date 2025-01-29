@@ -10,6 +10,7 @@ import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 import br.ufrpe.time_share.dados.IRepositorioCotas;
+import br.ufrpe.time_share.dados.IRepositorioEstadia;
 import br.ufrpe.time_share.dados.IRepositorioReservas;
 import br.ufrpe.time_share.excecoes.*;
 import br.ufrpe.time_share.negocio.beans.Bem;
@@ -21,18 +22,20 @@ import br.ufrpe.time_share.negocio.beans.Usuario;
 
 public class ControladorReservas {
     private IRepositorioReservas repositorioReservas;
+    private IRepositorioEstadia repositorioEstadia;
 
-
-    public ControladorReservas(IRepositorioReservas instanciaInterface) {
-        this.repositorioReservas = instanciaInterface;
+    public ControladorReservas(IRepositorioReservas instanciaInterfaceR, IRepositorioEstadia instanciaInterfaceE) {
+        this.repositorioReservas = instanciaInterfaceR;
+        this.repositorioEstadia = instanciaInterfaceE;
     }
 
-    //fazer parte do repositorio de estadias
+    
     //check in
-    //check out
-    public Estadia checkin(int idReserva, LocalDateTime dataInicio) throws ReservaNaoExisteException, ReservaJaCanceladaException, ForaPeriodoException {
+    public String checkin(int idReserva) throws ReservaNaoExisteException, ReservaJaCanceladaException, ForaPeriodoException {
         Reserva reservaRelacionada = repositorioReservas.buscar(idReserva);
         Estadia estadia = null;
+        LocalDateTime dataInicio = LocalDateTime.now(); //inicio da estadia corresponde ao momento do check in
+        int duracao=0;
         if (reservaRelacionada == null) {
             throw new ReservaNaoExisteException("Reserva inexistente");
         } else {
@@ -41,23 +44,27 @@ public class ControladorReservas {
             } else {
                 int idAleatorio = 1001 + ThreadLocalRandom.current().nextInt(10000);
                 estadia = new Estadia(idAleatorio, reservaRelacionada);
+                //verifica se data de check in esta no periodo reservado
                 if (dataInicio.isBefore(reservaRelacionada.getDataInicio()) || dataInicio.isAfter(reservaRelacionada.getDataFim())) {
                     throw new ForaPeriodoException("Data de inicio fora do periodo da reserva");
                 } else {
                     estadia.setDataInicio(dataInicio);
                     estadia.setDataFim(reservaRelacionada.getDataFim());
+                    duracao = estadia.calcularDuracao();
+                    repositorioEstadia.cadastrar(estadia); //cadastra estadia no repositorio
                 }
             }
         }
-        return estadia;
+        return gerarComprovanteEstadia(estadia,duracao);
     }
 
     //ao passar o tempo reservado, tenho a opcao de prolongar
     //a estadia ou fazer check out
-    public Estadia prolongarEstadia(Estadia estadia) {
+    //pode ser cobrada uma taxa extra
+    //data para dia
+    public String prolongarEstadia(Estadia estadia, int quantidadeDias) {
         LocalDateTime agora = LocalDateTime.now();
-        LocalDateTime novaDataFim = estadia.getDataFim().plusDays(6).withHour(23).withMinute(59).withSecond(59);
-
+        LocalDateTime novaDataFim = estadia.getDataFim().plusDays(quantidadeDias);
         if (estadia.getDataFim().equals(agora) || estadia.getDataFim().isBefore(agora)) {
             try {
                 alterarPeriodoReserva(estadia.getReserva().getId(), agora, novaDataFim);
@@ -69,10 +76,12 @@ public class ControladorReservas {
                 System.out.println(e.getMessage());
             } 
         }
-        return estadia;
+        //retorna comprovante de novo periodo reservado 
+        //que sera utilizado na estadia
+        return gerarComprovanteReserva(estadia.getReserva(), estadia.getReserva().calcularDuracaoReserva());
     }
 
-    public int checkout(Estadia estadia) throws ReservaNaoExisteException, ReservaJaCanceladaException {
+    public String checkout(Estadia estadia) throws ReservaNaoExisteException, ReservaJaCanceladaException {
         Reserva reserva = null;
         LocalDateTime agora = LocalDateTime.now();
         if (estadia.getDataFim().equals(agora) || estadia.getDataFim().isBefore(agora)) {
@@ -83,12 +92,11 @@ public class ControladorReservas {
                 if (reserva.isCancelada() ) {
                     throw new ReservaJaCanceladaException("Reserva ja cancelada");
                 } else {
-                    estadia.getReserva().setStatus(false);
-                    
+                    repositorioReservas.remover(reserva); //remove reserva utilizada do repositorio
                 }
             }
         }
-        return estadia.calcularDuracao();
+        return gerarComprovanteEstadia(estadia, estadia.calcularDuracao());
     }
 
     //metodo para criar reserva/ reservar
@@ -239,7 +247,7 @@ public void reservaPeriodoCota (Cota cota) throws CotaNaoExisteException, Propri
 
 
     //metodo para alterar periodo da reserva
-    public Reserva alterarPeriodoReserva(long idReserva, LocalDateTime novaDataInicio, LocalDateTime novaDataFim)
+    public String alterarPeriodoReserva(long idReserva, LocalDateTime novaDataInicio, LocalDateTime novaDataFim)
             throws ReservaNaoExisteException, ReservaJaCanceladaException {
         
         //busca reserva pelo id
@@ -269,7 +277,15 @@ public void reservaPeriodoCota (Cota cota) throws CotaNaoExisteException, Propri
        // Atualizar dados da reserva    
         reserva.setDataInicio(novaDataInicio);
         reserva.setDataFim(novaDataFim);
-        return reserva;
+        int duracao = reserva.calcularDuracaoReserva();
+        double taxaExtra=0.00;
+        //calcula possivel taxa extra para alterar o periodo
+        try {
+            taxaExtra = calcularTaxaExtra(reserva, duracao);
+        } catch (ReservaNaoExisteException | CotaJaReservadaException e) {
+            e.printStackTrace();
+        }
+        return gerarComprovanteReserva(reserva, taxaExtra);
     }
 
 //talvez metodo para verificar disponibilidade para usuario especifico
