@@ -1,6 +1,4 @@
 package br.ufrpe.time_share.negocio;
-
-
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -27,7 +25,7 @@ public class ControladorReservas {
         this.repositorioEstadia = instanciaInterfaceE;
     }
 
-    
+    //melhorar exceções tbm
     //check in
     public String checkin(int idReserva, LocalDateTime dataInicio) throws ReservaNaoExisteException, ReservaJaCanceladaException, ForaPeriodoException {
         Reserva reservaRelacionada = repositorioReservas.buscar(idReserva);
@@ -171,6 +169,7 @@ public void reservaPeriodoCota (Cota cota) throws CotaNaoExisteException, Propri
     //caso alguma tenha sido usada na reserva
     public void cancelarReserva(int idReserva) throws ReservaNaoExisteException, ReservaJaCanceladaException {
         Reserva reservaCancelada = repositorioReservas.buscar(idReserva);
+        ArrayList<Cota> cotasBemAssociadoReserva = reservaCancelada.getBem().getCotas();
         if (reservaCancelada == null) {
             throw new ReservaNaoExisteException("Reserva inexistente");
         } else {
@@ -178,6 +177,15 @@ public void reservaPeriodoCota (Cota cota) throws CotaNaoExisteException, Propri
                 throw new ReservaJaCanceladaException("Reserva ja cancelada");
             } else {
                 reservaCancelada.cancelarReserva();
+       for (Cota cota : cotasBemAssociadoReserva) {
+           if (!cota.isStatusDeDisponibilidadeParaReserva() && reservaCancelada.getUsuarioComum().equals(cota.getProprietario())) {
+               if ( (reservaCancelada.getDataInicio().isBefore(cota.getDataFim()) || reservaCancelada.getDataInicio().isEqual(cota.getDataFim())) &&
+               (reservaCancelada.getDataFim().isAfter(cota.getDataInicio()) || reservaCancelada.getDataFim().isEqual(cota.getDataInicio()))) {
+                   cota.setStatusDeDisponibilidadeParaReserva(true);
+               }
+           }
+
+       }
                 try {
                     reembolsar(reservaCancelada);
                 } catch (ReservaNaoReembolsavelException e) {
