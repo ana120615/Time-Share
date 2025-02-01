@@ -3,7 +3,6 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 import java.time.LocalDate;
 import br.ufrpe.time_share.dados.IRepositorioEstadia;
@@ -57,7 +56,7 @@ public class ControladorReservas {
     //a estadia ou fazer check out
     //pode ser cobrada uma taxa extra
     //data para dia
-    public String prolongarEstadia(Estadia estadia, int quantidadeDias, LocalDateTime agora) throws ReservaNaoExisteException, ReservaJaCanceladaException {
+    public String prolongarEstadia(Estadia estadia, int quantidadeDias, LocalDateTime agora) throws ReservaNaoExisteException, ReservaJaCanceladaException, ForaPeriodoException,PeriodoJaReservadoException,PeriodoNaoDisponivelParaReservaException,ReservaNaoExisteException,CotaJaReservadaException {
         LocalDateTime novaDataFim = estadia.getDataFim().plusDays(quantidadeDias);
         if (estadia.getDataFim().equals(agora) || estadia.getDataFim().isBefore(agora)) {
                 alterarPeriodoReserva(estadia.getReserva().getId(), agora, novaDataFim);
@@ -67,7 +66,7 @@ public class ControladorReservas {
         //que sera utilizado na estadia
         return gerarComprovanteReserva(estadia.getReserva(), estadia.getReserva().calcularDuracaoReserva());
     }
-}
+
 
     public String checkout(Estadia estadia, LocalDateTime agora) throws ReservaNaoExisteException, ReservaJaCanceladaException {
         Reserva reserva = null;
@@ -101,7 +100,7 @@ for (int i = 0; i < 1;) {
     if (repositorioReservas.buscar(idNumeroReserva) == null) {
         i++; // Sai do loop se o ID for unico
     }
-
+}
         //cria reserva
         Reserva reserva = new Reserva(idNumeroReserva, dataInicio, dataFim, usuarioComum, bem);
 
@@ -118,9 +117,8 @@ for (int i = 0; i < 1;) {
         int dias = reserva.calcularDuracaoReserva();
         repositorioReservas.cadastrar(reserva);
         taxa = calcularTaxaExtra(reserva, dias);
-        
-        return gerarComprovanteReserva(reserva,taxa);
-    }
+    
+    return gerarComprovanteReserva(reserva,taxa);
     }
 
 
@@ -144,12 +142,14 @@ public String reservaPeriodoCota (Cota cota) throws CotaNaoExisteException, Prop
     //e verificar reembolso
     //liberar periodo da cota para ser reservada
     //caso alguma tenha sido usada na reserva
-    public void cancelarReserva(int idReserva) throws ReservaNaoExisteException, ReservaJaCanceladaException, ReservaNaoReembolsavelException {
+    public void cancelarReserva(int idReserva) throws ReservaNaoExisteException, ReservaJaCanceladaException, ReservaNaoReembolsavelException, CotaJaReservadaException {
         Reserva reservaCancelada = repositorioReservas.buscar(idReserva);
         ArrayList<Cota> cotasBemAssociadoReserva = reservaCancelada.getBem().getCotas();
         if (reservaCancelada == null) {
             throw new ReservaNaoExisteException("Reserva inexistente");
-        } else {
+        } 
+        else {
+            
             if (reservaCancelada.isCancelada()) {
                 throw new ReservaJaCanceladaException("Reserva ja cancelada");
             } else {
@@ -220,7 +220,7 @@ public String reservaPeriodoCota (Cota cota) throws CotaNaoExisteException, Prop
 
     //metodo para alterar periodo da reserva
     public String alterarPeriodoReserva(long idReserva, LocalDateTime novaDataInicio, LocalDateTime novaDataFim)
-            throws ReservaNaoExisteException, ReservaJaCanceladaException {
+            throws ReservaNaoExisteException, ReservaJaCanceladaException, ForaPeriodoException,PeriodoJaReservadoException,PeriodoNaoDisponivelParaReservaException,ReservaNaoExisteException,CotaJaReservadaException{
         
         //busca reserva pelo id
         Reserva reserva = repositorioReservas.buscar(idReserva);
@@ -234,17 +234,8 @@ public String reservaPeriodoCota (Cota cota) throws CotaNaoExisteException, Prop
         }
        
         //verifica validade do periodo
-        try {
             verificarPeriodo(reserva, novaDataInicio, novaDataFim);
-        } catch (ForaPeriodoException e) {
-            e.getMessage();
-        }
-        catch(PeriodoJaReservadoException e){
-        e.getMessage();
-        }
-        catch(PeriodoNaoDisponivelParaReservaException e){
-       e.getMessage();
-        }
+       
 
        // Atualizar dados da reserva    
         reserva.setDataInicio(novaDataInicio);
@@ -252,16 +243,10 @@ public String reservaPeriodoCota (Cota cota) throws CotaNaoExisteException, Prop
         int duracao = reserva.calcularDuracaoReserva();
         double taxaExtra=0.00;
         //calcula possivel taxa extra para alterar o periodo
-        try {
             taxaExtra = calcularTaxaExtra(reserva, duracao);
-        } catch (ReservaNaoExisteException | CotaJaReservadaException e) {
-            e.printStackTrace();
-        }
+       
         return gerarComprovanteReserva(reserva, taxaExtra);
     }
-
-//talvez metodo para verificar disponibilidade para usuario especifico
-
 
 //consulta de periodos disponiveis para reserva
     public List<String> consultarDisponibilidadeParaReserva(Bem bem, LocalDateTime inicioPeriodo, LocalDateTime fimPeriodo) throws BemNaoExisteException {
@@ -368,9 +353,9 @@ public String reservaPeriodoCota (Cota cota) throws CotaNaoExisteException, Prop
     }
 
     //calcula a taxa baseada no preco de 1 cota e na quantidade de dias da reserva
-    //0.15% ao dia
+    //5% ao dia
         if (reservaTaxada) {
-            taxa = cotas.get(0).getPreco()*0.0015*quantidadeDias;
+            taxa = cotas.get(0).getPreco()*0.05*quantidadeDias;
             double taxaPromocional = promocao.calcularTaxaPromocao(reserva.getDataInicio(), reserva.getUsuarioComum());
             double desconto = taxa * taxaPromocional;
             taxa -= desconto;
@@ -405,9 +390,10 @@ public String reservaPeriodoCota (Cota cota) throws CotaNaoExisteException, Prop
         return resultado;
     }
 
+
 //RELATORIOS
 
-//historico de uso de um bem
+//HISTORICO DE USO DE UM BEM
 public List<Estadia> historicoDeUsoBem(int idBem){
     List<Estadia> historico = new ArrayList<>();
     for(Estadia estadia: repositorioEstadia.buscarEstadiasPorBem(idBem)){
@@ -417,7 +403,7 @@ public List<Estadia> historicoDeUsoBem(int idBem){
 }
 
 
-//periodos mais reservados
+//VER PERIODOS MAIS RESERVADOS
     public List<String> PeriodosMaisReservados(int idBem) {
         List<Reserva> reservas = repositorioReservas.buscarReservasPorBem(idBem);
         List<Estadia> estadias = repositorioEstadia.buscarEstadiasPorBem(idBem);
