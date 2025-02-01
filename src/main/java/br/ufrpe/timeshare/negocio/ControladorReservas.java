@@ -24,7 +24,7 @@ public class ControladorReservas {
         this.repositorioEstadia = instanciaInterfaceE;
     }
 
-    //melhorar exceções tbm
+    
     //check in
     public String checkin(int idReserva, LocalDateTime dataInicio) throws ReservaNaoExisteException, ReservaJaCanceladaException, ForaPeriodoException {
         Reserva reservaRelacionada = repositorioReservas.buscar(idReserva);
@@ -247,7 +247,7 @@ public String reservaPeriodoCota (Cota cota) throws CotaNaoExisteException, Prop
 
 //consulta de periodos disponiveis para reserva
 //considerando o usuario que deseja reservar
-public List<String> consultarDisponibilidadeDoBem(Bem bem, LocalDateTime inicioPeriodo, LocalDateTime fimPeriodo, Usuario usuario) throws BemNaoExisteException {
+public List<String> consultarDisponibilidadeParaReserva(Bem bem, LocalDateTime inicioPeriodo, LocalDateTime fimPeriodo, Usuario usuario) throws BemNaoExisteException {
     List<String> periodosDisponiveis = new ArrayList<>();
     LocalDateTime inicioAtual = inicioPeriodo;
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
