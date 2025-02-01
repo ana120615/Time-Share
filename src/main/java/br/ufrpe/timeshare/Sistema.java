@@ -21,12 +21,13 @@ public class Sistema {
         IRepositorioBens repositorioBens = RepositorioBens.getInstancia();
         IRepositorioReservas repositorioReservas = RepositorioReservas.getInstancia();
         IRepositorioCotas repositorioCotas = RepositorioCotas.getInstancia();
+        IRepositorioEstadia repositorioEstadia = RepositorioEstadia.getInstancia();
 
         //INICIALIZANDO CONTROLADORES
         ControladorLogin controladorLogin = new ControladorLogin(repositorioUsuario);
         ControladorUsuarioGeral controladorUsuario = new ControladorUsuarioGeral(repositorioUsuario);
         ControladorBens controladorBens = new ControladorBens(repositorioBens, repositorioCotas);
-        ControladorReservas controladorReservas = new ControladorReservas(repositorioReservas);
+        ControladorReservas controladorReservas = new ControladorReservas(repositorioReservas, repositorioEstadia);
         ControladorVendas controladorVendas = new ControladorVendas();
 
         Usuario usuario = null; //Variavel que vai armazenar o usuario apos login
@@ -321,7 +322,7 @@ public class Sistema {
                                                         }
 
                                                         try {
-                                                            List<String> reservas = controladorReservas.consultarDisponibilidade(bemReservaDisponivel, LocalDateTime.parse(inicioPeriodo, DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")), LocalDateTime.parse(finalPeriodo, DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")));
+                                                            List<String> reservas = controladorReservas.consultarDisponibilidadeParaReserva(bemReservaDisponivel, LocalDateTime.parse(inicioPeriodo, DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")), LocalDateTime.parse(finalPeriodo, DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")), usuario);
                                                             System.out.println("\nPeriodos disponíveis para Reserva: ");
                                                             System.out.println(reservas);
 
@@ -331,7 +332,6 @@ public class Sistema {
                                                                  NullPointerException e) {
                                                             System.out.println(e.getMessage());
                                                         }
-
 
                                                         break;
 
@@ -364,6 +364,8 @@ public class Sistema {
                                                                      ForaPeriodoException |
                                                                      PeriodoNaoDisponivelParaReservaException e) {
                                                                 System.out.println(e.getMessage());
+                                                            } catch (CotaJaReservadaException | ReservaNaoExisteException e) {
+                                                                throw new RuntimeException(e);
                                                             }
                                                         } else if (esc == 's') {
                                                             System.out.println("Informe o id da cota: ");

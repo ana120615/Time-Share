@@ -1,6 +1,7 @@
-package br.ufrpe.time_share.dados;
+package br.ufrpe.timeshare.dados;
 
-import br.ufrpe.time_share.negocio.beans.Estadia;
+import br.ufrpe.timeshare.negocio.beans.Estadia;
+
 import java.util.List;
 
 public interface IRepositorioEstadia extends IRepositorio<Estadia> {
