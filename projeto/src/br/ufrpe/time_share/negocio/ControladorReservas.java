@@ -144,16 +144,17 @@ public String reservaPeriodoCota (Cota cota) throws CotaNaoExisteException, Prop
     //caso alguma tenha sido usada na reserva
     public void cancelarReserva(int idReserva) throws ReservaNaoExisteException, ReservaJaCanceladaException, ReservaNaoReembolsavelException, CotaJaReservadaException {
         Reserva reservaCancelada = repositorioReservas.buscar(idReserva);
-        ArrayList<Cota> cotasBemAssociadoReserva = reservaCancelada.getBem().getCotas();
+        
         if (reservaCancelada == null) {
             throw new ReservaNaoExisteException("Reserva inexistente");
-        } 
-        else {
-            
+        }
+        ArrayList<Cota> cotasBemAssociadoReserva = reservaCancelada.getBem().getCotas(); 
             if (reservaCancelada.isCancelada()) {
                 throw new ReservaJaCanceladaException("Reserva ja cancelada");
-            } else {
-                reservaCancelada.cancelarReserva();
+            } 
+
+        reservaCancelada.cancelarReserva();
+        //liberando cota
        for (Cota cota : cotasBemAssociadoReserva) {
            if (!cota.isStatusDeDisponibilidadeParaReserva() && reservaCancelada.getUsuarioComum().equals(cota.getProprietario())) {
                if ( (reservaCancelada.getDataInicio().isBefore(cota.getDataFim()) || reservaCancelada.getDataInicio().isEqual(cota.getDataFim())) &&
@@ -161,12 +162,8 @@ public String reservaPeriodoCota (Cota cota) throws CotaNaoExisteException, Prop
                    cota.setStatusDeDisponibilidadeParaReserva(true);
                }
            }
-
        }
-             reembolsar(reservaCancelada);
-                
-            }
-        }
+             reembolsar(reservaCancelada);   
     }
 
 
