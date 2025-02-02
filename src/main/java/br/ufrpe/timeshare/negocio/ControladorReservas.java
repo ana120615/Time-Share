@@ -52,7 +52,6 @@ public class ControladorReservas {
     //ao passar o tempo reservado, tenho a opcao de prolongar
     //a estadia ou fazer check out
     //pode ser cobrada uma taxa extra
-    //data para dia
     public String prolongarEstadia(Estadia estadia, int quantidadeDias, LocalDateTime agora) throws ReservaNaoExisteException, ReservaJaCanceladaException, ForaPeriodoException, PeriodoJaReservadoException, PeriodoNaoDisponivelParaReservaException, ReservaNaoExisteException, CotaJaReservadaException {
         LocalDateTime novaDataFim = estadia.getDataFim().plusDays(quantidadeDias);
         if (estadia.getDataFim().equals(agora) || estadia.getDataFim().isBefore(agora)) {
