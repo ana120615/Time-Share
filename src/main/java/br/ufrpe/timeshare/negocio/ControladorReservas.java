@@ -169,13 +169,13 @@ public class ControladorReservas {
         return comprovanteCancelamento;
     }
 
-
+    
     //metodo para reembolso apos cancelamento
     public double reembolsar(Reserva reserva) throws ReservaNaoReembolsavelException, NullPointerException, ReservaNaoExisteException, CotaJaReservadaException {
         double reembolso = 0.00;
         int dias = reserva.calcularDuracaoReserva();
         if (reserva.isCancelada()) {
-            if (reserva.getDataFim().isBefore(LocalDateTime.now())) {
+            if (reserva.getDataFim().toLocalDate().isBefore(LocalDate.now())) {
                 throw new ReservaNaoReembolsavelException("Periodo da reserva expirado. Nao reembolsavel");
             }
             if (calcularTaxaExtra(reserva, dias) != 0) {
