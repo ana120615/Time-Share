@@ -1,5 +1,6 @@
 package br.ufrpe.timeshare.negocio.beans;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
@@ -19,7 +20,7 @@ public class Estadia extends Entidade {
         this.id = id;
         this.nomeUsuario = reserva.getUsuarioComum().getNome();
         this.cpfUsuario = reserva.getUsuarioComum().getId(); 
-        this.idBem = reserva.getBem().getId();
+        this.idBem = (int) reserva.getBem().getId();
         this.nomeBem = reserva.getBem().getNome();
     }
 
