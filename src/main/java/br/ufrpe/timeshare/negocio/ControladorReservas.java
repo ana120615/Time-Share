@@ -138,12 +138,13 @@ public class ControladorReservas {
     //e verificar reembolso
     //liberar periodo da cota para ser reservada
     //caso alguma tenha sido usada na reserva
-    public void cancelarReserva(int idReserva, Usuario usuario) throws ReservaNaoExisteException, ReservaJaCanceladaException, ReservaNaoReembolsavelException, CotaJaReservadaException, UsuarioNaoPermitidoException {
+    public String cancelarReserva(int idReserva, Usuario usuario) throws ReservaNaoExisteException, ReservaJaCanceladaException, ReservaNaoReembolsavelException, CotaJaReservadaException, UsuarioNaoPermitidoException {
         Reserva reservaCancelada = repositorioReservas.buscar(idReserva);
-
+        
         if (reservaCancelada == null) {
             throw new ReservaNaoExisteException("Reserva inexistente");
         }
+
         ArrayList<Cota> cotasBemAssociadoReserva = reservaCancelada.getBem().getCotas();
         if (reservaCancelada.isCancelada()) {
             throw new ReservaJaCanceladaException("Reserva ja cancelada");
@@ -154,6 +155,7 @@ public class ControladorReservas {
         }
 
         reservaCancelada.cancelarReserva();
+        String comprovanteCancelamento = "FLEX SHARE"+"____________________________"+"COMPROVANTE DE CANCELAMENTO DE RESERVA: "+"__________________________________________________"+"RESERVA: "+ reservaCancelada.getId+" Periodo: "+reservaCancelada.getDataInicio+"-"+reservaCancelada.getDataFim+" REEMBOLSO: "+reembolsar(reservaCancelada);
         //liberando cota
         for (Cota cota : cotasBemAssociadoReserva) {
             if (!cota.isStatusDeDisponibilidadeParaReserva() && reservaCancelada.getUsuarioComum().equals(cota.getProprietario())) {
@@ -163,7 +165,8 @@ public class ControladorReservas {
                 }
             }
         }
-        reembolsar(reservaCancelada);
+        repositorioReservas.remover(reservaCancelada);
+        return comprovanteCancelamento;
     }
 
 
