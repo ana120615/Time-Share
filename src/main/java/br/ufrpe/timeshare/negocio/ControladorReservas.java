@@ -155,7 +155,7 @@ public class ControladorReservas {
         }
 
         reservaCancelada.cancelarReserva();
-        String comprovanteCancelamento = "FLEX SHARE"+"____________________________"+"COMPROVANTE DE CANCELAMENTO DE RESERVA: "+"__________________________________________________"+"RESERVA: "+ reservaCancelada.getId+" Periodo: "+reservaCancelada.getDataInicio+"-"+reservaCancelada.getDataFim+" REEMBOLSO: "+reembolsar(reservaCancelada);
+        String comprovanteCancelamento = "FLEX SHARE\n"+"____________________________\n"+"COMPROVANTE DE CANCELAMENTO DE RESERVA: \n"+"__________________________________________________\n"+"RESERVA: \n"+ reservaCancelada.getId+"\n Periodo: "+reservaCancelada.getDataInicio+"-"+reservaCancelada.getDataFim+"\n REEMBOLSO: "+reembolsar(reservaCancelada);
         //liberando cota
         for (Cota cota : cotasBemAssociadoReserva) {
             if (!cota.isStatusDeDisponibilidadeParaReserva() && reservaCancelada.getUsuarioComum().equals(cota.getProprietario())) {
