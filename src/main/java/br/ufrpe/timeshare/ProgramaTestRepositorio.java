@@ -1,4 +1,4 @@
-//package br.ufrpe.time_share;
+//package br.ufrpe.timeshare;
 //
 //import br.ufrpe.time_share.dados.RepositorioBens;
 //import br.ufrpe.time_share.dados.RepositorioCotas;

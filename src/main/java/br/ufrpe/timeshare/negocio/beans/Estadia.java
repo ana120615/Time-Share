@@ -9,10 +9,18 @@ public class Estadia extends Entidade {
     private LocalDateTime dataInicio;
     private LocalDateTime dataFim;
     private Reserva reserva;
+    private String nomeUsuario;
+    private long cpfUsuario;
+    private int idBem;
+    private String nomeBem;
 
     public Estadia(int id, Reserva reserva) {
         this.reserva = reserva;
         this.id = id;
+        this.nomeUsuario = reserva.getUsuarioComum().getNome();
+        this.cpfUsuario = reserva.getUsuarioComum().getId(); 
+        this.idBem = reserva.getBem().getId();
+        this.nomeBem = reserva.getBem().getNome();
     }
 
     public LocalDateTime getDataInicio() {
@@ -60,9 +68,9 @@ public class Estadia extends Entidade {
     comprovanteEstadia += "--------------------------------------\n";
     comprovanteEstadia +=  "Comprovante da estadia: " + id + "\n";
     comprovanteEstadia += "--------------------------------------\n";
-    comprovanteEstadia += "Cliente: " + reserva.getUsuarioComum().getNome()+"\n";
-    comprovanteEstadia +=  "CPF: " + reserva.getUsuarioComum().getId() + "\n";
-    comprovanteEstadia+= "Bem: " + reserva.getBem().getId() + "-" + reserva.getBem().getNome()+"\n";
+    comprovanteEstadia += "Cliente: " + this.nomeUsuario +"\n";
+    comprovanteEstadia +=  "CPF: " + this.cpfUsuario + "\n";
+    comprovanteEstadia+= "Bem: " + this.idBem + "-" + this.nomeBem+"\n";
     comprovanteEstadia += "Periodo da estadia: " + dataInicio.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))+ " até " + dataFim.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))+"\n";
         return comprovanteEstadia;      
     }
