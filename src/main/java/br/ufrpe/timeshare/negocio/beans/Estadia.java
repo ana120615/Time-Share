@@ -6,8 +6,8 @@ import java.time.temporal.ChronoUnit;
 
 public class Estadia extends Entidade {
     private int id;
-    private LocalDateTime dataInicio;
-    private LocalDateTime dataFim;
+    private LocalDate dataInicio;
+    private LocalDate dataFim;
     private Reserva reserva;
     private String nomeUsuario;
     private long cpfUsuario;
@@ -23,19 +23,19 @@ public class Estadia extends Entidade {
         this.nomeBem = reserva.getBem().getNome();
     }
 
-    public LocalDateTime getDataInicio() {
+    public LocalDate getDataInicio() {
         return dataInicio;
     }
 
-    public void setDataInicio(LocalDateTime dataInicio) {
+    public void setDataInicio(LocalDate dataInicio) {
         this.dataInicio = dataInicio;
     }
 
-    public LocalDateTime getDataFim() {
+    public LocalDate getDataFim() {
         return dataFim;
     }
 
-    public void setDataFim(LocalDateTime dataFim) {
+    public void setDataFim(LocalDate dataFim) {
         this.dataFim = dataFim;
     }
 

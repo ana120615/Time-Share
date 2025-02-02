@@ -6,13 +6,13 @@ import java.time.temporal.ChronoUnit;
 
 public class Reserva extends Entidade{
     private int id;
-    private LocalDateTime dataInicio;
-    private LocalDateTime dataFim;
+    private LocalDate dataInicio;
+    private LocalDate dataFim;
     private Usuario usuarioComum;
     private Bem bem;
     private boolean cancelada;
 
-    public Reserva(int id, LocalDateTime dataInicio, LocalDateTime dataFim, Usuario usuarioComum, Bem bem) {
+    public Reserva(int id, LocalDate dataInicio, LocalDate dataFim, Usuario usuarioComum, Bem bem) {
         this.id = id;
         this.cancelada = false;
         this.dataInicio = dataInicio;
@@ -41,19 +41,19 @@ public class Reserva extends Entidade{
         this.bem = bem;
     }
 
-    public LocalDateTime getDataInicio() {
+    public LocalDate getDataInicio() {
         return dataInicio;
     }
 
-    public void setDataInicio(LocalDateTime dataInicio) {
+    public void setDataInicio(LocalDate dataInicio) {
         this.dataInicio = dataInicio;
     }
 
-    public LocalDateTime getDataFim() {
+    public LocalDate getDataFim() {
         return dataFim;
     }
 
-    public void setDataFim(LocalDateTime dataFim) {
+    public void setDataFim(LocalDate dataFim) {
         this.dataFim = dataFim;
     }
 
