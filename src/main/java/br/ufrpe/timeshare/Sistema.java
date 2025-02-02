@@ -376,7 +376,14 @@ public class Sistema {
 
                                                                 try {
                                                                     controladorReservas.reservaPeriodoCota(cota);
-                                                                } catch (ProprietarioNaoIdentificadoException e) {
+                                                                } catch (CotaNaoExisteException | ProprietarioNaoIdentificadoException |
+                                                                         DadosInsuficientesException |
+                                                                         ReservaJaExisteException |
+                                                                         ForaPeriodoException |
+                                                                         PeriodoJaReservadoException |
+                                                                         PeriodoNaoDisponivelParaReservaException |
+                                                                         ReservaNaoExisteException |
+                                                                         CotaJaReservadaException e) {
                                                                     System.out.println(e.getMessage());
                                                                 }
 
@@ -395,11 +402,14 @@ public class Sistema {
                                                             System.out.print("id Reserva: ");
                                                             int idReserva = input.nextInt();
                                                             try {
-                                                                controladorReservas.cancelarReserva(idReserva);
+                                                                controladorReservas.cancelarReserva(idReserva, usuario);
                                                             } catch (ReservaNaoExisteException |
                                                                      ReservaJaCanceladaException e) {
                                                                 System.out.println(e.getMessage());
+                                                            } catch (UsuarioNaoPermitidoException | CotaJaReservadaException | ReservaNaoReembolsavelException e) {
+                                                                throw new RuntimeException(e);
                                                             }
+
                                                         } else if (resposta == 's') {
                                                             System.out.print("id Reserva: ");
                                                             int idReserva = input.nextInt();
