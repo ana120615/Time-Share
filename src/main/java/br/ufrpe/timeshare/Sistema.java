@@ -293,6 +293,52 @@ public class Sistema {
                                             System.out.println("Minhas reservas");
                                             System.out.println(controladorReservas.listarReservasUsuario(usuario));
                                             System.out.println(" ");
+                                            System.out.println("Deseja ir para Tela de Estadia? (s/n)");
+                                            char respostaEstadia = input.next().charAt(0);
+                                            if (respostaEstadia == 's') {
+                                                boolean telaDeEstadia = false;
+                                                while (!telaDeEstadia) {
+                                                    System.out.println("\n\n-- *** -- ");
+                                                    System.out.println("1 - Iniciar Estadia (check-in)");
+                                                    System.out.println("2 - Finalizar Estadia (check-out)");
+                                                    System.out.println("3 - Prolongar Estadia");
+                                                    System.out.println("4 - Ver minha Estadias");
+                                                    System.out.println("5 - Voltar");
+                                                    escolha = input.nextInt();
+                                                    switch (escolha) {
+                                                        case 1:
+                                                            System.out.println("Informe o id da reserva: ");
+                                                            int idReserva = input.nextInt();
+                                                            try {
+                                                                controladorReservas.checkin(idReserva, LocalDateTime.now());
+                                                                System.out.println("Estadia iniciada com sucesso!");
+                                                            } catch (ReservaNaoExisteException | ReservaJaCanceladaException | ForaPeriodoException e) {
+                                                                System.out.println(e.getMessage());
+                                                            }
+                                                            break;
+                                                        case 2:
+                                                            System.out.println("Informe o id da Estadia: ");
+                                                            int idEstadiaFinalizar = input.nextInt();
+                                                            try {
+                                                                controladorReservas.checkout(idEstadiaFinalizar, LocalDateTime.now());
+                                                                System.out.println("Estadia finalizada com sucesso!");
+                                                            } catch (ReservaNaoExisteException | ReservaJaCanceladaException | EstadiaNaoExisteException e) {
+                                                                System.out.println(e.getMessage());
+                                                            }
+                                                            break;
+                                                        case 3:
+                                                            break;
+                                                        case 4 :
+                                                            System.out.println("*** Minhas Estadias ***");
+                                                            System.out.println(controladorReservas.listarEstadiasUsuario(usuario));
+                                                            System.out.println("-----------------------------------------------------------\n");
+                                                            break;
+                                                        case 5:
+                                                            telaDeEstadia = true;
+                                                            break;
+                                                    }
+                                                }
+                                            }
                                             break;
 
                                         case 2:
@@ -513,9 +559,15 @@ public class Sistema {
                                                                 controladorVendas.aplicarDesconto(v1, usuario.getId());
                                                             }
                                                         }
-                                                        String compra = controladorVendas.finalizarCompra(v1);
-                                                        System.out.println(compra);
-                                                        parar = true;
+
+                                                        try {
+                                                            String compra = controladorVendas.finalizarCompra(v1);
+                                                            System.out.println(compra);
+                                                            parar = true;
+                                                        } catch (CompraNaoFinalizada e) {
+                                                            System.out.println(e.getMessage());
+                                                        }
+
                                                     } else if (escolhaCompra == 4) {
                                                         String resultado = controladorVendas.verificarSeUsuarioPossuiDescontos(usuario.getId());
                                                         if (resultado.isEmpty()) {

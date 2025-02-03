@@ -72,6 +72,7 @@ public class Estadia extends Entidade {
     comprovanteEstadia +=  "CPF: " + this.cpfUsuario + "\n";
     comprovanteEstadia+= "Bem: " + this.idBem + "-" + this.nomeBem+"\n";
     comprovanteEstadia += "Periodo da estadia: " + dataInicio.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))+ " até " + dataFim.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))+"\n";
+    comprovanteEstadia += "id da Estadia: " + id + "\n";
         return comprovanteEstadia;      
     }
 }

@@ -39,7 +39,7 @@ public class RepositorioCotas extends RepositorioGenerico<Cota> implements IRepo
     public List<Cota> buscarCotasPorProprietario(Usuario proprietario) {
         List<Cota> resultado = new ArrayList<>();
         for (Cota cota : lista) {
-            if (!cota.getStatusDeDisponibilidadeParaCompra() && cota.getProprietario().equals(proprietario)) {
+            if (!cota.getStatusDeDisponibilidadeParaCompra() && cota.getProprietario() != null && cota.getProprietario().equals(proprietario)) {
                 resultado.add(cota);
             }
         }
