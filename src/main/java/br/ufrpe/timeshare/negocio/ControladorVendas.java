@@ -58,7 +58,8 @@ public class ControladorVendas {
         }
     }
 
-    public String finalizarCompra(Venda venda) {
+
+    public String finalizarCompra(Venda venda) throws CompraNaoFinalizada {
         if (!venda.getCarrinhoDeComprasCotas().isEmpty()) {
             venda.finalizarCompra();
             return venda.toString();

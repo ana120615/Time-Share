@@ -60,18 +60,21 @@ public class ControladorReservas {
     }
 
 
-    public String checkout(Estadia estadia, LocalDateTime agora) throws ReservaNaoExisteException, ReservaJaCanceladaException {
-        Reserva reserva = null;
-        if (estadia.getDataFim().equals(agora) || estadia.getDataFim().isBefore(agora)) {
-            reserva = repositorioReservas.buscarReserva(estadia.getReserva());
-            if (reserva == null) {
-                throw new ReservaNaoExisteException("Reserva inexistente");
-            } else {
+    public String checkout(int idestadia, LocalDateTime agora) throws ReservaNaoExisteException, ReservaJaCanceladaException, EstadiaNaoExisteException {
 
-                repositorioReservas.remover(reserva); //remove reserva utilizada do repositorio
+        Estadia estadia = repositorioEstadia.buscar(idestadia);
 
-            }
+        if (estadia == null) {
+            throw new EstadiaNaoExisteException("Estadia inexistente");
         }
+        Reserva reserva = repositorioReservas.buscarReserva(estadia.getReserva());
+        if (reserva == null) {
+            throw new ReservaNaoExisteException("Reserva inexistente");
+        } else {
+            estadia.setDataFim(agora);
+            repositorioReservas.remover(reserva); //remove reserva utilizada do repositorio
+        }
+
         return gerarComprovanteEstadia(estadia, estadia.calcularDuracao());
     }
 
@@ -317,9 +320,9 @@ public class ControladorReservas {
 
 
     //TODO verificar se vai ser necessario esse metodo de consultar disponibilidade do bem
-    //relatorio
-//consulta de disponibilidade futura do bem
-//levando em consideracao cotas e reservas
+    // relatorio
+    // consulta de disponibilidade futura do bem
+    // levando em consideracao cotas e reservas
     public List<String> consultarDisponibilidadeDoBem(Bem bem, LocalDateTime inicioPeriodo, LocalDateTime fimPeriodo) throws BemNaoExisteException {
         List<String> periodosDisponiveis = new ArrayList<>();
         LocalDateTime inicioAtual = inicioPeriodo;
@@ -391,7 +394,7 @@ public class ControladorReservas {
         List<Cota> cotas = reserva.getBem().getCotas();
 
         for (Cota cota : cotas) {
-            if (cota.getProprietario().equals(reserva.getUsuarioComum())) {
+            if (cota.getProprietario() != null && cota.getProprietario().equals(reserva.getUsuarioComum())) {
                 boolean datasIguais = cota.getDataInicio().isEqual(reserva.getDataInicio()) &&
                         cota.getDataFim().isEqual(reserva.getDataFim());
 
@@ -420,8 +423,7 @@ public class ControladorReservas {
         if (reservaTaxada) {
             assert cotas != null;
             taxa = cotas.getFirst().getPreco() * 0.05 * quantidadeDias;
-            //TODO: verificar qual outro metodo pode ser colocado no lugar de atTime
-            double taxaPromocional = promocao.calcularTaxaPromocao(reserva.getDataInicio().atTime(0, 0), reserva.getUsuarioComum());
+            double taxaPromocional = promocao.calcularTaxaPromocao(reserva.getDataInicio().withHour(0).withMinute(0), reserva.getUsuarioComum());
             double desconto = taxa * taxaPromocional;
             taxa -= desconto;
         }
@@ -448,6 +450,17 @@ public class ControladorReservas {
         for (Reserva r : repositorioReservas.listar()) {
             if (r.getUsuarioComum().equals(usuario)) {
                 resultado.add(r);
+            }
+        }
+
+        return resultado;
+    }
+
+    public List<Estadia> listarEstadiasUsuario(Usuario usuario) {
+        List<Estadia> resultado = new ArrayList<>();
+        for (Estadia e : repositorioEstadia.listar()) {
+            if (e.getReserva().getUsuarioComum().equals(usuario)) {
+                resultado.add(e);
             }
         }
 
