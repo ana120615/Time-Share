@@ -52,14 +52,18 @@ public class RepositorioEstadia extends RepositorioGenerico<Estadia> implements 
     }
 
     @Override
-    public List<Estadia> buscarEstadiaPorReserva(int idReserva) {
-        List<Estadia> estadia = new ArrayList<>();
-
-        for (Estadia est : lista) {
-            if (est.getReserva().getId() == idReserva) {
-                estadia.add(est);
+    public Estadia buscarEstadiaPorReserva(int idReserva) {
+        Estadia estadia;
+        boolean existe = false;
+        int i;
+        for (i = 0; i < lista.size() && !existe; i++) {
+            if (lista.get(i).getReserva().getId() == idReserva) {
+                existe = true;
             }
         }
+
+        estadia = lista.get(i - 1);
+
         return estadia;
     }
 

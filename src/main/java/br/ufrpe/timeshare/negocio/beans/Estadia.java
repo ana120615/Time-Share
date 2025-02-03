@@ -18,7 +18,7 @@ public class Estadia extends Entidade {
         this.reserva = reserva;
         this.id = id;
         this.nomeUsuario = reserva.getUsuarioComum().getNome();
-        this.cpfUsuario = reserva.getUsuarioComum().getId(); 
+        this.cpfUsuario = reserva.getUsuarioComum().getId();
         this.idBem = (int) reserva.getBem().getId();
         this.nomeBem = reserva.getBem().getNome();
     }
@@ -56,23 +56,28 @@ public class Estadia extends Entidade {
     }
 
     //CALCULAR DURACAO DA ESTADIA
-    public int calcularDuracao () {
-      return (int) getDataInicio().until(getDataFim(), ChronoUnit.DAYS);
+    public int calcularDuracao() {
+        if (dataFim != null) {
+            return (int) getDataInicio().until(getDataFim(), ChronoUnit.DAYS);
+        }
+
+        return (int) getDataInicio().until(LocalDateTime.now(), ChronoUnit.DAYS);
+
     }
 
     @Override
     public String toString() {
-    String   comprovanteEstadia = "FLEX SHARE\n ";
-    comprovanteEstadia += "--------------------------------------\n";
-    comprovanteEstadia += "Data e hora de emissão: " + LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"))+"\n";
-    comprovanteEstadia += "--------------------------------------\n";
-    comprovanteEstadia +=  "Comprovante da estadia: " + id + "\n";
-    comprovanteEstadia += "--------------------------------------\n";
-    comprovanteEstadia += "Cliente: " + this.nomeUsuario +"\n";
-    comprovanteEstadia +=  "CPF: " + this.cpfUsuario + "\n";
-    comprovanteEstadia+= "Bem: " + this.idBem + "-" + this.nomeBem+"\n";
-    comprovanteEstadia += "Periodo da estadia: " + dataInicio.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"))+ " até " + dataFim.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"))+"\n";
-    comprovanteEstadia += "id da Estadia: " + id + "\n";
-        return comprovanteEstadia;      
+        String comprovanteEstadia = "FLEX SHARE\n ";
+        comprovanteEstadia += "--------------------------------------\n";
+        comprovanteEstadia += "Data e hora de emissão: " + LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")) + "\n";
+        comprovanteEstadia += "--------------------------------------\n";
+        comprovanteEstadia += "Comprovante da estadia: " + id + "\n";
+        comprovanteEstadia += "--------------------------------------\n";
+        comprovanteEstadia += "Cliente: " + this.nomeUsuario + "\n";
+        comprovanteEstadia += "CPF: " + this.cpfUsuario + "\n";
+        comprovanteEstadia += "Bem: " + this.idBem + "-" + this.nomeBem + "\n";
+        comprovanteEstadia += "Periodo da estadia: " + dataInicio.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")) + " até " + (dataFim != null ? dataFim.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")) : "(andamento)") + "\n";
+        comprovanteEstadia += "id da Estadia: " + id + "\n";
+        return comprovanteEstadia;
     }
 }

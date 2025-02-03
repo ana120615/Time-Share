@@ -22,21 +22,34 @@ public class ControladorReservas {
 
 
     //check in
-    public String checkin(int idReserva, LocalDateTime dataInicio) throws ReservaNaoExisteException, ReservaJaCanceladaException, ForaPeriodoException {
+    public String checkin(int idReserva) throws ReservaNaoExisteException, ReservaJaCanceladaException, ForaPeriodoException {
+        LocalDateTime dataInicio = LocalDateTime.now();
         Reserva reservaRelacionada = repositorioReservas.buscar(idReserva);
-        Estadia estadia;
+        Estadia estadia = repositorioEstadia.buscarEstadiaPorReserva(idReserva);
         int duracao;
+
+        if(estadia == null) {
+            throw new EstadiaJaInicializadaException("Check-in ja realizado nesta reserva.");
+        }
+
         if (reservaRelacionada == null) {
-            throw new ReservaNaoExisteException("Reserva inexistente");
+            throw new ReservaNaoExisteException("Reserva inexistente.");
         } else {
-            int idAleatorio = 1001 + ThreadLocalRandom.current().nextInt(10000);
+            //criacao de id aleatorio
+            int idAleatorio = 0;
+            for (int i = 0; i < 1; ) {
+                idAleatorio = ThreadLocalRandom.current().nextInt(1001, 99999 + 1);
+                if (repositorioEstadia.buscar(idAleatorio) == null) {
+                    i++; // Sai do loop se o ID for unico
+                }
+            }
             estadia = new Estadia(idAleatorio, reservaRelacionada);
             //verifica se data de check in esta no periodo reservado
             if (dataInicio.isBefore(reservaRelacionada.getDataInicio()) || dataInicio.isAfter(reservaRelacionada.getDataFim())) {
-                throw new ForaPeriodoException("Data de inicio fora do periodo da reserva");
+                throw new ForaPeriodoException("Data de inicio fora do periodo da reserva.");
             } else {
                 estadia.setDataInicio(dataInicio);
-                estadia.setDataFim(reservaRelacionada.getDataFim());
+                estadia.setDataFim(null); //a data final da estadia so vai ser alterada no check-out
                 duracao = estadia.calcularDuracao();
                 repositorioEstadia.cadastrar(estadia); //cadastra estadia no repositorio
             }
@@ -60,19 +73,19 @@ public class ControladorReservas {
     }
 
 
-    public String checkout(int idestadia, LocalDateTime agora) throws ReservaNaoExisteException, ReservaJaCanceladaException, EstadiaNaoExisteException {
-
+    public String checkout(int idestadia) throws ReservaNaoExisteException, ReservaJaCanceladaException, EstadiaNaoExisteException {
+        LocalDateTime agora = LocalDateTime.now();
         Estadia estadia = repositorioEstadia.buscar(idestadia);
 
         if (estadia == null) {
-            throw new EstadiaNaoExisteException("Estadia inexistente");
+            throw new EstadiaNaoExisteException("Estadia inexistente.");
         }
         Reserva reserva = repositorioReservas.buscarReserva(estadia.getReserva());
         if (reserva == null) {
-            throw new ReservaNaoExisteException("Reserva inexistente");
+            throw new ReservaNaoExisteException("Reserva inexistente.");
         } else {
             estadia.setDataFim(agora);
-            repositorioReservas.remover(reserva); //remove reserva utilizada do repositorio
+            repositorioReservas.remover(reserva); //remove reserva do repositorio
         }
 
         return gerarComprovanteEstadia(estadia, estadia.calcularDuracao());
@@ -146,7 +159,7 @@ public class ControladorReservas {
             throw new UsuarioNaoPermitidoException("Reserva nao vinculada a este usuario.");
         }
 
-        if (!reservaCancelada.getDataInicio().equals(cota.getDataInicio().toLocalDate()) || !reservaCancelada.getDataFim().equals(cota.getDataFim().toLocalDate())) {
+        if (!reservaCancelada.getDataInicio().equals(cota.getDataInicio()) || !reservaCancelada.getDataFim().equals(cota.getDataFim())) {
             throw new OperacaoNaoPermitidaException("A reserva nao foi realizada dentro da cota, verifique o periodo completo da reserva para cancela-la.");
         }
 

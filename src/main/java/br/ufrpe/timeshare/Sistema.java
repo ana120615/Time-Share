@@ -310,7 +310,7 @@ public class Sistema {
                                                             System.out.println("Informe o id da reserva: ");
                                                             int idReserva = input.nextInt();
                                                             try {
-                                                                controladorReservas.checkin(idReserva, LocalDateTime.now());
+                                                                controladorReservas.checkin(idReserva);
                                                                 System.out.println("Estadia iniciada com sucesso!");
                                                             } catch (ReservaNaoExisteException | ReservaJaCanceladaException | ForaPeriodoException e) {
                                                                 System.out.println(e.getMessage());
@@ -320,7 +320,7 @@ public class Sistema {
                                                             System.out.println("Informe o id da Estadia: ");
                                                             int idEstadiaFinalizar = input.nextInt();
                                                             try {
-                                                                controladorReservas.checkout(idEstadiaFinalizar, LocalDateTime.now());
+                                                                controladorReservas.checkout(idEstadiaFinalizar);
                                                                 System.out.println("Estadia finalizada com sucesso!");
                                                             } catch (ReservaNaoExisteException | ReservaJaCanceladaException | EstadiaNaoExisteException e) {
                                                                 System.out.println(e.getMessage());
