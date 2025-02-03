@@ -144,7 +144,7 @@ public class ControladorReservas {
             throw new ReservaNaoExisteException("Reserva com este ID nao existe.");
         }
 
-        if(!reservaCancelada.getUsuarioComum().equals(usuario)) {
+        if (!reservaCancelada.getUsuarioComum().equals(usuario)) {
             throw new UsuarioNaoPermitidoException("Reserva nao vinculada a este usuario.");
         }
 
@@ -152,7 +152,7 @@ public class ControladorReservas {
             throw new OperacaoNaoPermitidaException("A reserva nao foi realizada dentro da cota, verifique o periodo completo da reserva para cancela-la.");
         }
 
-        if(!cota.isStatusDeDisponibilidadeParaReserva()) {
+        if (!cota.isStatusDeDisponibilidadeParaReserva()) {
             throw new OperacaoNaoPermitidaException("A cota nao foi reservada anteriormente.");
         }
 
@@ -406,41 +406,37 @@ public class ControladorReservas {
         //deve verificar se ha alguma cota no periodo
         //se nao houver, a taxa sera automaticamente aplicada
         List<Cota> cotas = reserva.getBem().getCotas();
-        if (cotas == null) {
-            reservaTaxada = true;
-        }
 
-        // Verifica se a cota cobre a reserva
-        else {
-            for (Cota cota : cotas) {
-                if (cota.getProprietario().equals(reserva.getUsuarioComum())) {
-                    boolean datasIguais = cota.getDataInicio().toLocalDate().isEqual(reserva.getDataInicio()) &&
-                            cota.getDataFim().toLocalDate().isEqual(reserva.getDataFim());
+        for (Cota cota : cotas) {
+            if (cota.getProprietario().equals(reserva.getUsuarioComum())) {
+                boolean datasIguais = cota.getDataInicio().toLocalDate().isEqual(reserva.getDataInicio()) &&
+                        cota.getDataFim().toLocalDate().isEqual(reserva.getDataFim());
 
-                    boolean cotaCobreReserva = (!cota.getDataInicio().toLocalDate().isAfter(reserva.getDataInicio()) && !cota.getDataFim().toLocalDate().isBefore(reserva.getDataFim())) ||
-                            (!cota.getDataInicio().toLocalDate().isBefore(reserva.getDataInicio()) && cota.getDataFim().toLocalDate().isAfter(reserva.getDataFim())) ||
-                            (cota.getDataInicio().toLocalDate().isBefore(reserva.getDataInicio()) && !cota.getDataFim().toLocalDate().isAfter(reserva.getDataFim())) ||
-                            (cota.getDataInicio().toLocalDate().isEqual(reserva.getDataInicio()) && !cota.getDataFim().toLocalDate().isAfter(reserva.getDataFim())) ||
-                            (!cota.getDataInicio().toLocalDate().isBefore(reserva.getDataInicio()) && cota.getDataFim().toLocalDate().isEqual(reserva.getDataFim())) ||
-                            (cota.getDataInicio().toLocalDate().isEqual(reserva.getDataInicio()) && cota.getDataFim().toLocalDate().isEqual(reserva.getDataFim()));
-                    if (datasIguais || cotaCobreReserva) {
-                        if (!cota.isStatusDeDisponibilidadeParaReserva()) {
-                            throw new CotaJaReservadaException("A cota ja foi utilizada em uma reserva");
+                boolean cotaCobreReserva = (!cota.getDataInicio().toLocalDate().isAfter(reserva.getDataInicio()) && !cota.getDataFim().toLocalDate().isBefore(reserva.getDataFim())) ||
+                        (!cota.getDataInicio().toLocalDate().isBefore(reserva.getDataInicio()) && cota.getDataFim().toLocalDate().isAfter(reserva.getDataFim())) ||
+                        (cota.getDataInicio().toLocalDate().isBefore(reserva.getDataInicio()) && !cota.getDataFim().toLocalDate().isAfter(reserva.getDataFim())) ||
+                        (cota.getDataInicio().toLocalDate().isEqual(reserva.getDataInicio()) && !cota.getDataFim().toLocalDate().isAfter(reserva.getDataFim())) ||
+                        (!cota.getDataInicio().toLocalDate().isBefore(reserva.getDataInicio()) && cota.getDataFim().toLocalDate().isEqual(reserva.getDataFim())) ||
+                        (cota.getDataInicio().toLocalDate().isEqual(reserva.getDataInicio()) && cota.getDataFim().toLocalDate().isEqual(reserva.getDataFim()));
+                if (datasIguais || cotaCobreReserva) {
+                    if (!cota.isStatusDeDisponibilidadeParaReserva()) {
+                        throw new CotaJaReservadaException("A cota ja foi utilizada em uma reserva");
 
-                        } else {
-                            cota.setStatusDeDisponibilidadeParaReserva(false);
-                            reservaTaxada = false;
-                            break;
-                        }
+                    } else {
+                        cota.setStatusDeDisponibilidadeParaReserva(false);
+                        reservaTaxada = false;
+                        break;
                     }
                 }
             }
         }
 
+
         //calcula a taxa baseada no preco de 1 cota e na quantidade de dias da reserva
         //5% ao dia
         if (reservaTaxada) {
-            taxa = cotas.get(0).getPreco() * 0.05 * quantidadeDias;
+            assert cotas != null;
+            taxa = cotas.getFirst().getPreco() * 0.05 * quantidadeDias;
             double taxaPromocional = promocao.calcularTaxaPromocao(reserva.getDataInicio().atTime(0, 0), reserva.getUsuarioComum());
             double desconto = taxa * taxaPromocional;
             taxa -= desconto;

@@ -67,7 +67,6 @@ public class ControladorVendas {
         }
     }
 
-    // TODO: Usuario não pode transferir uma cota que já realizou reserva
     public boolean transferenciaDeDireitos(long cpfUsuarioRemetente, long cpfUsuarioDestinario, int idCota) throws CotaNaoExisteException, UsuarioNaoExisteException, TransferenciaInvalidaException {
         Cota cotaTransferida = controladorBens.buscarCota(idCota);
 
@@ -98,11 +97,11 @@ public class ControladorVendas {
 
         if (usuario.verificarAniversario() || promocao.ehAltaTemporada(LocalDateTime.now())) {
             if (usuario.verificarAniversario()) {
-                resultado += "\nDesconto aniversário de" + promocao.getTaxaPromocaoAniversario() * 100 + "%.";
+                resultado += "\nDesconto aniversário de " + promocao.getTaxaPromocaoAniversario() * 100 + "%.";
             }
 
             if (promocao.ehAltaTemporada(LocalDateTime.now())) {
-                resultado += "\nDesconto temporada de" + promocao.getTaxaPromocaoTemporada(LocalDateTime.now()) * 100 + "%.";
+                resultado += "\nDesconto temporada de " + promocao.getTaxaPromocaoTemporada(LocalDateTime.now()) * 100 + "%.";
             }
         }
         return resultado;
@@ -124,17 +123,17 @@ public class ControladorVendas {
 
         Usuario usuarioRemetente = controladorUsuarioGeral.procurarUsuarioPorCpf(cpfUsuarioRemetente);
         Usuario usuarioDestinatario = controladorUsuarioGeral.procurarUsuarioPorCpf(cpfUsuarioDestinario);
-                resultado += "\nComprovante de Transferencia\n";
-                resultado += "Cliente Remetente: " + usuarioRemetente.getNome() + " | CPF: " + usuarioRemetente.getId() + "\n";
-                resultado += "Cliente Destinatario: " + usuarioDestinatario.getNome() + " | CPF: " + usuarioDestinatario.getId() + "\n";
-                resultado += "--------------------------------------\n";
-                resultado += " FLEX SHARE \n";
-                resultado += "--------------------------------------\n";
-                resultado += "Informacoes da Cota Transferida\n";
-                resultado += "Id: " + cotaTransferida.getId() + " | Bem associado: " + cotaTransferida.getBemAssociado() + "\n| Preco: " + cotaTransferida.getPreco() + " | Periodo Correspondente ao Ano Atual: " + cotaTransferida.getDataInicio().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) + "-" + cotaTransferida.getDataFim().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) + "\n";
-                resultado += "Data de Emissão: " + LocalDate.now() + "\n";
-                String numeroComprovante = UUID.randomUUID().toString();
-                resultado += "\nNúmero do Comprovante: " + numeroComprovante + "\n";
-                return resultado;
+        resultado += "\nComprovante de Transferencia\n";
+        resultado += "Cliente Remetente: " + usuarioRemetente.getNome() + " | CPF: " + usuarioRemetente.getId() + "\n";
+        resultado += "Cliente Destinatario: " + usuarioDestinatario.getNome() + " | CPF: " + usuarioDestinatario.getId() + "\n";
+        resultado += "--------------------------------------\n";
+        resultado += " FLEX SHARE \n";
+        resultado += "--------------------------------------\n";
+        resultado += "Informacoes da Cota Transferida\n";
+        resultado += "Id: " + cotaTransferida.getId() + " | Bem associado: " + cotaTransferida.getBemAssociado() + "\n| Preco: " + cotaTransferida.getPreco() + " | Periodo Correspondente ao Ano Atual: " + cotaTransferida.getDataInicio().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) + "-" + cotaTransferida.getDataFim().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) + "\n";
+        resultado += "Data de Emissão: " + LocalDate.now() + "\n";
+        String numeroComprovante = UUID.randomUUID().toString();
+        resultado += "\nNúmero do Comprovante: " + numeroComprovante + "\n";
+        return resultado;
     }
 }

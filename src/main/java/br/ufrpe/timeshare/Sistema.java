@@ -322,7 +322,8 @@ public class Sistema {
                                                         }
 
                                                         try {
-                                                            List<String> reservas = controladorReservas.consultarDisponibilidadeParaReserva(bemReservaDisponivel, LocalDateTime.parse(inicioPeriodo, DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")), LocalDateTime.parse(finalPeriodo, DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")), usuario);
+                                                            //List<String> reservas = controladorReservas.consultarDisponibilidadeParaReserva(bemReservaDisponivel, LocalDateTime.parse(inicioPeriodo, DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")), LocalDateTime.parse(finalPeriodo, DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")), usuario);
+                                                            List<String> reservas = controladorReservas.consultarDisponibilidadeParaReserva(bemReservaDisponivel, LocalDate.parse(inicioPeriodo, DateTimeFormatter.ofPattern("dd/MM/yyyy")), LocalDate.parse(finalPeriodo, DateTimeFormatter.ofPattern("dd/MM/yyyy")), usuario);
                                                             System.out.println("\nPeriodos disponíveis para Reserva: ");
                                                             System.out.println(reservas);
 
@@ -357,7 +358,8 @@ public class Sistema {
                                                             }
 
                                                             try {
-                                                                controladorReservas.criarReserva(LocalDateTime.parse(inicioReserva, DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")), LocalDateTime.parse(fimReserva, DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")), usuario, bemReserva);
+                                                                //controladorReservas.criarReserva(LocalDateTime.parse(inicioReserva, DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")), LocalDateTime.parse(fimReserva, DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")), usuario, bemReserva);
+                                                                controladorReservas.criarReserva(LocalDate.parse(inicioReserva, DateTimeFormatter.ofPattern("dd/MM/yyyy")), LocalDate.parse(fimReserva, DateTimeFormatter.ofPattern("dd/MM/yyyy")), usuario, bemReserva);
                                                             } catch (ReservaJaExisteException |
                                                                      PeriodoJaReservadoException |
                                                                      DadosInsuficientesException |
