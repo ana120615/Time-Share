@@ -29,21 +29,18 @@ public class ControladorReservas {
         if (reservaRelacionada == null) {
             throw new ReservaNaoExisteException("Reserva inexistente");
         } else {
-            if (reservaRelacionada.isCancelada()) {
-                throw new ReservaJaCanceladaException("Reserva ja cancelada");
+            int idAleatorio = 1001 + ThreadLocalRandom.current().nextInt(10000);
+            estadia = new Estadia(idAleatorio, reservaRelacionada);
+            //verifica se data de check in esta no periodo reservado
+            if (dataInicio.isBefore(reservaRelacionada.getDataInicio()) || dataInicio.isAfter(reservaRelacionada.getDataFim())) {
+                throw new ForaPeriodoException("Data de inicio fora do periodo da reserva");
             } else {
-                int idAleatorio = 1001 + ThreadLocalRandom.current().nextInt(10000);
-                estadia = new Estadia(idAleatorio, reservaRelacionada);
-                //verifica se data de check in esta no periodo reservado
-                if (dataInicio.isBefore(reservaRelacionada.getDataInicio()) || dataInicio.isAfter(reservaRelacionada.getDataFim())) {
-                    throw new ForaPeriodoException("Data de inicio fora do periodo da reserva");
-                } else {
-                    estadia.setDataInicio(dataInicio);
-                    estadia.setDataFim(reservaRelacionada.getDataFim());
-                    duracao = estadia.calcularDuracao();
-                    repositorioEstadia.cadastrar(estadia); //cadastra estadia no repositorio
-                }
+                estadia.setDataInicio(dataInicio);
+                estadia.setDataFim(reservaRelacionada.getDataFim());
+                duracao = estadia.calcularDuracao();
+                repositorioEstadia.cadastrar(estadia); //cadastra estadia no repositorio
             }
+
         }
         return gerarComprovanteEstadia(estadia, duracao);
     }
@@ -70,11 +67,9 @@ public class ControladorReservas {
             if (reserva == null) {
                 throw new ReservaNaoExisteException("Reserva inexistente");
             } else {
-                if (reserva.isCancelada()) {
-                    throw new ReservaJaCanceladaException("Reserva ja cancelada");
-                } else {
-                    repositorioReservas.remover(reserva); //remove reserva utilizada do repositorio
-                }
+
+                repositorioReservas.remover(reserva); //remove reserva utilizada do repositorio
+
             }
         }
         return gerarComprovanteEstadia(estadia, estadia.calcularDuracao());
@@ -175,15 +170,11 @@ public class ControladorReservas {
         }
 
         ArrayList<Cota> cotasBemAssociadoReserva = reservaCancelada.getBem().getCotas();
-        if (reservaCancelada.isCancelada()) {
-            throw new ReservaJaCanceladaException("Reserva ja cancelada");
-        }
+
 
         if (!reservaCancelada.getUsuarioComum().equals(usuario)) {
             throw new UsuarioNaoPermitidoException("Reserva nao vinculada a este usuario.");
         }
-
-        reservaCancelada.cancelarReserva();
 
         reembolso = reembolsar(reservaCancelada);
 
@@ -206,15 +197,14 @@ public class ControladorReservas {
     public double reembolsar(Reserva reserva) throws ReservaNaoReembolsavelException, NullPointerException, ReservaNaoExisteException, CotaJaReservadaException {
         double reembolso = 0.00;
         int dias = reserva.calcularDuracaoReserva();
-        if (reserva.isCancelada()) {
-            if (reserva.getDataFim().isBefore(LocalDateTime.now())) {
-                throw new ReservaNaoReembolsavelException("Periodo da reserva expirado. Nao reembolsavel");
-            }
-            if (calcularTaxaExtra(reserva, dias) != 0) {
-                reembolso += (calcularTaxaExtra(reserva, dias)) * 0.30;
-            }
 
+        if (reserva.getDataFim().isBefore(LocalDateTime.now())) {
+            throw new ReservaNaoReembolsavelException("Periodo da reserva expirado. Nao reembolsavel");
         }
+        if (calcularTaxaExtra(reserva, dias) != 0) {
+            reembolso += (calcularTaxaExtra(reserva, dias)) * 0.30;
+        }
+
         return reembolso;
     }
 
@@ -229,7 +219,7 @@ public class ControladorReservas {
         //busca de reserva existente para o bem no periodo requisitado
         //verifica se reserva pertence ao mesmo bem e se esta ativa
         for (Reserva buscar : repositorioReservas.listar()) {
-            if (!buscar.isCancelada() && buscar.getBem().equals(bem) &&
+            if (buscar.getBem().equals(bem) &&
                     !(dataFim.isBefore(buscar.getDataInicio()) || dataInicio.isAfter(buscar.getDataFim()))) {
                 throw new PeriodoJaReservadoException("Periodo ja reservado.");
             }
@@ -259,11 +249,6 @@ public class ControladorReservas {
         if (reserva == null) {
             throw new ReservaNaoExisteException("Reserva inexistente");
         }
-
-        if (reserva.isCancelada()) {
-            throw new ReservaJaCanceladaException("Reserva ja cancelada");
-        }
-
 
         //verifica validade do periodo
         verificarPeriodo(reserva.getBem(), reserva.getUsuarioComum(), novaDataInicio, novaDataFim);
@@ -316,8 +301,7 @@ public class ControladorReservas {
 
             //verifica periodos em que ha reservas ativas
             for (Reserva buscar : reservas) {
-                if (!buscar.isCancelada() &&
-                        !(inicioAtual.isBefore(buscar.getDataInicio()) || inicioAtual.isAfter(buscar.getDataFim()))) {
+                if (!(inicioAtual.isBefore(buscar.getDataInicio()) || inicioAtual.isAfter(buscar.getDataFim()))) {
                     existeReservaAtiva = true;
                 }
             }
@@ -370,8 +354,7 @@ public class ControladorReservas {
 
             //verifica periodos em que ha reservas ativas
             for (Reserva buscar : reservas) {
-                if (!buscar.isCancelada() &&
-                        !(inicioAtual.isBefore(buscar.getDataInicio()) || inicioAtual.isAfter(buscar.getDataFim()))) {
+                if (!(inicioAtual.isBefore(buscar.getDataInicio()) || inicioAtual.isAfter(buscar.getDataFim()))) {
                     existeReservaAtiva = true;
                 }
             }
