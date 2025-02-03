@@ -352,6 +352,7 @@ public class Sistema {
                                                 escolha = input.nextInt();
                                                 switch (escolha) {
                                                     case 1:
+                                                        //TODO: verificar o porque nao esta mostrando dos bens disponiveis para reserva
                                                         System.out.print("Informe o id do Bem: ");
                                                         int idBemParaReserva = input.nextInt();
                                                         System.out.print("Informe a data Inicial (dd/MM/yyyy): ");
