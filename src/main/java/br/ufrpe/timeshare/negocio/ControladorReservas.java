@@ -421,7 +421,7 @@ public class ControladorReservas {
             assert cotas != null;
             taxa = cotas.getFirst().getPreco() * 0.05 * quantidadeDias;
             //TODO: verificar qual outro metodo pode ser colocado no lugar de atTime
-            double taxaPromocional = promocao.calcularTaxaPromocao(reserva.getDataInicio().atTime(0, 0), reserva.getUsuarioComum());
+            double taxaPromocional = promocao.calcularTaxaPromocao(reserva.getDataInicio().withHour(0).withMinute(0), reserva.getUsuarioComum());
             double desconto = taxa * taxaPromocional;
             taxa -= desconto;
         }
