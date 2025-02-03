@@ -364,7 +364,8 @@ public class Sistema {
                                                                      ForaPeriodoException |
                                                                      PeriodoNaoDisponivelParaReservaException e) {
                                                                 System.out.println(e.getMessage());
-                                                            } catch (CotaJaReservadaException | ReservaNaoExisteException e) {
+                                                            } catch (CotaJaReservadaException |
+                                                                     ReservaNaoExisteException e) {
                                                                 throw new RuntimeException(e);
                                                             }
                                                         } else if (esc == 's') {
@@ -375,8 +376,9 @@ public class Sistema {
                                                                 Cota cota = controladorBens.buscarCota(idCota);
 
                                                                 try {
-                                                                    controladorReservas.reservaPeriodoCota(cota);
-                                                                } catch (CotaNaoExisteException | ProprietarioNaoIdentificadoException |
+                                                                    controladorReservas.reservaPeriodoCota(cota, usuario);
+                                                                } catch (UsuarioNaoPermitidoException |
+                                                                        ProprietarioNaoIdentificadoException |
                                                                          DadosInsuficientesException |
                                                                          ReservaJaExisteException |
                                                                          ForaPeriodoException |
@@ -406,7 +408,9 @@ public class Sistema {
                                                             } catch (ReservaNaoExisteException |
                                                                      ReservaJaCanceladaException e) {
                                                                 System.out.println(e.getMessage());
-                                                            } catch (UsuarioNaoPermitidoException | CotaJaReservadaException | ReservaNaoReembolsavelException e) {
+                                                            } catch (UsuarioNaoPermitidoException |
+                                                                     CotaJaReservadaException |
+                                                                     ReservaNaoReembolsavelException e) {
                                                                 throw new RuntimeException(e);
                                                             }
 
@@ -421,8 +425,11 @@ public class Sistema {
                                                                 if (cota.getProprietario().equals(usuario)) {
 
                                                                     try {
-                                                                        controladorReservas.liberarPeriodoCota(cota, idReserva);
-                                                                    } catch (ReservaJaCanceladaException | ReservaNaoExisteException e) {
+                                                                        controladorReservas.liberarPeriodoCota(cota, idReserva, usuario);
+                                                                    } catch (DadosInsuficientesException |
+                                                                             ReservaNaoExisteException |
+                                                                             UsuarioNaoPermitidoException |
+                                                                             OperacaoNaoPermitidaException e) {
                                                                         System.out.println(e.getMessage());
                                                                     }
 

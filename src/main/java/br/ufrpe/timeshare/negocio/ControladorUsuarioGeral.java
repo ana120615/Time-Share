@@ -51,8 +51,8 @@ public class ControladorUsuarioGeral {
             throw new UsuarioJaExisteException("Usuário já cadastrado.", usuario.getId(), usuario.getEmail());
         }
 
-        if (LocalDate.now().getYear() - usuario.getDataNascimento().getYear() < 18) {
-            throw new UsuarioNaoPermitidoException("Idade insuficiente.");
+        if (LocalDate.now().getYear() - usuario.getDataNascimento().getYear() < 18 || LocalDate.now().getYear() - usuario.getDataNascimento().getYear() > 100) {
+            throw new UsuarioNaoPermitidoException("Idade invalida.");
         }
     }
 

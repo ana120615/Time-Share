@@ -24,8 +24,8 @@ public class ControladorReservas {
     //check in
     public String checkin(int idReserva, LocalDate dataInicio) throws ReservaNaoExisteException, ReservaJaCanceladaException, ForaPeriodoException {
         Reserva reservaRelacionada = repositorioReservas.buscar(idReserva);
-        Estadia estadia = null;
-        int duracao = 0;
+        Estadia estadia;
+        int duracao;
         if (reservaRelacionada == null) {
             throw new ReservaNaoExisteException("Reserva inexistente");
         } else {
@@ -83,7 +83,7 @@ public class ControladorReservas {
     //metodo para criar reserva/ reservar
     public String criarReserva(LocalDate dataInicio, LocalDate dataFim, Usuario usuarioComum, Bem bem)
             throws DadosInsuficientesException, ReservaJaExisteException, ForaPeriodoException, PeriodoJaReservadoException, PeriodoNaoDisponivelParaReservaException, ReservaNaoExisteException, CotaJaReservadaException {
-        double taxa = 0.00;
+        double taxa;
         if (bem == null || dataInicio == null || dataFim == null || usuarioComum == null) {
             throw new DadosInsuficientesException("Bem, data de inicio, data final ou usuario nao podem ser nulos.");
         }
@@ -118,18 +118,46 @@ public class ControladorReservas {
 
 
     //metodo para reservar o periodo completo de 1 cota
-    public String reservaPeriodoCota(Cota cota) throws CotaNaoExisteException, ProprietarioNaoIdentificadoException, DadosInsuficientesException, ReservaJaExisteException, ForaPeriodoException, PeriodoJaReservadoException, PeriodoNaoDisponivelParaReservaException, ReservaNaoExisteException, CotaJaReservadaException {
-        String reservaFeita = null;
-        if (cota == null) {
-            throw new CotaNaoExisteException("Cota inexistente");
+    public String reservaPeriodoCota(Cota cota, Usuario usuario) throws UsuarioNaoPermitidoException, DadosInsuficientesException, ProprietarioNaoIdentificadoException, DadosInsuficientesException, ReservaJaExisteException, ForaPeriodoException, PeriodoJaReservadoException, PeriodoNaoDisponivelParaReservaException, ReservaNaoExisteException, CotaJaReservadaException {
+        String reservaFeita;
+        if (cota == null || usuario == null) {
+            throw new DadosInsuficientesException("Cota inexistente.");
         }
 
-        if (cota.getProprietario() == null) {
-            throw new ProprietarioNaoIdentificadoException("Cota sem proprietário");
+        if (cota.getProprietario() != null && !cota.getProprietario().equals(usuario)) {
+            throw new UsuarioNaoPermitidoException("Cota pertence a outro usuario.");
         }
         reservaFeita = criarReserva(cota.getDataInicio().toLocalDate(), cota.getDataFim().toLocalDate(), cota.getProprietario(), cota.getBemAssociado());
         return reservaFeita;
+    }
 
+
+    public void liberarPeriodoCota(Cota cota, int idReserva, Usuario usuario) throws DadosInsuficientesException, ReservaNaoExisteException, OperacaoNaoPermitidaException, UsuarioNaoPermitidoException {
+
+        if (cota == null || idReserva == 0) {
+            throw new DadosInsuficientesException("Dados insuficientes.");
+        }
+
+        Reserva reservaCancelada = repositorioReservas.buscar(idReserva);
+
+        if (reservaCancelada == null) {
+            throw new ReservaNaoExisteException("Reserva com este ID nao existe.");
+        }
+
+        if(!reservaCancelada.getUsuarioComum().equals(usuario)) {
+            throw new UsuarioNaoPermitidoException("Reserva nao vinculada a este usuario.");
+        }
+
+        if (!reservaCancelada.getDataInicio().equals(cota.getDataInicio().toLocalDate()) || !reservaCancelada.getDataFim().equals(cota.getDataFim().toLocalDate())) {
+            throw new OperacaoNaoPermitidaException("A reserva nao foi realizada dentro da cota, verifique o periodo completo da reserva para cancela-la.");
+        }
+
+        if(!cota.isStatusDeDisponibilidadeParaReserva()) {
+            throw new OperacaoNaoPermitidaException("A cota nao foi reservada anteriormente.");
+        }
+
+        cota.setStatusDeDisponibilidadeParaReserva(true);
+        repositorioReservas.remover(reservaCancelada);
     }
 
 
@@ -138,9 +166,10 @@ public class ControladorReservas {
     //liberar periodo da cota para ser reservada
     //caso alguma tenha sido usada na reserva
     //a reserva e removida mesmo que nao haja reembolso
-    public String cancelarReserva(int idReserva, Usuario usuario) throws ReservaNaoExisteException, ReservaJaCanceladaException, CotaJaReservadaException, UsuarioNaoPermitidoException {
+    public String cancelarReserva(int idReserva, Usuario usuario) throws ReservaNaoExisteException, ReservaJaCanceladaException, CotaJaReservadaException, UsuarioNaoPermitidoException, ReservaNaoReembolsavelException {
         Reserva reservaCancelada = repositorioReservas.buscar(idReserva);
-        double reembolso = 0.00;
+        double reembolso;
+
         if (reservaCancelada == null) {
             throw new ReservaNaoExisteException("Reserva inexistente");
         }
@@ -155,14 +184,10 @@ public class ControladorReservas {
         }
 
         reservaCancelada.cancelarReserva();
-        try{
-            reembolso = reembolsar(reservaCancelada);
-        }
-        catch(ReservaNaoReembolsavelException e){
-            System.out.println(e.getMessage());
-        }
-        
-        String comprovanteCancelamento = "FLEX SHARE\n"+"____________________________\n"+"COMPROVANTE DE CANCELAMENTO DE RESERVA: \n"+"__________________________________________________\n"+"RESERVA: \n"+ reservaCancelada.getId()+"\n Periodo: "+reservaCancelada.getDataInicio().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))+"-"+reservaCancelada.getDataFim().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))+"\n REEMBOLSO: R$"+ reembolso;
+
+        reembolso = reembolsar(reservaCancelada);
+
+        String comprovanteCancelamento = "FLEX SHARE\n" + "____________________________\n" + "COMPROVANTE DE CANCELAMENTO DE RESERVA: \n" + "__________________________________________________\n" + "RESERVA: \n" + reservaCancelada.getId() + "\n Periodo: " + reservaCancelada.getDataInicio().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) + "-" + reservaCancelada.getDataFim().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) + "\n REEMBOLSO: R$" + reembolso;
         //liberando cota
         for (Cota cota : cotasBemAssociadoReserva) {
             if (!cota.isStatusDeDisponibilidadeParaReserva() && reservaCancelada.getUsuarioComum().equals(cota.getProprietario())) {
@@ -176,7 +201,7 @@ public class ControladorReservas {
         return comprovanteCancelamento;
     }
 
-    
+
     //metodo para reembolso apos cancelamento
     public double reembolsar(Reserva reserva) throws ReservaNaoReembolsavelException, NullPointerException, ReservaNaoExisteException, CotaJaReservadaException {
         double reembolso = 0.00;
@@ -416,7 +441,7 @@ public class ControladorReservas {
         //5% ao dia
         if (reservaTaxada) {
             taxa = cotas.get(0).getPreco() * 0.05 * quantidadeDias;
-            double taxaPromocional = promocao.calcularTaxaPromocao(reserva.getDataInicio().atTime(0,0), reserva.getUsuarioComum());
+            double taxaPromocional = promocao.calcularTaxaPromocao(reserva.getDataInicio().atTime(0, 0), reserva.getUsuarioComum());
             double desconto = taxa * taxaPromocional;
             taxa -= desconto;
         }
