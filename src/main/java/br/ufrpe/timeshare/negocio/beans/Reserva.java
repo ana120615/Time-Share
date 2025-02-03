@@ -1,18 +1,18 @@
 package br.ufrpe.timeshare.negocio.beans;
-import java.time.LocalDate;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 
 public class Reserva extends Entidade{
     private int id;
-    private LocalDate dataInicio;
-    private LocalDate dataFim;
+    private LocalDateTime dataInicio;
+    private LocalDateTime dataFim;
     private Usuario usuarioComum;
     private Bem bem;
     private boolean cancelada;
 
-    public Reserva(int id, LocalDate dataInicio, LocalDate dataFim, Usuario usuarioComum, Bem bem) {
+    public Reserva(int id, LocalDateTime dataInicio, LocalDateTime dataFim, Usuario usuarioComum, Bem bem) {
         this.id = id;
         this.cancelada = false;
         this.dataInicio = dataInicio;
@@ -41,19 +41,19 @@ public class Reserva extends Entidade{
         this.bem = bem;
     }
 
-    public LocalDate getDataInicio() {
+    public LocalDateTime getDataInicio() {
         return dataInicio;
     }
 
-    public void setDataInicio(LocalDate dataInicio) {
+    public void setDataInicio(LocalDateTime dataInicio) {
         this.dataInicio = dataInicio;
     }
 
-    public LocalDate getDataFim() {
+    public LocalDateTime getDataFim() {
         return dataFim;
     }
 
-    public void setDataFim(LocalDate dataFim) {
+    public void setDataFim(LocalDateTime dataFim) {
         this.dataFim = dataFim;
     }
 
