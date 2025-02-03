@@ -53,7 +53,7 @@ public class RepositorioEstadia extends RepositorioGenerico<Estadia> implements 
 
     @Override
     public Estadia buscarEstadiaPorReserva(int idReserva) {
-        Estadia estadia;
+        Estadia estadia = null;
         boolean existe = false;
         int i;
         for (i = 0; i < lista.size() && !existe; i++) {
@@ -62,7 +62,9 @@ public class RepositorioEstadia extends RepositorioGenerico<Estadia> implements 
             }
         }
 
-        estadia = lista.get(i - 1);
+        if(!lista.isEmpty()) {
+            estadia = lista.get(i-1);
+        }
 
         return estadia;
     }

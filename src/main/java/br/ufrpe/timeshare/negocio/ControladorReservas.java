@@ -22,13 +22,14 @@ public class ControladorReservas {
 
 
     //check in
-    public String checkin(int idReserva) throws ReservaNaoExisteException, ReservaJaCanceladaException, ForaPeriodoException {
+    public String checkin(int idReserva) throws EstadiaJaInicializadaException, ReservaNaoExisteException, ReservaJaCanceladaException, ForaPeriodoException {
         LocalDateTime dataInicio = LocalDateTime.now();
         Reserva reservaRelacionada = repositorioReservas.buscar(idReserva);
-        Estadia estadia = repositorioEstadia.buscarEstadiaPorReserva(idReserva);
+        Estadia verificadorEstadia = repositorioEstadia.buscarEstadiaPorReserva(idReserva);
+        Estadia estadia;
         int duracao;
 
-        if(estadia == null) {
+        if (verificadorEstadia != null) {
             throw new EstadiaJaInicializadaException("Check-in ja realizado nesta reserva.");
         }
 
@@ -286,9 +287,8 @@ public class ControladorReservas {
     public List<String> consultarDisponibilidadeParaReserva(Bem bem, LocalDateTime inicioPeriodo, LocalDateTime fimPeriodo, Usuario usuario) throws BemNaoExisteException {
         List<String> periodosDisponiveis = new ArrayList<>();
         LocalDateTime inicioAtual = inicioPeriodo;
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-        boolean existeReservaAtiva = false;
-        boolean existeCotaOcupada = false;
+        boolean existeReservaAtiva;
+        boolean existeCotaOcupada;
 
         // Buscar todas as reservas para o bem
         List<Reserva> reservas = repositorioReservas.buscarReservasPorBem(bem.getId());
@@ -302,29 +302,83 @@ public class ControladorReservas {
 
 
         while (!inicioAtual.isAfter(fimPeriodo)) {
-            periodosDisponiveis.add(inicioAtual.format(formatter));
+            existeCotaOcupada = false;
+            existeReservaAtiva = false;
+            periodosDisponiveis.add(inicioAtual.toString());
 
             //verifica periodos em que ha cotas que ja foram vendidas
             //e nao podem ser usadas para reservas de todos
             for (Cota cota : cotasBemAssociado) {
-                if (!cota.getProprietario().equals(usuario) || !cota.getStatusDeDisponibilidadeParaCompra() || (cota.getProprietario().equals(usuario) && !cota.isStatusDeDisponibilidadeParaReserva())) {
-                    if ((inicioAtual.isBefore(cota.getDataFim()) || inicioAtual.isEqual(cota.getDataFim())) &&
-                            (fimPeriodo.isAfter(cota.getDataInicio()) || fimPeriodo.isEqual(cota.getDataInicio()))) {
+                if (cota.getProprietario() != null && !cota.getProprietario().equals(usuario) || !cota.getStatusDeDisponibilidadeParaCompra() || cota.getProprietario() != null && (cota.getProprietario().equals(usuario) && !cota.isStatusDeDisponibilidadeParaReserva())) {
+                    if (((inicioAtual.getYear() == cota.getDataInicio().getYear() &&
+                            (inicioAtual.getMonth() == cota.getDataInicio().getMonth()) &&
+                            (inicioAtual.getDayOfYear() >= cota.getDataInicio().getDayOfYear() && inicioAtual.getDayOfYear() <= cota.getDataFim().getDayOfYear())) ||
+                            ((inicioAtual.getYear() == cota.getDataFim().getYear()) &&
+                                    inicioAtual.getMonth() == cota.getDataFim().getMonth() &&
+                                    (inicioAtual.getDayOfYear() <= cota.getDataFim().getDayOfYear() && inicioAtual.getDayOfYear() >= cota.getDataInicio().getDayOfYear())))) {
+
                         existeCotaOcupada = true;
+
                     }
                 }
             }
 
             //verifica periodos em que ha reservas ativas
             for (Reserva buscar : reservas) {
-                if (!(inicioAtual.isBefore(buscar.getDataInicio()) || inicioAtual.isAfter(buscar.getDataFim()))) {
+                if (((inicioAtual.getYear() == buscar.getDataInicio().getYear() &&
+                        (inicioAtual.getMonth() == buscar.getDataInicio().getMonth()) &&
+                        (inicioAtual.getDayOfYear() >= buscar.getDataInicio().getDayOfYear() && inicioAtual.getDayOfYear() <= buscar.getDataFim().getDayOfYear())) ||
+                        ((inicioAtual.getYear() == buscar.getDataFim().getYear()) &&
+                                inicioAtual.getMonth() == buscar.getDataFim().getMonth() &&
+                                (inicioAtual.getDayOfYear() <= buscar.getDataFim().getDayOfYear() && inicioAtual.getDayOfYear() >= buscar.getDataInicio().getDayOfYear())))) {
+
                     existeReservaAtiva = true;
+
                 }
+
             }
 
             if (existeCotaOcupada || existeReservaAtiva) {
                 periodosDisponiveis.remove(inicioAtual.toString());
             }
+            inicioAtual = inicioAtual.plusDays(1);
+        }
+
+        return periodosDisponiveis;
+    }
+
+    public List<String> consultarDisponibilidadeReservasGeral(Bem bem, LocalDateTime inicioPeriodo, LocalDateTime fimPeriodo, Usuario usuario) throws BemNaoExisteException {
+        List<String> periodosDisponiveis = new ArrayList<>();
+
+        // Buscar todas as reservas para o bem
+        List<Reserva> reservas = repositorioReservas.buscarReservasPorBem(bem.getId());
+
+        // Garante que o usuário não posso colocar o final do periodo antes do inicio do periodo
+        // e que o inicio do periodo não posso ser antes do dia atual
+        if (fimPeriodo.isBefore(inicioPeriodo) || inicioPeriodo.isBefore(LocalDateTime.now())) {
+            throw new IllegalArgumentException("\nInválido");
+        }
+
+        LocalDateTime inicioAtual = inicioPeriodo;
+
+        while (!inicioAtual.isAfter(fimPeriodo)) {
+            periodosDisponiveis.add(inicioAtual.toString());
+            ArrayList<Cota> cotasBemAssociado = bem.getCotas();
+            for (Cota cota : cotasBemAssociado) {
+                if (!cota.getStatusDeDisponibilidadeParaCompra()) {
+                    if (((inicioAtual.getYear() == cota.getDataInicio().getYear() &&
+                            (inicioAtual.getMonth() == cota.getDataInicio().getMonth()) &&
+                            (inicioAtual.getDayOfYear() >= cota.getDataInicio().getDayOfYear() && inicioAtual.getDayOfYear() <= cota.getDataFim().getDayOfYear())) ||
+                            ((inicioAtual.getYear() == cota.getDataFim().getYear()) &&
+                                    inicioAtual.getMonth() == cota.getDataFim().getMonth() &&
+                                    (inicioAtual.getDayOfYear() <= cota.getDataFim().getDayOfYear() && inicioAtual.getDayOfYear() >= cota.getDataInicio().getDayOfYear())))) {
+                        periodosDisponiveis.remove(inicioAtual.toString());
+
+                    }
+                }
+
+            }
+
             inicioAtual = inicioAtual.plusDays(1);
         }
 

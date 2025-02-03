@@ -312,7 +312,10 @@ public class Sistema {
                                                             try {
                                                                 controladorReservas.checkin(idReserva);
                                                                 System.out.println("Estadia iniciada com sucesso!");
-                                                            } catch (ReservaNaoExisteException | ReservaJaCanceladaException | ForaPeriodoException e) {
+                                                            } catch (ReservaNaoExisteException |
+                                                                     ReservaJaCanceladaException |
+                                                                     ForaPeriodoException |
+                                                                     EstadiaJaInicializadaException e) {
                                                                 System.out.println(e.getMessage());
                                                             }
                                                             break;
