@@ -394,7 +394,7 @@ public class ControladorReservas {
         List<Cota> cotas = reserva.getBem().getCotas();
 
         for (Cota cota : cotas) {
-            if (cota.getProprietario().equals(reserva.getUsuarioComum())) {
+            if (cota.getProprietario() != null && cota.getProprietario().equals(reserva.getUsuarioComum())) {
                 boolean datasIguais = cota.getDataInicio().isEqual(reserva.getDataInicio()) &&
                         cota.getDataFim().isEqual(reserva.getDataFim());
 
