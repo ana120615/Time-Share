@@ -1,14 +1,27 @@
 package br.ufrpe.timeshare.gui.controllers;
 
+import br.ufrpe.timeshare.gui.application.ScreenManager;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+
 public class ControllerUsuarioComum {
 
     @FXML
-    public void initialize() {
-        // Código de inicialização, se necessário.
+    public void irTelaBensOfertados(ActionEvent event) {
+        ScreenManager.getInstance().showCadastroScreen();
     }
 
     @FXML
-    public void handleButtonAction() {
-        // Tratador de evento para botões.
+    public void irTelaGerenciamentoReservas(ActionEvent event) {
+        ScreenManager.getInstance().showCadastroScreen();
     }
+
+    @FXML
+    public void irTelaMinhasCotas(ActionEvent event) {
+        ScreenManager.getInstance().showCadastroScreen();
+    }
+
+
+
+
 }
