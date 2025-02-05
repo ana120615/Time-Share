@@ -41,6 +41,8 @@ public class ControllerLogin {
     @FXML
     public void irTelaCadastro(ActionEvent event) {
         ScreenManager.getInstance().showCadastroScreen();
+        txtUser.clear();
+        txtPassword.clear();
     }
 
     @FXML
@@ -61,8 +63,13 @@ public class ControllerLogin {
                 Usuario usuario = controladorLogin.efetuarLogin(email, senha);
                 if (usuario.getTipo().equals(TipoUsuario.ADMINISTRADOR)) {
 
+                    txtUser.clear();
+                    txtPassword.clear();
+
                 } else {
                     ScreenManager.getInstance().showUsuarioComumPrincipalScreen();
+                    txtUser.clear();
+                    txtPassword.clear();
                 }
             } catch (UsuarioNaoExisteException | SenhaInvalidaException e) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
