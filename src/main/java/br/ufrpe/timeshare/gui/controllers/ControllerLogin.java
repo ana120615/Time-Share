@@ -67,6 +67,7 @@ public class ControllerLogin {
                     txtPassword.clear();
 
                 } else {
+                    ScreenManager.getInstance().setUsuario(usuario);
                     ScreenManager.getInstance().showUsuarioComumPrincipalScreen();
                     txtUser.clear();
                     txtPassword.clear();

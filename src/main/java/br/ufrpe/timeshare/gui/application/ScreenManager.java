@@ -1,5 +1,6 @@
 package br.ufrpe.timeshare.gui.application;
 
+import br.ufrpe.timeshare.negocio.beans.Usuario;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -7,6 +8,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public class ScreenManager {
+    private Usuario usuario;
 
     private static ScreenManager instance;
     private Stage mainStage;
@@ -40,6 +42,14 @@ public class ScreenManager {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
     }
 
     public Stage getMainStage() {
