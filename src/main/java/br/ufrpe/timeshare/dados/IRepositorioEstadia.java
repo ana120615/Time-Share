@@ -11,6 +11,6 @@ public interface IRepositorioEstadia extends IRepositorio<Estadia> {
 
     List<Estadia> buscarEstadiasPorBem(int idBem);
 
-    List<Estadia> buscarEstadiaPorReserva(int idReserva);
+    Estadia buscarEstadiaPorReserva(int idReserva);
 
 }

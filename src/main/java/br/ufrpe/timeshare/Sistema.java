@@ -311,9 +311,12 @@ public class Sistema {
                                                             System.out.println("Informe o id da reserva: ");
                                                             int idReserva = input.nextInt();
                                                             try {
-                                                                controladorReservas.checkin(idReserva, LocalDateTime.now());
+                                                                controladorReservas.checkin(idReserva);
                                                                 System.out.println("Estadia iniciada com sucesso!");
-                                                            } catch (ReservaNaoExisteException | ReservaJaCanceladaException | ForaPeriodoException e) {
+                                                            } catch (ReservaNaoExisteException |
+                                                                     ReservaJaCanceladaException |
+                                                                     ForaPeriodoException |
+                                                                     EstadiaJaInicializadaException e) {
                                                                 System.out.println(e.getMessage());
                                                             }
                                                             break;
@@ -321,7 +324,7 @@ public class Sistema {
                                                             System.out.println("Informe o id da Estadia: ");
                                                             int idEstadiaFinalizar = input.nextInt();
                                                             try {
-                                                                controladorReservas.checkout(idEstadiaFinalizar, LocalDateTime.now());
+                                                                controladorReservas.checkout(idEstadiaFinalizar);
                                                                 System.out.println("Estadia finalizada com sucesso!");
                                                             } catch (ReservaNaoExisteException | ReservaJaCanceladaException | EstadiaNaoExisteException e) {
                                                                 System.out.println(e.getMessage());
@@ -353,6 +356,7 @@ public class Sistema {
                                                 escolha = input.nextInt();
                                                 switch (escolha) {
                                                     case 1:
+                                                        //TODO: verificar o porque nao esta mostrando dos bens disponiveis para reserva
                                                         System.out.print("Informe o id do Bem: ");
                                                         int idBemParaReserva = input.nextInt();
                                                         System.out.print("Informe a data Inicial (dd/MM/yyyy): ");

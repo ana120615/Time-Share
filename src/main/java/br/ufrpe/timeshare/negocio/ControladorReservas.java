@@ -22,21 +22,35 @@ public class ControladorReservas {
 
 
     //check in
-    public String checkin(int idReserva, LocalDateTime dataInicio) throws ReservaNaoExisteException, ReservaJaCanceladaException, ForaPeriodoException {
+    public String checkin(int idReserva) throws EstadiaJaInicializadaException, ReservaNaoExisteException, ReservaJaCanceladaException, ForaPeriodoException {
+        LocalDateTime dataInicio = LocalDateTime.now();
         Reserva reservaRelacionada = repositorioReservas.buscar(idReserva);
+        Estadia verificadorEstadia = repositorioEstadia.buscarEstadiaPorReserva(idReserva);
         Estadia estadia;
         int duracao;
+
+        if (verificadorEstadia != null) {
+            throw new EstadiaJaInicializadaException("Check-in ja realizado nesta reserva.");
+        }
+
         if (reservaRelacionada == null) {
-            throw new ReservaNaoExisteException("Reserva inexistente");
+            throw new ReservaNaoExisteException("Reserva inexistente.");
         } else {
-            int idAleatorio = 1001 + ThreadLocalRandom.current().nextInt(10000);
+            //criacao de id aleatorio
+            int idAleatorio = 0;
+            for (int i = 0; i < 1; ) {
+                idAleatorio = ThreadLocalRandom.current().nextInt(1001, 99999 + 1);
+                if (repositorioEstadia.buscar(idAleatorio) == null) {
+                    i++; // Sai do loop se o ID for unico
+                }
+            }
             estadia = new Estadia(idAleatorio, reservaRelacionada);
             //verifica se data de check in esta no periodo reservado
             if (dataInicio.isBefore(reservaRelacionada.getDataInicio()) || dataInicio.isAfter(reservaRelacionada.getDataFim())) {
-                throw new ForaPeriodoException("Data de inicio fora do periodo da reserva");
+                throw new ForaPeriodoException("Data de inicio fora do periodo da reserva.");
             } else {
                 estadia.setDataInicio(dataInicio);
-                estadia.setDataFim(reservaRelacionada.getDataFim());
+                estadia.setDataFim(null); //a data final da estadia so vai ser alterada no check-out
                 duracao = estadia.calcularDuracao();
                 repositorioEstadia.cadastrar(estadia); //cadastra estadia no repositorio
             }
@@ -60,19 +74,19 @@ public class ControladorReservas {
     }
 
 
-    public String checkout(int idestadia, LocalDateTime agora) throws ReservaNaoExisteException, ReservaJaCanceladaException, EstadiaNaoExisteException {
-
+    public String checkout(int idestadia) throws ReservaNaoExisteException, ReservaJaCanceladaException, EstadiaNaoExisteException {
+        LocalDateTime agora = LocalDateTime.now();
         Estadia estadia = repositorioEstadia.buscar(idestadia);
 
         if (estadia == null) {
-            throw new EstadiaNaoExisteException("Estadia inexistente");
+            throw new EstadiaNaoExisteException("Estadia inexistente.");
         }
         Reserva reserva = repositorioReservas.buscarReserva(estadia.getReserva());
         if (reserva == null) {
-            throw new ReservaNaoExisteException("Reserva inexistente");
+            throw new ReservaNaoExisteException("Reserva inexistente.");
         } else {
             estadia.setDataFim(agora);
-            repositorioReservas.remover(reserva); //remove reserva utilizada do repositorio
+            repositorioReservas.remover(reserva); //remove reserva do repositorio
         }
 
         return gerarComprovanteEstadia(estadia, estadia.calcularDuracao());
@@ -146,7 +160,7 @@ public class ControladorReservas {
             throw new UsuarioNaoPermitidoException("Reserva nao vinculada a este usuario.");
         }
 
-        if (!reservaCancelada.getDataInicio().equals(cota.getDataInicio().toLocalDate()) || !reservaCancelada.getDataFim().equals(cota.getDataFim().toLocalDate())) {
+        if (!reservaCancelada.getDataInicio().equals(cota.getDataInicio()) || !reservaCancelada.getDataFim().equals(cota.getDataFim())) {
             throw new OperacaoNaoPermitidaException("A reserva nao foi realizada dentro da cota, verifique o periodo completo da reserva para cancela-la.");
         }
 
@@ -211,32 +225,45 @@ public class ControladorReservas {
         return reembolso;
     }
 
+
     //verifica se periodo da reserva e valido
     private void verificarPeriodo(Bem bem, Usuario usuario, LocalDateTime dataInicio, LocalDateTime dataFim) throws PeriodoJaReservadoException, ForaPeriodoException, PeriodoNaoDisponivelParaReservaException {
+        LocalDateTime inicioAtual = dataInicio;
+        ArrayList<Cota> cotasBemAssociado = bem.getCotas();
 
         //verifica se datas sao validas
         if (dataInicio.isAfter(dataFim)) {
             throw new ForaPeriodoException("A data inicial nao pode ser depois da data final");
         }
 
-        //busca de reserva existente para o bem no periodo requisitado
-        //verifica se reserva pertence ao mesmo bem e se esta ativa
-        for (Reserva buscar : repositorioReservas.listar()) {
-            if (buscar.getBem().equals(bem) &&
-                    !(dataFim.isBefore(buscar.getDataInicio()) || dataInicio.isAfter(buscar.getDataFim()))) {
-                throw new PeriodoJaReservadoException("Periodo ja reservado.");
-            }
-        }
 
-        //Verifica se periodo requisitado pertence a cota de outro usuario
-        ArrayList<Cota> cotasBemAssociadoReserva = bem.getCotas();
-        for (Cota cota : cotasBemAssociadoReserva) {
-            if (!cota.getStatusDeDisponibilidadeParaCompra() && !usuario.equals(cota.getProprietario())) {
-                if ((dataInicio.isBefore(cota.getDataFim()) || dataInicio.isEqual(cota.getDataFim()) &&
-                        (dataFim.isAfter(cota.getDataInicio())) || dataFim.isEqual(cota.getDataInicio()))) {
-                    throw new PeriodoNaoDisponivelParaReservaException("Esse periodo esta incluso numa cota vendida.");
+        while (!inicioAtual.isAfter(dataFim)) {
+
+            //busca de reserva existente para o bem no periodo requisitado
+            //verifica se reserva pertence ao mesmo bem e se esta ativa
+            for (Reserva buscar : repositorioReservas.listar()) {
+                if (buscar.getBem().equals(bem)) {
+                    if (verificarConflitoDeDatasReserva(buscar, inicioAtual)) {
+                        throw new PeriodoJaReservadoException("Periodo ja reservado.");
+                    }
                 }
             }
+
+            //Verifica periodos em que ha cotas que ja foram vendidas e nao podem ser usadas para reservas de todos
+            for (Cota cota : cotasBemAssociado) {
+                if (cota.getProprietario() != null && !cota.getProprietario().equals(usuario) ||
+                        !cota.getStatusDeDisponibilidadeParaCompra() || cota.getProprietario() != null &&
+                        (cota.getProprietario().equals(usuario) && !cota.isStatusDeDisponibilidadeParaReserva())) {
+
+                    if (verificarConflitoDeDatasCota(cota, inicioAtual)) {
+                        throw new PeriodoNaoDisponivelParaReservaException("O periodo esta dentro de uma cota comprada por outro usuario.");
+                    }
+
+                }
+            }
+
+
+            inicioAtual = inicioAtual.plusDays(1);
 
         }
     }
@@ -268,45 +295,44 @@ public class ControladorReservas {
         return gerarComprovanteReserva(reserva, taxaExtra);
     }
 
-    //consulta de periodos disponiveis para reserva
-//considerando o usuario que deseja reservar
-    public List<String> consultarDisponibilidadeParaReserva(Bem bem, LocalDateTime inicioPeriodo, LocalDateTime fimPeriodo, Usuario usuario) throws BemNaoExisteException {
+    // Consulta de periodos disponiveis para reserva
+    // Considerando o usuario que deseja reservar
+    public List<String> consultarDisponibilidadeParaReserva(Bem bem, LocalDateTime inicioPeriodo, LocalDateTime dataFim, Usuario usuario) throws BemNaoExisteException {
         List<String> periodosDisponiveis = new ArrayList<>();
         LocalDateTime inicioAtual = inicioPeriodo;
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-        boolean existeReservaAtiva = false;
-        boolean existeCotaOcupada = false;
+        boolean existeReservaAtiva;
+        boolean existeCotaOcupada;
 
         // Buscar todas as reservas para o bem
         List<Reserva> reservas = repositorioReservas.buscarReservasPorBem(bem.getId());
-        //Buscar as cotas do bem
+        // Buscar as cotas do bem
         ArrayList<Cota> cotasBemAssociado = bem.getCotas();
 
-        //verifica se datas sao validas
-        if (fimPeriodo.isBefore(inicioPeriodo)) {
-            throw new IllegalArgumentException("A data de inicio deve ser antes da data final");
+        // Verifica se datas sao validas
+        if (dataFim.isBefore(inicioPeriodo)) {
+            throw new IllegalArgumentException("A data de inicio deve ser antes da data final.");
         }
 
 
-        while (!inicioAtual.isAfter(fimPeriodo)) {
-            periodosDisponiveis.add(inicioAtual.format(formatter));
+        while (!inicioAtual.isAfter(dataFim)) {
+            existeCotaOcupada = false;
+            existeReservaAtiva = false;
+            periodosDisponiveis.add(inicioAtual.toString());
 
-            //verifica periodos em que ha cotas que ja foram vendidas
-            //e nao podem ser usadas para reservas de todos
-            for (Cota cota : cotasBemAssociado) {
-                if (!cota.getProprietario().equals(usuario) || !cota.getStatusDeDisponibilidadeParaCompra() || (cota.getProprietario().equals(usuario) && !cota.isStatusDeDisponibilidadeParaReserva())) {
-                    if ((inicioAtual.isBefore(cota.getDataFim()) || inicioAtual.isEqual(cota.getDataFim())) &&
-                            (fimPeriodo.isAfter(cota.getDataInicio()) || fimPeriodo.isEqual(cota.getDataInicio()))) {
-                        existeCotaOcupada = true;
-                    }
+            //Verifica periodos em que ha cotas que ja foram vendidas e nao podem ser usadas para reservas de todos
+            for (int i = 0; i < cotasBemAssociado.size() && !existeCotaOcupada; i++) {
+                if (cotasBemAssociado.get(i).getProprietario() != null && !cotasBemAssociado.get(i).getProprietario().equals(usuario) ||
+                        !cotasBemAssociado.get(i).getStatusDeDisponibilidadeParaCompra() || cotasBemAssociado.get(i).getProprietario() != null &&
+                        (cotasBemAssociado.get(i).getProprietario().equals(usuario) && !cotasBemAssociado.get(i).isStatusDeDisponibilidadeParaReserva())) {
+
+                    existeCotaOcupada = verificarConflitoDeDatasCota(cotasBemAssociado.get(i), inicioAtual);
+
                 }
             }
 
-            //verifica periodos em que ha reservas ativas
-            for (Reserva buscar : reservas) {
-                if (!(inicioAtual.isBefore(buscar.getDataInicio()) || inicioAtual.isAfter(buscar.getDataFim()))) {
-                    existeReservaAtiva = true;
-                }
+            // Verifica periodos em que ha reservas ativas
+            for (int i = 0; i < reservas.size() && !existeReservaAtiva; i++) {
+                existeReservaAtiva = verificarConflitoDeDatasReserva(reservas.get(i), inicioAtual);
             }
 
             if (existeCotaOcupada || existeReservaAtiva) {
@@ -319,56 +345,88 @@ public class ControladorReservas {
     }
 
 
-    //TODO verificar se vai ser necessario esse metodo de consultar disponibilidade do bem
-    // relatorio
-    // consulta de disponibilidade futura do bem
-    // levando em consideracao cotas e reservas
-    public List<String> consultarDisponibilidadeDoBem(Bem bem, LocalDateTime inicioPeriodo, LocalDateTime fimPeriodo) throws BemNaoExisteException {
+    public List<String> consultarDisponibilidadeReservasGeral(Bem bem, LocalDateTime inicioPeriodo, LocalDateTime dataFim, Usuario usuario) throws BemNaoExisteException {
         List<String> periodosDisponiveis = new ArrayList<>();
-        LocalDateTime inicioAtual = inicioPeriodo;
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-        boolean existeReservaAtiva = false;
-        boolean existeCotaOcupada = false;
+        boolean existeReservaAtiva;
+        boolean existeCotaOcupada;
 
         // Buscar todas as reservas para o bem
         List<Reserva> reservas = repositorioReservas.buscarReservasPorBem(bem.getId());
-        //Buscar as cotas do bem
+        // Buscar as cotas do bem
         ArrayList<Cota> cotasBemAssociado = bem.getCotas();
-
-        //verifica se datas sao validas
-        if (fimPeriodo.isBefore(inicioPeriodo) || inicioPeriodo.isBefore(LocalDateTime.now())) {
-            throw new IllegalArgumentException("\nInvalido");
+        // Garante que o usuário não posso colocar o final do periodo antes do inicio do periodo
+        if (dataFim.isBefore(inicioPeriodo) || inicioPeriodo.isBefore(LocalDateTime.now())) {
+            throw new IllegalArgumentException("\nInválido");
         }
 
+        LocalDateTime inicioAtual = inicioPeriodo;
 
-        while (!inicioAtual.isAfter(fimPeriodo)) {
-            periodosDisponiveis.add(inicioAtual.format(formatter));
+        while (!inicioAtual.isAfter(dataFim)) {
+            existeReservaAtiva = false;
+            existeCotaOcupada = false;
+            periodosDisponiveis.add(inicioAtual.toString());
 
-            //verifica periodos em que ha cotas que ja foram vendidas
-            //e nao podem ser usadas para reservas de todos
-            for (Cota cota : cotasBemAssociado) {
-                if (!cota.getStatusDeDisponibilidadeParaCompra()) {
-                    if ((inicioAtual.isBefore(cota.getDataFim()) || inicioAtual.isEqual(cota.getDataFim())) &&
-                            (fimPeriodo.isAfter(cota.getDataInicio()) || fimPeriodo.isEqual(cota.getDataInicio()))) {
-                        existeCotaOcupada = true;
-                    }
+            //Verifica periodos em que ha cotas que ja foram vendidas e nao podem ser usadas para reservas de todos
+            for (int i = 0; i < cotasBemAssociado.size() && !existeCotaOcupada; i++) {
+                if (cotasBemAssociado.get(i).getProprietario() != null && !cotasBemAssociado.get(i).getProprietario().equals(usuario) ||
+                        !cotasBemAssociado.get(i).getStatusDeDisponibilidadeParaCompra() || cotasBemAssociado.get(i).getProprietario() != null &&
+                        (cotasBemAssociado.get(i).getProprietario().equals(usuario) && !cotasBemAssociado.get(i).isStatusDeDisponibilidadeParaReserva())) {
+
+                    existeCotaOcupada = verificarConflitoDeDatasCota(cotasBemAssociado.get(i), inicioAtual);
+
                 }
             }
 
-            //verifica periodos em que ha reservas ativas
-            for (Reserva buscar : reservas) {
-                if (!(inicioAtual.isBefore(buscar.getDataInicio()) || inicioAtual.isAfter(buscar.getDataFim()))) {
-                    existeReservaAtiva = true;
-                }
+            // Verifica periodos em que ha reservas ativas
+            for (int i = 0; i < reservas.size() && !existeReservaAtiva; i++) {
+                existeReservaAtiva = verificarConflitoDeDatasReserva(reservas.get(i), inicioAtual);
             }
 
             if (existeCotaOcupada || existeReservaAtiva) {
                 periodosDisponiveis.remove(inicioAtual.toString());
             }
+
             inicioAtual = inicioAtual.plusDays(1);
         }
 
         return periodosDisponiveis;
+    }
+
+    private boolean verificarConflitoDeDatasCota(Cota cota, LocalDateTime inicioAtual) {
+        boolean existeCotaOcupada = false;
+
+        if (((inicioAtual.getYear() == cota.getDataInicio().getYear() &&
+                (inicioAtual.getMonth() == cota.getDataInicio().getMonth()) &&
+                (inicioAtual.getDayOfYear() >= cota.getDataInicio().getDayOfYear() && inicioAtual.getDayOfYear() <= cota.getDataFim().getDayOfYear())) ||
+                ((inicioAtual.getYear() == cota.getDataFim().getYear()) &&
+                        inicioAtual.getMonth() == cota.getDataFim().getMonth() &&
+                        (inicioAtual.getDayOfYear() <= cota.getDataFim().getDayOfYear() && inicioAtual.getDayOfYear() >= cota.getDataInicio().getDayOfYear())))) {
+
+            existeCotaOcupada = true;
+
+        }
+
+
+        return existeCotaOcupada;
+    }
+
+
+    private boolean verificarConflitoDeDatasReserva(Reserva reserva, LocalDateTime inicioAtual) {
+        boolean existeReservaOcupada = false;
+
+        if (((inicioAtual.getYear() == reserva.getDataInicio().getYear() &&
+                (inicioAtual.getMonth() == reserva.getDataInicio().getMonth()) &&
+                (inicioAtual.getDayOfYear() >= reserva.getDataInicio().getDayOfYear() && inicioAtual.getDayOfYear() <= reserva.getDataFim().getDayOfYear())) ||
+                ((inicioAtual.getYear() == reserva.getDataFim().getYear()) &&
+                        inicioAtual.getMonth() == reserva.getDataFim().getMonth() &&
+                        (inicioAtual.getDayOfYear() <= reserva.getDataFim().getDayOfYear() && inicioAtual.getDayOfYear() >= reserva.getDataInicio().getDayOfYear())))) {
+
+            existeReservaOcupada = true;
+
+        }
+
+
+        return existeReservaOcupada;
     }
 
 
