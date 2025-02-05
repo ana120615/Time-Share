@@ -6,6 +6,7 @@ import br.ufrpe.timeshare.dados.RepositorioUsuarios;
 import br.ufrpe.timeshare.excecoes.DadosInsuficientesException;
 import br.ufrpe.timeshare.excecoes.UsuarioJaExisteException;
 import br.ufrpe.timeshare.excecoes.UsuarioNaoPermitidoException;
+import br.ufrpe.timeshare.gui.application.ScreenManager;
 import br.ufrpe.timeshare.negocio.ControladorUsuarioGeral;
 import br.ufrpe.timeshare.negocio.beans.TipoUsuario;
 import br.ufrpe.timeshare.negocio.beans.Usuario;
@@ -86,6 +87,11 @@ public class ControllerCadastro {
 
             System.out.println(controladorUsuarioGeral.listarUsuarioComum());
         }
+    }
+
+    @FXML
+    public void irParaTelaLogin () {
+        ScreenManager.getInstance().showLoginScreen();
     }
 
     @FXML

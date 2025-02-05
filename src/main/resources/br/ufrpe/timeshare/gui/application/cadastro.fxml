@@ -20,6 +20,7 @@
 <?import javafx.scene.paint.Color?>
 <?import javafx.scene.text.Font?>
 
+<?import javafx.scene.control.Hyperlink?>
 <BorderPane prefHeight="600.0" prefWidth="600.0" style="-fx-background-color: #001f54;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.ufrpe.timeshare.gui.controllers.ControllerCadastro">
     <center>
         <VBox alignment="TOP_CENTER" prefHeight="493.0" prefWidth="400.0" style="-fx-background-color: white;" BorderPane.alignment="CENTER">
@@ -71,20 +72,20 @@
                                 </HBox>
                                 <HBox alignment="TOP_CENTER" prefHeight="50.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="15">
                                     <children>
-                                        <Label text="Already have an account? " />
-                                        <Label style="-fx-text-fill: blue; -fx-underline: true; -fx-cursor: hand;" text="Sign In" />
+                                        <Label text="Already have an account?" />
+                                        <Hyperlink onAction="#irParaTelaLogin" text="Sign In" />
                                     </children>
                                 </HBox>
                                 <Label text="Nome" GridPane.columnIndex="1" />
                                 <Label text="Cpf" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                                <TextField GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                                <TextField GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                                <TextField GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                                <TextField fx:id="nomeField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                <TextField fx:id="cpfField" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                <TextField fx:id="emailField" GridPane.columnIndex="1" GridPane.rowIndex="5" />
                                 <Label text="Email" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                                 <Label text="Data de Nascimento" GridPane.columnIndex="1" GridPane.rowIndex="6" />
-                                <DatePicker prefHeight="26.0" prefWidth="380.0" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="7" />
+                                <DatePicker fx:id="dataNascimentoPicker" prefHeight="26.0" prefWidth="380.0" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="7" />
                                 <Label text="Tipo de Usuario" GridPane.columnIndex="1" GridPane.rowIndex="8" />
-                                <ComboBox prefHeight="26.0" prefWidth="374.0" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="9">
+                                <ComboBox fx:id="tipoUsuarioCombo" prefHeight="26.0" prefWidth="374.0" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="9">
                                     <items>
                                         <FXCollections fx:factory="observableArrayList">
                                             <String fx:value="Comum" />
@@ -93,7 +94,7 @@
                                     </items>
                                 </ComboBox>
                                 <Label text="Senha" GridPane.columnIndex="1" GridPane.rowIndex="10" />
-                                <PasswordField GridPane.columnIndex="1" GridPane.rowIndex="11" />
+                                <PasswordField fx:id="senhaField" GridPane.columnIndex="1" GridPane.rowIndex="11" />
                             </children>
                         </GridPane>
                     </content>
@@ -125,7 +126,7 @@
                         <Label style="-fx-text-fill: white; -fx-font-size: 24px;" text="Sign Up" />
                     </children>
                 </HBox>
-                <Button mnemonicParsing="false" style="-fx-background-color: #001f54; -fx-cursor: hand;" text="&lt;" textAlignment="CENTER" textFill="WHITE" textOverrun="CENTER_WORD_ELLIPSIS">
+                <Button mnemonicParsing="false" onAction="#irParaTelaLogin" style="-fx-background-color: #001f54; -fx-cursor: hand;" text="&lt;" textAlignment="CENTER" textFill="WHITE" textOverrun="CENTER_WORD_ELLIPSIS">
                     <font>
                         <Font size="30.0" />
                     </font>

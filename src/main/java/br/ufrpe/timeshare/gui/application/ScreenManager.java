@@ -7,34 +7,51 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public class ScreenManager {
-    private Stage stage;
 
-    public ScreenManager(Stage stage) {
-        this.stage = stage;
+    private static ScreenManager instance;
+    private Stage mainStage;
+
+    private Scene telaCadastro;
+    private Scene telaLogin;
+
+    public static ScreenManager getInstance() {
+        if (instance == null) {
+            instance = new ScreenManager();
+        }
+
+        return instance;
     }
 
-    public void showLoginScreen() {
-        loadScreen("login.fxml", "Login");
-    }
-
-    public void showCadastroScreen() {
-        loadScreen("cadastro.fxml", "Cadastro");
-    }
-
-    public void showHomeScreen() {
-        loadScreen("home.fxml", "Home");
-    }
-
-    private void loadScreen(String fxmlFile, String title) {
+    private ScreenManager() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlFile));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/br/ufrpe/timeshare/gui/application/cadastro.fxml"));
             Parent root = loader.load();
-            Scene scene = new Scene(root);
-            stage.setTitle(title);
-            stage.setScene(scene);
-            stage.show();
+            telaCadastro = new Scene(root);
+
+            loader = new FXMLLoader(getClass().getResource("/br/ufrpe/timeshare/gui/application/login.fxml"));
+            root = loader.load();
+            telaLogin = new Scene(root);
+
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public Stage getMainStage() {
+        return mainStage;
+    }
+
+    public void setMainStage(Stage mainStage) {
+        this.mainStage = mainStage;
+    }
+
+    public void showCadastroScreen() {
+        mainStage.setScene(telaCadastro);
+        mainStage.show();
+    }
+
+    public void showLoginScreen() {
+        mainStage.setScene(telaLogin);
+        mainStage.show();
     }
 }

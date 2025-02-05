@@ -11,7 +11,9 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        ScreenManager screenManager = new ScreenManager(primaryStage);
-        screenManager.showCadastroScreen();
+        ScreenManager.getInstance().setMainStage(primaryStage);
+        ScreenManager.getInstance().showLoginScreen();
+
+        primaryStage.show();
     }
 }
