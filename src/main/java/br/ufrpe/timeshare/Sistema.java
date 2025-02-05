@@ -80,6 +80,7 @@ public class Sistema {
             System.out.println(e.getMessage());
         }
 
+        RepositorioUsuarios.getInstancia().cadastrar(new Usuario(11111301215L, "usuario10", TipoUsuario.COMUM));
 
         boolean entrarSistema = false;
         boolean sairSistema = false;

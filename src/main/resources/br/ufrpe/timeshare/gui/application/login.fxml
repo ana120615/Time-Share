@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+
+<GridPane xmlns:fx="http://javafx.com/fxml/1"
+          fx:controller="br.ufrpe.timeshare.gui.controllers.ControllerLogin"
+          stylesheets="@styles.css"
+          alignment="center"
+          hgap="10" vgap="10">
+
+    <!-- Painel principal -->
+    <BorderPane maxWidth="600" style="-fx-background-color: white; -fx-border-radius: 10px; -fx-background-radius: 10px; -fx-padding: 20px; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 10, 0, 0, 5);" >
+
+        <!-- Imagem lateral -->
+        <left>
+            <ImageView fitWidth="300" fitHeight="400">
+                <Image url="https://storage.googleapis.com/a1aa/image/I-soS-NSfGjUV3tBlZ7Bl1KNi1GgVITNp_YJ6Dg1dxU.jpg" />
+            </ImageView>
+        </left>
+
+        <!-- Conteúdo do login -->
+        <center>
+            <VBox alignment="CENTER" spacing="10" style="-fx-padding: 20px;">
+                <ImageView fitWidth="100" fitHeight="100">
+                    <Image url="https://storage.googleapis.com/a1aa/image/GxWhPTwbcm65_7RcyiaBAmBZ-f3JjPbPV4EmOd90lE8.jpg" />
+                </ImageView>
+                <Label text="Login">
+                    <font>
+                        <Font size="24" name="Roboto Bold"/>
+                    </font>
+                </Label>
+
+                <GridPane hgap="10" vgap="10">
+                    <Label text="Email:" />
+                    <TextField fx:id="emailField" promptText="Digite seu email" GridPane.columnIndex="1"/>
+
+                    <Label text="Senha:" GridPane.rowIndex="1"/>
+                    <PasswordField fx:id="passwordField" promptText="Digite sua senha" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+                </GridPane>
+
+                <Button text="Entrar" style="-fx-background-color: #4169E1; -fx-text-fill: white;" maxWidth="Infinity" />
+
+                <Hyperlink text="Esqueceu a senha?" />
+                <Hyperlink text="Cadastrar" />
+
+                <Label text="©2023 TimeShare. Todos os direitos reservados." style="-fx-text-fill: gray; -fx-font-size: 10px;" />
+            </VBox>
+        </center>
+    </BorderPane>
+</GridPane>

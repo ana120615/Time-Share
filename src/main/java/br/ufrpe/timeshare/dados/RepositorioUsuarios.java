@@ -8,7 +8,7 @@ import java.util.List;
 public class RepositorioUsuarios extends RepositorioGenerico<Usuario> implements IRepositorioUsuario {
 
     // INSTANCIA UNICA DO REPOSITORIO
-    private static RepositorioUsuarios instancia;
+    private static volatile RepositorioUsuarios instancia;
 
     public RepositorioUsuarios() {
         super();
@@ -16,17 +16,15 @@ public class RepositorioUsuarios extends RepositorioGenerico<Usuario> implements
 
     // METODO PARA OBTER A INSTANCIA DO REPOSITORIO
     public static RepositorioUsuarios getInstancia() {
-        if (instancia == null) {
-            synchronized (RepositorioUsuarios.class) { // Thread-safe
-                if (instancia == null) {
+        if (instancia == null) { // Primeira verificação sem bloqueio
+            synchronized (RepositorioUsuarios.class) { // Bloqueia somente se for necessário
+                if (instancia == null) { // Segunda verificação dentro do bloco sincronizado
                     instancia = new RepositorioUsuarios();
                 }
             }
         }
         return instancia;
     }
-
-
 
     @Override
     public Usuario buscarUsuarioPorEmail(String email) {
