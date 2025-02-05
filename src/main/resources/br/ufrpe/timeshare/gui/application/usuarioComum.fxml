@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.geometry.*?>
+
+<StackPane xmlns:fx="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml" fx:controller="br.ufrpe.timeshare.gui.controllers.ControllerUsuarioComum">
+    <VBox spacing="20" alignment="CENTER" style="-fx-background-color: #f7f7f7;" prefWidth="400" prefHeight="600">
+
+        <!-- Título Principal -->
+        <Text text="Main User" style="-fx-font-size: 24px; -fx-font-weight: bold;" />
+
+        <!-- Seção do Painel do Usuário -->
+        <VBox spacing="10" alignment="CENTER" style="-fx-background-color: #ffffff; -fx-padding: 20; -fx-border-color: #cccccc; -fx-border-radius: 10; -fx-background-radius: 10;" prefWidth="350">
+            <HBox spacing="10" alignment="CENTER_LEFT">
+                <Label text="User Panel" style="-fx-font-size: 16px;" />
+                <Region HBox.hgrow="ALWAYS" />
+                <Button text="🔍" style="-fx-font-size: 16px;" />
+                <Button text="👤" style="-fx-font-size: 16px;" />
+                <Button text="⚙" style="-fx-font-size: 16px;" />
+            </HBox>
+        </VBox>
+
+        <!-- Botões de Navegação -->
+        <VBox spacing="15" alignment="CENTER" prefWidth="350">
+            <!-- Botão Reservas -->
+            <Button text="Reservations" prefWidth="300" style="-fx-font-size: 16px; -fx-background-color: #e3e3e3; -fx-background-radius: 10;" />
+            <!-- Botão Gerenciamento de Reservas -->
+            <Button text="Reservoir Management" prefWidth="300" style="-fx-font-size: 16px; -fx-background-color: #e3e3e3; -fx-background-radius: 10;" />
+            <!-- Botão Configurações -->
+            <Button text="Settings" prefWidth="300" style="-fx-font-size: 16px; -fx-background-color: #e3e3e3; -fx-background-radius: 10;" />
+        </VBox>
+
+        <!-- Seção Inferior com Ícones e Gráficos -->
+        <VBox spacing="10" alignment="CENTER" prefWidth="350" style="-fx-background-color: #ffffff; -fx-padding: 20; -fx-border-color: #cccccc; -fx-border-radius: 10; -fx-background-radius: 10;">
+            <HBox spacing="20" alignment="CENTER">
+                <VBox alignment="CENTER">
+                    <Label text="🌞" style="-fx-font-size: 24px;" />
+                    <Label text="Balance" style="-fx-font-size: 14px;" />
+                </VBox>
+                <VBox alignment="CENTER">
+                    <Label text="📊" style="-fx-font-size: 24px;" />
+                    <Label text="History" style="-fx-font-size: 14px;" />
+                </VBox>
+                <VBox alignment="CENTER">
+                    <Label text="⚙" style="-fx-font-size: 24px;" />
+                    <Label text="Settings" style="-fx-font-size: 14px;" />
+                </VBox>
+            </HBox>
+        </VBox>
+    </VBox>
+</StackPane>
