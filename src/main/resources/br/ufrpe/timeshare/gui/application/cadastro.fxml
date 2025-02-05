@@ -20,7 +20,8 @@
 <?import javafx.scene.paint.Color?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane prefHeight="600.0" prefWidth="600.0" style="-fx-background-color: #001f54;" xmlns="http://javafx.com/javafx/21.0.0" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.ufrpe.timeshare.gui.controllers.ControllerCadastro">
+<?import javafx.scene.control.Hyperlink?>
+<BorderPane prefHeight="600.0" prefWidth="600.0" style="-fx-background-color: #001f54;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.ufrpe.timeshare.gui.controllers.ControllerCadastro">
     <center>
         <VBox alignment="TOP_CENTER" prefHeight="493.0" prefWidth="400.0" style="-fx-background-color: white;" BorderPane.alignment="CENTER">
             <BorderPane.margin>
@@ -71,8 +72,8 @@
                                 </HBox>
                                 <HBox alignment="TOP_CENTER" prefHeight="50.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="15">
                                     <children>
-                                        <Label text="Already have an account? " />
-                                        <Label style="-fx-text-fill: blue; -fx-underline: true; -fx-cursor: hand;" text="Sign In" />
+                                        <Label text="Already have an account?" />
+                                        <Hyperlink onAction="#irParaTelaLogin" text="Sign In" />
                                     </children>
                                 </HBox>
                                 <Label text="Nome" GridPane.columnIndex="1" />
@@ -125,7 +126,7 @@
                         <Label style="-fx-text-fill: white; -fx-font-size: 24px;" text="Sign Up" />
                     </children>
                 </HBox>
-                <Button mnemonicParsing="false" style="-fx-background-color: #001f54; -fx-cursor: hand;" text="&lt;" textAlignment="CENTER" textFill="WHITE" textOverrun="CENTER_WORD_ELLIPSIS">
+                <Button mnemonicParsing="false" onAction="#irParaTelaLogin" style="-fx-background-color: #001f54; -fx-cursor: hand;" text="&lt;" textAlignment="CENTER" textFill="WHITE" textOverrun="CENTER_WORD_ELLIPSIS">
                     <font>
                         <Font size="30.0" />
                     </font>
