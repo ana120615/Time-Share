@@ -50,7 +50,7 @@
                <children>
                   <HBox alignment="CENTER" prefHeight="60.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
                      <children>
-                        <Button defaultButton="true" mnemonicParsing="false" onAction="#irTelaCadastro" prefHeight="53.0" prefWidth="394.0" style="-fx-background-color: #023e8a; -fx-text-fill: white; -fx-font-size: 14px; -fx-padding: 10px; -fx-cursor: hand; -fx-font-weight: bold;" text="Entrar" textAlignment="CENTER" textOverrun="WORD_ELLIPSIS" HBox.hgrow="ALWAYS">
+                        <Button defaultButton="true" mnemonicParsing="false" onAction="#logar" prefHeight="53.0" prefWidth="394.0" style="-fx-background-color: #023e8a; -fx-text-fill: white; -fx-font-size: 14px; -fx-padding: 10px; -fx-cursor: hand; -fx-font-weight: bold;" text="Entrar" textAlignment="CENTER" textOverrun="WORD_ELLIPSIS" HBox.hgrow="ALWAYS">
                            <font>
                               <Font name="System Bold" size="24.0" />
                            </font>
@@ -58,10 +58,10 @@
                      </children>
                   </HBox>
                   <HBox alignment="TOP_CENTER" prefHeight="50.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="10" />
-                  <TextField fx:id="emailField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <TextField fx:id="txtUser" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                   <Label style="-fx-font-weight: bold;" text="Email" GridPane.columnIndex="1" />
                   <Label style="-fx-font-weight: bold;" text="Senha" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                  <PasswordField fx:id="senhaField" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                  <PasswordField fx:id="txtPassword" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                   <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="7">
                      <children>
                         <Label text="------------------------------ OR ------------------------------" />

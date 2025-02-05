@@ -3,7 +3,6 @@ package br.ufrpe.timeshare.gui.controllers;
 
 import br.ufrpe.timeshare.dados.IRepositorioUsuario;
 import br.ufrpe.timeshare.dados.RepositorioUsuarios;
-import br.ufrpe.timeshare.excecoes.DadosInsuficientesException;
 import br.ufrpe.timeshare.excecoes.UsuarioJaExisteException;
 import br.ufrpe.timeshare.excecoes.UsuarioNaoPermitidoException;
 import br.ufrpe.timeshare.gui.application.ScreenManager;
@@ -17,7 +16,7 @@ import javafx.scene.control.Alert.AlertType;
 import java.time.LocalDate;
 
 public class ControllerCadastro {
-    private static IRepositorioUsuario repositorioUsuarios;
+    private IRepositorioUsuario repositorioUsuarios;
     private ControladorUsuarioGeral controladorUsuarioGeral;
 
     {
