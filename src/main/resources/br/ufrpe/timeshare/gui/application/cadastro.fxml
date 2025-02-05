@@ -6,6 +6,7 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Hyperlink?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.ScrollPane?>
@@ -20,8 +21,7 @@
 <?import javafx.scene.paint.Color?>
 <?import javafx.scene.text.Font?>
 
-<?import javafx.scene.control.Hyperlink?>
-<BorderPane prefHeight="600.0" prefWidth="600.0" style="-fx-background-color: #001f54;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.ufrpe.timeshare.gui.controllers.ControllerCadastro">
+<BorderPane prefWidth="650.0" style="-fx-background-color: #001f54;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.ufrpe.timeshare.gui.controllers.ControllerCadastro">
     <center>
         <VBox alignment="TOP_CENTER" prefHeight="493.0" prefWidth="400.0" style="-fx-background-color: white;" BorderPane.alignment="CENTER">
             <BorderPane.margin>
@@ -64,7 +64,7 @@
                             <children>
                                 <HBox alignment="CENTER" prefHeight="60.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="13">
                                     <children>
-                                        <Button defaultButton="true" mnemonicParsing="false" onAction="#handleCadastro" style="-fx-background-color: #023e8a; -fx-text-fill: white; -fx-font-size: 14px; -fx-padding: 10px; -fx-cursor: hand; -fx-font-weight: bold;" text="Sign Up" textAlignment="CENTER" textOverrun="WORD_ELLIPSIS" HBox.hgrow="ALWAYS">
+                                        <Button defaultButton="true" mnemonicParsing="false" onAction="#handleCadastro" prefHeight="131.0" prefWidth="361.0" style="-fx-background-color: #023e8a; -fx-text-fill: white; -fx-font-size: 14px; -fx-padding: 10px; -fx-cursor: hand; -fx-font-weight: bold;" text="Sign Up" textAlignment="CENTER" textOverrun="WORD_ELLIPSIS" HBox.hgrow="ALWAYS">
                                  <font>
                                     <Font name="System Bold" size="24.0" />
                                  </font></Button>
@@ -72,19 +72,18 @@
                                 </HBox>
                                 <HBox alignment="TOP_CENTER" prefHeight="50.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="15">
                                     <children>
-                                        <Label text="Already have an account?" />
-                                        <Hyperlink onAction="#irParaTelaLogin" text="Sign In" />
+                                        <Hyperlink onAction="#irParaTelaLogin" text="Already have an account? Sign In" />
                                     </children>
                                 </HBox>
-                                <Label text="Nome" GridPane.columnIndex="1" />
-                                <Label text="Cpf" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                <Label style="-fx-font-weight: bold;" text="Nome" GridPane.columnIndex="1" />
+                                <Label style="-fx-font-weight: bold;" text="Cpf" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                                 <TextField fx:id="nomeField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                                 <TextField fx:id="cpfField" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                                 <TextField fx:id="emailField" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-                                <Label text="Email" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                                <Label text="Data de Nascimento" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                                <Label style="-fx-font-weight: bold;" text="Email" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                                <Label style="-fx-font-weight: bold;" text="Data de Nascimento" GridPane.columnIndex="1" GridPane.rowIndex="6" />
                                 <DatePicker fx:id="dataNascimentoPicker" prefHeight="26.0" prefWidth="380.0" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="7" />
-                                <Label text="Tipo de Usuario" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+                                <Label style="-fx-font-weight: bold;" text="Tipo de Usuario" GridPane.columnIndex="1" GridPane.rowIndex="8" />
                                 <ComboBox fx:id="tipoUsuarioCombo" prefHeight="26.0" prefWidth="374.0" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="9">
                                     <items>
                                         <FXCollections fx:factory="observableArrayList">
@@ -93,7 +92,7 @@
                                         </FXCollections>
                                     </items>
                                 </ComboBox>
-                                <Label text="Senha" GridPane.columnIndex="1" GridPane.rowIndex="10" />
+                                <Label style="-fx-font-weight: bold;" text="Senha" GridPane.columnIndex="1" GridPane.rowIndex="10" />
                                 <PasswordField fx:id="senhaField" GridPane.columnIndex="1" GridPane.rowIndex="11" />
                             </children>
                         </GridPane>
