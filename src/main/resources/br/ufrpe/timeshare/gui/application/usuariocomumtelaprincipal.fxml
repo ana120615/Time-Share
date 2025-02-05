@@ -17,8 +17,8 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<StackPane xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.ufrpe.timeshare.gui.controllers.ControllerUsuarioComum">
-    <VBox alignment="CENTER" prefHeight="600" prefWidth="400" spacing="20" style="-fx-background-color: #0A1F40;">
+<StackPane prefWidth="650.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.ufrpe.timeshare.gui.controllers.ControllerUsuarioComum">
+    <VBox alignment="CENTER" prefHeight="600.0" prefWidth="400.0" spacing="20" style="-fx-background-color: #0A1F40;">
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
          <children>
             <GridPane alignment="CENTER" prefHeight="189.0" prefWidth="247.0" HBox.hgrow="ALWAYS">
@@ -32,10 +32,10 @@
                 <RowConstraints maxHeight="90.33334350585939" minHeight="10.0" prefHeight="54.333335876464844" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1">
+                  <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1">
                      <children> <!-- Cor do fundo ajustada -->
                   
-                                <!-- Logo da Empresa -->
+                                      <!-- Logo da Empresa -->
                           <ImageView fitHeight="130.0" fitWidth="144.0">
                               <image>
                                   <Image url="@logo.png" /> <!-- Substitua 'logo.jpg' pelo caminho da imagem da logo -->
@@ -43,16 +43,15 @@
                            <effect>
                               <Reflection fraction="0.52" topOpacity="0.42" />
                            </effect>
+                           <VBox.margin>
+                              <Insets top="30.0" />
+                           </VBox.margin>
                           </ImageView>
-                     </children>
-                  </HBox>
-                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                     <children>
                   
                                 <!-- Título Principal -->
                           <Text style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-fill: #ffffff;" text="FLEX-SHARE" />
                      </children>
-                  </HBox>
+                  </VBox>
                </children>
             </GridPane>
          </children>
