@@ -356,7 +356,6 @@ public class Sistema {
                                                 escolha = input.nextInt();
                                                 switch (escolha) {
                                                     case 1:
-                                                        //TODO: verificar o porque nao esta mostrando dos bens disponiveis para reserva
                                                         System.out.print("Informe o id do Bem: ");
                                                         int idBemParaReserva = input.nextInt();
                                                         System.out.print("Informe a data Inicial (dd/MM/yyyy): ");
@@ -485,7 +484,9 @@ public class Sistema {
                                                                         System.out.println(e.getMessage());
                                                                     }
 
-                                                                } else {
+                                                                }
+                                                                //TODO: por que o usuario dono da cota nao consegue reservala?
+                                                                else {
                                                                     System.out.println("Você não é o proprietário dessa cota.");
                                                                 }
 
