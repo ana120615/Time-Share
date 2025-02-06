@@ -109,7 +109,10 @@
     <bottom>
         <HBox alignment="BOTTOM_CENTER" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: white;" BorderPane.alignment="CENTER">
             <children>
-                <Label style="-fx-text-fill: gray; -fx-font-size: 10px;" text="©2023 TimeShare. Todos os direitos reservados." />
+                <Label style="-fx-text-fill: gray; -fx-font-size: 10px;" text="©2023 TimeShare. Todos os direitos reservados.">
+               <HBox.margin>
+                  <Insets bottom="20.0" />
+               </HBox.margin></Label>
             </children>
         </HBox>
     </bottom>

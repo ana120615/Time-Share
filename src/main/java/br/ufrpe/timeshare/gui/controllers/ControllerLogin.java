@@ -61,17 +61,18 @@ public class ControllerLogin {
 
             try {
                 Usuario usuario = controladorLogin.efetuarLogin(email, senha);
+                ScreenManager.getInstance().setUsuario(usuario);
                 if (usuario.getTipo().equals(TipoUsuario.ADMINISTRADOR)) {
-
+                    ScreenManager.getInstance().showAdmPrincipalScreen();
                     txtUser.clear();
                     txtPassword.clear();
 
                 } else {
-                    ScreenManager.getInstance().setUsuario(usuario);
                     ScreenManager.getInstance().showUsuarioComumPrincipalScreen();
                     txtUser.clear();
                     txtPassword.clear();
                 }
+
             } catch (UsuarioNaoExisteException | SenhaInvalidaException e) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Erro");

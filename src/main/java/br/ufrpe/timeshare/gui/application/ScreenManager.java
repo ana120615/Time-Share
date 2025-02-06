@@ -16,6 +16,7 @@ public class ScreenManager {
     private Scene telaCadastro;
     private Scene telaLogin;
     private Scene telaUsuarioComumPrincipal;
+    private Scene telaAdmPrincipal;
 
     public static ScreenManager getInstance() {
         if (instance == null) {
@@ -38,6 +39,10 @@ public class ScreenManager {
             loader = new FXMLLoader(getClass().getResource("/br/ufrpe/timeshare/gui/application/usuariocomumtelaprincipal.fxml"));
             root = loader.load();
             telaUsuarioComumPrincipal = new Scene(root);
+
+            loader = new FXMLLoader(getClass().getResource(("/br/ufrpe/timeshare/gui/application/usuarioadmtelaprincipal.fxml")));
+            root = loader.load();
+            telaAdmPrincipal = new Scene(root);
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -72,6 +77,11 @@ public class ScreenManager {
 
     public void showUsuarioComumPrincipalScreen() {
         mainStage.setScene(telaUsuarioComumPrincipal);
+        mainStage.show();
+    }
+
+    public void showAdmPrincipalScreen() {
+        mainStage.setScene(telaAdmPrincipal);
         mainStage.show();
     }
 

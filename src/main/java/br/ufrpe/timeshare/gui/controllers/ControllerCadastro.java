@@ -56,7 +56,7 @@ public class ControllerCadastro {
         } else {
             try {
                 Usuario usuario = new Usuario(Long.parseLong(cpf), nome, gmail, senha, dataNascimento,
-                        tipoUsuario.equals("ADMINISTRADOR") ? TipoUsuario.ADMINISTRADOR : TipoUsuario.COMUM);
+                        tipoUsuario.equals("Administrador") ? TipoUsuario.ADMINISTRADOR : TipoUsuario.COMUM);
 
                 controladorUsuarioGeral.cadastrar(usuario);
 
