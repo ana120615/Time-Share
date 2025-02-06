@@ -92,6 +92,8 @@ public class ControladorReservas {
         return gerarComprovanteEstadia(estadia, estadia.calcularDuracao());
     }
 
+
+    //TODO: fazer com que, ao criar reserva, o status de disponibilidade para reserva seja alterado
     //metodo para criar reserva/ reservar
     public String criarReserva(LocalDateTime dataInicio, LocalDateTime dataFim, Usuario usuarioComum, Bem bem)
             throws DadosInsuficientesException, ReservaJaExisteException, ForaPeriodoException, PeriodoJaReservadoException, PeriodoNaoDisponivelParaReservaException, ReservaNaoExisteException, CotaJaReservadaException {
@@ -164,7 +166,7 @@ public class ControladorReservas {
             throw new OperacaoNaoPermitidaException("A reserva nao foi realizada dentro da cota, verifique o periodo completo da reserva para cancela-la.");
         }
 
-        if (!cota.isStatusDeDisponibilidadeParaReserva()) {
+        if (cota.isStatusDeDisponibilidadeParaReserva()) {
             throw new OperacaoNaoPermitidaException("A cota nao foi reservada anteriormente.");
         }
 
@@ -251,9 +253,9 @@ public class ControladorReservas {
 
             //Verifica periodos em que ha cotas que ja foram vendidas e nao podem ser usadas para reservas de todos
             for (Cota cota : cotasBemAssociado) {
-                if (cota.getProprietario() != null && !cota.getProprietario().equals(usuario) ||
-                        !cota.getStatusDeDisponibilidadeParaCompra() || cota.getProprietario() != null &&
-                        (cota.getProprietario().equals(usuario) && !cota.isStatusDeDisponibilidadeParaReserva())) {
+                if ((cota.getProprietario() != null && !cota.getProprietario().equals(usuario) &&
+                        !cota.getStatusDeDisponibilidadeParaCompra()) || (cota.getProprietario() != null &&
+                        (cota.getProprietario().equals(usuario) && !cota.isStatusDeDisponibilidadeParaReserva()))) {
 
                     if (verificarConflitoDeDatasCota(cota, inicioAtual)) {
                         throw new PeriodoNaoDisponivelParaReservaException("O periodo esta dentro de uma cota comprada por outro usuario.");
@@ -303,11 +305,6 @@ public class ControladorReservas {
         boolean existeReservaAtiva;
         boolean existeCotaOcupada;
 
-        // Buscar todas as reservas para o bem
-        List<Reserva> reservas = repositorioReservas.buscarReservasPorBem(bem.getId());
-        // Buscar as cotas do bem
-        ArrayList<Cota> cotasBemAssociado = bem.getCotas();
-
         // Verifica se datas sao validas
         if (dataFim.isBefore(inicioPeriodo)) {
             throw new IllegalArgumentException("A data de inicio deve ser antes da data final.");
@@ -315,14 +312,20 @@ public class ControladorReservas {
 
 
         while (!inicioAtual.isAfter(dataFim)) {
+            // Buscar todas as reservas para o bem
+            List<Reserva> reservas = repositorioReservas.buscarReservasPorBem(bem.getId());
+            // Buscar as cotas do bem
+            ArrayList<Cota> cotasBemAssociado = bem.getCotas();
+
             existeCotaOcupada = false;
             existeReservaAtiva = false;
+
             periodosDisponiveis.add(inicioAtual.toString());
 
             //Verifica periodos em que ha cotas que ja foram vendidas e nao podem ser usadas para reservas de todos
             for (int i = 0; i < cotasBemAssociado.size() && !existeCotaOcupada; i++) {
-                if (cotasBemAssociado.get(i).getProprietario() != null && !cotasBemAssociado.get(i).getProprietario().equals(usuario) ||
-                        !cotasBemAssociado.get(i).getStatusDeDisponibilidadeParaCompra() || cotasBemAssociado.get(i).getProprietario() != null &&
+                if ((cotasBemAssociado.get(i).getProprietario() != null && !cotasBemAssociado.get(i).getProprietario().equals(usuario) &&
+                        !cotasBemAssociado.get(i).getStatusDeDisponibilidadeParaCompra()) || cotasBemAssociado.get(i).getProprietario() != null &&
                         (cotasBemAssociado.get(i).getProprietario().equals(usuario) && !cotasBemAssociado.get(i).isStatusDeDisponibilidadeParaReserva())) {
 
                     existeCotaOcupada = verificarConflitoDeDatasCota(cotasBemAssociado.get(i), inicioAtual);
@@ -440,11 +443,11 @@ public class ControladorReservas {
         Promocao promocao = new Promocao();
 
         if (reserva == null) {
-            throw new NullPointerException("Reserva nao pode ser nula");
+            throw new NullPointerException("Reserva nao pode ser nula.");
         }
 
         if (repositorioReservas.buscarReserva(reserva) == null) {
-            throw new ReservaNaoExisteException("Reserva inexistente");
+            throw new ReservaNaoExisteException("Reserva inexistente.");
         }
 
         //deve verificar se ha alguma cota no periodo
@@ -501,6 +504,27 @@ public class ControladorReservas {
     public String gerarComprovanteEstadia(Estadia estadia, int duracao) {
         String estadiaToString = estadia.toString();
         return estadiaToString + "Duracao da estadia: " + String.format("%d", duracao) + " dias";
+    }
+
+
+    private List<Reserva> listarReservasBem(Usuario usuarioAdm, Bem bem) throws DadosInsuficientesException, UsuarioNaoPermitidoException {
+        List<Reserva> reservas = new ArrayList<>();
+        if (usuarioAdm == null || bem == null) {
+            throw new DadosInsuficientesException("Dados invalidos.");
+        }
+        if (usuarioAdm.getTipo().equals(TipoUsuario.ADMINISTRADOR)) { // Apenas Adm`s podem ver todas as reservas feitas em um bem
+            throw new UsuarioNaoPermitidoException("Este usuario nao pode realizar esta acao.");
+        }
+        if (!bem.getCadastradoPor().equals(usuarioAdm)) {
+            throw new UsuarioNaoPermitidoException("Bem nao pertence a este usuario.");
+        }
+
+        for (Reserva reserva : repositorioReservas.listar()) {
+            if (reserva.getBem().equals(bem)) {
+                reservas.add(reserva);
+            }
+        }
+        return reservas;
     }
 
     public List<Reserva> listarReservasUsuario(Usuario usuario) {
@@ -614,4 +638,6 @@ public class ControladorReservas {
             contagens.add(1);
         }
     }
+
+
 }

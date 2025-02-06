@@ -1,196 +1,178 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.PointLight?>
-<?import javafx.scene.chart.BarChart?>
-<?import javafx.scene.chart.CategoryAxis?>
-<?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.effect.InnerShadow?>
-<?import javafx.scene.effect.Reflection?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
 
-<StackPane prefWidth="650.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.ufrpe.timeshare.gui.controllers.ControllerAdm">
-    <VBox alignment="CENTER" prefHeight="600.0" prefWidth="400.0" spacing="20" style="-fx-background-color: #0A1F40;">
-        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
-            <children>
-                <GridPane alignment="CENTER" prefHeight="120.0" prefWidth="650.0" HBox.hgrow="ALWAYS">
-                    <columnConstraints>
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                    </columnConstraints>
-                    <rowConstraints>
-                        <RowConstraints maxHeight="135.66666412353516" minHeight="10.0" prefHeight="135.66666412353516" vgrow="SOMETIMES" />
-                        <RowConstraints maxHeight="90.33334350585939" minHeight="10.0" prefHeight="54.333335876464844" vgrow="SOMETIMES" />
-                    </rowConstraints>
-                    <children>
-                        <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1">
-                            <children> <!-- Cor do fundo ajustada -->
 
-                                <!-- Logo da Empresa -->
-                                <ImageView fitHeight="130.0" fitWidth="144.0">
-                                    <image>
-                                        <Image url="@logo.png" /> <!-- Substitua 'logo.jpg' pelo caminho da imagem da logo -->
-                                    </image>
-                                    <effect>
-                                        <Reflection fraction="0.52" topOpacity="0.42" />
-                                    </effect>
-                                    <VBox.margin>
-                                        <Insets top="30.0" />
-                                    </VBox.margin>
-                                </ImageView>
-
-                                <!-- Título Principal -->
-                                <Text style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-fill: #ffffff;" text="FLEX-SHARE" />
-                            </children>
-                        </VBox>
-                    </children>
-                </GridPane>
-            </children>
-        </HBox> <!-- Cor do texto ajustada -->
-
-        <!-- Seção do Painel do Usuário -->
-        <VBox alignment="CENTER" prefHeight="80.0" prefWidth="403.0" spacing="10.0" style="-fx-background-color: #0A1F40; -fx-padding: 20; -fx-border-color: #4FA3E3; -fx-border-radius: 10; -fx-background-radius: 10;">
-            <HBox alignment="CENTER_LEFT" prefHeight="36.0" prefWidth="326.0" spacing="10" style="-fx-background-color: white;">
-                <!-- Avatar do Usuário -->
-                <ImageView fitHeight="54.0" fitWidth="63.0" style="-fx-border-color: #cccccc; -fx-border-radius: 50%; -fx-background-radius: 50%;">
-                    <image>
-                        <Image url="@logo.png" /> <!-- Substitua por uma imagem padrão de avatar -->
-                    </image>
-                </ImageView>
-                <Label style="-fx-font-size: 16px;" text="User Name" />
-                <PointLight color="CHARTREUSE" lightOn="true" />
-                <effect>
-                    <InnerShadow />
-                </effect>
-            </HBox>
-         <VBox.margin>
-            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-         </VBox.margin>
-        </VBox>
-      <GridPane prefHeight="163.0" prefWidth="650.0">
-        <columnConstraints>
-          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-        </columnConstraints>
-        <rowConstraints>
-          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-        </rowConstraints>
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <left>
+      <VBox prefHeight="400.0" prefWidth="227.0" style="-fx-background-color: #000814;" BorderPane.alignment="CENTER">
          <children>
-      
-                    <!-- Botões de Navegação -->
-              <VBox alignment="CENTER" prefHeight="139.0" prefWidth="379.0" spacing="15">
-               <ComboBox prefWidth="150.0" promptText="Gerenciamento de Bens" style="-fx-background-color: #1666B3; -fx-background-size: 16; -fx-cursor: hand;" />
-                  <Button prefHeight="33.0" prefWidth="300" style="-fx-font-size: 16px; -fx-background-color: #1666B3; -fx-background-radius: 10; -fx-cursor: hand; -fx-font-weight: bold; -fx-background-insets: 1, 1; -fx-text-fill: white;" text="Gerenciamento de Bens" textFill="WHITE" VBox.vgrow="ALWAYS">
-                  <opaqueInsets>
-                     <Insets left="20.0" />
-                  </opaqueInsets>
-               </Button>
-                  <Button prefWidth="300" style="-fx-font-size: 16px; -fx-background-color: #1666B3; -fx-background-radius: 10; -fx-cursor: hand; -fx-background-insets: 1, 1; -fx-font-weight: bold; -fx-text-fill: white;" text="Gerenciamento de Reservas" textFill="WHITE" VBox.vgrow="ALWAYS" />
-                  <Button prefHeight="32.0" prefWidth="300" style="-fx-font-size: 16px; -fx-background-color: #1666B3; -fx-background-radius: 10; -fx-cursor: hand; -fx-background-insets: 1, 1; -fx-font-weight: bold; -fx-text-fill: white;" text="Relatorios" VBox.vgrow="ALWAYS" />
-                  <opaqueInsets>
-                      <Insets left="40.0" top="10.0" />
-                  </opaqueInsets>
-               <GridPane.margin>
-                  <Insets left="10.0" right="10.0" />
-               </GridPane.margin>
-              </VBox>
-            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: #4FA3E3; -fx-background-radius: 10;" GridPane.columnIndex="1">
-               <opaqueInsets>
-                  <Insets right="10.0" />
-               </opaqueInsets>
-               <GridPane.margin>
-                  <Insets right="10.0" />
-               </GridPane.margin>
+            <GridPane style="-fx-background-color: #001f54;">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="102.0" minWidth="10.0" prefWidth="79.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="142.0" minWidth="10.0" prefWidth="137.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
                <children>
-                  <GridPane alignment="CENTER" prefHeight="163.0" prefWidth="348.0">
-                    <columnConstraints>
-                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                    </columnConstraints>
-                    <rowConstraints>
-                      <RowConstraints maxHeight="154.0000279744466" minHeight="10.0" prefHeight="141.00002034505212" vgrow="SOMETIMES" />
-                      <RowConstraints maxHeight="47.0" minHeight="3.3333257039388116" prefHeight="21.666646321614593" vgrow="SOMETIMES" />
-                    </rowConstraints>
-                     <children>
-                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
-                           <children>
-                              <BarChart legendSide="LEFT" prefHeight="131.0" prefWidth="315.0">
-                                <xAxis>
-                                  <CategoryAxis side="BOTTOM" />
-                                </xAxis>
-                                <yAxis>
-                                  <NumberAxis side="LEFT" style="-fx-tick-label-font-size: 8; -fx-tick-label-font-weight: bold;" tickLabelFill="#000000fe" />
-                                </yAxis>
-                              </BarChart>
-                           </children>
-                        </HBox>
-                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="1">
-                           <children>
-                              <Label contentDisplay="CENTER" prefHeight="31.0" prefWidth="99.0" style="-fx-font-weight: bold;" text="Fluxo de Vendas">
-                                 <font>
-                                    <Font size="11.0" />
-                                 </font>
-                              </Label>
-                           </children>
-                        </HBox>
-                     </children>
-                  </GridPane>
+                  <Label style="-fx-text-fill: white; -fx-font-weight: bold;" text="Flex-Share" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Label>
+                  <ImageView fitHeight="80.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="1">
+                     <image>
+                        <Image url="@logo.png" />
+                     </image>
+                  </ImageView>
                </children>
-            </HBox>
-         </children>
-      </GridPane>
-
-        <!-- Seção Inferior com Ícones e Gráficos -->
-        <VBox alignment="BOTTOM_CENTER" prefHeight="76.0" prefWidth="400.0" spacing="10" style="-fx-background-color: #ffffff; -fx-padding: 20; -fx-border-color: white; -fx-border-radius: 10 10 00 00; -fx-background-radius: 10 10 00 00;">
-            <GridPane alignment="CENTER" VBox.vgrow="ALWAYS">
-                <columnConstraints>
-                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                </columnConstraints>
-                <rowConstraints>
-                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                </rowConstraints>
-                <children>
-                    <VBox alignment="CENTER" prefHeight="75.0" prefWidth="124.0">
-                        <Label style="-fx-font-size: 24px; -fx-cursor: hand;" text="⚙" />
-                        <Label style="-fx-font-size: 14px;" text="Configuracoes" />
-                    </VBox>
-                    <VBox alignment="CENTER" GridPane.columnIndex="1">
-                        <Label style="-fx-font-size: 24px; -fx-cursor: hand;" text="👤" />
-                        <Label style="-fx-font-size: 14px;" text="Usuario" />
-                    </VBox>
-                    <VBox alignment="CENTER" GridPane.columnIndex="2">
-                        <Label style="-fx-font-size: 24px; -fx-cursor: hand;" text="📞" />
-                        <Label style="-fx-font-size: 14px;" text="Suporte">
-                            <font>
-                                <Font name="Yu Gothic UI Semibold" size="12.0" />
-                            </font>
-                        </Label>
-                    </VBox>
-                </children>
-                <VBox.margin>
-                    <Insets top="20.0" />
-                </VBox.margin>
             </GridPane>
-            <HBox alignment="BOTTOM_CENTER" spacing="20" />
-            <VBox.margin>
-                <Insets top="20.0" />
-            </VBox.margin>
-        </VBox>
-    </VBox>
-</StackPane>
+            <GridPane vgap="5.0">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <Button contentDisplay="GRAPHIC_ONLY" graphicTextGap="10.0" mnemonicParsing="false" prefHeight="52.0" prefWidth="354.0" style="-fx-background-color: #000814; -fx-cursor: hand;" text="Gerencimaneto de Bens">
+                     <graphic>
+                        <GridPane prefHeight="44.0" prefWidth="319.0">
+                           <columnConstraints>
+                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="42.0" minWidth="10.0" prefWidth="37.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="264.0" minWidth="10.0" prefWidth="161.0" />
+                           </columnConstraints>
+                           <rowConstraints>
+                              <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                           </rowConstraints>
+                           <children>
+                              <VBox prefHeight="38.0" prefWidth="341.0" GridPane.columnIndex="1">
+                                 <children>
+                                    <Label prefHeight="22.0" prefWidth="158.0" style="-fx-text-fill: white;" text="Gerenciamento de Bens">
+                                       <font>
+                                          <Font size="12.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </VBox>
+                              <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@images/home-agreement.png" />
+                                 </image>
+                              </ImageView>
+                           </children>
+                        </GridPane>
+                     </graphic>
+                  </Button>
+                  <Button contentDisplay="GRAPHIC_ONLY" graphicTextGap="10.0" mnemonicParsing="false" prefHeight="52.0" prefWidth="354.0" style="-fx-background-color: #000814;" text="Gerenciamento de Reservas" GridPane.rowIndex="1">
+                     <graphic>
+                        <GridPane prefHeight="44.0" prefWidth="319.0">
+                           <columnConstraints>
+                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="42.0" minWidth="10.0" prefWidth="37.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="264.0" minWidth="10.0" prefWidth="161.0" />
+                           </columnConstraints>
+                           <rowConstraints>
+                              <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                           </rowConstraints>
+                           <children>
+                              <VBox prefHeight="38.0" prefWidth="341.0" GridPane.columnIndex="1">
+                                 <children>
+                                    <Label prefHeight="22.0" prefWidth="158.0" style="-fx-text-fill: white;" text="Gerenciamento de Reservas">
+                                       <font>
+                                          <Font size="12.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </VBox>
+                              <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@images/proportion.png" />
+                                 </image>
+                              </ImageView>
+                           </children>
+                        </GridPane>
+                     </graphic>
+                  </Button>
+                  <Button contentDisplay="GRAPHIC_ONLY" graphicTextGap="10.0" mnemonicParsing="false" prefHeight="52.0" prefWidth="354.0" style="-fx-background-color: #000814;" text="Relatorio" GridPane.rowIndex="2">
+                     <graphic>
+                        <GridPane prefHeight="44.0" prefWidth="319.0">
+                           <columnConstraints>
+                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="42.0" minWidth="10.0" prefWidth="37.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="264.0" minWidth="10.0" prefWidth="161.0" />
+                           </columnConstraints>
+                           <rowConstraints>
+                              <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                           </rowConstraints>
+                           <children>
+                              <VBox prefHeight="38.0" prefWidth="341.0" GridPane.columnIndex="1">
+                                 <children>
+                                    <Label prefHeight="22.0" prefWidth="158.0" style="-fx-text-fill: white;" text="Relatório">
+                                       <font>
+                                          <Font size="12.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </VBox>
+                              <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@images/document.png" />
+                                 </image>
+                              </ImageView>
+                           </children>
+                        </GridPane>
+                     </graphic>
+                  </Button>
+               </children>
+               <padding>
+                  <Insets left="5.0" right="5.0" top="5.0" />
+               </padding>
+            </GridPane>
+         </children>
+      </VBox>
+   </left>
+   <center>
+      <VBox prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: white;" BorderPane.alignment="CENTER">
+         <children>
+            <GridPane>
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="87.0" minWidth="1.0" prefWidth="1.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="180.0" minWidth="10.0" prefWidth="33.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="246.0" minWidth="10.0" prefWidth="241.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <Button contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" style="-fx-background-color: white;" text="Button" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                     <graphic>
+                        <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@images/menu-burger.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+               </children>
+            </GridPane>
+         </children>
+      </VBox>
+   </center>
+</BorderPane>
