@@ -14,7 +14,6 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
 <StackPane prefWidth="650.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.ufrpe.timeshare.gui.controllers.ControllerUsuarioComum">
@@ -79,9 +78,9 @@
 
         <!-- Botões de Navegação -->
         <VBox alignment="CENTER" prefWidth="350" spacing="15">
-            <Button onAction="#irTelaBensOfertados" prefHeight="33.0" prefWidth="300" style="-fx-font-size: 16px; -fx-background-color: #1666B3; -fx-background-radius: 10; -fx-cursor: hand; -fx-font-weight: bold; -fx-background-insets: 1, 1; -fx-text-fill: white;" text="Bens Ofertados" textFill="WHITE" VBox.vgrow="ALWAYS" />
-            <Button onAction="#irTelaGerenciamentoReservas" prefWidth="300" style="-fx-font-size: 16px; -fx-background-color: #1666B3; -fx-background-radius: 10; -fx-cursor: hand; -fx-background-insets: 1, 1; -fx-font-weight: bold; -fx-text-fill: white;" text="Gerenciamento de Reservas" textFill="WHITE" VBox.vgrow="ALWAYS" />
-            <Button onAction="#irTelaMinhasCotas" prefHeight="32.0" prefWidth="300" style="-fx-font-size: 16px; -fx-background-color: #1666B3; -fx-background-radius: 10; -fx-cursor: hand; -fx-background-insets: 1, 1; -fx-font-weight: bold; -fx-text-fill: white;" text="Minhas Cotas" VBox.vgrow="ALWAYS" />
+            <Button prefHeight="33.0" prefWidth="300" style="-fx-font-size: 16px; -fx-background-color: #1666B3; -fx-background-radius: 10; -fx-cursor: hand; -fx-font-weight: bold; -fx-background-insets: 1, 1; -fx-text-fill: white;" text="Bens Ofertados" textFill="WHITE" VBox.vgrow="ALWAYS" />
+            <Button prefWidth="300" style="-fx-font-size: 16px; -fx-background-color: #1666B3; -fx-background-radius: 10; -fx-cursor: hand; -fx-background-insets: 1, 1; -fx-font-weight: bold; -fx-text-fill: white;" text="Gerenciamento de Reservas" textFill="WHITE" VBox.vgrow="ALWAYS" />
+            <Button prefHeight="32.0" prefWidth="300" style="-fx-font-size: 16px; -fx-background-color: #1666B3; -fx-background-radius: 10; -fx-cursor: hand; -fx-background-insets: 1, 1; -fx-font-weight: bold; -fx-text-fill: white;" text="Minhas Cotas" VBox.vgrow="ALWAYS" />
             <opaqueInsets>
                 <Insets top="10.0" />
             </opaqueInsets>
@@ -102,20 +101,41 @@
                 </rowConstraints>
                 <children>
                     <VBox alignment="CENTER" prefHeight="75.0" prefWidth="124.0">
-                        <Label style="-fx-font-size: 24px; -fx-cursor: hand;" text="⚙" />
-                        <Label style="-fx-font-size: 14px;" text="Configuracoes" />
+                  <Button contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#irTelaConfiguracoesUsuarioComum" style="-fx-background-color: white; -fx-cursor: hand;" text="Configuracoes">
+                     <graphic>
+                        <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@images/settings-sliders.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
                     </VBox>
                     <VBox alignment="CENTER" GridPane.columnIndex="1">
-                        <Label style="-fx-font-size: 24px; -fx-cursor: hand;" text="👤" />
-                        <Label style="-fx-font-size: 14px;" text="Usuario" />
+                  <children>
+                     <Button contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" style="-fx-background-color: white; -fx-cursor: hand;" text="Perfil Usuario">
+                        <graphic>
+                           <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                              <image>
+                                 <Image url="@images/user.png" />
+                              </image>
+                           </ImageView>
+                        </graphic>
+                     </Button>
+                  </children>
                     </VBox>
                     <VBox alignment="CENTER" GridPane.columnIndex="2">
-                        <Label style="-fx-font-size: 24px; -fx-cursor: hand;" text="📞" />
-                        <Label style="-fx-font-size: 14px;" text="Suporte">
-                            <font>
-                                <Font name="Yu Gothic UI Semibold" size="12.0" />
-                            </font>
-                        </Label>
+                  <children>
+                     <Button contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" style="-fx-background-color: white; -fx-cursor: hand;" text="Suporte">
+                        <graphic>
+                           <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                              <image>
+                                 <Image url="@images/info.png" />
+                              </image>
+                           </ImageView>
+                        </graphic>
+                     </Button>
+                  </children>
                     </VBox>
                 </children>
                 <VBox.margin>

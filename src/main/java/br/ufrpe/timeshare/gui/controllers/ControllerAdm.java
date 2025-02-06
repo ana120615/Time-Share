@@ -6,21 +6,6 @@ import javafx.fxml.FXML;
 
 public class ControllerAdm {
 
-    //FINS DE TESTE
-    @FXML
-    public void irTelaBensOfertados(ActionEvent event) {
-        ScreenManager.getInstance().showCadastroScreen();
-    }
-
-    @FXML
-    public void irTelaGerenciamentoReservas(ActionEvent event) {
-        ScreenManager.getInstance().showCadastroScreen();
-    }
-
-    @FXML
-    public void irTelaMinhasCotas(ActionEvent event) {
-        ScreenManager.getInstance().showCadastroScreen();
-    }
 
 
 }

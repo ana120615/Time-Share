@@ -93,13 +93,13 @@
                     <!-- Botões de Navegação -->
               <VBox alignment="CENTER" prefHeight="139.0" prefWidth="379.0" spacing="15">
                <ComboBox prefWidth="150.0" promptText="Gerenciamento de Bens" style="-fx-background-color: #1666B3; -fx-background-size: 16; -fx-cursor: hand;" />
-                  <Button onAction="#irTelaBensOfertados" prefHeight="33.0" prefWidth="300" style="-fx-font-size: 16px; -fx-background-color: #1666B3; -fx-background-radius: 10; -fx-cursor: hand; -fx-font-weight: bold; -fx-background-insets: 1, 1; -fx-text-fill: white;" text="Gerenciamento de Bens" textFill="WHITE" VBox.vgrow="ALWAYS">
+                  <Button prefHeight="33.0" prefWidth="300" style="-fx-font-size: 16px; -fx-background-color: #1666B3; -fx-background-radius: 10; -fx-cursor: hand; -fx-font-weight: bold; -fx-background-insets: 1, 1; -fx-text-fill: white;" text="Gerenciamento de Bens" textFill="WHITE" VBox.vgrow="ALWAYS">
                   <opaqueInsets>
                      <Insets left="20.0" />
                   </opaqueInsets>
                </Button>
-                  <Button onAction="#irTelaGerenciamentoReservas" prefWidth="300" style="-fx-font-size: 16px; -fx-background-color: #1666B3; -fx-background-radius: 10; -fx-cursor: hand; -fx-background-insets: 1, 1; -fx-font-weight: bold; -fx-text-fill: white;" text="Gerenciamento de Reservas" textFill="WHITE" VBox.vgrow="ALWAYS" />
-                  <Button onAction="#irTelaMinhasCotas" prefHeight="32.0" prefWidth="300" style="-fx-font-size: 16px; -fx-background-color: #1666B3; -fx-background-radius: 10; -fx-cursor: hand; -fx-background-insets: 1, 1; -fx-font-weight: bold; -fx-text-fill: white;" text="Relatorios" VBox.vgrow="ALWAYS" />
+                  <Button prefWidth="300" style="-fx-font-size: 16px; -fx-background-color: #1666B3; -fx-background-radius: 10; -fx-cursor: hand; -fx-background-insets: 1, 1; -fx-font-weight: bold; -fx-text-fill: white;" text="Gerenciamento de Reservas" textFill="WHITE" VBox.vgrow="ALWAYS" />
+                  <Button prefHeight="32.0" prefWidth="300" style="-fx-font-size: 16px; -fx-background-color: #1666B3; -fx-background-radius: 10; -fx-cursor: hand; -fx-background-insets: 1, 1; -fx-font-weight: bold; -fx-text-fill: white;" text="Relatorios" VBox.vgrow="ALWAYS" />
                   <opaqueInsets>
                       <Insets left="40.0" top="10.0" />
                   </opaqueInsets>
