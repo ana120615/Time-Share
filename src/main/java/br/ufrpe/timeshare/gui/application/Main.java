@@ -12,7 +12,7 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) {
         ScreenManager.getInstance().setMainStage(primaryStage);
-        ScreenManager.getInstance().showAdmPrincipalScreen();
+        ScreenManager.getInstance().showLoginScreen();
 
         primaryStage.show();
     }

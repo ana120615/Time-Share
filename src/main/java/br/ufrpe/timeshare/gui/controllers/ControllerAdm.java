@@ -1,6 +1,7 @@
 package br.ufrpe.timeshare.gui.controllers;
 
 import javafx.animation.*;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
@@ -17,8 +18,8 @@ public class ControllerAdm {
 
     private boolean isExpanded = true; // Estado inicial
 
-    @FXML
-    private void toggleVBox() {
+
+    public void toggleVBox(ActionEvent eventb) {
         if (isExpanded) {
             // Animação para esconder imagem suavemente
             FadeTransition fadeOut = new FadeTransition(Duration.millis(200), imageView);
