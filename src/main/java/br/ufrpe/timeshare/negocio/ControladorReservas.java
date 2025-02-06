@@ -93,7 +93,6 @@ public class ControladorReservas {
     }
 
 
-    //TODO: fazer com que, ao criar reserva, o status de disponibilidade para reserva seja alterado
     //metodo para criar reserva/ reservar
     public String criarReserva(LocalDateTime dataInicio, LocalDateTime dataFim, Usuario usuarioComum, Bem bem)
             throws DadosInsuficientesException, ReservaJaExisteException, ForaPeriodoException, PeriodoJaReservadoException, PeriodoNaoDisponivelParaReservaException, ReservaNaoExisteException, CotaJaReservadaException {
@@ -164,10 +163,6 @@ public class ControladorReservas {
 
         if (!reservaCancelada.getDataInicio().equals(cota.getDataInicio()) || !reservaCancelada.getDataFim().equals(cota.getDataFim())) {
             throw new OperacaoNaoPermitidaException("A reserva nao foi realizada dentro da cota, verifique o periodo completo da reserva para cancela-la.");
-        }
-
-        if (cota.isStatusDeDisponibilidadeParaReserva()) {
-            throw new OperacaoNaoPermitidaException("A cota nao foi reservada anteriormente.");
         }
 
         cota.setStatusDeDisponibilidadeParaReserva(true);
