@@ -8,7 +8,7 @@ import br.ufrpe.timeshare.negocio.beans.Reserva;
 public class RepositorioReservas extends RepositorioGenerico<Reserva> implements IRepositorioReservas {
 
     // INSTANCIA UNICA DO REPOSITORIO
-    private static RepositorioReservas instancia;
+    private static volatile RepositorioReservas instancia;
 
     public RepositorioReservas() {
         super();
