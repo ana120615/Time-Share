@@ -113,10 +113,11 @@ public class ControladorReservas {
         Reserva reserva = new Reserva(idNumeroReserva, dataInicio, dataFim, usuarioComum, bem);
 
         //verifica se reserva ja existe
-        Reserva reservaExistente = repositorioReservas.buscarReserva(reserva);
-        if (reservaExistente != null) {
-            throw new ReservaJaExisteException("Reserva ja existe.");
+
+        if (repositorioReservas.verificarConflitoNaReserva(reserva)) {
+            throw new ReservaJaExisteException("Conflito de Periodo. Reserva não realizada");
         }
+
 
         repositorioReservas.cadastrar(reserva);
         // verificarPeriodo(bem, usuarioComum, dataInicio, dataFim);
@@ -183,6 +184,10 @@ public class ControladorReservas {
 
         if (reservaCancelada == null) {
             throw new ReservaNaoExisteException("Reserva inexistente");
+        }
+        Estadia estadia = repositorioEstadia.buscarEstadiaPorReserva( (int) reservaCancelada.getId());
+        if (estadia.getDataInicio() != null && estadia.getDataFim() == null) {
+            throw new ReservaJaCanceladaException("Estadia ja iniciada. Nao pode ser cancelada.");
         }
 
         ArrayList<Cota> cotasBemAssociadoReserva = reservaCancelada.getBem().getCotas();
@@ -377,8 +382,6 @@ public class ControladorReservas {
             existeReservaOcupada = true;
 
         }
-
-
         return existeReservaOcupada;
     }
 

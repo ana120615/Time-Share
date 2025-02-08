@@ -12,5 +12,7 @@ public interface IRepositorioReservas extends IRepositorio<Reserva> {
 
     List<Reserva> buscarReservasPorBem(long idBem);
 
+    boolean verificarConflitoNaReserva(Reserva reserva);
+
 
 }
