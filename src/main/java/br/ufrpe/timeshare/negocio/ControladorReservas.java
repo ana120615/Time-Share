@@ -241,7 +241,7 @@ public class ControladorReservas {
             throw new ReservaNaoExisteException("Reserva inexistente.");
         }
 
-        if(!reserva.getUsuarioComum().equals(usuario)) {
+        if (!reserva.getUsuarioComum().equals(usuario)) {
             throw new UsuarioNaoPermitidoException("Reserva esta em nome de outro usuario");
         }
 
@@ -419,15 +419,15 @@ public class ControladorReservas {
                         (!cota.getDataInicio().isBefore(reserva.getDataInicio()) && cota.getDataFim().isEqual(reserva.getDataFim())) ||
                         (cota.getDataInicio().isEqual(reserva.getDataInicio()) && cota.getDataFim().isEqual(reserva.getDataFim()));
                 if (datasIguais || cotaCobreReserva) {
-                    if (!cota.isStatusDeDisponibilidadeParaReserva()) {
-                        throw new CotaJaReservadaException("A cota ja foi utilizada em uma reserva");
+//                    if (!cota.isStatusDeDisponibilidadeParaReserva()) {
+//                        throw new CotaJaReservadaException("A cota ja foi utilizada em uma reserva");
+//
+//                    } else {
 
-                    } else {
-                        cota.setStatusDeDisponibilidadeParaReserva(false);
-                        reservaTaxada = false;
-                        break;
-                    }
                 }
+                reservaTaxada = false;
+                break;
+
             }
         }
 
