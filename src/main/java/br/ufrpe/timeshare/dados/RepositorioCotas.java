@@ -1,11 +1,11 @@
 package br.ufrpe.timeshare.dados;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import br.ufrpe.timeshare.negocio.beans.Bem;
 import br.ufrpe.timeshare.negocio.beans.Cota;
 import br.ufrpe.timeshare.negocio.beans.Usuario;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class RepositorioCotas extends RepositorioGenerico<Cota> implements IRepositorioCotas {
 
@@ -70,4 +70,5 @@ public class RepositorioCotas extends RepositorioGenerico<Cota> implements IRepo
 
         return resultado;
     }
+
 }

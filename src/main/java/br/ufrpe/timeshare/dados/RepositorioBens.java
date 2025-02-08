@@ -1,9 +1,9 @@
 package br.ufrpe.timeshare.dados;
 
+import br.ufrpe.timeshare.negocio.beans.Bem;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import br.ufrpe.timeshare.negocio.beans.Bem;
 
 public class RepositorioBens extends RepositorioGenerico<Bem> implements IRepositorioBens {
 
@@ -66,6 +66,7 @@ public class RepositorioBens extends RepositorioGenerico<Bem> implements IReposi
         }
         return listaBensByNome;
     }
+
 
 }
 
