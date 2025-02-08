@@ -1,12 +1,15 @@
 package br.ufrpe.timeshare.gui.controllers;
 
+import br.ufrpe.timeshare.gui.application.ScreenManager;
 import javafx.animation.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
+import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
+
+import java.util.Optional;
 
 public class ControllerAdm {
 
@@ -16,7 +19,16 @@ public class ControllerAdm {
     @FXML
     private ImageView imageView; // Logo dentro do menu
 
-    private boolean isExpanded = true; // Estado inicial
+    private boolean isExpanded = true;
+
+    @FXML
+    private TabPane tabPaneAdmTelaPrincipal;// Estado inicial
+    @FXML
+    private Tab tabGerenciamentoBens;
+    @FXML
+    private Tab tabGerenciamentoReservas;
+    @FXML
+    private Tab tabRelatorio;
 
 
     public void toggleVBox(ActionEvent eventb) {
@@ -54,6 +66,37 @@ public class ControllerAdm {
             expand.play();
         }
         isExpanded = !isExpanded; // Alterna estado
+    }
+
+    public void mudarAbaBens (ActionEvent event) {
+        tabPaneAdmTelaPrincipal.getSelectionModel().select(tabGerenciamentoBens);
+    }
+
+    public void mudarAbaReservas (ActionEvent event) {
+        tabPaneAdmTelaPrincipal.getSelectionModel().select(tabGerenciamentoReservas);
+    }
+
+    public void mudarAbaRelatorio (ActionEvent event) {
+        tabPaneAdmTelaPrincipal.getSelectionModel().select(tabRelatorio);
+    }
+
+    @FXML
+    public void deslogar(ActionEvent event) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmação");
+        alert.setHeaderText("Deseja realmente sair?");
+        alert.setContentText("Clique em OK para confirmar ou Cancelar para voltar.");
+
+        // Exibindo o alerta e capturando a resposta
+        Optional<ButtonType> result = alert.showAndWait();
+
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            ScreenManager.getInstance().showLoginScreen();
+            System.out.println("Usuário confirmou a ação!");
+        } else {
+            System.out.println("Usuário cancelou a ação!");
+        }
+
     }
 }
 
