@@ -294,54 +294,91 @@ public class Sistema {
                                             System.out.println("Minhas reservas");
                                             System.out.println(controladorReservas.listarReservasUsuario(usuario));
                                             System.out.println(" ");
+                                            System.out.println("Estadia iniciadas");
+                                            System.out.println(controladorReservas.listarEstadiasUsuario(usuario));
+                                            System.out.println(" ");
+                                            System.out.println("1 - Alterar periodo reserva");
+                                            System.out.println("2 - Estadia");
+                                            System.out.println("3 - Voltar");
                                             System.out.println("Deseja ir para Tela de Estadia? (s/n)");
-                                            char respostaEstadia = input.next().charAt(0);
-                                            if (respostaEstadia == 's') {
-                                                boolean telaDeEstadia = false;
-                                                while (!telaDeEstadia) {
-                                                    System.out.println("\n\n-- *** -- ");
-                                                    System.out.println("1 - Iniciar Estadia (check-in)");
-                                                    System.out.println("2 - Finalizar Estadia (check-out)");
-                                                    System.out.println("3 - Prolongar Estadia");
-                                                    System.out.println("4 - Ver minha Estadias");
-                                                    System.out.println("5 - Voltar");
-                                                    escolha = input.nextInt();
-                                                    switch (escolha) {
-                                                        case 1:
-                                                            System.out.println("Informe o id da reserva: ");
-                                                            int idReserva = input.nextInt();
-                                                            try {
-                                                                controladorReservas.checkin(idReserva);
-                                                                System.out.println("Estadia iniciada com sucesso!");
-                                                            } catch (ReservaNaoExisteException |
-                                                                     ReservaJaCanceladaException |
-                                                                     ForaPeriodoException |
-                                                                     EstadiaJaInicializadaException e) {
-                                                                System.out.println(e.getMessage());
-                                                            }
-                                                            break;
-                                                        case 2:
-                                                            System.out.println("Informe o id da Estadia: ");
-                                                            int idEstadiaFinalizar = input.nextInt();
-                                                            try {
-                                                                controladorReservas.checkout(idEstadiaFinalizar);
-                                                                System.out.println("Estadia finalizada com sucesso!");
-                                                            } catch (ReservaNaoExisteException | ReservaJaCanceladaException | EstadiaNaoExisteException e) {
-                                                                System.out.println(e.getMessage());
-                                                            }
-                                                            break;
-                                                        case 3:
-                                                            break;
-                                                        case 4 :
-                                                            System.out.println("*** Minhas Estadias ***");
-                                                            System.out.println(controladorReservas.listarEstadiasUsuario(usuario));
-                                                            System.out.println("-----------------------------------------------------------\n");
-                                                            break;
-                                                        case 5:
-                                                            telaDeEstadia = true;
-                                                            break;
+                                            int respostaEstadia = input.nextInt();
+                                            switch (respostaEstadia) {
+                                                case 1:
+                                                    int id;
+                                                    System.out.println("Id reserva: ");
+                                                    id = input.nextInt();
+                                                    input.nextLine();
+                                                    System.out.println("Data inicial: ");
+                                                    String dataInicial = input.nextLine();
+                                                    dataInicial += " 01:00";
+                                                    System.out.println("Data final: ");
+                                                    String dataFinal = input.nextLine();
+                                                    dataFinal += " 23:59";
+                                                    try {
+                                                        controladorReservas.alterarPeriodoReserva(id, LocalDateTime.parse(dataInicial, DateTimeFormatter.ofPattern("dd/MM/yyy HH:mm")), LocalDateTime.parse(dataFinal, DateTimeFormatter.ofPattern("dd/MM/yyy HH:mm")), usuario);
+                                                    } catch (CotaJaReservadaException | UsuarioNaoPermitidoException |
+                                                             PeriodoNaoDisponivelParaReservaException
+                                                             | ReservaJaCanceladaException | ForaPeriodoException |
+                                                             DadosInsuficientesException | ReservaNaoExisteException |
+                                                             ReservaJaExisteException | PeriodoJaReservadoException e) {
+                                                        throw new RuntimeException(e);
                                                     }
-                                                }
+                                                    break;
+
+                                                case 2:
+                                                    boolean telaDeEstadia = false;
+                                                    while (!telaDeEstadia) {
+                                                        System.out.println("\n\n-- *** -- ");
+                                                        System.out.println("1 - Iniciar Estadia (check-in)");
+                                                        System.out.println("2 - Finalizar Estadia (check-out)");
+                                                        System.out.println("3 - Prolongar Estadia");
+                                                        System.out.println("4 - Ver minha Estadias");
+                                                        System.out.println("5 - Voltar");
+                                                        escolha = input.nextInt();
+                                                        switch (escolha) {
+                                                            case 1:
+                                                                System.out.println("Informe o id da reserva: ");
+                                                                int idReserva = input.nextInt();
+                                                                try {
+                                                                    controladorReservas.checkin(idReserva);
+                                                                    System.out.println("Estadia iniciada com sucesso!");
+                                                                } catch (ReservaNaoExisteException |
+                                                                         ReservaJaCanceladaException |
+                                                                         ForaPeriodoException |
+                                                                         EstadiaJaInicializadaException e) {
+                                                                    System.out.println(e.getMessage());
+                                                                }
+                                                                break;
+                                                            case 2:
+                                                                System.out.println("Informe o id da Estadia: ");
+                                                                int idEstadiaFinalizar = input.nextInt();
+                                                                try {
+                                                                    controladorReservas.checkout(idEstadiaFinalizar);
+                                                                    System.out.println("Estadia finalizada com sucesso!");
+                                                                } catch (ReservaNaoExisteException |
+                                                                         ReservaJaCanceladaException |
+                                                                         EstadiaNaoExisteException e) {
+                                                                    System.out.println(e.getMessage());
+                                                                }
+                                                                break;
+                                                            case 3:
+
+                                                                break;
+                                                            case 4:
+                                                                System.out.println("*** Minhas Estadias ***");
+                                                                System.out.println(controladorReservas.listarEstadiasUsuario(usuario));
+                                                                System.out.println("-----------------------------------------------------------\n");
+                                                                break;
+                                                            case 5:
+                                                                telaDeEstadia = true;
+                                                                break;
+                                                        }
+                                                    }
+                                                    break;
+                                                case 3:
+                                                    break;
+                                                default:
+                                                    System.out.println("Opcao invalida!");
                                             }
                                             break;
 
@@ -429,7 +466,7 @@ public class Sistema {
                                                                 try {
                                                                     controladorReservas.reservaPeriodoCota(cota, usuario);
                                                                 } catch (UsuarioNaoPermitidoException |
-                                                                        ProprietarioNaoIdentificadoException |
+                                                                         ProprietarioNaoIdentificadoException |
                                                                          DadosInsuficientesException |
                                                                          ReservaJaExisteException |
                                                                          ForaPeriodoException |
@@ -461,7 +498,8 @@ public class Sistema {
                                                                 System.out.println(e.getMessage());
                                                             } catch (UsuarioNaoPermitidoException |
                                                                      CotaJaReservadaException |
-                                                                     ReservaNaoReembolsavelException e) {
+                                                                     ReservaNaoReembolsavelException |
+                                                                     DadosInsuficientesException e) {
                                                                 throw new RuntimeException(e);
                                                             }
 
@@ -484,9 +522,7 @@ public class Sistema {
                                                                         System.out.println(e.getMessage());
                                                                     }
 
-                                                                }
-                                                                //TODO: por que o usuario dono da cota nao consegue reservala?
-                                                                else {
+                                                                } else {
                                                                     System.out.println("Você não é o proprietário dessa cota.");
                                                                 }
 
@@ -494,7 +530,6 @@ public class Sistema {
                                                                 System.out.println(e.getMessage());
                                                             }
                                                         }
-
 
                                                         break;
                                                     case 4:
