@@ -250,8 +250,32 @@ public class ControladorReservas {
             throw new ReservaNaoExisteException("Reserva inexistente.");
         }
 
+        if(novaDataInicio.isAfter(novaDataFim)) {
+
+        }
+
         //verifica validade do novo periodo
         verificarPeriodo(novaDataInicio, novaDataFim, reserva.getBem(), reserva.getUsuarioComum());
+
+        //verifica se a nova data ficara dentro do periodo de uma reserva outra
+        //verificar a parte inicial nova
+        if (novaDataInicio.isBefore(reserva.getDataInicio())) {
+            if (repositorioReservas.verificarConflitoNaReserva(novaDataInicio, reserva.getDataInicio())) {
+                throw new ReservaJaExisteException("Conflito de Periodo.");
+            }
+        }
+
+        //verificar a parte final nova
+        if (novaDataFim.isAfter(reserva.getDataFim())) {
+            if (repositorioReservas.verificarConflitoNaReserva(reserva.getDataFim(), novaDataFim)) {
+                throw new ReservaJaExisteException("Conflito de Periodo.");
+            }
+        }
+
+        //verifica se a nova data ficara dentro do periodo de uma cota
+        if(verificarConflitoDeDatasCota(reserva.getBem(), novaDataInicio, novaDataFim, reserva.getUsuarioComum())) {
+            throw new PeriodoNaoDisponivelParaReservaException("O periodo esta dentro de uma cota comprada por outro usuario.");
+        }
 
         //atualiza dados da reserva
         reserva.setDataInicio(novaDataInicio);
@@ -276,7 +300,6 @@ public class ControladorReservas {
         if (dataFim.isBefore(inicioPeriodo)) {
             throw new IllegalArgumentException("A data de inicio deve ser antes da data final.");
         }
-
 
         while (!inicioAtual.isAfter(dataFim)) {
             // Buscar todas as reservas para o bem
