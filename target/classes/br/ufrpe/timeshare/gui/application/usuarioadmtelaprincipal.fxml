@@ -12,10 +12,39 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="br.ufrpe.timeshare.gui.controllers.ControllerAdm">
+   <center>
+      <VBox prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: white;" BorderPane.alignment="CENTER">
+         <children>
+            <GridPane maxWidth="300.0" style="-fx-background-color: white;">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="87.0" minWidth="1.0" prefWidth="1.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="246.0" minWidth="10.0" prefWidth="241.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <Button contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#toggleVBox" style="-fx-background-color: white; -fx-cursor: hand;" text="Button" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                     <graphic>
+                        <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@images/menu-burger.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+               </children>
+            </GridPane>
+         </children>
+      </VBox>
+   </center>
    <left>
-      <VBox prefHeight="400.0" prefWidth="227.0" style="-fx-background-color: #000814;" BorderPane.alignment="CENTER">
+      <VBox fx:id="vboxContainer" prefWidth="222.0" style="-fx-background-color: #000814;" BorderPane.alignment="CENTER">
          <children>
             <GridPane style="-fx-background-color: #001f54;">
               <columnConstraints>
@@ -33,7 +62,7 @@
                         <Font size="20.0" />
                      </font>
                   </Label>
-                  <ImageView fitHeight="80.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="1">
+                  <ImageView fx:id="imageView" fitHeight="80.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="1">
                      <image>
                         <Image url="@logo.png" />
                      </image>
@@ -79,7 +108,7 @@
                         </GridPane>
                      </graphic>
                   </Button>
-                  <Button contentDisplay="GRAPHIC_ONLY" graphicTextGap="10.0" mnemonicParsing="false" prefHeight="52.0" prefWidth="354.0" style="-fx-background-color: #000814;" text="Gerenciamento de Reservas" GridPane.rowIndex="1">
+                  <Button contentDisplay="GRAPHIC_ONLY" graphicTextGap="10.0" mnemonicParsing="false" prefHeight="52.0" prefWidth="354.0" style="-fx-background-color: #000814; -fx-cursor: hand;" text="Gerenciamento de Reservas" GridPane.rowIndex="1">
                      <graphic>
                         <GridPane prefHeight="44.0" prefWidth="319.0">
                            <columnConstraints>
@@ -108,7 +137,7 @@
                         </GridPane>
                      </graphic>
                   </Button>
-                  <Button contentDisplay="GRAPHIC_ONLY" graphicTextGap="10.0" mnemonicParsing="false" prefHeight="52.0" prefWidth="354.0" style="-fx-background-color: #000814;" text="Relatorio" GridPane.rowIndex="2">
+                  <Button contentDisplay="GRAPHIC_ONLY" graphicTextGap="10.0" mnemonicParsing="false" prefHeight="52.0" prefWidth="354.0" style="-fx-background-color: #000814; -fx-cursor: hand;" text="Relatorio" GridPane.rowIndex="2">
                      <graphic>
                         <GridPane prefHeight="44.0" prefWidth="319.0">
                            <columnConstraints>
@@ -145,34 +174,4 @@
          </children>
       </VBox>
    </left>
-   <center>
-      <VBox prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: white;" BorderPane.alignment="CENTER">
-         <children>
-            <GridPane>
-              <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="87.0" minWidth="1.0" prefWidth="1.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="180.0" minWidth="10.0" prefWidth="33.0" />
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="246.0" minWidth="10.0" prefWidth="241.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-              </columnConstraints>
-              <rowConstraints>
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-              </rowConstraints>
-               <children>
-                  <Button contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" style="-fx-background-color: white;" text="Button" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                     <graphic>
-                        <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@images/menu-burger.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
-                  </Button>
-               </children>
-            </GridPane>
-         </children>
-      </VBox>
-   </center>
 </BorderPane>

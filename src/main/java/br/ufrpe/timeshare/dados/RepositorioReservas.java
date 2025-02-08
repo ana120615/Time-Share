@@ -8,7 +8,7 @@ import br.ufrpe.timeshare.negocio.beans.Reserva;
 public class RepositorioReservas extends RepositorioGenerico<Reserva> implements IRepositorioReservas {
 
     // INSTANCIA UNICA DO REPOSITORIO
-    private static RepositorioReservas instancia;
+    private static volatile RepositorioReservas instancia;
 
     public RepositorioReservas() {
         super();
@@ -41,6 +41,25 @@ public class RepositorioReservas extends RepositorioGenerico<Reserva> implements
             resultado = lista.get(i - 1);
         }
         return resultado;
+    }
+
+    @Override
+    public boolean verificarConflitoNaReserva(Reserva reserva) {
+        boolean conflito = false;
+        for (Reserva reservaAtual : lista) {
+
+            if (reservaAtual.getDataInicio().isBefore(reserva.getDataInicio()) && reservaAtual.getDataFim().isAfter(reserva.getDataInicio())) {
+                conflito = true;
+            } else if (reservaAtual.getDataInicio().isBefore(reserva.getDataFim()) && reservaAtual.getDataFim().isAfter(reserva.getDataFim())) {
+                conflito = true;
+            } else if (reservaAtual.getDataInicio().isAfter(reserva.getDataInicio()) && reservaAtual.getDataFim().isBefore(reserva.getDataFim())) {
+                conflito = true;
+            } else if (reservaAtual.getDataInicio().isEqual(reserva.getDataInicio()) || reservaAtual.getDataFim().isEqual(reserva.getDataFim())) {
+                conflito = true;
+            }
+
+        }
+        return conflito;
     }
 
 

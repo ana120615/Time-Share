@@ -360,7 +360,7 @@ public class Sistema {
                                                         int idBemParaReserva = input.nextInt();
                                                         System.out.print("Informe a data Inicial (dd/MM/yyyy): ");
                                                         String inicioPeriodo = input.next();
-                                                        inicioPeriodo += " 00:00";
+                                                        inicioPeriodo += " 01:00";
                                                         System.out.print("Informe a data final (dd/MM/yyyy): ");
                                                         String finalPeriodo = input.next();
                                                         finalPeriodo += " 23:59";
