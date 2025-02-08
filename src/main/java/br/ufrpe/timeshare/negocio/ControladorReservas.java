@@ -273,10 +273,6 @@ public class ControladorReservas {
         //atualiza dados da reserva
         reserva.setDataInicio(novaDataInicio);
         reserva.setDataFim(novaDataFim);
-        int duracao = reserva.calcularDuracaoReserva();
-        double taxaExtra;
-        //calcula possivel taxa extra para alterar o periodo
-        taxaExtra = calcularTaxaExtra(reserva, duracao);
 
         return gerarComprovanteReserva(reserva);
     }
@@ -321,7 +317,7 @@ public class ControladorReservas {
                 existeReservaAtiva = verificarConflitoDeDatasReserva(reservas.get(i), inicioAtual, dataFim);
             }
 
-            if (periodosDisponiveis.contains(inicioAtual.toString()) && (existeCotaOcupada || existeReservaAtiva)) {
+            if (existeCotaOcupada || existeReservaAtiva) {
                 periodosDisponiveis.remove(inicioAtual.toString());
             }
             inicioAtual = inicioAtual.plusDays(1);
@@ -370,6 +366,7 @@ public class ControladorReservas {
 
     //Verifica se o periodo esta dentro da cota atual
     private boolean verificarConflitoDeDatasReserva(Reserva reservaAtual, LocalDateTime dataInicio, LocalDateTime dataFim) {
+
         boolean conflito = false;
 
         if (reservaAtual.getDataInicio().isBefore(dataInicio) && reservaAtual.getDataFim().isAfter(dataInicio)) {
@@ -419,15 +416,9 @@ public class ControladorReservas {
                         (!cota.getDataInicio().isBefore(reserva.getDataInicio()) && cota.getDataFim().isEqual(reserva.getDataFim())) ||
                         (cota.getDataInicio().isEqual(reserva.getDataInicio()) && cota.getDataFim().isEqual(reserva.getDataFim()));
                 if (datasIguais || cotaCobreReserva) {
-//                    if (!cota.isStatusDeDisponibilidadeParaReserva()) {
-//                        throw new CotaJaReservadaException("A cota ja foi utilizada em uma reserva");
-//
-//                    } else {
-
+                    reservaTaxada = false;
+                    break;
                 }
-                reservaTaxada = false;
-                break;
-
             }
         }
 
@@ -435,13 +426,13 @@ public class ControladorReservas {
         //calcula a taxa baseada no preco de 1 cota e na quantidade de dias da reserva
         //5% ao dia
         if (reservaTaxada) {
-            assert cotas != null;
-            taxa = cotas.getFirst().getPreco() * 0.05 * quantidadeDias;
+            if(!cotas.isEmpty()) {
+                taxa = cotas.getFirst().getPreco() * 0.05 * quantidadeDias;
+            }
             double taxaPromocional = promocao.calcularTaxaPromocao(reserva.getDataInicio().withHour(0).withMinute(0), reserva.getUsuarioComum());
             double desconto = taxa * taxaPromocional;
             taxa -= desconto;
         }
-
 
         return Math.max(taxa, 0.00);
     }
@@ -451,7 +442,7 @@ public class ControladorReservas {
         int dias = reserva.calcularDuracaoReserva();
         double taxa = calcularTaxaExtra(reserva, dias);
 
-        return reserva + "Taxa extra: R$" + String.format("%.2f", taxa);
+        return reserva + "\nTaxa extra: R$" + String.format("%.2f", taxa);
     }
 
 
@@ -461,6 +452,7 @@ public class ControladorReservas {
     }
 
 
+    //TODO: verificar necessidade desse metodo
     private List<Reserva> listarReservasBem(Usuario usuarioAdm, Bem bem) throws DadosInsuficientesException, UsuarioNaoPermitidoException {
         List<Reserva> reservas = new ArrayList<>();
         if (usuarioAdm == null || bem == null) {
