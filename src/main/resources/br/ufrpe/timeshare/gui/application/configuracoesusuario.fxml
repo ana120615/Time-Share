@@ -172,7 +172,7 @@
             </GridPane>
             <HBox alignment="CENTER">
                <children>
-                  <Button mnemonicParsing="false" prefHeight="34.0" prefWidth="137.0" styleClass="botao-excluir" text="Excluir conta" />
+                  <Button mnemonicParsing="false" onAction="#excluirConta" prefHeight="34.0" prefWidth="137.0" styleClass="botao-excluir" text="Excluir conta" />
                </children>
                <padding>
                   <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
