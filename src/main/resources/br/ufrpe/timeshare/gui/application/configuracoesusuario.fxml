@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@styles/telaadm/settings.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@styles/telaadm/settings.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.ufrpe.timeshare.gui.controllers.ControllerConfiguracoes">
    <top>
       <HBox alignment="CENTER" prefHeight="105.0" prefWidth="600.0" BorderPane.alignment="CENTER">
          <children>
@@ -84,31 +84,31 @@
                   <VBox alignment="CENTER_LEFT" prefHeight="67.0" prefWidth="238.0" GridPane.columnIndex="1">
                      <children>
                         <Label style="-fx-font-weight: bold;" text="Nome" />
-                        <Label text="Nome usuario" />
+                        <Label fx:id="nome" text="Nome usuario" />
                      </children>
                   </VBox>
                   <VBox alignment="CENTER_LEFT" prefHeight="71.0" prefWidth="238.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                      <children>
                         <Label style="-fx-font-weight: bold;" text="CPF" />
-                        <Label text="CPF usuario" />
+                        <Label fx:id="cpf" text="CPF usuario" />
                      </children>
                   </VBox>
                   <VBox alignment="CENTER_LEFT" prefHeight="67.0" prefWidth="238.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
                      <children>
                         <Label style="-fx-font-weight: bold;" text="Email" />
-                        <Label text="Email usuario" />
+                        <Label fx:id="email" text="Email usuario" />
                      </children>
                   </VBox>
                   <VBox alignment="CENTER_LEFT" prefHeight="67.0" prefWidth="238.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
                      <children>
                         <Label style="-fx-font-weight: bold;" text="Data de Nascimento" />
-                        <Label text="DataNascimento usuario" />
+                        <Label fx:id="dataNascimento" text="DataNascimento usuario" />
                      </children>
                   </VBox>
                   <VBox alignment="CENTER_LEFT" prefHeight="67.0" prefWidth="238.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
                      <children>
                         <Label style="-fx-font-weight: bold;" text="Senha" />
-                        <Label text="Senha usuario" />
+                        <Label fx:id="senha" text="Senha usuario" />
                      </children>
                   </VBox>
                   <GridPane alignment="BOTTOM_CENTER" prefHeight="47.0" prefWidth="205.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
@@ -131,7 +131,7 @@
                      <graphic>
                         <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@images/lapis%20(1).png" />
+                              <Image url="@images/lapis.png" />
                            </image>
                         </ImageView>
                      </graphic>
@@ -149,7 +149,7 @@
                      <graphic>
                         <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@images/lapis%20(1).png" />
+                              <Image url="@images/lapis.png" />
                            </image>
                         </ImageView>
                      </graphic>
@@ -158,7 +158,7 @@
                      <graphic>
                         <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@images/lapis%20(1).png" />
+                              <Image url="@images/lapis.png" />
                            </image>
                         </ImageView>
                      </graphic>
@@ -167,7 +167,7 @@
                      <graphic>
                         <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@images/lapis%20(1).png" />
+                              <Image url="@images/lapis.png" />
                            </image>
                         </ImageView>
                      </graphic>

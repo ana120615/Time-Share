@@ -73,7 +73,7 @@ public class ControllerUsuarioComum implements ControllerBase {
     }
 
     @FXML
-    public void irTelaConfiguracoesUsuarioComum(ActionEvent event) {
+    public void irTelaConfiguracoes(ActionEvent event) {
         ScreenManager.getInstance().showConfiguracoesUsuarioComumScreen();
     }
 
@@ -115,7 +115,7 @@ public class ControllerUsuarioComum implements ControllerBase {
 
     @FXML
     public void irParaTelaDeConfiguracoes(ActionEvent event) {
-        ScreenManager.getInstance().showConfiguracoesUsuarioComumScreen();
+        ScreenManager.getInstance().showScreen("ConfiguracoesUsuario");
     }
 
     // Recebe dados, nesse caso, o objeto Usuario

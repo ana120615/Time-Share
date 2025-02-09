@@ -34,7 +34,7 @@ public class ScreenManager {
         carregarTela("Login", "/br/ufrpe/timeshare/gui/application/login.fxml");
         carregarTela("UsuarioComumPrincipal", "/br/ufrpe/timeshare/gui/application/usuariocomumtelaprincipal.fxml");
         carregarTela("AdmPrincipal", "/br/ufrpe/timeshare/gui/application/usuarioadmtelaprincipal.fxml");
-        carregarTela("ConfiguracoesUsuarioComum", "/br/ufrpe/timeshare/gui/application/configuracoesusuariocomum.fxml");
+        carregarTela("ConfiguracoesUsuario", "/br/ufrpe/timeshare/gui/application/configuracoesusuario.fxml");
     }
 
     private void carregarTela(String nome, String caminhoFXML) {
