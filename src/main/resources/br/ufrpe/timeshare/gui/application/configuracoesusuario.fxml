@@ -13,121 +13,129 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@styles/telaadm/settings.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.ufrpe.timeshare.gui.controllers.ControllerConfiguracoes">
-   <top>
-      <HBox alignment="CENTER" prefHeight="105.0" prefWidth="600.0" BorderPane.alignment="CENTER">
-         <children>
-            <GridPane prefHeight="121.0" prefWidth="381.0">
-              <columnConstraints>
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="107.6666259765625" minWidth="0.0" prefWidth="33.666656494140625" />
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="184.0" minWidth="10.0" prefWidth="130.0" />
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="235.66668701171878" minWidth="10.0" prefWidth="218.0" />
-              </columnConstraints>
-              <rowConstraints>
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-              </rowConstraints>
-               <children>
-                  <VBox alignment="CENTER" prefHeight="35.0" prefWidth="105.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                     <children>
-                        <Button contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" text="Button">
-                           <VBox.margin>
-                              <Insets bottom="5.0" top="5.0" />
-                           </VBox.margin>
-                           <graphic>
-                              <ImageView fitHeight="64.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@images/usuario-do-circulo.png" />
-                                 </image>
-                              </ImageView>
-                           </graphic>
-                        </Button>
-                     </children>
-                  </VBox>
-                  <VBox prefHeight="45.0" prefWidth="191.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
-                     <children>
-                        <Label text="Primeiro Nome">
-                           <font>
-                              <Font size="18.0" />
-                           </font>
-                        </Label>
-                        <Label text="Tipo" />
-                     </children>
-                  </VBox>
-               </children>
-            </GridPane>
-         </children>
-      </HBox>
-   </top>
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="633.0" prefWidth="793.0" stylesheets="@styles/telaadm/settings.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.ufrpe.timeshare.gui.controllers.ControllerConfiguracoes">
    <right>
       <VBox prefHeight="240.0" prefWidth="100.0" BorderPane.alignment="CENTER" />
    </right>
    <center>
-      <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+      <VBox alignment="TOP_CENTER" maxWidth="600.0" prefHeight="442.0" prefWidth="444.0" styleClass="fundo-branco" BorderPane.alignment="CENTER">
          <children>
-            <GridPane alignment="CENTER" prefHeight="288.0" prefWidth="400.0">
-              <columnConstraints>
-                  <ColumnConstraints hgrow="NEVER" maxWidth="522.3333129882812" minWidth="10.0" prefWidth="74.00002034505208" />
-                <ColumnConstraints hgrow="NEVER" maxWidth="522.3333129882812" minWidth="0.0" prefWidth="218.66670735677081" />
-                  <ColumnConstraints hgrow="NEVER" maxWidth="522.3333129882812" minWidth="10.0" prefWidth="100.6666259765625" />
-              </columnConstraints>
-              <rowConstraints>
-                <RowConstraints maxHeight="45.0" minHeight="10.0" prefHeight="35.0" vgrow="SOMETIMES" />
-                <RowConstraints maxHeight="45.0" minHeight="5.33334096272786" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints maxHeight="45.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <HBox alignment="CENTER" prefHeight="120.0" prefWidth="471.0">
+               <children>
+                  <HBox alignment="CENTER_LEFT" maxHeight="40.0" maxWidth="50.0" prefHeight="40.0" prefWidth="50.0" HBox.hgrow="ALWAYS" />
+                  <GridPane prefHeight="105.0" prefWidth="459.0">
+                     <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="184.0" minWidth="10.0" prefWidth="19.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="189.0" minWidth="10.0" prefWidth="147.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="309.0" minWidth="10.0" prefWidth="210.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="277.0" minWidth="10.0" prefWidth="53.0" />
+                     </columnConstraints>
+                     <rowConstraints>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                     </rowConstraints>
+                     <children>
+                        <VBox alignment="CENTER" prefHeight="35.0" prefWidth="105.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                           <children>
+                              <Button contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" styleClass="botao-perfil" text="Button">
+                                 <VBox.margin>
+                                    <Insets bottom="5.0" top="5.0" />
+                                 </VBox.margin>
+                                 <graphic>
+                                    <ImageView fitHeight="80.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@images/usuario-do-circulo.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </Button>
+                           </children>
+                        </VBox>
+                        <VBox prefHeight="45.0" prefWidth="191.0" GridPane.columnIndex="2" GridPane.rowIndex="2">
+                           <children>
+                              <Label prefHeight="35.0" prefWidth="222.0" styleClass="label-maior" text="Primeiro Nome">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Label>
+                              <Label styleClass="label-menor" text="Tipo" />
+                           </children>
+                        </VBox>
+                     </children>
+                  </GridPane>
+               </children>
+               <padding>
+                  <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
+               </padding>
+               <VBox.margin>
+                  <Insets bottom="20.0" />
+               </VBox.margin>
+            </HBox>
+            <GridPane alignment="CENTER" prefHeight="288.0" prefWidth="400.0" vgap="35.0">
+               <columnConstraints>
+                  <ColumnConstraints hgrow="ALWAYS" maxWidth="522.3333129882812" minWidth="10.0" prefWidth="68.0" />
+                  <ColumnConstraints hgrow="NEVER" maxWidth="522.3333129882812" minWidth="0.0" prefWidth="272.0" />
+                  <ColumnConstraints hgrow="NEVER" maxWidth="522.3333129882812" minWidth="10.0" prefWidth="37.0" />
+                  <ColumnConstraints hgrow="ALWAYS" maxWidth="522.3333129882812" minWidth="10.0" prefWidth="44.0" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints maxHeight="45.0" minHeight="10.0" prefHeight="35.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="45.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="45.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                   <RowConstraints maxHeight="45.0" minHeight="10.0" prefHeight="35.0" vgrow="SOMETIMES" />
                   <RowConstraints maxHeight="45.0" minHeight="10.0" prefHeight="35.0" vgrow="SOMETIMES" />
-                  <RowConstraints maxHeight="50.0" minHeight="10.0" prefHeight="40.0" vgrow="SOMETIMES" />
-              </rowConstraints>
+               </rowConstraints>
                <children>
                   <VBox alignment="CENTER_LEFT" prefHeight="67.0" prefWidth="238.0" GridPane.columnIndex="1">
                      <children>
-                        <Label style="-fx-font-weight: bold;" text="Nome" />
-                        <Label fx:id="nome" text="Nome usuario" />
+                        <Label styleClass="label-maior-parte-baixo" text="Nome" />
+                        <Label fx:id="nome" styleClass="label-menor-parte-baixo" text="Nome usuario" />
                      </children>
                   </VBox>
                   <VBox alignment="CENTER_LEFT" prefHeight="71.0" prefWidth="238.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                      <children>
-                        <Label style="-fx-font-weight: bold;" text="CPF" />
-                        <Label fx:id="cpf" text="CPF usuario" />
+                        <Label styleClass="label-maior-parte-baixo" text="CPF" />
+                        <Label fx:id="cpf" styleClass="label-menor-parte-baixo" text="CPF usuario" />
                      </children>
                   </VBox>
                   <VBox alignment="CENTER_LEFT" prefHeight="67.0" prefWidth="238.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
                      <children>
-                        <Label style="-fx-font-weight: bold;" text="Email" />
-                        <Label fx:id="email" text="Email usuario" />
+                        <Label styleClass="label-maior-parte-baixo" text="Email" />
+                        <Label fx:id="email" styleClass="label-menor-parte-baixo" text="Email usuario" />
                      </children>
                   </VBox>
                   <VBox alignment="CENTER_LEFT" prefHeight="67.0" prefWidth="238.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
                      <children>
-                        <Label style="-fx-font-weight: bold;" text="Data de Nascimento" />
-                        <Label fx:id="dataNascimento" text="DataNascimento usuario" />
+                        <Label styleClass="label-maior-parte-baixo" text="Data de Nascimento" />
+                        <Label fx:id="dataNascimento" styleClass="label-menor-parte-baixo" text="DataNascimento usuario" />
                      </children>
                   </VBox>
                   <VBox alignment="CENTER_LEFT" prefHeight="67.0" prefWidth="238.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
                      <children>
-                        <Label style="-fx-font-weight: bold;" text="Senha" />
-                        <Label fx:id="senha" text="Senha usuario" />
+                        <Label styleClass="label-maior-parte-baixo" text="Senha" />
+                        <Label fx:id="senha" styleClass="label-menor-parte-baixo" text="Senha usuario" />
                      </children>
                   </VBox>
-                  <GridPane alignment="BOTTOM_CENTER" prefHeight="47.0" prefWidth="205.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
-                    <columnConstraints>
-                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="87.33331298828125" minWidth="10.0" prefWidth="70.0" />
-                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="145.33333714803058" minWidth="10.0" prefWidth="101.66664632161459" />
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="91.33333333333334" minWidth="10.0" prefWidth="53.3333740234375" />
-                    </columnConstraints>
-                    <rowConstraints>
-                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                    </rowConstraints>
-                     <children>
-                        <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="107.0" style="-fx-text-fill: black; -fx-background-color: blue;" text="Excluir conta" GridPane.columnIndex="1" />
-                     </children>
-                     <GridPane.margin>
-                        <Insets top="10.0" />
-                     </GridPane.margin>
-                  </GridPane>
-                  <Button contentDisplay="GRAPHIC_ONLY" minWidth="29.0" mnemonicParsing="false" onAction="#editarNome" prefHeight="39.0" prefWidth="29.0" text="Button" GridPane.columnIndex="2">
+                  <Button contentDisplay="GRAPHIC_ONLY" minWidth="29.0" mnemonicParsing="false" onAction="#editarNome" prefHeight="39.0" prefWidth="29.0" styleClass="botao-editar" text="Button" GridPane.columnIndex="2">
+                     <graphic>
+                        <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true" styleClass="botao-editar">
+                           <image>
+                              <Image url="@images/lapis.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+                  <Button contentDisplay="GRAPHIC_ONLY" minWidth="29.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="29.0" styleClass="botao-editar" text="Button" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                     <graphic>
+                        <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true" styleClass="botao-editar">
+                           <image>
+                              <Image url="@images/lapis.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+                  <Button contentDisplay="GRAPHIC_ONLY" minWidth="29.0" mnemonicParsing="false" onAction="#editarEmail" prefHeight="39.0" prefWidth="29.0" styleClass="botao-editar" text="Button" GridPane.columnIndex="2" GridPane.rowIndex="2">
                      <graphic>
                         <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -136,16 +144,7 @@
                         </ImageView>
                      </graphic>
                   </Button>
-                  <Button contentDisplay="GRAPHIC_ONLY" minWidth="29.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="29.0" text="Button" GridPane.columnIndex="2" GridPane.rowIndex="1">
-                     <graphic>
-                        <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@images/chave.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
-                  </Button>
-                  <Button contentDisplay="GRAPHIC_ONLY" minWidth="29.0" mnemonicParsing="false" onAction="#editarEmail" prefHeight="39.0" prefWidth="29.0" text="Button" GridPane.columnIndex="2" GridPane.rowIndex="2">
+                  <Button contentDisplay="GRAPHIC_ONLY" minWidth="29.0" mnemonicParsing="false" onAction="#editarDataNascimento" prefHeight="39.0" prefWidth="29.0" styleClass="botao-editar" text="Button" GridPane.columnIndex="2" GridPane.rowIndex="3">
                      <graphic>
                         <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -154,16 +153,7 @@
                         </ImageView>
                      </graphic>
                   </Button>
-                  <Button contentDisplay="GRAPHIC_ONLY" minWidth="29.0" mnemonicParsing="false" onAction="#editarDataNascimento" prefHeight="39.0" prefWidth="29.0" text="Button" GridPane.columnIndex="2" GridPane.rowIndex="3">
-                     <graphic>
-                        <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@images/lapis.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
-                  </Button>
-                  <Button contentDisplay="GRAPHIC_ONLY" minWidth="29.0" mnemonicParsing="false" onAction="#editarSenha" prefHeight="39.0" prefWidth="29.0" text="Button" GridPane.columnIndex="2" GridPane.rowIndex="4">
+                  <Button contentDisplay="GRAPHIC_ONLY" minWidth="29.0" mnemonicParsing="false" onAction="#editarSenha" prefHeight="39.0" prefWidth="29.0" styleClass="botao-editar" text="Button" GridPane.columnIndex="2" GridPane.rowIndex="4">
                      <graphic>
                         <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -173,7 +163,33 @@
                      </graphic>
                   </Button>
                </children>
+               <padding>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </padding>
+               <VBox.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="30.0" />
+               </VBox.margin>
             </GridPane>
+            <HBox alignment="CENTER">
+               <children>
+                  <Button mnemonicParsing="false" prefHeight="34.0" prefWidth="137.0" styleClass="botao-excluir" text="Excluir conta" />
+               </children>
+               <padding>
+                  <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
+               </padding>
+            </HBox>
+            <VBox alignment="BOTTOM_CENTER" prefHeight="200.0" prefWidth="100.0">
+               <children>
+                  <Label style="-fx-text-fill: gray;" text="Version 1.0.0.00000">
+                     <font>
+                        <Font size="10.0" />
+                     </font>
+                     <padding>
+                        <Insets bottom="3.0" />
+                     </padding>
+                  </Label>
+               </children>
+            </VBox>
          </children>
          <BorderPane.margin>
             <Insets bottom="5.0" top="5.0" />
@@ -181,13 +197,22 @@
       </VBox>
    </center>
    <left>
-      <VBox prefHeight="240.0" prefWidth="100.0" BorderPane.alignment="CENTER" />
+      <VBox alignment="TOP_CENTER" prefHeight="240.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+         <BorderPane.margin>
+            <Insets bottom="5.0" top="5.0" />
+         </BorderPane.margin>
+         <children>
+            <Button mnemonicParsing="false" onAction="#irTelaPrincipalUsuario" prefHeight="34.0" prefWidth="29.0" style="-fx-background-color: trasparent; -fx-text-fill: #000814; -fx-cursor: hand;" text="&lt;" textAlignment="CENTER" textFill="WHITE" textOverrun="CENTER_WORD_ELLIPSIS">
+               <font>
+                  <Font size="30.0" />
+               </font>
+            </Button>
+         </children></VBox>
    </left>
    <bottom>
-      <HBox alignment="BOTTOM_CENTER" prefHeight="28.0" prefWidth="600.0" BorderPane.alignment="CENTER">
-         <children>
-            <Label text="Version 1.0.0.00000" />
-         </children>
-      </HBox>
+      <HBox alignment="BOTTOM_CENTER" prefHeight="29.0" prefWidth="750.0" BorderPane.alignment="CENTER" />
    </bottom>
+   <top>
+      <HBox prefHeight="22.0" prefWidth="695.0" BorderPane.alignment="CENTER" />
+   </top>
 </BorderPane>
