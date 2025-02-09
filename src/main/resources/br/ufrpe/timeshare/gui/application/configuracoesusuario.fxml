@@ -202,7 +202,7 @@
             <Insets bottom="5.0" top="5.0" />
          </BorderPane.margin>
          <children>
-            <Button mnemonicParsing="false" onAction="#irParaTelaLogin" prefHeight="34.0" prefWidth="29.0" style="-fx-background-color: trasparent; -fx-text-fill: #000814; -fx-cursor: hand;" text="&lt;" textAlignment="CENTER" textFill="WHITE" textOverrun="CENTER_WORD_ELLIPSIS">
+            <Button mnemonicParsing="false" onAction="#irTelaPrincipalUsuario" prefHeight="34.0" prefWidth="29.0" style="-fx-background-color: trasparent; -fx-text-fill: #000814; -fx-cursor: hand;" text="&lt;" textAlignment="CENTER" textFill="WHITE" textOverrun="CENTER_WORD_ELLIPSIS">
                <font>
                   <Font size="30.0" />
                </font>

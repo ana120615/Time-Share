@@ -8,6 +8,7 @@ import br.ufrpe.timeshare.gui.application.ScreenManager;
 import br.ufrpe.timeshare.negocio.ControladorUsuarioGeral;
 import br.ufrpe.timeshare.negocio.beans.Usuario;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
@@ -256,6 +257,10 @@ public class ControllerConfiguracoes implements ControllerBase {
                 alert.showAndWait();
             }
         }
+    }
+
+    public void irTelaPrincipalUsuario(Event event) {
+        ScreenManager.getInstance().showScreen("UsuarioComumPrincipal");
     }
 
 }
