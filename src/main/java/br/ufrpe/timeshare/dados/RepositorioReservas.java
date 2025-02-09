@@ -45,9 +45,9 @@ public class RepositorioReservas extends RepositorioGenerico<Reserva> implements
     }
 
     @Override
-    public boolean verificarConflitoNaReserva(LocalDateTime dataInicial, LocalDateTime dataFinal) {
+    public boolean verificarConflitoNaReserva(long idBem, LocalDateTime dataInicial, LocalDateTime dataFinal) {
         boolean conflito = false;
-        for (Reserva reservaAtual : lista) {
+        for (Reserva reservaAtual : buscarReservasPorBem(idBem)) {
             if (reservaAtual.getDataInicio().isBefore(dataInicial) && reservaAtual.getDataFim().isAfter(dataInicial)) {
                 conflito = true;
             } else if (reservaAtual.getDataInicio().isBefore(dataFinal) && reservaAtual.getDataFim().isAfter(dataFinal)) {
@@ -65,7 +65,7 @@ public class RepositorioReservas extends RepositorioGenerico<Reserva> implements
     public List<Reserva> buscarReservasPorUsuario(long idUsuario) {
         List<Reserva> resultado = new ArrayList<>();
         for (Reserva reservaUser : lista) {
-            if (reservaUser.getId() == idUsuario) {
+            if (reservaUser.getUsuarioComum().getId() == idUsuario) {
                 resultado.add(reservaUser);
             }
         }
@@ -76,7 +76,7 @@ public class RepositorioReservas extends RepositorioGenerico<Reserva> implements
     public List<Reserva> buscarReservasPorBem(long idBem) {
         List<Reserva> resultado = new ArrayList<>();
         for (Reserva reservaBem : lista) {
-            if (reservaBem.getId() == idBem) {
+            if (reservaBem.getBem().getId() == idBem) {
                 resultado.add(reservaBem);
             }
         }

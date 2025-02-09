@@ -62,9 +62,7 @@ public class ControladorReservas {
             throw new EstadiaNaoExisteException("Estadia inexistente.");
         }
         Reserva reserva = estadia.getReserva();
-//        if (estadia.getDataFim() == null) {
-//            throw new OperacaoNaoPermitidaException("Estadia ainda em andamento.");
-//        }
+
         LocalDateTime novaDataFim = reserva.getDataFim().plusDays(quantidaDias);
         if (LocalDateTime.now().isBefore(reserva.getDataFim())) {
             alterarPeriodoReserva(reserva.getId(), reserva.getDataInicio(), novaDataFim, reserva.getUsuarioComum());
@@ -140,7 +138,7 @@ public class ControladorReservas {
         }
 
         //verifica se reserva ja existe dentro daquele periodo
-        if (repositorioReservas.verificarConflitoNaReserva(dataInicio, dataFim)) {
+        if (repositorioReservas.verificarConflitoNaReserva(bem.getId(), dataInicio, dataFim)) {
             throw new ReservaJaExisteException("Conflito de Periodo. Reserva não realizada.");
         }
 
@@ -238,6 +236,7 @@ public class ControladorReservas {
 
         //busca reserva pelo id
         Reserva reserva = repositorioReservas.buscar(idReserva);
+        Bem bem = reserva.getBem();
 
         if (reserva == null) {
             throw new ReservaNaoExisteException("Reserva inexistente.");
@@ -255,14 +254,14 @@ public class ControladorReservas {
         //verifica se a nova data ficara dentro do periodo de uma reserva outra
         //verificar a parte inicial nova
         if (novaDataInicio.isBefore(reserva.getDataInicio())) {
-            if (repositorioReservas.verificarConflitoNaReserva(novaDataInicio, reserva.getDataInicio())) {
+            if (repositorioReservas.verificarConflitoNaReserva(bem.getId(), novaDataInicio, reserva.getDataInicio())) {
                 throw new ReservaJaExisteException("Conflito de Periodo.");
             }
         }
 
         //verificar a parte final nova
         if (novaDataFim.isAfter(reserva.getDataFim())) {
-            if (repositorioReservas.verificarConflitoNaReserva(reserva.getDataFim(), novaDataFim)) {
+            if (repositorioReservas.verificarConflitoNaReserva(bem.getId(), reserva.getDataFim(), novaDataFim)) {
                 throw new ReservaJaExisteException("Conflito de Periodo.");
             }
         }
@@ -294,7 +293,7 @@ public class ControladorReservas {
 
         while (!inicioAtual.isAfter(dataFim)) {
             // Buscar todas as reservas para o bem
-            List<Reserva> reservas = repositorioReservas.listar();
+            List<Reserva> reservas = repositorioReservas.buscarReservasPorBem(bem.getId());
             // Buscar as cotas do bem
             ArrayList<Cota> cotasBemAssociado = bem.getCotas();
 
@@ -509,97 +508,27 @@ public class ControladorReservas {
         return historico;
     }
 
-    //TODO: apagar metodo caso seja valido
-    //VER PERIODOS MAIS RESERVADOS
-//    public List<String> periodosMaisReservados(int idBem) {
-//        List<Reserva> reservas = repositorioReservas.buscarReservasPorBem(idBem);
-//        List<Estadia> estadias = repositorioEstadia.buscarEstadiasPorBem(idBem);
-//        List<String> periodos = new ArrayList<>();
-//        List<Integer> contagens = new ArrayList<>();
-//
-//
-//        for (Reserva reserva : reservas) {
-//            LocalDateTime dataInicio = reserva.getDataInicio();
-//            LocalDateTime dataFim = reserva.getDataFim();
-//            String periodo = dataInicio + " - " + dataFim;
-//
-//            adicionarNosMaisReservados(periodo, periodos, contagens);
-//        }
-//
-//        //so considerar periodos de estadias com reserva null
-//        //pois comprova o check out e nao havera repeticao
-//        for (Estadia estadia : estadias) {
-//            if (estadia.getReserva() == null) {
-//                LocalDateTime dataInicioEstadia = estadia.getDataInicio();
-//                LocalDateTime dataFimEstadia = estadia.getDataFim();
-//
-//                // Verificar se a estadia cobre ou se sobrepoe com a reserva
-//                for (Reserva reserva : reservas) {
-//                    LocalDateTime dataInicioReserva = reserva.getDataInicio();
-//                    LocalDateTime dataFimReserva = reserva.getDataFim();
-//
-//                    if (dataInicioEstadia.isBefore(dataFimReserva) && dataFimEstadia.isAfter(dataInicioReserva)) {
-//                        // Ajustar as datas para contabilizar todos os dias dentro da estadia
-//                        LocalDateTime periodoInicio = dataInicioEstadia.isBefore(dataInicioReserva) ? dataInicioEstadia : dataInicioReserva;
-//                        LocalDateTime periodoFim = dataFimEstadia.isAfter(dataFimReserva) ? dataFimEstadia : dataFimReserva;
-//
-//                        String periodo = periodoInicio + " - " + periodoFim;
-//                        adicionarNosMaisReservados(periodo, periodos, contagens);
-//                    }
-//                }
-//            }
-//        }
-//
-//        // Ordenando com bubble sort
-//        List<String> resultado = new ArrayList<>();
-//        for (int i = 0; i < contagens.size(); i++) {
-//            for (int j = i + 1; j < contagens.size(); j++) {
-//                if (contagens.get(i) < contagens.get(j)) {
-//                    int tempContagem = contagens.get(i);
-//                    contagens.set(i, contagens.get(j));
-//                    contagens.set(j, tempContagem);
-//                    String tempPeriodo = periodos.get(i);
-//                    periodos.set(i, periodos.get(j));
-//                    periodos.set(j, tempPeriodo);
-//                }
-//            }
-//        }
-//
-//
-//        for (int i = 0; i < periodos.size(); i++) {
-//            resultado.add(" - Quantidade: " + contagens.get(i) + ": " + periodos.get(i));
-//        }
-//
-//        return resultado;
-//    }
 
     public List<Map.Entry<LocalDate, Long>> periodosMaisReservados(int idBem) {
         List<Reserva> reservas = repositorioReservas.buscarReservasPorBem(idBem);
         List<Estadia> estadias = repositorioEstadia.buscarEstadiasPorBem(idBem);
-        List<String> periodos = new ArrayList<>();
-        List<Integer> contagens = new ArrayList<>();
 
-        List<Map.Entry<LocalDate, Long>> resultado = getEntries(reservas, estadias);
+        List<Map.Entry<LocalDate, Long>> resultado = calcularContagemPorData(reservas, estadias);
 
-        // Ordenar manualmente a lista
-        Collections.sort(resultado, new Comparator<Map.Entry<LocalDate, Long>>() {
-            @Override
-            public int compare(Map.Entry<LocalDate, Long> e1, Map.Entry<LocalDate, Long> e2) {
-                return Long.compare(e2.getValue(), e1.getValue()); // Ordena em ordem decrescente
-            }
-        });
+        // Ordenar em ordem decrescente pelo número de reservas
+        resultado.sort(Comparator.comparing(Map.Entry<LocalDate, Long>::getValue).reversed());
 
         return resultado;
     }
 
-    private static List<Map.Entry<LocalDate, Long>> getEntries(List<Reserva> reservas, List<Estadia> estadias) {
+    private static List<Map.Entry<LocalDate, Long>> calcularContagemPorData(List<Reserva> reservas, List<Estadia> estadias) {
         Map<LocalDate, Long> contagemDias = new HashMap<>();
 
         // Contabiliza reservas
         for (Reserva reserva : reservas) {
             LocalDate data = reserva.getDataInicio().toLocalDate();
             while (!data.isAfter(reserva.getDataFim().toLocalDate())) {
-                contagemDias.put(data, contagemDias.getOrDefault(data, 0L) + 1);
+                contagemDias.compute(data, (k, v) -> (v == null) ? 1L : v + 1);
                 data = data.plusDays(1);
             }
         }
@@ -608,31 +537,13 @@ public class ControladorReservas {
         for (Estadia estadia : estadias) {
             LocalDate data = estadia.getDataInicio().toLocalDate();
             while (!data.isAfter(estadia.getDataFim().toLocalDate())) {
-                contagemDias.put(data, contagemDias.getOrDefault(data, 0L) + 1);
+                contagemDias.compute(data, (k, v) -> (v == null) ? 1L : v + 1);
                 data = data.plusDays(1);
             }
         }
 
-        // Converter mapa para lista de entradas
-        List<Map.Entry<LocalDate, Long>> resultado = new ArrayList<>(contagemDias.entrySet());
-        return resultado;
+        return new ArrayList<>(contagemDias.entrySet());
     }
-
-
-    //TODO: verificar se metodo pode ser excluido
-//    // metodo auxiliar para adicionar um periodo completo
-//    private void adicionarNosMaisReservados(String periodo, List<String> periodos, List<Integer> contagens) {
-//        int index = periodos.indexOf(periodo);
-//
-//        // Se o periodo ja existe, incrementa a contagem
-//        if (index != -1) {
-//            contagens.set(index, contagens.get(index) + 1);
-//        } else {
-//            // Se nao existe, adiciona um novo periodo com contagem 1
-//            periodos.add(periodo);
-//            contagens.add(1);
-//        }
-//    }
 
 
 }
