@@ -21,7 +21,7 @@
 <?import javafx.scene.paint.Color?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane prefWidth="650.0" style="-fx-background-color: #001f54;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.ufrpe.timeshare.gui.controllers.ControllerCadastro">
+<BorderPane prefWidth="793" prefHeight="633" style="-fx-background-color: #001f54;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.ufrpe.timeshare.gui.controllers.ControllerCadastro">
     <center>
         <VBox alignment="TOP_CENTER" prefHeight="493.0" prefWidth="400.0" style="-fx-background-color: white;" BorderPane.alignment="CENTER">
             <BorderPane.margin>

@@ -1,6 +1,7 @@
 package br.ufrpe.timeshare.gui.controllers;
 
 import br.ufrpe.timeshare.gui.application.ScreenManager;
+import br.ufrpe.timeshare.negocio.beans.Usuario;
 import javafx.animation.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -11,7 +12,9 @@ import javafx.util.Duration;
 
 import java.util.Optional;
 
-public class ControllerAdm {
+public class ControllerAdm implements ControllerBase {
+
+    private Usuario usuario;
 
     @FXML
     private VBox vboxContainer; // Menu lateral (VBox)
@@ -29,6 +32,9 @@ public class ControllerAdm {
     private Tab tabGerenciamentoReservas;
     @FXML
     private Tab tabRelatorio;
+
+    @FXML
+    private Label nomeUsuario;
 
 
     public void toggleVBox(ActionEvent eventb) {
@@ -97,6 +103,18 @@ public class ControllerAdm {
             System.out.println("Usuário cancelou a ação!");
         }
 
+    }
+
+    @Override
+    public void receiveData(Object data) {
+        if (data instanceof Usuario) {
+            this.usuario = (Usuario) data;
+            nomeUsuario.setText(usuario.getNome());
+        }
+    }
+
+    public void irTelaConfiguracoes(ActionEvent event) {
+        ScreenManager.getInstance().showConfiguracoesUsuarioScreen();
     }
 }
 

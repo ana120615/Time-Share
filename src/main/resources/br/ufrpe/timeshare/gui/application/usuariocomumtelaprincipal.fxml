@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.ufrpe.timeshare.gui.controllers.ControllerUsuarioComum">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="793" prefHeight="633"  xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.ufrpe.timeshare.gui.controllers.ControllerUsuarioComum">
    <center>
       <VBox prefWidth="100.0" style="-fx-background-color: #F5F5F5;" BorderPane.alignment="CENTER">
          <children>
@@ -67,7 +67,7 @@
                         </Label>
                      </children>
                   </GridPane>
-                  <TabPane fx:id="tabPaneUsuarioComumTelaPrincipal" prefHeight="370.0" prefWidth="578.0" side="RIGHT" stylesheets="@styles/telaadm/tabpane.css" tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
+                  <TabPane fx:id="tabPaneUsuarioComumTelaPrincipal" prefHeight="370.0" prefWidth="578.0" side="RIGHT" stylesheets="@styles/basico/tabpane.css" tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
                      <tabs>
                         <Tab fx:id="tabBensCotas" text="Tela de  Bens e Cotas">
                            <content>
@@ -85,7 +85,7 @@
                                  <children>
                                     <VBox alignment="CENTER" prefHeight="118.0" prefWidth="264.0" GridPane.columnIndex="1">
                                        <children>
-                                          <Button id="button2" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" prefHeight="500.0" prefWidth="500.0" styleClass="button2" stylesheets="@styles/telaadm/button.css" text="Oferta de Bens">
+                                          <Button id="button2" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" prefHeight="500.0" prefWidth="500.0" styleClass="button2" stylesheets="@styles/basico/button.css" text="Oferta de Bens">
                                              <graphic>
                                                 <VBox alignment="CENTER">
                                                    <children>
@@ -94,7 +94,7 @@
                                                             <Image url="@images/construcao-de-casas.png" />
                                                          </image>
                                                       </ImageView>
-                                                      <Label styleClass="label2" stylesheets="@styles/telaadm/button.css" text="Oferta de Bens">
+                                                      <Label styleClass="label2" stylesheets="@styles/basico/button.css" text="Oferta de Bens">
                                                          <VBox.margin>
                                                             <Insets top="10.0" />
                                                          </VBox.margin>
@@ -107,7 +107,7 @@
                                     </VBox>
                                     <VBox alignment="CENTER" prefHeight="118.0" prefWidth="264.0" GridPane.columnIndex="2">
                                        <children>
-                                          <Button contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" prefHeight="500.0" prefWidth="500.0" styleClass="button2" stylesheets="@styles/telaadm/button.css" text="Minhas Cotas">
+                                          <Button contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" prefHeight="500.0" prefWidth="500.0" styleClass="button2" stylesheets="@styles/basico/button.css" text="Minhas Cotas">
                                              <graphic>
                                                 <VBox alignment="CENTER" prefHeight="134.0" prefWidth="158.0">
                                                    <children>
@@ -116,7 +116,7 @@
                                                             <Image url="@images/lista-de-membros.png" />
                                                          </image>
                                                       </ImageView>
-                                                      <Label styleClass="label2" stylesheets="@styles/telaadm/button.css" text="Minhas Cotas">
+                                                      <Label styleClass="label2" stylesheets="@styles/basico/button.css" text="Minhas Cotas">
                                                          <VBox.margin>
                                                             <Insets top="10.0" />
                                                          </VBox.margin>
@@ -150,7 +150,7 @@
                                  <children>
                                     <VBox alignment="CENTER" prefHeight="118.0" prefWidth="264.0" GridPane.columnIndex="1">
                                        <children>
-                                          <Button id="button2" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" prefHeight="500.0" prefWidth="500.0" styleClass="button2" stylesheets="@styles/telaadm/button.css" text="Realizar reserva">
+                                          <Button id="button2" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" prefHeight="500.0" prefWidth="500.0" styleClass="button2" stylesheets="@styles/basico/button.css" text="Realizar reserva">
                                              <graphic>
                                                 <VBox alignment="CENTER">
                                                    <children>
@@ -159,7 +159,7 @@
                                                             <Image url="@images/mesa-de-reservas.png" />
                                                          </image>
                                                       </ImageView>
-                                                      <Label styleClass="label2" stylesheets="@styles/telaadm/button.css" text="Realizar Reserva">
+                                                      <Label styleClass="label2" stylesheets="@styles/basico/button.css" text="Realizar Reserva">
                                                          <VBox.margin>
                                                             <Insets top="10.0" />
                                                          </VBox.margin>
@@ -172,7 +172,7 @@
                                     </VBox>
                                     <VBox alignment="CENTER" prefHeight="118.0" prefWidth="264.0" GridPane.columnIndex="2">
                                        <children>
-                                          <Button contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" prefHeight="500.0" prefWidth="500.0" styleClass="button2" stylesheets="@styles/telaadm/button.css" text="Minhas reservas">
+                                          <Button contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" prefHeight="500.0" prefWidth="500.0" styleClass="button2" stylesheets="@styles/basico/button.css" text="Minhas reservas">
                                              <graphic>
                                                 <VBox alignment="CENTER" prefHeight="134.0" prefWidth="158.0">
                                                    <children>
@@ -181,7 +181,7 @@
                                                             <Image url="@images/mapa-marcador-casa.png" />
                                                          </image>
                                                       </ImageView>
-                                                      <Label styleClass="label2" stylesheets="@styles/telaadm/button.css" text="Minhas Reservas">
+                                                      <Label styleClass="label2" stylesheets="@styles/basico/button.css" text="Minhas Reservas">
                                                          <VBox.margin>
                                                             <Insets top="10.0" />
                                                          </VBox.margin>
@@ -194,7 +194,7 @@
                                     </VBox>
                                     <VBox alignment="CENTER" prefHeight="118.0" prefWidth="264.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                                        <children>
-                                          <Button contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" prefHeight="500.0" prefWidth="500.0" styleClass="button2" stylesheets="@styles/telaadm/button.css" text="Estadia">
+                                          <Button contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" prefHeight="500.0" prefWidth="500.0" styleClass="button2" stylesheets="@styles/basico/button.css" text="Estadia">
                                              <graphic>
                                                 <VBox alignment="CENTER" prefHeight="134.0" prefWidth="158.0">
                                                    <children>
@@ -203,7 +203,7 @@
                                                             <Image url="@images/house-key.png" />
                                                          </image>
                                                       </ImageView>
-                                                      <Label styleClass="label2" stylesheets="@styles/telaadm/button.css" text="Estadia">
+                                                      <Label styleClass="label2" stylesheets="@styles/basico/button.css" text="Estadia">
                                                          <VBox.margin>
                                                             <Insets top="10.0" />
                                                          </VBox.margin>
@@ -265,7 +265,7 @@
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                </rowConstraints>
                <children>
-                  <Button contentDisplay="GRAPHIC_ONLY" graphicTextGap="10.0" mnemonicParsing="false" onAction="#mudarAbaBensCotas" prefHeight="52.0" prefWidth="354.0" style="-fx-background-color: #000814; -fx-cursor: hand;" stylesheets="@styles/telaadm/button.css" text="Bens e Cotas" GridPane.rowIndex="1">
+                  <Button contentDisplay="GRAPHIC_ONLY" graphicTextGap="10.0" mnemonicParsing="false" onAction="#mudarAbaBensCotas" prefHeight="52.0" prefWidth="354.0" style="-fx-background-color: #000814; -fx-cursor: hand;" stylesheets="@styles/basico/button.css" text="Bens e Cotas" GridPane.rowIndex="1">
                      <graphic>
                         <GridPane prefHeight="44.0" prefWidth="319.0">
                            <columnConstraints>
@@ -294,7 +294,7 @@
                         </GridPane>
                      </graphic>
                   </Button>
-                  <Button contentDisplay="GRAPHIC_ONLY" graphicTextGap="10.0" mnemonicParsing="false" onAction="#mudarAbaReservas" prefHeight="52.0" prefWidth="354.0" style="-fx-background-color: #000814; -fx-cursor: hand;" stylesheets="@styles/telaadm/button.css" text="Reservas" GridPane.rowIndex="2">
+                  <Button contentDisplay="GRAPHIC_ONLY" graphicTextGap="10.0" mnemonicParsing="false" onAction="#mudarAbaReservas" prefHeight="52.0" prefWidth="354.0" style="-fx-background-color: #000814; -fx-cursor: hand;" stylesheets="@styles/basico/button.css" text="Reservas" GridPane.rowIndex="2">
                      <graphic>
                         <GridPane prefHeight="44.0" prefWidth="319.0">
                            <columnConstraints>
@@ -359,7 +359,7 @@
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                      </rowConstraints>
                      <children>
-                        <Button contentDisplay="GRAPHIC_ONLY" graphicTextGap="10.0" mnemonicParsing="false" prefHeight="52.0" prefWidth="354.0" style="-fx-background-color: #000814; -fx-cursor: hand;" stylesheets="@styles/telaadm/button.css" text="Ajuda" GridPane.rowIndex="1">
+                        <Button contentDisplay="GRAPHIC_ONLY" graphicTextGap="10.0" mnemonicParsing="false" prefHeight="52.0" prefWidth="354.0" style="-fx-background-color: #000814; -fx-cursor: hand;" stylesheets="@styles/basico/button.css" text="Ajuda" GridPane.rowIndex="1">
                            <graphic>
                               <GridPane prefHeight="44.0" prefWidth="319.0">
                                  <columnConstraints>
@@ -388,7 +388,7 @@
                               </GridPane>
                            </graphic>
                         </Button>
-                        <Button contentDisplay="GRAPHIC_ONLY" graphicTextGap="10.0" mnemonicParsing="false" onAction="#irTelaConfiguracoes" prefHeight="52.0" prefWidth="354.0" style="-fx-background-color: #000814; -fx-cursor: hand;" stylesheets="@styles/telaadm/button.css" text="Configuracoes" GridPane.rowIndex="2">
+                        <Button contentDisplay="GRAPHIC_ONLY" graphicTextGap="10.0" mnemonicParsing="false" onAction="#irTelaConfiguracoes" prefHeight="52.0" prefWidth="354.0" style="-fx-background-color: #000814; -fx-cursor: hand;" stylesheets="@styles/basico/button.css" text="Configuracoes" GridPane.rowIndex="2">
                            <graphic>
                               <GridPane prefHeight="44.0" prefWidth="319.0">
                                  <columnConstraints>
@@ -417,7 +417,7 @@
                               </GridPane>
                            </graphic>
                         </Button>
-                        <Button contentDisplay="GRAPHIC_ONLY" graphicTextGap="10.0" mnemonicParsing="false" onAction="#deslogar" prefHeight="52.0" prefWidth="354.0" style="-fx-background-color: #000814; -fx-cursor: hand;" stylesheets="@styles/telaadm/button.css" text="Logout" GridPane.rowIndex="3">
+                        <Button contentDisplay="GRAPHIC_ONLY" graphicTextGap="10.0" mnemonicParsing="false" onAction="#deslogar" prefHeight="52.0" prefWidth="354.0" style="-fx-background-color: #000814; -fx-cursor: hand;" stylesheets="@styles/basico/button.css" text="Logout" GridPane.rowIndex="3">
                            <graphic>
                               <GridPane prefHeight="44.0" prefWidth="319.0">
                                  <columnConstraints>

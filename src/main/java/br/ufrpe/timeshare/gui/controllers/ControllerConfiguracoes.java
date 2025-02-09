@@ -6,6 +6,7 @@ import br.ufrpe.timeshare.excecoes.UsuarioNaoExisteException;
 import br.ufrpe.timeshare.excecoes.UsuarioNaoPermitidoException;
 import br.ufrpe.timeshare.gui.application.ScreenManager;
 import br.ufrpe.timeshare.negocio.ControladorUsuarioGeral;
+import br.ufrpe.timeshare.negocio.beans.TipoUsuario;
 import br.ufrpe.timeshare.negocio.beans.Usuario;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
@@ -65,7 +66,7 @@ public class ControllerConfiguracoes implements ControllerBase {
         dialog.setContentText("Novo nome: ");
         Optional<String> result = dialog.showAndWait();
 
-        if (result.isEmpty()) {
+        if (result.isEmpty() || result.orElse("").isEmpty()) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Erro");
             alert.setHeaderText("Campo obrigatório não preenchido");
@@ -111,7 +112,7 @@ public class ControllerConfiguracoes implements ControllerBase {
         dialog.setHeaderText("Editar email");
         dialog.setContentText("Novo email: ");
         Optional<String> result = dialog.showAndWait();
-        if (result.isEmpty()) {
+        if (result.isEmpty() || result.orElse("").isEmpty()) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Erro");
             alert.setHeaderText("Campo obrigatório não preenchido");
@@ -156,7 +157,7 @@ public class ControllerConfiguracoes implements ControllerBase {
         dialog.setHeaderText("Editar senha");
         dialog.setContentText("Nova senha: ");
         Optional<String> result = dialog.showAndWait();
-        if (result.isEmpty()) {
+        if (result.isEmpty() || result.orElse("").isEmpty()) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Erro");
             alert.setHeaderText("Campo obrigatório não preenchido");
@@ -280,7 +281,13 @@ public class ControllerConfiguracoes implements ControllerBase {
     }
 
     public void irTelaPrincipalUsuario(Event event) {
-        ScreenManager.getInstance().showScreen("UsuarioComumPrincipal");
+        if (usuario.getTipo().equals(TipoUsuario.ADMINISTRADOR)) {
+            ScreenManager.getInstance().showAdmPrincipalScreen();
+        } else {
+            ScreenManager.getInstance().showUsuarioComumPrincipalScreen();
+        }
+
+
     }
 
 }

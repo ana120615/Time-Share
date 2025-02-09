@@ -91,8 +91,8 @@ public class ScreenManager {
         showScreen("UsuarioComumPrincipal");
     }
 
-    public void showConfiguracoesUsuarioComumScreen() {
-        showScreen("ConfiguracoesUsuarioComum");
+    public void showConfiguracoesUsuarioScreen() {
+        showScreen("ConfiguracoesUsuario");
     }
 
     public void showAdmPrincipalScreen() {
