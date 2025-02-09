@@ -74,7 +74,7 @@ public class ControllerUsuarioComum implements ControllerBase {
 
     @FXML
     public void irTelaConfiguracoes(ActionEvent event) {
-        ScreenManager.getInstance().showConfiguracoesUsuarioComumScreen();
+        ScreenManager.getInstance().showScreen("ConfiguracoesUsuario");
     }
 
     @FXML
