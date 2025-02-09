@@ -60,7 +60,7 @@
                               <Font size="18.0" />
                            </font>
                         </Label>
-                        <Label style="-fx-font-weight: bold;" text="Samara" textFill="#908a8a" GridPane.columnIndex="2">
+                        <Label fx:id="nomeUsuario" style="-fx-font-weight: bold;" text="Nome" textFill="#908a8a" GridPane.columnIndex="2">
                            <font>
                               <Font size="18.0" />
                            </font>

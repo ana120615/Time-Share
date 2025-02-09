@@ -1,21 +1,20 @@
 package br.ufrpe.timeshare.gui.controllers;
 
 import br.ufrpe.timeshare.gui.application.ScreenManager;
+import br.ufrpe.timeshare.negocio.beans.Usuario;
 import javafx.animation.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.Tab;
-import javafx.scene.control.TabPane;
+import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 
 import java.util.Optional;
 
-public class
-ControllerUsuarioComum {
+public class ControllerUsuarioComum implements ControllerBase {
+
+    private Usuario usuario;
 
     @FXML
     private VBox vboxContainer; // Menu lateral (VBox)
@@ -32,8 +31,11 @@ ControllerUsuarioComum {
     @FXML
     private Tab tabBensCotas;
 
+    @FXML
+    private Label nomeUsuario;
 
-    public void toggleVBox(ActionEvent eventb) {
+    // Alterna entre o estado expandido e contraído do menu lateral
+    public void toggleVBox() {
         if (isExpanded) {
             // Animação para esconder imagem suavemente
             FadeTransition fadeOut = new FadeTransition(Duration.millis(200), imageView);
@@ -80,14 +82,19 @@ ControllerUsuarioComum {
         ScreenManager.getInstance().showUsuarioComumPrincipalScreen();
     }
 
-    public void mudarAbaBensCotas (ActionEvent event) {
+    // Mudar para a aba de Bens e Cotas
+    @FXML
+    public void mudarAbaBensCotas(ActionEvent event) {
         tabPaneUsuarioComumTelaPrincipal.getSelectionModel().select(tabBensCotas);
     }
 
-    public void mudarAbaReservas (ActionEvent event) {
+    // Mudar para a aba de Gerenciamento de Reservas
+    @FXML
+    public void mudarAbaReservas(ActionEvent event) {
         tabPaneUsuarioComumTelaPrincipal.getSelectionModel().select(tabGerenciamentoReservas);
     }
 
+    // Logout do usuário com confirmação
     @FXML
     public void deslogar(ActionEvent event) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -104,11 +111,19 @@ ControllerUsuarioComum {
         } else {
             System.out.println("Usuário cancelou a ação!");
         }
-
     }
 
+    @FXML
     public void irParaTelaDeConfiguracoes(ActionEvent event) {
         ScreenManager.getInstance().showConfiguracoesUsuarioComumScreen();
     }
 
+    // Recebe dados, nesse caso, o objeto Usuario
+    @Override
+    public void receiveData(Object data) {
+        if (data instanceof Usuario) {
+            this.usuario = (Usuario) data;
+            nomeUsuario.setText(usuario.getNome());
+        }
+    }
 }

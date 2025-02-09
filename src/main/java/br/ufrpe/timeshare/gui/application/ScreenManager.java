@@ -1,67 +1,59 @@
 package br.ufrpe.timeshare.gui.application;
 
-import br.ufrpe.timeshare.negocio.beans.Usuario;
+import br.ufrpe.timeshare.gui.controllers.ControllerBase;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ScreenManager {
-    private Usuario usuario;
 
     private static ScreenManager instance;
+    private Object data;
     private Stage mainStage;
 
-    private Scene telaCadastro;
-    private Scene telaLogin;
-
-    private Scene telaUsuarioComumPrincipal;
-    private Scene telaconfiguracoesUsuarioComum;
-
-    private Scene telaAdmPrincipal;
+    private final Map<String, Scene> telas = new HashMap<>();
+    private final Map<String, FXMLLoader> loaders = new HashMap<>();
 
     public static ScreenManager getInstance() {
         if (instance == null) {
             instance = new ScreenManager();
         }
-
         return instance;
     }
 
     private ScreenManager() {
+        carregarTelas();
+    }
+
+    private void carregarTelas() {
+        carregarTela("Cadastro", "/br/ufrpe/timeshare/gui/application/cadastro.fxml");
+        carregarTela("Login", "/br/ufrpe/timeshare/gui/application/login.fxml");
+        carregarTela("UsuarioComumPrincipal", "/br/ufrpe/timeshare/gui/application/usuariocomumtelaprincipal.fxml");
+        carregarTela("AdmPrincipal", "/br/ufrpe/timeshare/gui/application/usuarioadmtelaprincipal.fxml");
+        carregarTela("ConfiguracoesUsuarioComum", "/br/ufrpe/timeshare/gui/application/configuracoesusuariocomum.fxml");
+    }
+
+    private void carregarTela(String nome, String caminhoFXML) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/br/ufrpe/timeshare/gui/application/cadastro.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(caminhoFXML));
             Parent root = loader.load();
-            telaCadastro = new Scene(root);
-
-            loader = new FXMLLoader(getClass().getResource("/br/ufrpe/timeshare/gui/application/login.fxml"));
-            root = loader.load();
-            telaLogin = new Scene(root);
-
-            loader = new FXMLLoader(getClass().getResource("/br/ufrpe/timeshare/gui/application/usuariocomumtelaprincipal.fxml"));
-            root = loader.load();
-            telaUsuarioComumPrincipal = new Scene(root);
-
-            loader = new FXMLLoader(getClass().getResource(("/br/ufrpe/timeshare/gui/application/usuarioadmtelaprincipal.fxml")));
-            root = loader.load();
-            telaAdmPrincipal = new Scene(root);
-
-            loader = new FXMLLoader(getClass().getResource(("/br/ufrpe/timeshare/gui/application/configuracoesusuariocomum.fxml")));
-            root = loader.load();
-            telaconfiguracoesUsuarioComum = new Scene(root);
-
+            telas.put(nome, new Scene(root));
+            loaders.put(nome, loader);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public Usuario getUsuario() {
-        return usuario;
+    public void setData(Object data) {
+        this.data = data;
     }
 
-    public void setUsuario(Usuario usuario) {
-        this.usuario = usuario;
+    public Object getData() {
+        return data;
     }
 
     public Stage getMainStage() {
@@ -72,29 +64,38 @@ public class ScreenManager {
         this.mainStage = mainStage;
     }
 
+    public void showScreen(String nomeTela) {
+        if (mainStage != null && telas.containsKey(nomeTela)) {
+            mainStage.setScene(telas.get(nomeTela));
+            mainStage.show();
+
+            FXMLLoader loader = loaders.get(nomeTela);
+            if (loader != null) {
+                Object controller = loader.getController();
+                if (controller instanceof ControllerBase) {
+                    ((ControllerBase) controller).receiveData(data);
+                }
+            }
+        }
+    }
+
     public void showCadastroScreen() {
-        mainStage.setScene(telaCadastro);
-        mainStage.show();
+        showScreen("Cadastro");
     }
 
     public void showLoginScreen() {
-        mainStage.setScene(telaLogin);
-        mainStage.show();
+        showScreen("Login");
     }
 
     public void showUsuarioComumPrincipalScreen() {
-        mainStage.setScene(telaUsuarioComumPrincipal);
-        mainStage.show();
+        showScreen("UsuarioComumPrincipal");
     }
 
     public void showConfiguracoesUsuarioComumScreen() {
-        mainStage.setScene(telaconfiguracoesUsuarioComum);
-        mainStage.show();
+        showScreen("ConfiguracoesUsuarioComum");
     }
 
     public void showAdmPrincipalScreen() {
-        mainStage.setScene(telaAdmPrincipal);
-        mainStage.show();
+        showScreen("AdmPrincipal");
     }
-
 }
