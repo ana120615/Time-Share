@@ -127,7 +127,7 @@
                         <Insets top="10.0" />
                      </GridPane.margin>
                   </GridPane>
-                  <Button contentDisplay="GRAPHIC_ONLY" minWidth="29.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="29.0" text="Button" GridPane.columnIndex="2">
+                  <Button contentDisplay="GRAPHIC_ONLY" minWidth="29.0" mnemonicParsing="false" onAction="#editarNome" prefHeight="39.0" prefWidth="29.0" text="Button" GridPane.columnIndex="2">
                      <graphic>
                         <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -145,7 +145,7 @@
                         </ImageView>
                      </graphic>
                   </Button>
-                  <Button contentDisplay="GRAPHIC_ONLY" minWidth="29.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="29.0" text="Button" GridPane.columnIndex="2" GridPane.rowIndex="2">
+                  <Button contentDisplay="GRAPHIC_ONLY" minWidth="29.0" mnemonicParsing="false" onAction="#editarEmail" prefHeight="39.0" prefWidth="29.0" text="Button" GridPane.columnIndex="2" GridPane.rowIndex="2">
                      <graphic>
                         <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -154,7 +154,7 @@
                         </ImageView>
                      </graphic>
                   </Button>
-                  <Button contentDisplay="GRAPHIC_ONLY" minWidth="29.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="29.0" text="Button" GridPane.columnIndex="2" GridPane.rowIndex="3">
+                  <Button contentDisplay="GRAPHIC_ONLY" minWidth="29.0" mnemonicParsing="false" onAction="#editarDataNascimento" prefHeight="39.0" prefWidth="29.0" text="Button" GridPane.columnIndex="2" GridPane.rowIndex="3">
                      <graphic>
                         <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -163,7 +163,7 @@
                         </ImageView>
                      </graphic>
                   </Button>
-                  <Button contentDisplay="GRAPHIC_ONLY" minWidth="29.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="29.0" text="Button" GridPane.columnIndex="2" GridPane.rowIndex="4">
+                  <Button contentDisplay="GRAPHIC_ONLY" minWidth="29.0" mnemonicParsing="false" onAction="#editarSenha" prefHeight="39.0" prefWidth="29.0" text="Button" GridPane.columnIndex="2" GridPane.rowIndex="4">
                      <graphic>
                         <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                            <image>

@@ -97,6 +97,18 @@ public class ControladorUsuarioGeral {
         }
     }
 
+    public void alterarEmailUsuario(long cpf, String novoEmail, TipoUsuario tipo) throws UsuarioNaoExisteException, UsuarioNaoPermitidoException, NullPointerException {
+        if(novoEmail == null) {
+            throw new NullPointerException("Email nulo");
+        }
+        Usuario usuario = procurarUsuarioPorCpf(cpf);
+        if (usuario != null && usuario.getTipo().equals(tipo)) {
+            usuario.setEmail(novoEmail);
+        }  else {
+            throw new UsuarioNaoPermitidoException("O usuario em questao pertence a uma categoria diferente.");
+        }
+    }
+
     public void alterarSenhaUsuario(String email, String senha, TipoUsuario tipo) throws UsuarioNaoExisteException, UsuarioNaoPermitidoException, NullPointerException {
         if(senha == null) {
             throw new NullPointerException("Senha nula");
