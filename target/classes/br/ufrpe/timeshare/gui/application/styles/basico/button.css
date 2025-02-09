@@ -1,0 +1,53 @@
+.button {
+    -fx-background-color: #333; /* Cor de fundo padrão */
+    -fx-text-fill: white; /* Cor do texto */
+    -fx-border-radius: 20px; /* Bordas arredondadas */
+    -fx-background-radius: 20px;
+    -fx-border-width: 2px;
+    -fx-border-color: transparent; /* Borda transparente por padrão */
+    -fx-font-size: 14px;
+    -fx-cursor: hand;
+    -fx-transition: all 0.3s ease-in-out;
+}
+
+/* Efeito Hover: Borda branca ao passar o mouse */
+.button:hover {
+    -fx-border-color: #007BFF;
+}
+
+/* Quando o botão está ativo (selecionado), mantém a borda branca */
+.button:focused {
+    -fx-border-color: white;
+    -fx-background-color: #555; /* Cor um pouco mais clara para destacar */
+}
+
+/* ===== Novo Estilo button2 ===== */
+.button2 {
+    -fx-background-color: white; /* Cor de fundo padrão */
+    -fx-text-fill: black; /* Cor do texto */
+    -fx-border-radius: 20px;
+    -fx-background-radius: 20px;
+    -fx-padding: 10px 20px;
+    -fx-border-width: 2px;
+    -fx-border-color:  #000814; /* Borda já branca */
+    -fx-font-size: 14px;
+    -fx-cursor: hand;
+    -fx-transition: all 0.3s ease-in-out;
+}
+
+/* Hover: muda apenas o fundo para azul */
+.button2:hover {
+    -fx-background-color: #007BFF; /* Azul vibrante */
+}
+
+.button2:hover .label2{
+    -fx-text-fill: white; /* Cor do texto */
+}
+
+.label2 {
+    -fx-font-size: 14px;
+    -fx-text-fill: #000814; /* Cor do texto */
+    -fx-font-weight: bold;
+}
+
+
