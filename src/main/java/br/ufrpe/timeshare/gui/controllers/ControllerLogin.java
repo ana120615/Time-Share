@@ -13,9 +13,10 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
 
-public class ControllerLogin {
+public class ControllerLogin implements ControllerBase {
     private IRepositorioUsuario repositorioUsuario;
     private ControladorLogin controladorLogin;
+    private Object data;
 
     {
         this.repositorioUsuario = RepositorioUsuarios.getInstancia();
@@ -33,16 +34,10 @@ public class ControllerLogin {
         System.out.println("Senha: " + txtPassword.getText());
     }
 
-//    @FXML
-//    private void irParaCadastro() {
-//        ScreenManager.getInstance().showCadastroScreen();
-//    }
-
     @FXML
     public void irTelaCadastro(ActionEvent event) {
         ScreenManager.getInstance().showCadastroScreen();
-        txtUser.clear();
-        txtPassword.clear();
+        limparCampos();
     }
 
     @FXML
@@ -51,37 +46,50 @@ public class ControllerLogin {
         String senha = txtPassword.getText();
 
         if (email.isEmpty() || senha.isEmpty()) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Erro");
-            alert.setHeaderText("Campos obrigatórios não preenchidos");
-            alert.setContentText("Por favor, preencha todos os campos.");
-            alert.getDialogPane().setStyle("-fx-background-color: #ffcccc;"); // Vermelho claro
-            alert.showAndWait();
+            exibirAlerta("Erro", "Campos obrigatórios não preenchidos", "Por favor, preencha todos os campos.");
         } else {
-
             try {
                 Usuario usuario = controladorLogin.efetuarLogin(email, senha);
-                ScreenManager.getInstance().setUsuario(usuario);
+
+                // Armazena os dados no ScreenManager antes de mudar a tela
+                ScreenManager.getInstance().setData(usuario);
+
                 if (usuario.getTipo().equals(TipoUsuario.ADMINISTRADOR)) {
                     ScreenManager.getInstance().showAdmPrincipalScreen();
-                    txtUser.clear();
-                    txtPassword.clear();
-
                 } else {
                     ScreenManager.getInstance().showUsuarioComumPrincipalScreen();
-                    txtUser.clear();
-                    txtPassword.clear();
                 }
 
+                limparCampos();
+
             } catch (UsuarioNaoExisteException | SenhaInvalidaException e) {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Erro");
-                alert.setHeaderText("Erro ao cadastrar usuário");
-                alert.setContentText(e.getMessage());
-                alert.getDialogPane().setStyle("-fx-background-color: #ffcccc;"); // Vermelho claro
-                alert.showAndWait();
+                exibirAlerta("Erro", "Erro ao realizar login", e.getMessage());
             }
         }
+    }
 
+    @Override
+    public void receiveData(Object data) {
+        this.data = data;
+
+        if (data instanceof Usuario usuario) {
+            System.out.println("Usuário recebido: " + usuario.getNome());
+        } else {
+            System.out.println("Dado recebido: " + (data != null ? data.toString() : "null"));
+        }
+    }
+
+    private void limparCampos() {
+        txtUser.clear();
+        txtPassword.clear();
+    }
+
+    private void exibirAlerta(String titulo, String cabecalho, String mensagem) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(titulo);
+        alert.setHeaderText(cabecalho);
+        alert.setContentText(mensagem);
+        alert.getDialogPane().setStyle("-fx-background-color: #ffcccc;");
+        alert.showAndWait();
     }
 }
