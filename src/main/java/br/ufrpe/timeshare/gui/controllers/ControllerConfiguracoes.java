@@ -45,6 +45,12 @@ public class ControllerConfiguracoes implements ControllerBase {
     @FXML
     private Label cpf;
 
+    @FXML
+    private Label primeiroNome;
+
+    @FXML
+    private Label tipoUsuario;
+
     // Recebe dados, nesse caso, o objeto Usuario
     @Override
     public void receiveData(Object data) {
@@ -55,8 +61,15 @@ public class ControllerConfiguracoes implements ControllerBase {
             senha.setText(usuario.getSenha());
             dataNascimento.setText(usuario.getDataNascimento().toString());
             cpf.setText(Long.toString(usuario.getId()));
+            primeiroNome.setText(usuario.getNome().split(" ")[0]);
+            if (usuario.getTipo().equals(TipoUsuario.ADMINISTRADOR)) {
+                tipoUsuario.setText("Administrador");
+            } else {
+                tipoUsuario.setText("Usuario Comum");
+            }
         }
     }
+
 
     @FXML
     public void editarNome(ActionEvent event) {

@@ -54,12 +54,12 @@
                         </VBox>
                         <VBox prefHeight="45.0" prefWidth="191.0" GridPane.columnIndex="2" GridPane.rowIndex="2">
                            <children>
-                              <Label prefHeight="35.0" prefWidth="222.0" styleClass="label-maior" text="Primeiro Nome">
+                              <Label fx:id="primeiroNome" prefHeight="35.0" prefWidth="222.0" styleClass="label-maior" text="Primeiro Nome">
                                  <font>
                                     <Font size="18.0" />
                                  </font>
                               </Label>
-                              <Label styleClass="label-menor" text="Tipo" />
+                              <Label fx:id="tipoUsuario" styleClass="label-menor" text="Tipo" />
                            </children>
                         </VBox>
                      </children>

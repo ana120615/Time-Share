@@ -109,7 +109,7 @@ public class ControllerAdm implements ControllerBase {
     public void receiveData(Object data) {
         if (data instanceof Usuario) {
             this.usuario = (Usuario) data;
-            nomeUsuario.setText(usuario.getNome());
+            nomeUsuario.setText(usuario.getNome().split(" ")[0]);
         }
     }
 
