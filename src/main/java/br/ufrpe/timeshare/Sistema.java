@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 
 public class Sistema {
@@ -378,11 +379,12 @@ public class Sistema {
                                                                              PeriodoNaoDisponivelParaReservaException |
                                                                              ReservaJaCanceladaException |
                                                                              ForaPeriodoException |
-                                                                             DadosInsuficientesException
-                                                                             | ReservaNaoExisteException |
+                                                                             DadosInsuficientesException |
+                                                                             ReservaNaoExisteException |
                                                                              EstadiaNaoExisteException |
                                                                              ReservaJaExisteException |
-                                                                             PeriodoJaReservadoException e) {
+                                                                             PeriodoJaReservadoException |
+                                                                             OperacaoNaoPermitidaException e) {
                                                                         throw new RuntimeException(e);
                                                                     }
                                                                     break;
@@ -414,7 +416,8 @@ public class Sistema {
                                                 System.out.println("1 - Periodos disponiveis para reserva");
                                                 System.out.println("2 - Realizar reserva ");
                                                 System.out.println("3 - Cancelar Reserva");
-                                                System.out.println("4 - Voltar");
+                                                System.out.println("4 - Ver periodos mais reservados em um bem");
+                                                System.out.println("5 - Voltar");
                                                 escolha = input.nextInt();
                                                 switch (escolha) {
                                                     case 1:
@@ -422,7 +425,7 @@ public class Sistema {
                                                         int idBemParaReserva = input.nextInt();
                                                         System.out.print("Informe a data Inicial (dd/MM/yyyy): ");
                                                         String inicioPeriodo = input.next();
-                                                        inicioPeriodo += " 00:00";
+                                                        inicioPeriodo += " 01:00";
                                                         System.out.print("Informe a data final (dd/MM/yyyy): ");
                                                         String finalPeriodo = input.next();
                                                         finalPeriodo += " 23:59";
@@ -557,7 +560,19 @@ public class Sistema {
                                                         }
 
                                                         break;
+
                                                     case 4:
+                                                        System.out.println("-- Periodos mais Reservados --");
+                                                        System.out.println("Id do bem: ");
+                                                        int bem = input.nextInt();
+                                                        List<Map.Entry<LocalDate, Long>> periodosMaisReservados = controladorReservas.periodosMaisReservados(bem);
+
+                                                        System.out.println("Períodos mais reservados:");
+                                                        for (Map.Entry<LocalDate, Long> entry : periodosMaisReservados) {
+                                                            System.out.println("Data: " + entry.getKey() + " - Reservas: " + entry.getValue());
+                                                        }
+                                                        break;
+                                                    case 5:
                                                         sairRealizarReserva = true;
                                                         break;
                                                 }
