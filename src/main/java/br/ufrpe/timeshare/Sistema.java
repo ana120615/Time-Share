@@ -52,7 +52,7 @@ public class Sistema {
         // CADASTRANDO E OFERTANDO UM BEM
         try {
             controladorBens.cadastrar(1111, "Lar Doce Lar", "Familia Feliz é aqui",
-                    "Recife-PE", 5, usuarioAdm, LocalDateTime.of(2025, 01, 01, 12, 00), 20, 6000);
+                    "Recife-PE", 5, usuarioAdm, LocalDateTime.of(2025, 01, 01, 12, 00), 20, 6000, " ");
         } catch (BemNaoExisteException | UsuarioNaoPermitidoException | QuantidadeDeCotasExcedidasException |
                  BemJaExisteException | UsuarioNaoExisteException e) {
             System.out.println(e.getMessage());
@@ -708,8 +708,10 @@ public class Sistema {
                                             int quantidadeCotas = input.nextInt();
                                             System.out.print("Preço de uma Cota R$: ");
                                             double precoCota = input.nextDouble();
+                                            System.out.print("Informe o caminho da imagem do Bem: ");
+                                            String caminhoImagem = input.nextLine();
                                             try {
-                                                controladorBens.cadastrar(idBem, nome, descricao, localizacao, capacidade, usuario, LocalDateTime.parse(dataInicial, DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")), quantidadeCotas, precoCota);
+                                                controladorBens.cadastrar(idBem, nome, descricao, localizacao, capacidade, usuario, LocalDateTime.parse(dataInicial, DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")), quantidadeCotas, precoCota, caminhoImagem);
                                                 System.out.println("Bem cadastrado com Sucesso!");
                                             } catch (BemNaoExisteException | UsuarioNaoPermitidoException |
                                                      QuantidadeDeCotasExcedidasException | BemJaExisteException |

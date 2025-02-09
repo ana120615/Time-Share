@@ -29,7 +29,7 @@ public class ControladorBens {
     public void cadastrar(int id, String nome, String descricao,
                           String localizacao, int capacidade, Usuario usuario,
                           LocalDateTime diaInicial, int quantidadeDeCotas,
-                          double precoDeUmaCota) throws BemNaoExisteException, UsuarioNaoPermitidoException, QuantidadeDeCotasExcedidasException, BemJaExisteException, UsuarioNaoExisteException {
+                          double precoDeUmaCota, String caminhoImagem) throws BemNaoExisteException, UsuarioNaoPermitidoException, QuantidadeDeCotasExcedidasException, BemJaExisteException, UsuarioNaoExisteException {
 
 
         Bem newBem = new Bem(id, nome, descricao, localizacao, capacidade, usuario);
@@ -45,6 +45,7 @@ public class ControladorBens {
                 }
 
                 newBem.setDiaInicial(diaInicial);
+                newBem.setCaminhoImagem(caminhoImagem);
                 // Criação das cotas
                 if (quantidadeDeCotas > 52) {
                     throw new QuantidadeDeCotasExcedidasException("Valor não permitido de cotas.");

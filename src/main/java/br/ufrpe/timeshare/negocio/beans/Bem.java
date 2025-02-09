@@ -13,6 +13,7 @@ public class Bem extends Entidade implements Cloneable {
     private ArrayList<Cota> cotas;
     private Usuario cadastradoPor;
     private LocalDateTime diaInicial;
+    private String caminhoImagem;
 
     {
         this.cotas = new ArrayList<>(10);
@@ -40,7 +41,13 @@ public class Bem extends Entidade implements Cloneable {
     public void setDiaInicial(LocalDateTime diaInicial) {
         this.diaInicial = diaInicial;
     }
+    public String getCaminhoImagem() {
+        return caminhoImagem;
+    }
 
+    public void setCaminhoImagem(String caminhoImagem) {
+        this.caminhoImagem = caminhoImagem;
+    }
     public long getId() {
         return this.id;
     }
