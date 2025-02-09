@@ -113,10 +113,6 @@ public class ControllerUsuarioComum implements ControllerBase {
         }
     }
 
-    @FXML
-    public void irParaTelaDeConfiguracoes(ActionEvent event) {
-        ScreenManager.getInstance().showScreen("ConfiguracoesUsuario");
-    }
 
     // Recebe dados, nesse caso, o objeto Usuario
     @Override
