@@ -61,15 +61,15 @@ public class ControladorReservas {
         if (estadia == null) {
             throw new EstadiaNaoExisteException("Estadia inexistente.");
         }
-        if(estadia.getDataFim() == null){
-            throw new OperacaoNaoPermitidaException("Estadia ainda em andamento.");
+        Reserva reserva = estadia.getReserva();
+//        if (estadia.getDataFim() == null) {
+//            throw new OperacaoNaoPermitidaException("Estadia ainda em andamento.");
+//        }
+        LocalDateTime novaDataFim = reserva.getDataFim().plusDays(quantidaDias);
+        if (LocalDateTime.now().isBefore(reserva.getDataFim())) {
+            alterarPeriodoReserva(reserva.getId(), reserva.getDataInicio(), novaDataFim, reserva.getUsuarioComum());
         }
-        LocalDateTime novaDataFim = estadia.getDataFim().plusDays(quantidaDias);
-        if (estadia.getDataFim().equals(LocalDateTime.now().plusMinutes(30)) || estadia.getDataFim().isBefore(LocalDateTime.now())) {
-            alterarPeriodoReserva(estadia.getReserva().getId(), estadia.getReserva().getDataInicio(), novaDataFim, estadia.getReserva().getUsuarioComum());
-            estadia.setDataFim(novaDataFim);
-        }
-        return gerarComprovanteReserva(estadia.getReserva());
+        return gerarComprovanteReserva(reserva);
     }
 
 
@@ -316,7 +316,7 @@ public class ControladorReservas {
 
             // Verifica periodos em que ha reservas ativas
             for (int i = 0; i < reservas.size() && !existeReservaAtiva; i++) {
-                existeReservaAtiva = verificarConflitoDeDatasReserva(reservas.get(i), inicioAtual, dataFim);
+                existeReservaAtiva = verificarConflitoDeDatasReserva(reservas.get(i), inicioAtual, inicioAtual);
             }
 
             if (existeCotaOcupada || existeReservaAtiva) {
@@ -369,19 +369,18 @@ public class ControladorReservas {
     //Verifica se o periodo esta dentro da cota atual
     private boolean verificarConflitoDeDatasReserva(Reserva reservaAtual, LocalDateTime dataInicio, LocalDateTime dataFim) {
 
-        boolean conflito = false;
 
         if (reservaAtual.getDataInicio().isBefore(dataInicio) && reservaAtual.getDataFim().isAfter(dataInicio)) {
-            conflito = true;
+            return true;
         } else if (reservaAtual.getDataInicio().isBefore(dataFim) && reservaAtual.getDataFim().isAfter(dataFim)) {
-            conflito = true;
+            return true;
         } else if (reservaAtual.getDataInicio().isAfter(dataInicio) && reservaAtual.getDataFim().isBefore(dataFim)) {
-            conflito = true;
+            return true;
         } else if (reservaAtual.getDataInicio().isEqual(dataInicio) || reservaAtual.getDataFim().isEqual(dataFim)) {
-            conflito = true;
+            return true;
         }
 
-        return conflito;
+        return false;
     }
 
 
@@ -428,7 +427,7 @@ public class ControladorReservas {
         //calcula a taxa baseada no preco de 1 cota e na quantidade de dias da reserva
         //5% ao dia
         if (reservaTaxada) {
-            if(!cotas.isEmpty()) {
+            if (!cotas.isEmpty()) {
                 taxa = cotas.getFirst().getPreco() * 0.05 * quantidadeDias;
             }
             double taxaPromocional = promocao.calcularTaxaPromocao(reserva.getDataInicio().withHour(0).withMinute(0), reserva.getUsuarioComum());
@@ -510,7 +509,7 @@ public class ControladorReservas {
         return historico;
     }
 
-        //TODO: apagar metodo caso seja valido
+    //TODO: apagar metodo caso seja valido
     //VER PERIODOS MAIS RESERVADOS
 //    public List<String> periodosMaisReservados(int idBem) {
 //        List<Reserva> reservas = repositorioReservas.buscarReservasPorBem(idBem);

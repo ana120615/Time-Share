@@ -385,7 +385,7 @@ public class Sistema {
                                                                              ReservaJaExisteException |
                                                                              PeriodoJaReservadoException |
                                                                              OperacaoNaoPermitidaException e) {
-                                                                        throw new RuntimeException(e);
+                                                                        System.out.println(e.getMessage());
                                                                     }
                                                                     break;
                                                                 case 4:
