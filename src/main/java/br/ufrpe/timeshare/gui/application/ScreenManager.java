@@ -36,6 +36,7 @@ public class ScreenManager {
         carregarTela("AdmPrincipal", "/br/ufrpe/timeshare/gui/application/usuarioadmtelaprincipal.fxml");
         carregarTela("ConfiguracoesUsuario", "/br/ufrpe/timeshare/gui/application/configuracoesusuario.fxml");
         carregarTela("CadastroBens", "/br/ufrpe/timeshare/gui/application/telaCadastroBens.fxml");
+        carregarTela("ListarBens", "/br/ufrpe/timeshare/gui/application/telaListaDeBens.fxml");
     }
 
     private void carregarTela(String nome, String caminhoFXML) {
@@ -102,5 +103,8 @@ public class ScreenManager {
 
     public void showCadastroBensScreen() {
         showScreen("CadastroBens");
+    }
+    public void showListarBensScreen() {
+        showScreen("ListarBens");
     }
 }

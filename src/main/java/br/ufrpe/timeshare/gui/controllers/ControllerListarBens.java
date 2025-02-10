@@ -27,8 +27,8 @@ public class ControllerListarBens implements ControllerBase {
     @FXML
     public void initialize() {
         ObservableList<Bem> listaDeItens = FXCollections.observableArrayList(
-                new Bem (2222, "Lar doce Lar", "Centro da cidade", "Recife", 5, usuario),
-                new Bem (3333, "Casa do Mar", "Centro da cidade", "Recife", 5, usuario)
+                new Bem (2222, "Lar doce Lar", "Centro da cidade", "Recife", 5, usuario, "teste"),
+                new Bem (3333, "Casa do Mar", "Centro da cidade", "Recife", 5, usuario, "teste2")
         );
 
         listViewItens.setItems(listaDeItens);
