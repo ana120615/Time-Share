@@ -1,22 +1,17 @@
 package br.ufrpe.timeshare.gui.controllers;
 
+import br.ufrpe.timeshare.gui.application.ScreenManager;
+import br.ufrpe.timeshare.negocio.ControladorBens;
+import br.ufrpe.timeshare.negocio.beans.Bem;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.control.Label;
-import javafx.event.ActionEvent;
-
-import br.ufrpe.timeshare.negocio.beans.Bem;
-import br.ufrpe.timeshare.dados.IRepositorioBens;
-import br.ufrpe.timeshare.dados.IRepositorioCotas;
-import br.ufrpe.timeshare.dados.RepositorioBens;
-import br.ufrpe.timeshare.dados.RepositorioCotas;
-import br.ufrpe.timeshare.gui.application.ScreenManager;
-import br.ufrpe.timeshare.negocio.ControladorBens;
 
 import java.io.InputStream;
 import java.util.List;
@@ -28,10 +23,8 @@ public class ControllerListarBens implements ControllerBase {
 
     @Override
     public void receiveData(Object data) {
-        IRepositorioBens repositorioBens = RepositorioBens.getInstancia();
-        IRepositorioCotas repositorioCotas = RepositorioCotas.getInstancia();
 
-        ControladorBens controladorBens = new ControladorBens(repositorioBens, repositorioCotas);
+        ControladorBens controladorBens = new ControladorBens();
         List<Bem> bens = controladorBens.listarBens();
 
         if (bens == null || bens.isEmpty()) {

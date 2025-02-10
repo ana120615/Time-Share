@@ -85,7 +85,7 @@
                                  <children>
                                     <VBox alignment="CENTER" prefHeight="118.0" prefWidth="264.0" GridPane.columnIndex="1">
                                        <children>
-                                          <Button id="button2" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" prefHeight="500.0" prefWidth="500.0" styleClass="button2" stylesheets="@styles/basico/button.css" text="Cadastrar">
+                                          <Button id="button2" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#irParaTelaCadastroBens" prefHeight="500.0" prefWidth="500.0" styleClass="button2" stylesheets="@styles/basico/button.css" text="Cadastrar">
                                              <graphic>
                                                 <VBox alignment="CENTER">
                                                    <children>

@@ -1,9 +1,5 @@
 package br.ufrpe.timeshare.gui.controllers;
 
-import br.ufrpe.timeshare.dados.IRepositorioBens;
-import br.ufrpe.timeshare.dados.IRepositorioCotas;
-import br.ufrpe.timeshare.dados.RepositorioBens;
-import br.ufrpe.timeshare.dados.RepositorioCotas;
 import br.ufrpe.timeshare.excecoes.BemJaExisteException;
 import br.ufrpe.timeshare.excecoes.BemNaoExisteException;
 import br.ufrpe.timeshare.excecoes.UsuarioNaoExisteException;
@@ -18,7 +14,6 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
-import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.IOException;
@@ -30,14 +25,10 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 public class ControllerCadastroBens {
-    private IRepositorioBens repositorioBens;
-    private IRepositorioCotas repositorioCotas;
     private ControladorBens controladorBens;
     private Usuario usuarioLogado;
 
     {
-        repositorioBens = RepositorioBens.getInstancia();
-        repositorioCotas = RepositorioCotas.getInstancia();
         controladorBens = new ControladorBens();
     }
 
@@ -53,8 +44,6 @@ public class ControllerCadastroBens {
     @FXML
     private ImageView imagemView;
     @FXML
-    private Button adicionarImagemButton;
-    @FXML
     private Spinner<Integer> capacidadeSpinner;
     @FXML
     private Spinner<Integer> quantidadeCotasSpinner;
@@ -67,11 +56,9 @@ public class ControllerCadastroBens {
 
     @FXML
     private void initialize() {
-        IRepositorioBens repositorioBens = RepositorioBens.getInstancia();
-        IRepositorioCotas repositorioCotas = RepositorioCotas.getInstancia();
         controladorBens = new ControladorBens();
-        capacidadeSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 10000, 1));
-        quantidadeCotasSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 52, 0));
+        capacidadeSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 100, 1));
+        quantidadeCotasSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 52, 1));
     }
 
     private void exibirAlertaErro(String titulo, String header, String contentText) {
@@ -99,37 +86,33 @@ public class ControllerCadastroBens {
         if (data instanceof Usuario) {
             usuarioLogado = (Usuario) data;
 
-            try {
-                String nome = nomeTextField.getText();
-                int id = Integer.parseInt(idBemTextField.getText());
-                String localizacao = localizacaoTextField.getText();
-                String descricao = descricaoTextArea.getText();
-                int capacidade = capacidadeSpinner.getValue();
-                int quantidadeCotas = quantidadeCotasSpinner.getValue();
-                double precoDeUmaCota = Double.parseDouble(precoTextField.getText());
-                LocalDateTime diaInicial = dataInicialPicker.getValue() != null ? dataInicialPicker.getValue().atStartOfDay() : null;
 
-                if (nome.isEmpty() || id == 0 || diaInicial == null || localizacao.isEmpty() || descricao.isEmpty() || quantidadeCotas == 0 || capacidade == 0 || precoDeUmaCota == 0) {
-                    exibirAlertaErro("Erro", "Campos obrigatórios não preenchidos", "Por favor, preencha todos os campos.");
-                }
-                else {
-                    String caminhoImagem = salvarImagem(); // Salva a imagem e obtem o caminho relativo
+            String nome = nomeTextField.getText();
+            int id = Integer.parseInt(idBemTextField.getText());
+            String localizacao = localizacaoTextField.getText();
+            String descricao = descricaoTextArea.getText();
+            int capacidade = capacidadeSpinner.getValue();
+            int quantidadeCotas = quantidadeCotasSpinner.getValue();
+            double precoDeUmaCota = Double.parseDouble(precoTextField.getText());
+            LocalDateTime diaInicial = dataInicialPicker.getValue() != null ? dataInicialPicker.getValue().atStartOfDay() : null;
 
-                    try {
-                        controladorBens.cadastrar(id, nome, descricao, localizacao, capacidade, usuarioLogado, diaInicial, quantidadeCotas, precoDeUmaCota, caminhoImagem);
-                        exibirAlertaInformation("Cadastro concluido", "Bem cadastrado com sucesso!", ("Bem " + nome + " com " + quantidadeCotas + " cotas."));
+            if (nome.isEmpty() || id == 0 || diaInicial == null || localizacao.isEmpty() || descricao.isEmpty() || quantidadeCotas == 0 || capacidade == 0 || precoDeUmaCota == 0) {
+                exibirAlertaErro("Erro", "Campos obrigatórios não preenchidos", "Por favor, preencha todos os campos.");
+            } else {
+                String caminhoImagem = salvarImagem(); // Salva a imagem e obtem o caminho relativo
 
-                        // Limpa os campos após o cadastro (opcional)
-                        limparCampos();
-                    } catch (UsuarioNaoPermitidoException | BemJaExisteException | UsuarioNaoExisteException |
-                             BemNaoExisteException e) {
-                        exibirAlertaErro("Erro", "Erro ao cadastrar bem", e.getMessage());
-                    } catch (Exception e) {
-                        exibirAlertaErro("Erro", "Erro ao cadastrar bem" ,"Verifique os campos ID e Preço");
-                    }
-                }
+                try {
+                    controladorBens.cadastrar(id, nome, descricao, localizacao, capacidade, usuarioLogado, diaInicial, quantidadeCotas, precoDeUmaCota, caminhoImagem);
+                    exibirAlertaInformation("Cadastro concluido", "Bem cadastrado com sucesso!", ("Bem " + nome + " com " + quantidadeCotas + " cotas."));
+
+                    // Limpa os campos após o cadastro (opcional)
+                    limparCampos();
+                } catch (UsuarioNaoPermitidoException | BemJaExisteException | UsuarioNaoExisteException |
+                         BemNaoExisteException e) {
+                    exibirAlertaErro("Erro", "Erro ao cadastrar bem", e.getMessage());
                 } catch (RuntimeException e) {
-                throw new RuntimeException(e);
+                    exibirAlertaErro("Erro", "Erro ao cadastrar bem", "Tente novamente.");
+                }
             }
         }
     }
@@ -140,28 +123,25 @@ public class ControllerCadastroBens {
         fileChooser.setTitle("Selecionar Imagem");
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Imagens", "*.png", "*.jpg", "*.jpeg", "*.bmp", "*.gif"));
 
-        Stage stage = (Stage) adicionarImagemButton.getScene().getWindow();
-        imagemSelecionada = fileChooser.showOpenDialog(stage);
-
         if (imagemSelecionada != null) {
             imagemView.setImage(new Image(imagemSelecionada.toURI().toString()));
         }
     }
 
+
     private String salvarImagem() {
         if (imagemSelecionada == null) {
             return null;
         }
-
         try {
-            Path diretorio = Paths.get("images"); 
+            Path diretorio = Paths.get("images");
             if (!Files.exists(diretorio)) {
                 Files.createDirectories(diretorio);
             }
             String nomeArquivo = UUID.randomUUID().toString() + "_" + imagemSelecionada.getName();
             Path destino = diretorio.resolve(nomeArquivo);
             Files.copy(imagemSelecionada.toPath(), destino, StandardCopyOption.REPLACE_EXISTING);
-            return "images/" + nomeArquivo; 
+            return "images/" + nomeArquivo;
 
         } catch (IOException e) {
             exibirAlertaErro("Erro", "Erro ao salvar a imagem", e.getMessage());
@@ -184,8 +164,8 @@ public class ControllerCadastroBens {
         quantidadeCotasSpinner.getValueFactory().setValue(0);
         dataInicialPicker.setValue(null);
         precoTextField.clear();
-        imagemView.setImage(null); 
-        imagemSelecionada = null; 
+        imagemView.setImage(null);
+        imagemSelecionada = null;
     }
 
 

@@ -1,7 +1,5 @@
 package br.ufrpe.timeshare.gui.controllers;
 
-import br.ufrpe.timeshare.dados.IRepositorioUsuario;
-import br.ufrpe.timeshare.dados.RepositorioUsuarios;
 import br.ufrpe.timeshare.excecoes.UsuarioNaoExisteException;
 import br.ufrpe.timeshare.excecoes.UsuarioNaoPermitidoException;
 import br.ufrpe.timeshare.gui.application.ScreenManager;
@@ -20,11 +18,9 @@ import java.util.Optional;
 
 
 public class ControllerConfiguracoes implements ControllerBase {
-    private IRepositorioUsuario repositorioUsuarios;
     private ControladorUsuarioGeral controladorUsuarioGeral;
 
     {
-        repositorioUsuarios = RepositorioUsuarios.getInstancia();
         controladorUsuarioGeral = new ControladorUsuarioGeral();
     }
 
