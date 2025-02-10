@@ -1,6 +1,7 @@
 package br.ufrpe.timeshare.negocio;
 
 import br.ufrpe.timeshare.dados.IRepositorioUsuario;
+import br.ufrpe.timeshare.dados.RepositorioUsuarios;
 import br.ufrpe.timeshare.excecoes.SenhaInvalidaException;
 import br.ufrpe.timeshare.excecoes.UsuarioNaoExisteException;
 import br.ufrpe.timeshare.negocio.beans.Usuario;
@@ -8,8 +9,8 @@ import br.ufrpe.timeshare.negocio.beans.Usuario;
 public class ControladorLogin {
     private IRepositorioUsuario repositorio;
 
-    public ControladorLogin(IRepositorioUsuario instanciaInterface) {
-        this.repositorio = instanciaInterface;
+    public ControladorLogin() {
+        this.repositorio = RepositorioUsuarios.getInstancia();
     }
 
     public Usuario efetuarLogin(String email, String senha) throws UsuarioNaoExisteException, SenhaInvalidaException {

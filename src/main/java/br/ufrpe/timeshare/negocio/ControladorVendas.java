@@ -1,8 +1,5 @@
 package br.ufrpe.timeshare.negocio;
 
-import br.ufrpe.timeshare.dados.RepositorioBens;
-import br.ufrpe.timeshare.dados.RepositorioCotas;
-import br.ufrpe.timeshare.dados.RepositorioUsuarios;
 import br.ufrpe.timeshare.excecoes.*;
 import br.ufrpe.timeshare.negocio.beans.Cota;
 import br.ufrpe.timeshare.negocio.beans.Promocao;
@@ -20,8 +17,8 @@ public class ControladorVendas {
     ControladorUsuarioGeral controladorUsuarioGeral;
 
     {
-        this.controladorBens = new ControladorBens(RepositorioBens.getInstancia(), RepositorioCotas.getInstancia());
-        this.controladorUsuarioGeral = new ControladorUsuarioGeral(RepositorioUsuarios.getInstancia());
+        this.controladorBens = new ControladorBens();
+        this.controladorUsuarioGeral = new ControladorUsuarioGeral();
     }
 
     public Venda iniciarVenda(long cpfUsuario) throws UsuarioNaoExisteException {

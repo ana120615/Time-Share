@@ -25,7 +25,7 @@ public class ControllerConfiguracoes implements ControllerBase {
 
     {
         repositorioUsuarios = RepositorioUsuarios.getInstancia();
-        controladorUsuarioGeral = new ControladorUsuarioGeral(repositorioUsuarios);
+        controladorUsuarioGeral = new ControladorUsuarioGeral();
     }
 
     private Usuario usuario;

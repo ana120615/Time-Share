@@ -1,7 +1,5 @@
 package br.ufrpe.timeshare.gui.controllers;
 
-import br.ufrpe.timeshare.dados.IRepositorioUsuario;
-import br.ufrpe.timeshare.dados.RepositorioUsuarios;
 import br.ufrpe.timeshare.excecoes.SenhaInvalidaException;
 import br.ufrpe.timeshare.excecoes.UsuarioNaoExisteException;
 import br.ufrpe.timeshare.gui.application.ScreenManager;
@@ -14,13 +12,11 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
 
 public class ControllerLogin implements ControllerBase {
-    private IRepositorioUsuario repositorioUsuario;
     private ControladorLogin controladorLogin;
     private Object data;
 
     {
-        this.repositorioUsuario = RepositorioUsuarios.getInstancia();
-        this.controladorLogin = new ControladorLogin(repositorioUsuario);
+        this.controladorLogin = new ControladorLogin();
     }
 
     @FXML

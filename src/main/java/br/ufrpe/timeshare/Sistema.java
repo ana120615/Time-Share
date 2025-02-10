@@ -25,10 +25,10 @@ public class Sistema {
         IRepositorioEstadia repositorioEstadia = RepositorioEstadia.getInstancia();
 
         //INICIALIZANDO CONTROLADORES
-        ControladorLogin controladorLogin = new ControladorLogin(repositorioUsuario);
-        ControladorUsuarioGeral controladorUsuario = new ControladorUsuarioGeral(repositorioUsuario);
-        ControladorBens controladorBens = new ControladorBens(repositorioBens, repositorioCotas);
-        ControladorReservas controladorReservas = new ControladorReservas(repositorioReservas, repositorioEstadia);
+        ControladorLogin controladorLogin = new ControladorLogin();
+        ControladorUsuarioGeral controladorUsuario = new ControladorUsuarioGeral();
+        ControladorBens controladorBens = new ControladorBens();
+        ControladorReservas controladorReservas = new ControladorReservas();
         ControladorVendas controladorVendas = new ControladorVendas();
 
         Usuario usuario = null; //Variavel que vai armazenar o usuario apos login
@@ -54,9 +54,9 @@ public class Sistema {
         // CADASTRANDO E OFERTANDO UM BEM
         try {
             controladorBens.cadastrar(1111, "Lar Doce Lar", "Familia Feliz é aqui",
-                    "Recife-PE", 5, usuarioAdm, LocalDateTime.of(2025, 01, 01, 12, 00), 20, 6000);
+                    "Recife-PE", 5, usuarioAdm, LocalDateTime.of(2025, 01, 01, 12, 00), 20, 6000, "as");
             controladorBens.cadastrar(2222, "Apartamento na Praia", "Familia Feliz é aqui",
-                    "Recife-PE", 5, usuarioAdm, LocalDateTime.of(2025, 01, 01, 12, 00), 20, 6000);
+                    "Recife-PE", 5, usuarioAdm, LocalDateTime.of(2025, 01, 01, 12, 00), 20, 6000, "es");
         } catch (BemNaoExisteException | UsuarioNaoPermitidoException | QuantidadeDeCotasExcedidasException |
                  BemJaExisteException | UsuarioNaoExisteException e) {
             System.out.println(e.getMessage());
@@ -866,7 +866,7 @@ public class Sistema {
                                             System.out.print("Informe o caminho da imagem: ");
                                             String caminhoImagem = input.nextLine();
                                             try {
-                                                controladorBens.cadastrar(idBem, nome, descricao, localizacao, capacidade, usuario, LocalDateTime.parse(dataInicial, DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")), quantidadeCotas, precoCota);
+                                                controladorBens.cadastrar(idBem, nome, descricao, localizacao, capacidade, usuario, LocalDateTime.parse(dataInicial, DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")), quantidadeCotas, precoCota, "as");
                                                 System.out.println("Bem cadastrado com Sucesso!");
                                             } catch (BemNaoExisteException | UsuarioNaoPermitidoException |
                                                      QuantidadeDeCotasExcedidasException | BemJaExisteException |
