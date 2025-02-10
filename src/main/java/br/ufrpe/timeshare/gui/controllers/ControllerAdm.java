@@ -85,7 +85,15 @@ public class ControllerAdm implements ControllerBase {
     public void mudarAbaRelatorio (ActionEvent event) {
         tabPaneAdmTelaPrincipal.getSelectionModel().select(tabRelatorio);
     }
-
+    @FXML
+    public void abrirCadastrarBem(ActionEvent event){
+        ScreenManager.getInstance().showCadastrarBemScreen();
+    }
+    
+    @FXML
+    public void irParaListarBens(ActionEvent event){
+        ScreenManager.getInstance().showListarBensScreen();
+    }
     @FXML
     public void deslogar(ActionEvent event) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -117,4 +125,3 @@ public class ControllerAdm implements ControllerBase {
         ScreenManager.getInstance().showConfiguracoesUsuarioScreen();
     }
 }
-

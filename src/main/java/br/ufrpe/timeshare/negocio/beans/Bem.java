@@ -13,13 +13,14 @@ public class Bem extends Entidade implements Cloneable {
     private ArrayList<Cota> cotas;
     private Usuario cadastradoPor;
     private LocalDateTime diaInicial;
+    private String caminhoImagem;
 
     {
         this.cotas = new ArrayList<>(10);
     }
 
     //CONSTRUTOR
-    public Bem(int id, String nome, String descricao, String localizacao, int capacidade, Usuario cadastradoPor) {
+    public Bem(int id, String nome, String descricao, String localizacao, int capacidade, Usuario cadastradoPor, String caminhoImagem) {
         setId(id);
         setCapacidade(capacidade);
         setDescricao(descricao);
@@ -31,7 +32,13 @@ public class Bem extends Entidade implements Cloneable {
     }
 
     //METODOS GET E SET
+    public String getCaminhoImagem() {
+        return caminhoImagem;
+    }
 
+    public void setCaminhoImagem(String caminhoImagem) {
+        this.caminhoImagem = caminhoImagem;
+    }
 
     public LocalDateTime getDiaInicial() {
         return diaInicial;
