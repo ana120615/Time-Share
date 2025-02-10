@@ -125,6 +125,9 @@ public class ControladorUsuarioGeral {
         if(dataAniversario == null) {
             throw new NullPointerException("Data nula");
         }
+        if (LocalDate.now().getYear() - dataAniversario.getYear() < 18 || LocalDate.now().getYear() - dataAniversario.getYear() > 100) {
+            throw new UsuarioNaoPermitidoException("Idade invalida.");
+        }
         Usuario usuario = procurarUsuarioPorCpf(cpf);
         if (usuario != null && usuario.getTipo().equals(tipo)) {
             usuario.setDataNascimento(dataAniversario);
