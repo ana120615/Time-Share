@@ -1,0 +1,34 @@
+.button-cadastrar {
+    -fx-background-color:  #001f54; /* Cor de fundo padrão */
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-border-radius: 20px; /* Bordas arredondadas */
+    -fx-background-radius: 20px;
+    -fx-border-width: 2px;
+    -fx-border-color: transparent; /* Borda transparente por padrão */
+    -fx-font-size: 14px;
+
+}
+
+/* Efeito Hover: Borda branca ao passar o mouse */
+.button-cadastrar:hover {
+    -fx-background-color:  #023e8a;
+    -fx-cursor: hand;
+    -fx-transition: all 0.3s ease-in-out;
+}
+
+.fundo-branco {
+    -fx-background-color: #FFFFFF; /* Fundo branco */
+    -fx-background-radius: 20px; /* Bordas arredondadas */
+    -fx-border-radius: 20px; /* Bordas arredondadas */
+    -fx-border-color: gray; /* Cor da borda cinza */
+    -fx-padding: 10px; /* Espaçamento interno */
+}
+
+.botao-imagem {
+    -fx-background-color: transparent;
+}
+
+.botao-imagem:hover {
+    -fx-cursor: hand;
+}
