@@ -20,7 +20,7 @@ public class Bem extends Entidade implements Cloneable {
     }
 
     //CONSTRUTOR
-    public Bem(int id, String nome, String descricao, String localizacao, int capacidade, Usuario cadastradoPor) {
+    public Bem(int id, String nome, String descricao, String localizacao, int capacidade, Usuario cadastradoPor, String caminhoImagem) {
         setId(id);
         setCapacidade(capacidade);
         setDescricao(descricao);
@@ -28,7 +28,7 @@ public class Bem extends Entidade implements Cloneable {
         setNome(nome);
         setCadastradoPor(cadastradoPor);
         this.ofertado = false;
-
+        this.caminhoImagem = caminhoImagem;
     }
 
     //METODOS GET E SET

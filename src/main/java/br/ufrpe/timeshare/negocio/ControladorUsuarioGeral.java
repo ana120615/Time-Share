@@ -1,6 +1,7 @@
 package br.ufrpe.timeshare.negocio;
 
 import br.ufrpe.timeshare.dados.IRepositorioUsuario;
+import br.ufrpe.timeshare.dados.RepositorioUsuarios;
 import br.ufrpe.timeshare.excecoes.*;
 import br.ufrpe.timeshare.negocio.beans.TipoUsuario;
 import br.ufrpe.timeshare.negocio.beans.Usuario;
@@ -11,8 +12,8 @@ import java.util.List;
 public class ControladorUsuarioGeral {
     private IRepositorioUsuario repositorio;
 
-    public ControladorUsuarioGeral(IRepositorioUsuario instanciaInterface) {
-        this.repositorio = instanciaInterface;
+    public ControladorUsuarioGeral() {
+        this.repositorio = RepositorioUsuarios.getInstancia();
     }
 
     public void cadastrar(long cpf, String nome, String email, String senha, LocalDate dataNascimento, TipoUsuario tipo) throws UsuarioJaExisteException, UsuarioNaoPermitidoException, DadosInsuficientesException {

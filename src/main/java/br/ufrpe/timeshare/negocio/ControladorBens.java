@@ -2,6 +2,8 @@ package br.ufrpe.timeshare.negocio;
 
 import br.ufrpe.timeshare.dados.IRepositorioBens;
 import br.ufrpe.timeshare.dados.IRepositorioCotas;
+import br.ufrpe.timeshare.dados.RepositorioBens;
+import br.ufrpe.timeshare.dados.RepositorioCotas;
 import br.ufrpe.timeshare.excecoes.*;
 import br.ufrpe.timeshare.negocio.beans.Bem;
 import br.ufrpe.timeshare.negocio.beans.Cota;
@@ -20,9 +22,9 @@ public class ControladorBens {
     private IRepositorioCotas repositorioCotas;
 
 
-    public ControladorBens(IRepositorioBens instanciaInterfaceBens, IRepositorioCotas instanciaInterfaceCota) {
-        this.repositorioBens = instanciaInterfaceBens;
-        this.repositorioCotas = instanciaInterfaceCota;
+    public ControladorBens() {
+        this.repositorioBens = RepositorioBens.getInstancia();
+        this.repositorioCotas = RepositorioCotas.getInstancia();
     }
 
 
@@ -31,8 +33,8 @@ public class ControladorBens {
     public void cadastrar(int id, String nome, String descricao,
                           String localizacao, int capacidade, Usuario usuario,
                           LocalDateTime diaInicial, int quantidadeDeCotas,
-                          double precoDeUmaCota) throws BemNaoExisteException, UsuarioNaoPermitidoException, QuantidadeDeCotasExcedidasException, BemJaExisteException, UsuarioNaoExisteException {
-        Bem newBem = new Bem(id, nome, descricao, localizacao, capacidade, usuario);
+                          double precoDeUmaCota, String caminhoImagem) throws BemNaoExisteException, UsuarioNaoPermitidoException, QuantidadeDeCotasExcedidasException, BemJaExisteException, UsuarioNaoExisteException {
+        Bem newBem = new Bem(id, nome, descricao, localizacao, capacidade, usuario, caminhoImagem);
         if (usuario == null || newBem == null) {
             throw new NullPointerException();
         } else {

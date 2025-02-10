@@ -2,6 +2,8 @@ package br.ufrpe.timeshare.negocio;
 
 import br.ufrpe.timeshare.dados.IRepositorioEstadia;
 import br.ufrpe.timeshare.dados.IRepositorioReservas;
+import br.ufrpe.timeshare.dados.RepositorioEstadia;
+import br.ufrpe.timeshare.dados.RepositorioReservas;
 import br.ufrpe.timeshare.excecoes.*;
 import br.ufrpe.timeshare.negocio.beans.*;
 
@@ -15,9 +17,9 @@ public class ControladorReservas {
     private IRepositorioReservas repositorioReservas;
     private IRepositorioEstadia repositorioEstadia;
 
-    public ControladorReservas(IRepositorioReservas instanciaInterfaceReservas, IRepositorioEstadia instanciaInterfaceEstadia) {
-        this.repositorioReservas = instanciaInterfaceReservas;
-        this.repositorioEstadia = instanciaInterfaceEstadia;
+    public ControladorReservas() {
+        this.repositorioReservas = RepositorioReservas.getInstancia();
+        this.repositorioEstadia = RepositorioEstadia.getInstancia();
     }
 
 

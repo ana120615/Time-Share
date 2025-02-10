@@ -1,19 +1,19 @@
 package br.ufrpe.timeshare.gui.controllers;
 
+import br.ufrpe.timeshare.excecoes.BemJaExisteException;
+import br.ufrpe.timeshare.excecoes.BemNaoExisteException;
+import br.ufrpe.timeshare.excecoes.UsuarioNaoExisteException;
+import br.ufrpe.timeshare.excecoes.UsuarioNaoPermitidoException;
+import br.ufrpe.timeshare.gui.application.ScreenManager;
+import br.ufrpe.timeshare.negocio.ControladorBens;
+import br.ufrpe.timeshare.negocio.beans.Usuario;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
+import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.Button;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.Spinner;
-import javafx.scene.control.SpinnerValueFactory;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
-import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.IOException;
@@ -24,15 +24,13 @@ import java.nio.file.StandardCopyOption;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-import br.ufrpe.timeshare.dados.IRepositorioBens;
-import br.ufrpe.timeshare.dados.IRepositorioCotas;
-import br.ufrpe.timeshare.dados.RepositorioBens;
-import br.ufrpe.timeshare.dados.RepositorioCotas;
-import br.ufrpe.timeshare.gui.application.ScreenManager;
-import br.ufrpe.timeshare.negocio.ControladorBens;
-import br.ufrpe.timeshare.negocio.beans.Usuario;
-
 public class ControllerCadastroBens {
+    private ControladorBens controladorBens;
+    private Usuario usuarioLogado;
+
+    {
+        controladorBens = new ControladorBens();
+    }
 
     @FXML
     private TextField nomeTextField;
@@ -42,12 +40,9 @@ public class ControllerCadastroBens {
     private TextField localizacaoTextField;
     @FXML
     private TextArea descricaoTextArea;
-    @FXML
-    private Button btnCadastrarBem;
+
     @FXML
     private ImageView imagemView;
-    @FXML
-    private Button adicionarImagemButton;
     @FXML
     private Spinner<Integer> capacidadeSpinner;
     @FXML
@@ -57,26 +52,31 @@ public class ControllerCadastroBens {
     @FXML
     private TextField precoTextField;
 
-    private Usuario usuarioLogado;
-    private ControladorBens controladorBens;
     private File imagemSelecionada;
 
     @FXML
     private void initialize() {
-        IRepositorioBens repositorioBens = RepositorioBens.getInstancia();
-        IRepositorioCotas repositorioCotas = RepositorioCotas.getInstancia();
-        controladorBens = new ControladorBens(repositorioBens, repositorioCotas);
-
-        capacidadeSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 10000, 1));
-        quantidadeCotasSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 52, 0));
+        controladorBens = new ControladorBens();
+        capacidadeSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 100, 1));
+        quantidadeCotasSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 52, 1));
     }
 
-    private void exibirAlerta(String mensagem, AlertType tipo) {
-        Alert alerta = new Alert(tipo);
-        alerta.setTitle("Mensagem");
-        alerta.setHeaderText(null);
-        alerta.setContentText(mensagem);
+    private void exibirAlertaErro(String titulo, String header, String contentText) {
+        Alert alerta = new Alert(AlertType.ERROR);
+        alerta.setTitle(titulo);
+        alerta.setHeaderText(header);
+        alerta.setContentText(contentText);
+        alerta.getDialogPane().setStyle("-fx-background-color: #ffcccc;"); // Vermelho claro
         alerta.showAndWait();
+    }
+
+    private void exibirAlertaInformation(String titulo, String header, String contentText) {
+        Alert alert = new Alert(AlertType.INFORMATION);
+        alert.setTitle(titulo);
+        alert.setHeaderText(header);
+        alert.setContentText(contentText);
+        alert.getDialogPane().setStyle("-fx-background-color: #ccffcc;"); // Verde claro
+        alert.showAndWait();
     }
 
     @FXML
@@ -86,29 +86,33 @@ public class ControllerCadastroBens {
         if (data instanceof Usuario) {
             usuarioLogado = (Usuario) data;
 
-            try {
-                String nome = nomeTextField.getText();
-                int id = Integer.parseInt(idBemTextField.getText());
-                String localizacao = localizacaoTextField.getText();
-                String descricao = descricaoTextArea.getText();
-                int capacidade = capacidadeSpinner.getValue();
-                int quantidadeCotas = quantidadeCotasSpinner.getValue();
-                double precoDeUmaCota = Double.parseDouble(precoTextField.getText());
-                LocalDateTime diaInicial = dataInicialPicker.getValue() != null ? dataInicialPicker.getValue().atStartOfDay() : null;
 
+            String nome = nomeTextField.getText();
+            int id = Integer.parseInt(idBemTextField.getText());
+            String localizacao = localizacaoTextField.getText();
+            String descricao = descricaoTextArea.getText();
+            int capacidade = capacidadeSpinner.getValue();
+            int quantidadeCotas = quantidadeCotasSpinner.getValue();
+            double precoDeUmaCota = Double.parseDouble(precoTextField.getText());
+            LocalDateTime diaInicial = dataInicialPicker.getValue() != null ? dataInicialPicker.getValue().atStartOfDay() : null;
+
+            if (nome.isEmpty() || id == 0 || diaInicial == null || localizacao.isEmpty() || descricao.isEmpty() || quantidadeCotas == 0 || capacidade == 0 || precoDeUmaCota == 0) {
+                exibirAlertaErro("Erro", "Campos obrigatórios não preenchidos", "Por favor, preencha todos os campos.");
+            } else {
                 String caminhoImagem = salvarImagem(); // Salva a imagem e obtem o caminho relativo
 
-                controladorBens.cadastrar(id, nome, descricao, localizacao, capacidade, usuarioLogado, diaInicial, quantidadeCotas, precoDeUmaCota);
-                exibirAlerta("Bem cadastrado com sucesso!", AlertType.INFORMATION);
+                try {
+                    controladorBens.cadastrar(id, nome, descricao, localizacao, capacidade, usuarioLogado, diaInicial, quantidadeCotas, precoDeUmaCota, caminhoImagem);
+                    exibirAlertaInformation("Cadastro concluido", "Bem cadastrado com sucesso!", ("Bem " + nome + " com " + quantidadeCotas + " cotas."));
 
-                // Limpa os campos após o cadastro (opcional)
-                limparCampos();
-
-            } catch (NumberFormatException e) {
-                exibirAlerta("Erro: Verifique os campos ID e Preço.", AlertType.ERROR);
-            } catch (Exception e) {
-                exibirAlerta("Erro ao cadastrar bem: " + e.getMessage(), AlertType.ERROR);
-                e.printStackTrace(); 
+                    // Limpa os campos após o cadastro (opcional)
+                    limparCampos();
+                } catch (UsuarioNaoPermitidoException | BemJaExisteException | UsuarioNaoExisteException |
+                         BemNaoExisteException e) {
+                    exibirAlertaErro("Erro", "Erro ao cadastrar bem", e.getMessage());
+                } catch (RuntimeException e) {
+                    exibirAlertaErro("Erro", "Erro ao cadastrar bem", "Tente novamente.");
+                }
             }
         }
     }
@@ -119,32 +123,28 @@ public class ControllerCadastroBens {
         fileChooser.setTitle("Selecionar Imagem");
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Imagens", "*.png", "*.jpg", "*.jpeg", "*.bmp", "*.gif"));
 
-        Stage stage = (Stage) adicionarImagemButton.getScene().getWindow();
-        imagemSelecionada = fileChooser.showOpenDialog(stage);
-
         if (imagemSelecionada != null) {
             imagemView.setImage(new Image(imagemSelecionada.toURI().toString()));
         }
     }
 
+
     private String salvarImagem() {
         if (imagemSelecionada == null) {
             return null;
         }
-
         try {
-            
-            Path diretorio = Paths.get("images"); 
+            Path diretorio = Paths.get("images");
             if (!Files.exists(diretorio)) {
                 Files.createDirectories(diretorio);
             }
             String nomeArquivo = UUID.randomUUID().toString() + "_" + imagemSelecionada.getName();
             Path destino = diretorio.resolve(nomeArquivo);
             Files.copy(imagemSelecionada.toPath(), destino, StandardCopyOption.REPLACE_EXISTING);
-            return "images/" + nomeArquivo; 
+            return "images/" + nomeArquivo;
 
         } catch (IOException e) {
-            exibirAlerta("Erro ao salvar a imagem: " + e.getMessage(), AlertType.ERROR);
+            exibirAlertaErro("Erro", "Erro ao salvar a imagem", e.getMessage());
             e.printStackTrace();
             return null;
         }
@@ -164,8 +164,8 @@ public class ControllerCadastroBens {
         quantidadeCotasSpinner.getValueFactory().setValue(0);
         dataInicialPicker.setValue(null);
         precoTextField.clear();
-        imagemView.setImage(null); 
-        imagemSelecionada = null; 
+        imagemView.setImage(null);
+        imagemSelecionada = null;
     }
 
 

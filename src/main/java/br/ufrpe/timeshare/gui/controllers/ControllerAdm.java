@@ -15,15 +15,12 @@ import java.util.Optional;
 public class ControllerAdm implements ControllerBase {
 
     private Usuario usuario;
+    private boolean isExpanded = true;
 
     @FXML
     private VBox vboxContainer; // Menu lateral (VBox)
-
     @FXML
     private ImageView imageView; // Logo dentro do menu
-
-    private boolean isExpanded = true;
-
     @FXML
     private TabPane tabPaneAdmTelaPrincipal;// Estado inicial
     @FXML
@@ -32,10 +29,13 @@ public class ControllerAdm implements ControllerBase {
     private Tab tabGerenciamentoReservas;
     @FXML
     private Tab tabRelatorio;
-
     @FXML
     private Label nomeUsuario;
 
+    @FXML
+    public void irParaTelaCadastroBens(ActionEvent event) {
+        ScreenManager.getInstance().showCadastroBensScreen();
+    }
 
     public void toggleVBox(ActionEvent eventb) {
         if (isExpanded) {
