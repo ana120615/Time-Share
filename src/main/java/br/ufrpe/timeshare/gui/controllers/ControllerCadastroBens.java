@@ -167,4 +167,6 @@ public class ControllerCadastroBens {
         imagemView.setImage(null); 
         imagemSelecionada = null; 
     }
+
+
 }
