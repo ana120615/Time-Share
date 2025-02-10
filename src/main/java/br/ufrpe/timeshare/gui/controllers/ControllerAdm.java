@@ -1,6 +1,7 @@
 package br.ufrpe.timeshare.gui.controllers;
 
 import br.ufrpe.timeshare.gui.application.ScreenManager;
+import br.ufrpe.timeshare.negocio.beans.Usuario;
 import javafx.animation.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -11,7 +12,9 @@ import javafx.util.Duration;
 
 import java.util.Optional;
 
-public class ControllerAdm {
+public class ControllerAdm implements ControllerBase {
+
+    private Usuario usuario;
 
     @FXML
     private VBox vboxContainer; // Menu lateral (VBox)
@@ -29,6 +32,9 @@ public class ControllerAdm {
     private Tab tabGerenciamentoReservas;
     @FXML
     private Tab tabRelatorio;
+
+    @FXML
+    private Label nomeUsuario;
 
 
     public void toggleVBox(ActionEvent eventb) {
@@ -79,7 +85,15 @@ public class ControllerAdm {
     public void mudarAbaRelatorio (ActionEvent event) {
         tabPaneAdmTelaPrincipal.getSelectionModel().select(tabRelatorio);
     }
-
+    @FXML
+    public void abrirCadastrarBem(ActionEvent event){
+        ScreenManager.getInstance().showCadastrarBemScreen();
+    }
+    
+    @FXML
+    public void irParaListarBens(ActionEvent event){
+        ScreenManager.getInstance().showListarBensScreen();
+    }
     @FXML
     public void deslogar(ActionEvent event) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -98,5 +112,16 @@ public class ControllerAdm {
         }
 
     }
-}
 
+    @Override
+    public void receiveData(Object data) {
+        if (data instanceof Usuario) {
+            this.usuario = (Usuario) data;
+            nomeUsuario.setText(usuario.getNome().split(" ")[0]);
+        }
+    }
+
+    public void irTelaConfiguracoes(ActionEvent event) {
+        ScreenManager.getInstance().showConfiguracoesUsuarioScreen();
+    }
+}

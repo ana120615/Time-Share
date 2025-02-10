@@ -85,7 +85,7 @@
                                  <children>
                                     <VBox alignment="CENTER" prefHeight="118.0" prefWidth="264.0" GridPane.columnIndex="1">
                                        <children>
-                                          <Button id="button2" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" prefHeight="500.0" prefWidth="500.0" styleClass="button2" stylesheets="@styles/telaadm/button.css" text="Cadastrar">
+                                          <Button id="button2" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#abrirCadastrarBem" prefHeight="500.0" prefWidth="500.0" styleClass="button2" stylesheets="@styles/telaadm/button.css" text="Cadastrar">
                                              <graphic>
                                                 <VBox alignment="CENTER">
                                                    <children>
@@ -107,7 +107,7 @@
                                     </VBox>
                                     <VBox alignment="CENTER" prefHeight="118.0" prefWidth="264.0" GridPane.columnIndex="2">
                                        <children>
-                                          <Button contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" prefHeight="500.0" prefWidth="500.0" styleClass="button2" stylesheets="@styles/telaadm/button.css" text="Listar">
+                                          <Button contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#irParaListarBens" prefHeight="500.0" prefWidth="500.0" styleClass="button2" stylesheets="@styles/telaadm/button.css" text="Listar">
                                              <graphic>
                                                 <VBox alignment="CENTER" prefHeight="134.0" prefWidth="158.0">
                                                    <children>

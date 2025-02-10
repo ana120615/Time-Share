@@ -29,10 +29,10 @@ public class ControladorBens {
     public void cadastrar(int id, String nome, String descricao,
                           String localizacao, int capacidade, Usuario usuario,
                           LocalDateTime diaInicial, int quantidadeDeCotas,
-                          double precoDeUmaCota) throws BemNaoExisteException, UsuarioNaoPermitidoException, QuantidadeDeCotasExcedidasException, BemJaExisteException, UsuarioNaoExisteException {
+                          double precoDeUmaCota, String caminhoImagem) throws BemNaoExisteException, UsuarioNaoPermitidoException, QuantidadeDeCotasExcedidasException, BemJaExisteException, UsuarioNaoExisteException {
 
 
-        Bem newBem = new Bem(id, nome, descricao, localizacao, capacidade, usuario);
+        Bem newBem = new Bem(id, nome, descricao, localizacao, capacidade, usuario, caminhoImagem);
 
         if (usuario == null || newBem == null) {
             throw new NullPointerException();
