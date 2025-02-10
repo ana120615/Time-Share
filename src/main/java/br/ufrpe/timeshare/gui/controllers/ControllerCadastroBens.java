@@ -98,7 +98,7 @@ public class ControllerCadastroBens {
 
                 String caminhoImagem = salvarImagem(); // Salva a imagem e obtem o caminho relativo
 
-                controladorBens.cadastrar(id, nome, descricao, localizacao, capacidade, usuarioLogado, diaInicial, quantidadeCotas, precoDeUmaCota, caminhoImagem);
+                controladorBens.cadastrar(id, nome, descricao, localizacao, capacidade, usuarioLogado, diaInicial, quantidadeCotas, precoDeUmaCota);
                 exibirAlerta("Bem cadastrado com sucesso!", AlertType.INFORMATION);
 
                 // Limpa os campos após o cadastro (opcional)
