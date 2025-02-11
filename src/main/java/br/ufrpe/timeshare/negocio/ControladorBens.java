@@ -43,6 +43,9 @@ public class ControladorBens {
                 if (jaExiste) {
                     throw new BemJaExisteException("Bem já existe");
                 }
+                if (repositorioBens.buscar(id) != null) {
+                    throw new BemJaExisteException("Id já utilizado");
+                }
                 newBem.setDiaInicial(diaInicial);
                 // Criação das cotas
                 if (quantidadeDeCotas > 52) {

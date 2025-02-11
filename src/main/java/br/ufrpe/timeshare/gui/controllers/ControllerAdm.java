@@ -37,6 +37,11 @@ public class ControllerAdm implements ControllerBase {
         ScreenManager.getInstance().showCadastroBensScreen();
     }
 
+    @FXML
+    public void irParaTelaListaBens(ActionEvent event) {
+        ScreenManager.getInstance().showListarBensScreen();
+    }
+
     public void toggleVBox(ActionEvent eventb) {
         if (isExpanded) {
             // Animação para esconder imagem suavemente

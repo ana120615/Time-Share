@@ -1,17 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.ufrpe.timeshare.gui.controllers.ControllerListarBens">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="750.0" stylesheets="@styles/basico/tela-lista-bens.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.ufrpe.timeshare.gui.controllers.ControllerListarBens">
    <center>
       <VBox alignment="CENTER" VBox.vgrow="ALWAYS">
          <children>
-            <HBox alignment="CENTER">
+            <HBox alignment="CENTER" styleClass="search-box">
                <children>
                   <TextField maxWidth="700.0" prefHeight="33.0" prefWidth="400.0" promptText="buscar" HBox.hgrow="ALWAYS">
                      <HBox.margin>
@@ -30,15 +31,18 @@
       </VBox>
    </center>
    <top>
-      <HBox prefHeight="49.0" prefWidth="600.0" BorderPane.alignment="CENTER" />
+      <HBox prefHeight="49.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+         <children>
+            <Button mnemonicParsing="false" onAction="#voltarParaTelaAdm" text="Voltar" />
+         </children></HBox>
    </top>
    <bottom>
       <HBox prefHeight="34.0" prefWidth="600.0" BorderPane.alignment="CENTER" />
    </bottom>
    <left>
-      <VBox prefHeight="200.0" prefWidth="50.0" BorderPane.alignment="CENTER" />
+      <VBox prefHeight="200.0" prefWidth="25.0" BorderPane.alignment="CENTER" />
    </left>
    <right>
-      <VBox prefHeight="200.0" prefWidth="50.0" BorderPane.alignment="CENTER" />
+      <VBox prefHeight="200.0" prefWidth="25.0" BorderPane.alignment="CENTER" />
    </right>
 </BorderPane>
