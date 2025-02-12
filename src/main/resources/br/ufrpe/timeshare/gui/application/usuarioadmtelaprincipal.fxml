@@ -116,7 +116,7 @@
                                                             <Image url="@images/bars-sort.png" />
                                                          </image>
                                                       </ImageView>
-                                                      <Label styleClass="label2" stylesheets="@styles/basico/button.css" text="Listar">
+                                                      <Label styleClass="label2" stylesheets="@styles/basico/button.css" text="Meus Bens">
                                                          <VBox.margin>
                                                             <Insets top="10.0" />
                                                          </VBox.margin>
@@ -138,7 +138,7 @@
                                                             <Image url="@images/file-edit.png" />
                                                          </image>
                                                       </ImageView>
-                                                      <Label styleClass="label2" stylesheets="@styles/basico/button.css" text="Editar">
+                                                      <Label styleClass="label2" stylesheets="@styles/basico/button.css" text="Cotas">
                                                          <VBox.margin>
                                                             <Insets top="10.0" />
                                                          </VBox.margin>
