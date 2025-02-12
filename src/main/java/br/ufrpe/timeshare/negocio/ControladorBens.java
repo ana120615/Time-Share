@@ -90,8 +90,11 @@ public class ControladorBens {
         }
     }
 
-    public void ofertarBem(int id) throws BemNaoExisteException {
+    public void ofertarBem(int id) throws BemJaOfertadoException, BemNaoExisteException {
         Bem bem = repositorioBens.buscar(id);
+        if (bem.isOfertado()) {
+            throw new BemJaOfertadoException("Bem já ofertado");
+        }
         if (bem != null) {
             bem.setOfertado(true);
             for (Cota c : bem.getCotas()) {
@@ -280,6 +283,15 @@ public class ControladorBens {
         Bem bem = this.repositorioBens.buscar(id);
         if (bem != null) {
             bem.setCapacidade(novaCapacidade);
+        } else {
+            throw new BemNaoExisteException("Bem não existe.");
+        }
+    }
+
+    public void alterarCaminhoDaImagemBem(int id, String novoCaminhoDeImagem) throws BemNaoExisteException, IllegalArgumentException {
+        Bem bem = this.repositorioBens.buscar(id);
+        if (bem != null) {
+            bem.setCaminhoImagem(novoCaminhoDeImagem);
         } else {
             throw new BemNaoExisteException("Bem não existe.");
         }

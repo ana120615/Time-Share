@@ -64,7 +64,7 @@ public class Sistema {
 
         try {
             controladorBens.ofertarBem(1111);
-        } catch (BemNaoExisteException e) {
+        } catch (BemNaoExisteException | BemJaOfertadoException e) {
             System.out.println(e.getMessage());
         }
 
@@ -950,7 +950,7 @@ public class Sistema {
                                                             int idBemOfertar = input.nextInt();
                                                             controladorBens.ofertarBem(idBemOfertar);
                                                             System.out.println("Bem ofertado com sucesso!");
-                                                        } catch (BemNaoExisteException e) {
+                                                        } catch (BemNaoExisteException | BemJaOfertadoException e) {
                                                             System.out.println(e.getMessage());
                                                         }
 

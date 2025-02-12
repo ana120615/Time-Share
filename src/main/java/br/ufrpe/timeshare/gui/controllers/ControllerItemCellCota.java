@@ -17,9 +17,6 @@ public class ControllerItemCellCota {
     @FXML private Label itemLabelDisponibilidadeReserva;
 
 
-
-
-
     private Cota cota;
     private ControllerListarCotas mainControllerCotas;
 
