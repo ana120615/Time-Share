@@ -79,11 +79,7 @@
                                  <children>
                                     <Button contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" styleClass="botao-imagem" text="Button">
                                        <graphic>
-                                          <ImageView fx:id="imagemView" fitHeight="120.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true" style="-fx-opacity: 0.30;">
-                                             <image>
-                                                <Image url="@images/add-image.png" />
-                                             </image>
-                                          </ImageView>
+                                          <ImageView fx:id="imagemView" fitHeight="120.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true" />
                                        </graphic>
                                        <VBox.margin>
                                           <Insets bottom="5.0" top="10.0" />

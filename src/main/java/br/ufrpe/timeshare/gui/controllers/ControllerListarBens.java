@@ -13,18 +13,20 @@ import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.HBox;
 import javafx.util.Callback;
+
 import java.io.IOException;
 import java.util.List;
 
 public class ControllerListarBens implements ControllerBase {
     private Usuario usuario;
-    private ControladorBens controladorBens;
+    private final ControladorBens controladorBens;
 
     public ControllerListarBens() {
         this.controladorBens = new ControladorBens();
     }
 
-    @FXML private ListView<Bem> listViewItens;
+    @FXML
+    private ListView<Bem> listViewItens;
 
     @Override
     public void receiveData(Object data) {
@@ -41,9 +43,6 @@ public class ControllerListarBens implements ControllerBase {
     @FXML
     public void initialize() {
         System.out.println("initialize() chamado.");
-        if (controladorBens == null) {
-            controladorBens = new ControladorBens();
-        }
     }
 
     private void carregarListaDeBens() {
@@ -60,25 +59,13 @@ public class ControllerListarBens implements ControllerBase {
             System.out.println("Lista de bens carregada com " + bens.size() + " itens.");
         }
 
-        ObservableList<Bem> listaDeItens = FXCollections.observableArrayList();
-        for (Bem bem : bens) {
-            listaDeItens.add(new Bem(
-                    (int) bem.getId(),
-                    bem.getNome(),
-                    bem.getDescricao(),
-                    bem.getLocalizacao(),
-                    bem.getCapacidade(),
-                    usuario,
-                    "url"
-            ));
-        }
+        ObservableList<Bem> listaDeItens = FXCollections.observableArrayList(bens);
+        listViewItens.getItems().setAll(listaDeItens);
 
-        listViewItens.setItems(listaDeItens);
-
-        listViewItens.setCellFactory(new Callback<ListView<Bem>, ListCell<Bem>>() {
+        listViewItens.setCellFactory(new Callback<>() {
             @Override
             public ListCell<Bem> call(ListView<Bem> bemListView) {
-                return new ListCell<Bem>() {
+                return new ListCell<>() {
                     @Override
                     protected void updateItem(Bem item, boolean empty) {
                         super.updateItem(item, empty);
@@ -87,10 +74,6 @@ public class ControllerListarBens implements ControllerBase {
                         } else {
                             try {
                                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/br/ufrpe/timeshare/gui/application/ItemCell.fxml"));
-                                if (loader.getLocation() == null) {
-                                    System.err.println("Erro: Caminho do ItemCell.fxml não encontrado!");
-                                    return;
-                                }
                                 HBox root = loader.load();
                                 ControllerItemCell controller = loader.getController();
                                 controller.setItem(item);
@@ -98,6 +81,7 @@ public class ControllerListarBens implements ControllerBase {
                             } catch (IOException e) {
                                 System.err.println("Erro ao carregar ItemCell.fxml: " + e.getMessage());
                                 e.printStackTrace();
+                                setGraphic(null);
                             }
                         }
                     }
