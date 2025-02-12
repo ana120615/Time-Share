@@ -90,8 +90,11 @@ public class ControladorBens {
         }
     }
 
-    public void ofertarBem(int id) throws BemNaoExisteException {
+    public void ofertarBem(int id) throws BemJaOfertadoException, BemNaoExisteException {
         Bem bem = repositorioBens.buscar(id);
+        if (bem.isOfertado()) {
+            throw new BemJaOfertadoException("Bem já ofertado");
+        }
         if (bem != null) {
             bem.setOfertado(true);
             for (Cota c : bem.getCotas()) {
@@ -190,15 +193,17 @@ public class ControladorBens {
     }
 
 
-    public void listarCotasDeUmBem(int idBem) throws BemNaoExisteException {
+    public List<Cota> listarCotasDeUmBem(int idBem) throws BemNaoExisteException {
         ArrayList<Cota> resultado = new ArrayList<>();
         Bem bem = repositorioBens.buscar(idBem);
         if (bem == null) {
             throw new BemNaoExisteException("Bem não existe");
         }
         for (Cota cota : bem.getCotas()) {
-            System.out.println(cota);
+            resultado.add(cota);
         }
+
+        return resultado;
     }
 
 
@@ -287,6 +292,15 @@ public class ControladorBens {
         Bem bem = this.repositorioBens.buscar(id);
         if (bem != null) {
             bem.setCapacidade(novaCapacidade);
+        } else {
+            throw new BemNaoExisteException("Bem não existe.");
+        }
+    }
+
+    public void alterarCaminhoDaImagemBem(int id, String novoCaminhoDeImagem) throws BemNaoExisteException, IllegalArgumentException {
+        Bem bem = this.repositorioBens.buscar(id);
+        if (bem != null) {
+            bem.setCaminhoImagem(novoCaminhoDeImagem);
         } else {
             throw new BemNaoExisteException("Bem não existe.");
         }

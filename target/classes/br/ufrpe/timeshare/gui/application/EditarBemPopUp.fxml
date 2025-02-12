@@ -7,6 +7,7 @@
 <?import javafx.scene.control.Spinner?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
@@ -137,11 +138,11 @@
                                              </rowConstraints>
                                              <children>
                                                 <Label text="Id" />
-                                                <TextField fx:id="idBemTextField" GridPane.rowIndex="1" />
+                                                <TextField fx:id="idBemTextField" disable="true" editable="false" GridPane.rowIndex="1" />
                                                 <Label text="Localização" GridPane.rowIndex="2" />
                                                 <TextField fx:id="localizacaoTextField" GridPane.rowIndex="3" />
                                                 <Label text="Ofertado" GridPane.rowIndex="4" />
-                                                <Button fx:id="btnLigarDesligarOfertado" mnemonicParsing="false" text="Ofertar" GridPane.rowIndex="5" />
+                                                <ToggleButton fx:id="btnLigarDesligarOfertado" mnemonicParsing="false" text="False" GridPane.rowIndex="5" />
                                              </children>
                                           </GridPane>
                                        </children>
@@ -177,7 +178,7 @@
                                                       <Insets bottom="10.0" />
                                                    </VBox.margin>
                                                 </Label>
-                                                <Spinner fx:id="quantidadeCotasSpinner" prefHeight="11.0" prefWidth="162.0" />
+                                                <Spinner fx:id="quantidadeCotasSpinner" disable="true" prefHeight="11.0" prefWidth="162.0" />
                                              </children>
                                           </VBox>
                                        </children>
@@ -192,7 +193,7 @@
                                                 <Insets bottom="10.0" />
                                              </VBox.margin>
                                           </Label>
-                                          <TextField fx:id="precoTextField" />
+                                          <TextField fx:id="precoTextField" disable="true" editable="false" />
                                        </children>
                                     </VBox>
                                     <VBox prefHeight="200.0" prefWidth="218.0" GridPane.columnIndex="2">
@@ -205,7 +206,7 @@
                                                 <Insets bottom="10.0" />
                                              </VBox.margin>
                                           </Label>
-                                          <DatePicker fx:id="dataInicialPicker" prefHeight="26.0" prefWidth="246.0" />
+                                          <DatePicker fx:id="dataInicialPicker" disable="true" editable="false" prefHeight="26.0" prefWidth="246.0" />
                                        </children>
                                     </VBox>
                                  </children>

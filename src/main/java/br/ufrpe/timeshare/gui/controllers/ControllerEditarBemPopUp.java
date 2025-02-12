@@ -1,18 +1,38 @@
 package br.ufrpe.timeshare.gui.controllers;
 
+import br.ufrpe.timeshare.excecoes.*;
+import br.ufrpe.timeshare.gui.application.ScreenManager;
+import br.ufrpe.timeshare.negocio.ControladorBens;
 import br.ufrpe.timeshare.negocio.beans.Bem;
+import br.ufrpe.timeshare.negocio.beans.Usuario;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import org.controlsfx.control.action.Action;
+
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Objects;
+import java.util.UUID;
 
 public class ControllerEditarBemPopUp {
+    private ControladorBens controladorBens;
 
+    {
+        controladorBens = new ControladorBens();
+    }
+
+    private Bem bem;
     @FXML
     private Button btnFechar;
 
@@ -34,20 +54,47 @@ public class ControllerEditarBemPopUp {
     private DatePicker dataInicialPicker;
     @FXML
     private TextField precoTextField;
-
+    @FXML
+    private ToggleButton btnLigarDesligarOfertado;
+    private boolean isTrue;
+    private File imagemSelecionada;
     private ControllerListarBens mainController;
+
+    @FXML
+    private void initialize() {
+        btnLigarDesligarOfertado.setOnAction(this::AcaoMudarOfertado);
+    }
+
+    private void exibirAlertaErro(String titulo, String header, String contentText) {
+        Alert alerta = new Alert(Alert.AlertType.ERROR);
+        alerta.setTitle(titulo);
+        alerta.setHeaderText(header);
+        alerta.setContentText(contentText);
+        alerta.getDialogPane().getStyleClass().add("alert-error"); // Estilo CSS
+        alerta.showAndWait();
+    }
+
+    private void exibirAlertaInformation(String titulo, String header, String contentText) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(titulo);
+        alert.setHeaderText(header);
+        alert.setContentText(contentText);
+        alert.getDialogPane().getStyleClass().add("alert-info"); // Estilo CSS
+        alert.showAndWait();
+    }
 
     public void setBem(Bem bem) {
         if (bem == null) {
             System.err.println("Erro: Bem está null em setBem()!");
             return;
         }
-
+        this.bem = bem;
         nomeTextField.setText(bem.getNome());
-        idBemTextField.setText(bem.getId()+"");
+        idBemTextField.setText(bem.getId() + "");
         localizacaoTextField.setText(bem.getLocalizacao());
         descricaoTextArea.setText(bem.getDescricao());
         imagemView.setImage(carregarImagem(bem.getCaminhoImagem()));
+        btnLigarDesligarOfertado.setText(bem.isOfertado() ? "Desligar Ofertado" : "Ligar Ofertado");
 
         // Inicializando os spinners caso não tenha sido feito ainda
         if (capacidadeSpinner.getValueFactory() == null) {
@@ -59,10 +106,10 @@ public class ControllerEditarBemPopUp {
         if (quantidadeCotasSpinner.getValueFactory() == null) {
             quantidadeCotasSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 100, 50));  // Ajuste conforme necessário
         }
-        // quantidadeCotasSpinner.getValueFactory().setValue(bem.getQuantidadeCotas());
+        quantidadeCotasSpinner.getValueFactory().setValue(bem.getCotas().size());
 
-        // dataInicialPicker.setValue(bem.getDiaInicial());
-        // precoTextField.setText(String.valueOf(bem.getPreco()));
+        dataInicialPicker.setValue(LocalDate.parse(bem.getDiaInicial().toLocalDate().toString()));
+        precoTextField.setText(String.valueOf(bem.getCotas().getFirst().getPreco()));
     }
 
 
@@ -99,14 +146,84 @@ public class ControllerEditarBemPopUp {
     }
 
     public void btnSalvaAlteracoes() {
-        System.out.println("Salvando alterações...");
+
+        // Validação dos campos
+        String nome = nomeTextField.getText();
+        String localizacao = localizacaoTextField.getText();
+        String descricao = descricaoTextArea.getText();
+
+
+        // Verifica se os campos estão preenchidos corretamente
+        if (nome.isEmpty() || localizacao.isEmpty() || descricao.isEmpty()) {
+            exibirAlertaErro("Erro", "Campos obrigatórios não preenchidos", "Por favor, preencha todos os campos.");
+            return;
+        }
+
+        int capacidade = capacidadeSpinner.getValue();
+        String caminhoImagem = salvarImagem(); // Salva a imagem e obtem o caminho relativo
+        try {
+            controladorBens.alterarNomeBem((int) bem.getId(), nome);
+            controladorBens.alterarLocalizacaoBem((int) bem.getId(), localizacao);
+            controladorBens.alterarDescricaoBem((int) bem.getId(), descricao);
+            controladorBens.alterarCapacidadeBem((int) bem.getId(), capacidade);
+            controladorBens.alterarCaminhoDaImagemBem((int) bem.getId(), caminhoImagem);
+            controladorBens.ofertarBem((int) bem.getId());
+            System.out.println("Bem alterado com sucesso!");
+        } catch (BemNaoExisteException | NullPointerException | BemJaOfertadoException e) {
+            exibirAlertaErro("Erro", "Erro ao alterar nome do bem", e.getMessage());
+        }
+
     }
 
-    public void btnExcluirBem () {
+
+    public void AcaoMudarOfertado(ActionEvent event) {
+        this.isTrue = !bem.isOfertado();
+        this.btnLigarDesligarOfertado.setText(isTrue ? "Desligar Ofertado" : "Ligar Ofertado");
+    }
+
+    public void btnExcluirBem() {
         System.out.println("Excluir bem...");
     }
 
     public void handleSelecionarImagem() {
-        System.out.println("Selecionar imagem...");
+        // Criação de um seletor de arquivos
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Selecionar Imagem");
+
+        // Filtrando tipos de imagem aceitos
+        fileChooser.getExtensionFilters().add(
+                new FileChooser.ExtensionFilter("Imagens", "*.png", "*.jpg", "*.jpeg", "*.bmp", "*.gif")
+        );
+
+        // Abrindo o seletor de arquivos e obtendo o arquivo selecionado
+        File imagemSelecionadaTemp = fileChooser.showOpenDialog(null);
+
+        if (imagemSelecionadaTemp != null) {
+            // Atualizando a variável global imagemSelecionada com o arquivo selecionado
+            imagemSelecionada = imagemSelecionadaTemp;
+
+            // Exibindo a imagem no ImageView
+            imagemView.setImage(new Image(imagemSelecionada.toURI().toString()));
+        }
+    }
+
+    private String salvarImagem() {
+        if (imagemSelecionada == null) {
+            return null;
+        }
+        try {
+            Path diretorio = Paths.get("images");
+            if (!Files.exists(diretorio)) {
+                Files.createDirectories(diretorio);
+            }
+            String nomeArquivo = UUID.randomUUID().toString() + "_" + imagemSelecionada.getName();
+            Path destino = diretorio.resolve(nomeArquivo);
+            Files.copy(imagemSelecionada.toPath(), destino, StandardCopyOption.REPLACE_EXISTING);
+            return "images/" + nomeArquivo;
+        } catch (IOException e) {
+            exibirAlertaErro("Erro", "Erro ao salvar a imagem", e.getMessage());
+            e.printStackTrace();
+            return null;
+        }
     }
 }
