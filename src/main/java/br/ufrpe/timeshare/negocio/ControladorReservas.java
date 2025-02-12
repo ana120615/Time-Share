@@ -174,7 +174,7 @@ public class ControladorReservas {
         //liberando cota
         //TODO: verificar se isso vai ser necessario ou se podemos verificar na reserva diretamente
         for (Cota cota : cotasBemAssociadoReserva) {
-            if (!cota.isStatusDeDisponibilidadeParaReserva() && reservaCancelada.getUsuarioComum().equals(cota.getProprietario())) {
+            if (!cota.getStatusDeDisponibilidadeParaReserva() && reservaCancelada.getUsuarioComum().equals(cota.getProprietario())) {
                 if ((reservaCancelada.getDataInicio().isBefore(cota.getDataFim()) || reservaCancelada.getDataInicio().isEqual(cota.getDataFim())) &&
                         (reservaCancelada.getDataFim().isAfter(cota.getDataInicio()) || reservaCancelada.getDataFim().isEqual(cota.getDataInicio()))) {
                     cota.setStatusDeDisponibilidadeParaReserva(true);
@@ -260,7 +260,7 @@ public class ControladorReservas {
             for (int i = 0; i < cotasBemAssociado.size() && !existeCotaOcupada; i++) {
                 if ((cotasBemAssociado.get(i).getProprietario() != null && !cotasBemAssociado.get(i).getProprietario().equals(usuario) &&
                         !cotasBemAssociado.get(i).getStatusDeDisponibilidadeParaCompra()) || cotasBemAssociado.get(i).getProprietario() != null &&
-                        (cotasBemAssociado.get(i).getProprietario().equals(usuario) && !cotasBemAssociado.get(i).isStatusDeDisponibilidadeParaReserva())) {
+                        (cotasBemAssociado.get(i).getProprietario().equals(usuario) && !cotasBemAssociado.get(i).getStatusDeDisponibilidadeParaReserva())) {
 
                     existeCotaOcupada = verificarConflitoDeDatasCota(cotasBemAssociado.get(i), inicioAtual, dataFim);
                 }

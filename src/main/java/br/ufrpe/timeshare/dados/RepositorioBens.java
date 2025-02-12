@@ -3,6 +3,7 @@ package br.ufrpe.timeshare.dados;
 import br.ufrpe.timeshare.negocio.beans.Bem;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class RepositorioBens extends RepositorioGenerico<Bem> implements IRepositorioBens {
@@ -67,6 +68,10 @@ public class RepositorioBens extends RepositorioGenerico<Bem> implements IReposi
         return listaBensByNome;
     }
 
+    public void cadastrar(Bem obj) {
+        lista.add(obj);
+        Collections.sort(lista);
+    }
 
 }
 

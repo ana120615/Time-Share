@@ -71,7 +71,7 @@ public class ControladorVendas {
         Usuario usuarioRemetente = controladorUsuarioGeral.procurarUsuarioPorCpf(cpfUsuarioRemetente);
         Usuario usuarioDestinatario = controladorUsuarioGeral.procurarUsuarioPorCpf(cpfUsuarioDestinario);
 
-        if (!cotaTransferida.isStatusDeDisponibilidadeParaReserva()) {
+        if (!cotaTransferida.getStatusDeDisponibilidadeParaReserva()) {
             throw new TransferenciaInvalidaException("Não é possível transferir uma cota que já foi reservada.");
         }
 
