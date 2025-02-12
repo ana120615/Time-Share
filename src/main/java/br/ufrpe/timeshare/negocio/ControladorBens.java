@@ -181,15 +181,17 @@ public class ControladorBens {
     }
 
 
-    public void listarCotasDeUmBem(int idBem) throws BemNaoExisteException {
+    public List<Cota> listarCotasDeUmBem(int idBem) throws BemNaoExisteException {
         ArrayList<Cota> resultado = new ArrayList<>();
         Bem bem = repositorioBens.buscar(idBem);
         if (bem == null) {
             throw new BemNaoExisteException("Bem não existe");
         }
         for (Cota cota : bem.getCotas()) {
-            System.out.println(cota);
+            resultado.add(cota);
         }
+
+        return resultado;
     }
 
 

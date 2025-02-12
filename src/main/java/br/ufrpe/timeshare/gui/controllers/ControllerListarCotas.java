@@ -1,9 +1,10 @@
 package br.ufrpe.timeshare.gui.controllers;
 
+import br.ufrpe.timeshare.excecoes.BemNaoExisteException;
 import br.ufrpe.timeshare.gui.application.ScreenManager;
 import br.ufrpe.timeshare.negocio.ControladorBens;
+import br.ufrpe.timeshare.negocio.beans.Cota;
 import br.ufrpe.timeshare.negocio.beans.Usuario;
-import br.ufrpe.timeshare.negocio.beans.Bem;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -11,22 +12,25 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.util.Callback;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
-public class ControllerListarBens implements ControllerBase {
+public class ControllerListarCotas implements ControllerBase{
+
+    @FXML private TextField idBemProcurado;
+    @FXML private ListView<Cota> listViewItensCotas;
+
     private Usuario usuario;
     private final ControladorBens controladorBens;
 
-    public ControllerListarBens() {
+    public ControllerListarCotas() {
         this.controladorBens = new ControladorBens();
     }
-
-    @FXML
-    private ListView<Bem> listViewItens;
 
     @Override
     public void receiveData(Object data) {
@@ -34,7 +38,6 @@ public class ControllerListarBens implements ControllerBase {
         if (data instanceof Usuario) {
             this.usuario = (Usuario) data;
             System.out.println("Usuário definido: " + usuario.getNome());
-            carregarListaDeBens();
         } else {
             System.err.println("Erro: receiveData recebeu um objeto inválido.");
         }
@@ -45,42 +48,53 @@ public class ControllerListarBens implements ControllerBase {
         System.out.println("initialize() chamado.");
     }
 
-    private void carregarListaDeBens() {
+    @FXML
+    public void buscarCotas(ActionEvent event) {
+        carregarListaDeCotas();
+    }
+    private void carregarListaDeCotas() {
         if (usuario == null) {
-            System.err.println("Erro: Usuário está null em carregarListaDeBens()!");
+            System.err.println("Erro: Usuário está null em carregarListaDeCotas()!");
+            return;
+        }
+        List<Cota> cotas = new ArrayList<>();
+        try {
+             cotas = controladorBens.listarCotasDeUmBem(Integer.parseInt(idBemProcurado.getText()));
+        } catch (BemNaoExisteException e){
+            System.out.println(e.getMessage());
+            System.err.println("Erro: Usuário está null em carregarListaDeCotas()!");
             return;
         }
 
-        List<Bem> bens = controladorBens.listarBensUsuario(usuario);
-        if (bens == null || bens.isEmpty()) {
+        if (cotas == null || cotas.isEmpty()) {
             System.err.println("Erro: lista de bens vazia ou null.");
             return;
         } else {
-            System.out.println("Lista de bens carregada com " + bens.size() + " itens.");
+            System.out.println("Lista de bens carregada com " + cotas.size() + " itens.");
         }
 
-        ObservableList<Bem> listaDeItens = FXCollections.observableArrayList(bens);
-        listViewItens.getItems().setAll(listaDeItens);
+        ObservableList<Cota> listaDeItens = FXCollections.observableArrayList(cotas);
+        listViewItensCotas.getItems().setAll(listaDeItens);
 
-        listViewItens.setCellFactory(new Callback<>() {
+        listViewItensCotas.setCellFactory(new Callback<>() {
             @Override
-            public ListCell<Bem> call(ListView<Bem> bemListView) {
-                return new ListCell<>() {
+            public ListCell<Cota> call(ListView<Cota> cotaListView) {
+                return new ListCell<Cota>() {
                     @Override
-                    protected void updateItem(Bem item, boolean empty) {
+                    protected void updateItem(Cota item, boolean empty) {
                         super.updateItem(item, empty);
                         if (empty || item == null) {
                             setGraphic(null);
                         } else {
                             try {
-                                FXMLLoader loader = new FXMLLoader(getClass().getResource("/br/ufrpe/timeshare/gui/application/ItemCell.fxml"));
+                                FXMLLoader loader = new FXMLLoader(getClass().getResource("/br/ufrpe/timeshare/gui/application/ItemCellCota.fxml"));
                                 HBox root = loader.load();
-                                ControllerItemCell controller = loader.getController();
+                                ControllerItemCellCota controller = loader.getController();
                                 controller.setItem(item);
-                                controller.setMainControllerBens(ControllerListarBens.this); // Passa referência do controlador principal
+                                controller.setMainControllerCotas(ControllerListarCotas.this); // Passa referência do controlador principal
                                 setGraphic(root);
                             } catch (IOException e) {
-                                System.err.println("Erro ao carregar ItemCell.fxml: " + e.getMessage());
+                                System.err.println("Erro ao carregar ItemCellCota.fxml: " + e.getMessage());
                                 e.printStackTrace();
                                 setGraphic(null);
                             }
@@ -91,8 +105,8 @@ public class ControllerListarBens implements ControllerBase {
         });
     }
 
-    public ListView<Bem> getListViewItens() {
-        return listViewItens;
+    public ListView<Cota> getListViewItens() {
+        return listViewItensCotas;
     }
 
     @FXML

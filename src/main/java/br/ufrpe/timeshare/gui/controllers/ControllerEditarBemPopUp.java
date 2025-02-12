@@ -9,10 +9,11 @@ import javafx.stage.Stage;
 import org.controlsfx.control.action.Action;
 
 import java.io.File;
+import java.time.LocalDate;
 import java.util.Objects;
 
 public class ControllerEditarBemPopUp {
-
+    private Bem bem;
     @FXML
     private Button btnFechar;
 
@@ -42,7 +43,7 @@ public class ControllerEditarBemPopUp {
             System.err.println("Erro: Bem está null em setBem()!");
             return;
         }
-
+        this.bem = bem;
         nomeTextField.setText(bem.getNome());
         idBemTextField.setText(bem.getId()+"");
         localizacaoTextField.setText(bem.getLocalizacao());
@@ -59,10 +60,10 @@ public class ControllerEditarBemPopUp {
         if (quantidadeCotasSpinner.getValueFactory() == null) {
             quantidadeCotasSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 100, 50));  // Ajuste conforme necessário
         }
-        // quantidadeCotasSpinner.getValueFactory().setValue(bem.getQuantidadeCotas());
+        quantidadeCotasSpinner.getValueFactory().setValue(bem.getCotas().size());
 
-        // dataInicialPicker.setValue(bem.getDiaInicial());
-        // precoTextField.setText(String.valueOf(bem.getPreco()));
+        dataInicialPicker.setValue(LocalDate.parse(bem.getDiaInicial().toLocalDate().toString()));
+        precoTextField.setText(String.valueOf(bem.getCotas().getFirst().getPreco()));
     }
 
 

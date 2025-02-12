@@ -35,3 +35,29 @@
 .botao-imagem:hover {
     -fx-cursor: hand;
 }
+
+.label-maior-parte-baixo {
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #000814;
+}
+
+.label-menor-parte-baixo {
+    -fx-font-size: 13px;
+    -fx-font-weight: normal;
+    -fx-text-fill: #666666;
+}
+
+.botao-editar {
+    -fx-background-color: transparent;
+    -fx-background-radius: 50%;
+    -fx-border-radius: 50%; /* Verde */
+    -fx-padding: 6px;
+    -fx-cursor: hand;
+    -fx-transition: 0.3s;
+}
+
+.botao-editar .image-view {
+    -fx-fit-width: 15px;
+    -fx-fit-height: 15px;
+}

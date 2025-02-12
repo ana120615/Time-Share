@@ -1,7 +1,5 @@
 package br.ufrpe.timeshare.gui.controllers;
 
-import br.ufrpe.timeshare.gui.controllers.ControllerEditarBemPopUp;
-import br.ufrpe.timeshare.gui.controllers.ControllerListarBens;
 import br.ufrpe.timeshare.negocio.beans.Bem;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -11,7 +9,6 @@ import javafx.scene.control.Label;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -35,7 +32,7 @@ public class ControllerItemCell {
     private Label itemLabelNome;
 
     private Bem bem;
-    private ControllerListarBens mainController;
+    private ControllerListarBens mainControllerBens;
 
     public void setItem(Bem item) {
         this.bem = item;
@@ -54,8 +51,8 @@ public class ControllerItemCell {
         itemButton.setOnAction(e -> showPopup()); // Agora chama o pop-up ao clicar no botão
     }
 
-    public void setMainController(ControllerListarBens mainController) {
-        this.mainController = mainController;
+    public void setMainControllerBens(ControllerListarBens mainControllerBens) {
+        this.mainControllerBens = mainControllerBens;
     }
 
     private void showPopup() {
@@ -66,7 +63,7 @@ public class ControllerItemCell {
             // Obtém o controlador da tela do pop-up
             ControllerEditarBemPopUp popupController = loader.getController();
             popupController.setBem(bem);
-            popupController.setMainController(mainController);
+            popupController.setMainController(mainControllerBens);
 
             Stage popupStage = new Stage();
             popupStage.initModality(Modality.APPLICATION_MODAL);
@@ -76,15 +73,15 @@ public class ControllerItemCell {
             popupStage.setMinHeight(650);
 
             // Aplica efeito de desfoque na tela principal
-            if (mainController != null && mainController.getListViewItens().getScene() != null) {
-                mainController.getListViewItens().getScene().getRoot().setEffect(new GaussianBlur(10));
+            if (mainControllerBens != null && mainControllerBens.getListViewItens().getScene() != null) {
+                mainControllerBens.getListViewItens().getScene().getRoot().setEffect(new GaussianBlur(10));
             }
 
             popupStage.showAndWait();
 
             // Remove efeito de desfoque ao fechar
-            if (mainController != null && mainController.getListViewItens().getScene() != null) {
-                mainController.getListViewItens().getScene().getRoot().setEffect(null);
+            if (mainControllerBens != null && mainControllerBens.getListViewItens().getScene() != null) {
+                mainControllerBens.getListViewItens().getScene().getRoot().setEffect(null);
             }
         } catch (IOException e) {
             e.printStackTrace();
