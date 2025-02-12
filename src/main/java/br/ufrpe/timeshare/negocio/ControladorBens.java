@@ -115,6 +115,7 @@ public class ControladorBens {
                 }
             }
         }
+        Collections.sort(resultado);
         return resultado;
     }
 
@@ -128,11 +129,19 @@ public class ControladorBens {
                 }
             }
         }
+        Collections.sort(resultado);
         return resultado;
     }
 
     public List<Bem> listarBensOfertados() {
         return repositorioBens.listarBensDisponiveis();
+    }
+
+    public List<Bem> listarBensPorNome(String nome) throws DadosInsuficientesException {
+        if(nome == null) {
+            throw new DadosInsuficientesException("Nome nulo");
+        }
+        return repositorioBens.listarBensByNome(nome);
     }
 
 
@@ -304,9 +313,6 @@ public class ControladorBens {
         return resultado;
     }
 
-    //RELATORIOS
-
-    //FRACOES MAIS COMPRADAS
 }
 
 

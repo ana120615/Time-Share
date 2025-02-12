@@ -66,6 +66,25 @@ public class ControllerConfiguracoes implements ControllerBase {
         }
     }
 
+    private void exibirAlertaErro(String titulo, String header, String contentText) {
+        Alert alerta = new Alert(Alert.AlertType.ERROR);
+        alerta.setTitle(titulo);
+        alerta.setHeaderText(header);
+        alerta.setContentText(contentText);
+        alerta.getDialogPane().getStyleClass().add("alert-error"); // Estilo CSS
+        alerta.showAndWait();
+    }
+
+    private void exibirAlertaInformation(String titulo, String header, String contentText) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(titulo);
+        alert.setHeaderText(header);
+        alert.setContentText(contentText);
+        alert.getDialogPane().getStyleClass().add("alert-info"); // Estilo CSS
+        alert.showAndWait();
+    }
+
+
     @FXML
     public void editarNome(ActionEvent event) {
         TextInputDialog dialog = new TextInputDialog();
@@ -75,39 +94,17 @@ public class ControllerConfiguracoes implements ControllerBase {
         Optional<String> result = dialog.showAndWait();
 
         if (result.isEmpty() || result.orElse("").isEmpty()) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Erro");
-            alert.setHeaderText("Campo obrigatório não preenchido");
-            alert.setContentText("Operacao nao realizada");
-            alert.getDialogPane().setStyle("-fx-background-color: #ffcccc;"); // Vermelho claro
-            alert.showAndWait();
+            exibirAlertaErro("Erro", "Campo obrigatório não preenchido", "Operacao nao realizada");
         } else {
             try {
                 String novoNome = result.orElse("");
                 usuario.setNome(novoNome);
                 controladorUsuarioGeral.alterarNomeUsuario(usuario.getId(), novoNome, usuario.getTipo());
 
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Edicao concluída.");
-                alert.setHeaderText("Cadastro realizado com sucesso!");
-                alert.setContentText("Usuário " + usuario.getNome() + " cadastrado como " + usuario.getTipo() + " com nascimento em " + dataNascimento + ".");
-                alert.getDialogPane().setStyle("-fx-background-color: #ccffcc;"); // Verde claro
-                alert.showAndWait();
+                exibirAlertaInformation("Edicao concluída", "Nome editado com sucesso!", ("Usuário " + usuario.getNome() + " cadastrado como " + usuario.getTipo() + " com nascimento em " + dataNascimento + "."));
                 ScreenManager.getInstance().showScreen("ConfiguracoesUsuario");
             } catch (UsuarioNaoExisteException | UsuarioNaoPermitidoException | NullPointerException e) {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Erro");
-                alert.setHeaderText("Erro ao cadastrar usuário");
-                alert.setContentText(e.getMessage());
-                alert.getDialogPane().setStyle("-fx-background-color: #ffcccc;"); // Vermelho claro
-                alert.showAndWait();
-            } catch (Exception e) {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Erro");
-                alert.setHeaderText("Erro ao alterar nome");
-                alert.setContentText(e.getMessage());
-                alert.getDialogPane().setStyle("-fx-background-color: #ffcccc;"); // Vermelho claro
-                alert.showAndWait();
+                exibirAlertaErro("Erro", "Erro ao editar nome", e.getMessage());
             }
         }
 
@@ -121,39 +118,16 @@ public class ControllerConfiguracoes implements ControllerBase {
         dialog.setContentText("Novo email: ");
         Optional<String> result = dialog.showAndWait();
         if (result.isEmpty() || result.orElse("").isEmpty()) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Erro");
-            alert.setHeaderText("Campo obrigatório não preenchido");
-            alert.setContentText("Operacao nao realizada");
-            alert.getDialogPane().setStyle("-fx-background-color: #ffcccc;"); // Vermelho claro
-            alert.showAndWait();
+            exibirAlertaErro("Erro", "Campo obrigatório não preenchido", "Operacao nao realizada");
         } else {
             try {
                 String novoEmail = result.orElse("");
                 usuario.setEmail(novoEmail);
                 controladorUsuarioGeral.alterarEmailUsuario(usuario.getId(), novoEmail, usuario.getTipo());
-
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Edicao concluída.");
-                alert.setHeaderText("Operacao realizada com sucesso!");
-                alert.setContentText("Usuário " + usuario.getNome() + " cadastrado como " + usuario.getTipo() + " com nascimento em " + dataNascimento + ".");
-                alert.getDialogPane().setStyle("-fx-background-color: #ccffcc;"); // Verde claro
-                alert.showAndWait();
+                exibirAlertaInformation("Edicao concluída", "Email editado com sucesso!", ("Usuário " + usuario.getNome() + " cadastrado como " + usuario.getTipo() + " com nascimento em " + dataNascimento + "."));
                 ScreenManager.getInstance().showScreen("ConfiguracoesUsuario");
             } catch (UsuarioNaoExisteException | UsuarioNaoPermitidoException | NullPointerException e) {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Erro");
-                alert.setHeaderText("Erro ao editar usuário");
-                alert.setContentText(e.getMessage());
-                alert.getDialogPane().setStyle("-fx-background-color: #ffcccc;"); // Vermelho claro
-                alert.showAndWait();
-            } catch (Exception e) {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Erro");
-                alert.setHeaderText("Erro ao alterar email");
-                alert.setContentText(e.getMessage());
-                alert.getDialogPane().setStyle("-fx-background-color: #ffcccc;"); // Vermelho claro
-                alert.showAndWait();
+                exibirAlertaErro("Erro", "Erro ao editar email", e.getMessage());
             }
         }
     }
@@ -164,41 +138,20 @@ public class ControllerConfiguracoes implements ControllerBase {
         dialog.setTitle("Editar senha");
         dialog.setHeaderText("Editar senha");
         dialog.setContentText("Nova senha: ");
+        TextField senha = new TextField();
         Optional<String> result = dialog.showAndWait();
         if (result.isEmpty() || result.orElse("").isEmpty()) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Erro");
-            alert.setHeaderText("Campo obrigatório não preenchido");
-            alert.setContentText("Operacao nao realizada");
-            alert.getDialogPane().setStyle("-fx-background-color: #ffcccc;"); // Vermelho claro
-            alert.showAndWait();
+            exibirAlertaErro("Erro", "Campo obrigatório não preenchido", "Operacao nao realizada");
         } else {
             try {
                 String novaSenha = result.orElse("");
                 usuario.setEmail(novaSenha);
                 controladorUsuarioGeral.alterarSenhaUsuario(usuario.getEmail(), novaSenha, usuario.getTipo());
 
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Edicao concluída.");
-                alert.setHeaderText("Operacao realizada com sucesso!");
-                alert.setContentText("Usuário " + usuario.getNome() + " cadastrado como " + usuario.getTipo() + " com nascimento em " + dataNascimento + ".");
-                alert.getDialogPane().setStyle("-fx-background-color: #ccffcc;"); // Verde claro
-                alert.showAndWait();
+                exibirAlertaInformation("Edicao concluída", "Operacao realizada com sucesso!", ("Usuário " + usuario.getNome() + " cadastrado como " + usuario.getTipo() + " com nascimento em " + senha + "."));
                 ScreenManager.getInstance().showScreen("ConfiguracoesUsuario");
             } catch (UsuarioNaoExisteException | UsuarioNaoPermitidoException | NullPointerException e) {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Erro");
-                alert.setHeaderText("Erro ao editar usuário");
-                alert.setContentText(e.getMessage());
-                alert.getDialogPane().setStyle("-fx-background-color: #ffcccc;"); // Vermelho claro
-                alert.showAndWait();
-            } catch (Exception e) {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Erro");
-                alert.setHeaderText("Erro ao alterar senha");
-                alert.setContentText(e.getMessage());
-                alert.getDialogPane().setStyle("-fx-background-color: #ffcccc;"); // Vermelho claro
-                alert.showAndWait();
+                exibirAlertaErro("Erro", "Erro ao editar senha", e.getMessage());
             }
         }
     }
@@ -225,38 +178,16 @@ public class ControllerConfiguracoes implements ControllerBase {
         });
         Optional<LocalDate> resultado = dialog.showAndWait();
         if (resultado.isEmpty()) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Erro");
-            alert.setHeaderText("Campo obrigatório não preenchido");
-            alert.setContentText("Operacao nao realizada");
-            alert.getDialogPane().setStyle("-fx-background-color: #ffcccc;"); // Vermelho claro
-            alert.showAndWait();
+            exibirAlertaErro("Erro", "Campo obrigatório não preenchido", "Operacao nao realizada");
         } else {
             try {
                 LocalDate data = resultado.get();
                 usuario.setDataNascimento(data);
                 controladorUsuarioGeral.alterarDataAniversario(usuario.getId(), data, usuario.getTipo());
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Edicao concluída.");
-                alert.setHeaderText("Operacao realizada com sucesso!");
-                alert.setContentText("Usuário " + usuario.getNome() + " cadastrado como " + usuario.getTipo() + " com nascimento em " + dataNascimento + ".");
-                alert.getDialogPane().setStyle("-fx-background-color: #ccffcc;"); // Verde claro
-                alert.showAndWait();
+                exibirAlertaInformation("Edicao concluída", "Operacao realizada com sucesso!", ("Usuário " + usuario.getNome() + " cadastrado como " + usuario.getTipo() + " com nascimento em " + dataNascimento + "."));
                 ScreenManager.getInstance().showScreen("ConfiguracoesUsuario");
             } catch (UsuarioNaoExisteException | UsuarioNaoPermitidoException | NullPointerException e) {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Erro");
-                alert.setHeaderText("Erro ao editar usuário");
-                alert.setContentText(e.getMessage());
-                alert.getDialogPane().setStyle("-fx-background-color: #ffcccc;"); // Vermelho claro
-                alert.showAndWait();
-            } catch (Exception e) {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Erro");
-                alert.setHeaderText("Erro ao alterar data de nascimento");
-                alert.setContentText(e.getMessage());
-                alert.getDialogPane().setStyle("-fx-background-color: #ffcccc;"); // Vermelho claro
-                alert.showAndWait();
+                exibirAlertaErro("Erro", "Erro ao editar usuario", e.getMessage());
             }
         }
     }
@@ -276,12 +207,7 @@ public class ControllerConfiguracoes implements ControllerBase {
                 controladorUsuarioGeral.remover(usuario.getId(), usuario.getTipo());
                 ScreenManager.getInstance().showScreen("Login");
             } catch (UsuarioNaoExisteException | UsuarioNaoPermitidoException | NullPointerException e) {
-                Alert alert1 = new Alert(Alert.AlertType.ERROR);
-                alert1.setTitle("Erro");
-                alert1.setHeaderText("Erro excluir conta");
-                alert1.setContentText(e.getMessage());
-                alert1.getDialogPane().setStyle("-fx-background-color: #ffcccc;"); // Vermelho claro
-                alert1.showAndWait();
+                exibirAlertaErro("Erro", "Erro ao excluir conta", e.getMessage());
             }
         } else {
             System.out.println("Usuário cancelou a ação!");

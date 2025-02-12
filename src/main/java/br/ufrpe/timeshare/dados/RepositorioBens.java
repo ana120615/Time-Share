@@ -54,6 +54,7 @@ public class RepositorioBens extends RepositorioGenerico<Bem> implements IReposi
                 listaBensDisponiveis.add(bem);
             }
         }
+        Collections.sort(listaBensDisponiveis);
         return listaBensDisponiveis;
     }
 
@@ -65,12 +66,8 @@ public class RepositorioBens extends RepositorioGenerico<Bem> implements IReposi
                 listaBensByNome.add(bem);
             }
         }
+        Collections.sort(listaBensByNome);
         return listaBensByNome;
-    }
-
-    public void cadastrar(Bem obj) {
-        lista.add(obj);
-        Collections.sort(lista);
     }
 
 }
