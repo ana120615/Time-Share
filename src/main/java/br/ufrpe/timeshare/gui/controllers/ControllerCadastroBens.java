@@ -40,7 +40,6 @@ public class ControllerCadastroBens {
     private TextField localizacaoTextField;
     @FXML
     private TextArea descricaoTextArea;
-
     @FXML
     private ImageView imagemView;
     @FXML

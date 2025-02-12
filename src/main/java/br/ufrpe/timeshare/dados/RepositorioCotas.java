@@ -63,7 +63,7 @@ public class RepositorioCotas extends RepositorioGenerico<Cota> implements IRepo
     public List<Cota> listarCotasDisponiveisParaVenda() {
         List<Cota> resultado = new ArrayList<>();
         for (Cota cota : lista) {
-            if (cota.isStatusDeDisponibilidadeParaCompra()) {
+            if (cota.getStatusDeDisponibilidadeParaCompra()) {
                 resultado.add(cota);
             }
         }

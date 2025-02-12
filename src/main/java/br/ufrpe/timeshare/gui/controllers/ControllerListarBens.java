@@ -77,6 +77,7 @@ public class ControllerListarBens implements ControllerBase {
                                 HBox root = loader.load();
                                 ControllerItemCell controller = loader.getController();
                                 controller.setItem(item);
+                                controller.setMainController(ControllerListarBens.this); // Passa referência do controlador principal
                                 setGraphic(root);
                             } catch (IOException e) {
                                 System.err.println("Erro ao carregar ItemCell.fxml: " + e.getMessage());
@@ -88,6 +89,10 @@ public class ControllerListarBens implements ControllerBase {
                 };
             }
         });
+    }
+
+    public ListView<Bem> getListViewItens() {
+        return listViewItens;
     }
 
     @FXML

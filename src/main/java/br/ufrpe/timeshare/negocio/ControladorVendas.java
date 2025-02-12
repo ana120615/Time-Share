@@ -38,7 +38,7 @@ public class ControladorVendas {
     public void adicionarCotaCarrinho(int idCota, Venda venda) throws CotaNaoExisteException, CotaNaoOfertadaException {
         Cota cotaVenda = controladorBens.buscarCota(idCota);
 
-        if (cotaVenda.isStatusDeDisponibilidadeParaCompra()) {
+        if (cotaVenda.getStatusDeDisponibilidadeParaCompra()) {
             venda.adicionarCotaCarrinho(cotaVenda);
         } else {
             throw new CotaNaoOfertadaException("Não está ofertada");

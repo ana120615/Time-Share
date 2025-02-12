@@ -1,13 +1,23 @@
 package br.ufrpe.timeshare.gui.controllers;
 
+import br.ufrpe.timeshare.gui.controllers.ControllerEditarBemPopUp;
+import br.ufrpe.timeshare.gui.controllers.ControllerListarBens;
 import br.ufrpe.timeshare.negocio.beans.Bem;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.effect.GaussianBlur;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Objects;
 
 public class ControllerItemCell {
@@ -24,7 +34,12 @@ public class ControllerItemCell {
     @FXML
     private Label itemLabelNome;
 
+    private Bem bem;
+    private ControllerListarBens mainController;
+
     public void setItem(Bem item) {
+        this.bem = item;
+
         if (item == null) {
             itemLabelNome.setText("Item não encontrado");
             itemLabelDescricao.setText("Descrição não disponível");
@@ -34,13 +49,48 @@ public class ControllerItemCell {
 
         itemLabelNome.setText(item.getNome() != null ? item.getNome() : "Nome não disponível");
         itemLabelDescricao.setText(item.getDescricao() != null ? item.getDescricao() : "Descrição não disponível");
-
         itemImage.setImage(carregarImagem(item.getCaminhoImagem()));
 
-        itemButton.setOnAction(e -> {
-            System.out.println("Clicou em: " + item.getNome());
-        });
+        itemButton.setOnAction(e -> showPopup()); // Agora chama o pop-up ao clicar no botão
     }
+
+    public void setMainController(ControllerListarBens mainController) {
+        this.mainController = mainController;
+    }
+
+    private void showPopup() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/br/ufrpe/timeshare/gui/application/EditarBemPopUp.fxml"));
+            StackPane popupRoot = loader.load(); // Carrega a interface corretamente
+
+            // Obtém o controlador da tela do pop-up
+            ControllerEditarBemPopUp popupController = loader.getController();
+            popupController.setBem(bem);
+            popupController.setMainController(mainController);
+
+            Stage popupStage = new Stage();
+            popupStage.initModality(Modality.APPLICATION_MODAL);
+            popupStage.setScene(new Scene(popupRoot));
+            popupStage.setTitle("Detalhes do Bem");
+            popupStage.setMinWidth(932);
+            popupStage.setMinHeight(650);
+
+            // Aplica efeito de desfoque na tela principal
+            if (mainController != null && mainController.getListViewItens().getScene() != null) {
+                mainController.getListViewItens().getScene().getRoot().setEffect(new GaussianBlur(10));
+            }
+
+            popupStage.showAndWait();
+
+            // Remove efeito de desfoque ao fechar
+            if (mainController != null && mainController.getListViewItens().getScene() != null) {
+                mainController.getListViewItens().getScene().getRoot().setEffect(null);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     private Image carregarImagem(String caminhoImagem) {
         if (caminhoImagem == null || caminhoImagem.isEmpty()) {
@@ -59,6 +109,8 @@ public class ControllerItemCell {
             return carregarImagemPadrao();
         }
     }
+
+
 
     private Image carregarImagemPadrao() {
         return new Image(Objects.requireNonNull(getClass().getResourceAsStream("/br/ufrpe/timeshare/gui/application/images/picture.png")));
