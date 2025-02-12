@@ -2,8 +2,8 @@ package br.ufrpe.timeshare.gui.controllers;
 
 import br.ufrpe.timeshare.gui.application.ScreenManager;
 import br.ufrpe.timeshare.negocio.ControladorBens;
-import br.ufrpe.timeshare.negocio.beans.Usuario;
 import br.ufrpe.timeshare.negocio.beans.Bem;
+import br.ufrpe.timeshare.negocio.beans.Usuario;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -11,6 +11,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.util.Callback;
 
@@ -27,6 +28,7 @@ public class ControllerListarBens implements ControllerBase {
 
     @FXML
     private ListView<Bem> listViewItens;
+    @FXML private TextField nomeBemProcurado;
 
     @Override
     public void receiveData(Object data) {
@@ -45,11 +47,19 @@ public class ControllerListarBens implements ControllerBase {
         System.out.println("initialize() chamado.");
     }
 
-    private void carregarListaDeBens() {
+    @FXML
+    public void buscarBens(ActionEvent event) {
+        carregarListaDeBens();
+    }
+
+    public void carregarListaDeBens() {
         if (usuario == null) {
             System.err.println("Erro: Usuário está null em carregarListaDeBens()!");
             return;
         }
+
+        // limpar a ListView antes de carregar novos itens
+        listViewItens.getItems().clear();
 
         List<Bem> bens = controladorBens.listarBensUsuario(usuario);
         if (bens == null || bens.isEmpty()) {
@@ -94,6 +104,7 @@ public class ControllerListarBens implements ControllerBase {
     public ListView<Bem> getListViewItens() {
         return listViewItens;
     }
+
 
     @FXML
     public void voltarParaTelaAdm(ActionEvent event) {

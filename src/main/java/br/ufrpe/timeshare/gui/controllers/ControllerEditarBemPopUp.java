@@ -1,10 +1,9 @@
 package br.ufrpe.timeshare.gui.controllers;
 
-import br.ufrpe.timeshare.excecoes.*;
-import br.ufrpe.timeshare.gui.application.ScreenManager;
+import br.ufrpe.timeshare.excecoes.BemJaOfertadoException;
+import br.ufrpe.timeshare.excecoes.BemNaoExisteException;
 import br.ufrpe.timeshare.negocio.ControladorBens;
 import br.ufrpe.timeshare.negocio.beans.Bem;
-import br.ufrpe.timeshare.negocio.beans.Usuario;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -13,7 +12,6 @@ import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
-
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -21,7 +19,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -56,7 +53,7 @@ public class ControllerEditarBemPopUp {
     private TextField precoTextField;
     @FXML
     private ToggleButton btnLigarDesligarOfertado;
-    private boolean isTrue;
+    private boolean isTrue = false;
     private File imagemSelecionada;
     private ControllerListarBens mainController;
 
@@ -167,8 +164,19 @@ public class ControllerEditarBemPopUp {
             controladorBens.alterarDescricaoBem((int) bem.getId(), descricao);
             controladorBens.alterarCapacidadeBem((int) bem.getId(), capacidade);
             controladorBens.alterarCaminhoDaImagemBem((int) bem.getId(), caminhoImagem);
-            controladorBens.ofertarBem((int) bem.getId());
+            if(isTrue) {
+                controladorBens.ofertarBem((int) bem.getId());
+            }
+            exibirAlertaInformation("Operacao concluída", "Operacao realizada com sucesso!", "Fechando tela de edicao...");
             System.out.println("Bem alterado com sucesso!");
+
+            //fechar a janela após a edicao
+            fecharPopup();
+
+            //atualizar a listagem na tela principal, se necessário
+            if (mainController != null) {
+                mainController.carregarListaDeBens();
+            }
         } catch (BemNaoExisteException | NullPointerException | BemJaOfertadoException e) {
             exibirAlertaErro("Erro", "Erro ao alterar nome do bem", e.getMessage());
         }
@@ -182,7 +190,20 @@ public class ControllerEditarBemPopUp {
     }
 
     public void btnExcluirBem() {
-        System.out.println("Excluir bem...");
+        try {
+            controladorBens.remover((int) bem.getId());
+            System.out.println("Bem removido com sucesso!");
+
+            //fechar a janela após a exclusão
+            fecharPopup();
+
+            //atualizar a listagem na tela principal, se necessário
+            if (mainController != null) {
+                mainController.carregarListaDeBens();
+            }
+        } catch (BemNaoExisteException | IllegalAccessException e) {
+            exibirAlertaErro("Erro", "Erro ao remover bem", e.getMessage());
+        }
     }
 
     public void handleSelecionarImagem() {

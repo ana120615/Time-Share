@@ -109,7 +109,9 @@ public class ControladorBens {
         return repositorioBens.listar();
     }
 
+    //TODO: colocar excecao
     public List<Bem> listarBensUsuario(Usuario usuario) {
+
         List<Bem> resultado = new ArrayList<>();
         if (repositorioBens != null && usuario != null) {
             for (Bem bem : repositorioBens.listar()) {

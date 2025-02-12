@@ -17,7 +17,6 @@ import javafx.scene.layout.HBox;
 import javafx.util.Callback;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 public class ControllerListarCotas implements ControllerBase{
@@ -52,17 +51,23 @@ public class ControllerListarCotas implements ControllerBase{
     public void buscarCotas(ActionEvent event) {
         carregarListaDeCotas();
     }
+
+    //TODO: adicionar alertas de erro
     private void carregarListaDeCotas() {
         if (usuario == null) {
             System.err.println("Erro: Usuário está null em carregarListaDeCotas()!");
             return;
         }
-        List<Cota> cotas = new ArrayList<>();
+
+        // limpar a ListView antes de carregar novos itens
+        listViewItensCotas.getItems().clear();
+
+        List<Cota> cotas;
         try {
              cotas = controladorBens.listarCotasDeUmBem(Integer.parseInt(idBemProcurado.getText()));
         } catch (BemNaoExisteException e){
             System.out.println(e.getMessage());
-            System.err.println("Erro: Usuário está null em carregarListaDeCotas()!");
+            System.err.println("Bem com este id nao existe!");
             return;
         }
 
