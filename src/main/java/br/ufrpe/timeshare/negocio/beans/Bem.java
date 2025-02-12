@@ -28,7 +28,7 @@ public class Bem extends Entidade implements Cloneable {
         setNome(nome);
         setCadastradoPor(cadastradoPor);
         this.ofertado = false;
-        this.caminhoImagem = caminhoImagem;
+        setCaminhoImagem(caminhoImagem);
     }
 
     //METODOS GET E SET
