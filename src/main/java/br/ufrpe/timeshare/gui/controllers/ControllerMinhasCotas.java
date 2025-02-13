@@ -18,6 +18,7 @@ import javafx.scene.layout.HBox;
 import javafx.util.Callback;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ControllerMinhasCotas implements ControllerBase {
@@ -41,6 +42,7 @@ public class ControllerMinhasCotas implements ControllerBase {
         } else {
             System.err.println("Erro: receiveData recebeu um objeto inválido.");
         }
+        carregarListaDeCotas();
     }
 
     private void exibirAlertaErro(String titulo, String header, String contentText) {
@@ -56,12 +58,9 @@ public class ControllerMinhasCotas implements ControllerBase {
     @FXML
     public void initialize() {
         System.out.println("initialize() chamado.");
+
     }
 
-    @FXML
-    public void buscarCotas(ActionEvent event) {
-        carregarListaDeCotas();
-    }
 
     private void carregarListaDeCotas() {
         if (usuario == null) {
