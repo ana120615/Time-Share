@@ -129,6 +129,8 @@ public class ControllerListarCotas implements ControllerBase{
 
     @FXML
     public void voltarParaTelaAdm(ActionEvent event) {
+        idBemProcurado.clear();
+        listViewItensCotas.getItems().clear();
         System.out.println("Botão voltar clicado.");
         ScreenManager.getInstance().showAdmPrincipalScreen();
     }

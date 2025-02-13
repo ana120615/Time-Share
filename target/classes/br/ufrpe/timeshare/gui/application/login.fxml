@@ -98,7 +98,7 @@
                     <children>
                         <ImageView fitHeight="153.0" fitWidth="183.0" preserveRatio="true">
                             <image>
-                                <Image url="@images/logo.png" />
+                                <Image url="@logo.png" />
                             </image>
                         </ImageView>
                     </children>

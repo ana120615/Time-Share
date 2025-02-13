@@ -17,6 +17,6 @@
         <ListView fx:id="listViewBens" prefWidth="600" prefHeight="400" />
 
         <!-- Botão de voltar -->
-        <Button text="Voltar"  style="-fx-font-size: 14px; -fx-padding: 10px 20px;" />
+        <Button text="Voltar" onAction="#voltarParaTelaAnterior" style="-fx-font-size: 14px; -fx-padding: 10px 20px;" />
     </VBox>
 </AnchorPane>

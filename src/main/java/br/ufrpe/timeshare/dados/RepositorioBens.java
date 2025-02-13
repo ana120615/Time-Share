@@ -45,7 +45,7 @@ public class RepositorioBens extends RepositorioGenerico<Bem> implements IReposi
     public List<Bem> listarBensPorNome(String nome) {
         List<Bem> listaBensByNome = new ArrayList<>();
         for (Bem bem : lista) {
-            if (bem.getNome().equalsIgnoreCase(nome) || bem.getNome().contains(nome)) {
+            if (bem.getNome().toLowerCase().contains(nome.toLowerCase())) {
                 listaBensByNome.add(bem);
             }
         }
@@ -54,11 +54,16 @@ public class RepositorioBens extends RepositorioGenerico<Bem> implements IReposi
     }
 
     @Override
-    public List<Bem> listarBensUsuarioPorNome(String nome, int idUsuario) {
+    public List<Bem> listarBensUsuarioPorNome(String nome, long idUsuario) {
         List<Bem> listaBensByNome = new ArrayList<>();
+        String nomePesquisa = nome.trim().toLowerCase();
         for (Bem bem : lista) {
-            if ((bem.getCadastradoPor().getId() == idUsuario) && (bem.getNome().equalsIgnoreCase(nome) || bem.getNome().contains(nome))) {
-                listaBensByNome.add(bem);
+            if (bem.getCadastradoPor().getId() == idUsuario) {
+                String nomeBem = bem.getNome().trim().toLowerCase(); // Removendo espaços e padronizando
+
+                if (nomeBem.contains(nomePesquisa)) { // Verificando se o nome contém a pesquisa
+                    listaBensByNome.add(bem);
+                }
             }
         }
         Collections.sort(listaBensByNome);

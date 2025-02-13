@@ -73,11 +73,10 @@ public class ControllerListarBens implements ControllerBase {
         // limpar a ListView antes de carregar novos itens
         listViewItens.getItems().clear();
 
-
         List<Bem> bens = new ArrayList<>();
         if(!nomeBemProcurado.getText().isEmpty()) {
             try {
-                bens = controladorBens.listarBensUsuarioPorNome(String.valueOf(nomeBemProcurado), (int)usuario.getId());
+                bens = controladorBens.listarBensUsuarioPorNome(nomeBemProcurado.getText().trim(), usuario.getId());
             } catch (DadosInsuficientesException e) {
                 System.out.println(e.getMessage());
             }
@@ -137,6 +136,8 @@ public class ControllerListarBens implements ControllerBase {
 
     @FXML
     public void voltarParaTelaAdm(ActionEvent event) {
+        nomeBemProcurado.clear();
+        listViewItens.getItems().clear();
         System.out.println("Botão voltar clicado.");
         ScreenManager.getInstance().showAdmPrincipalScreen();
     }
