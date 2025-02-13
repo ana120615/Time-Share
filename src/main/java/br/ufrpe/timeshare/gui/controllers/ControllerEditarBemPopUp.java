@@ -2,6 +2,7 @@ package br.ufrpe.timeshare.gui.controllers;
 
 import br.ufrpe.timeshare.excecoes.BemJaOfertadoException;
 import br.ufrpe.timeshare.excecoes.BemNaoExisteException;
+import br.ufrpe.timeshare.gui.application.ScreenManager;
 import br.ufrpe.timeshare.negocio.ControladorBens;
 import br.ufrpe.timeshare.negocio.beans.Bem;
 import javafx.event.ActionEvent;
@@ -20,6 +21,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.time.LocalDate;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.UUID;
 
 public class ControllerEditarBemPopUp {
@@ -67,7 +69,7 @@ public class ControllerEditarBemPopUp {
         alerta.setTitle(titulo);
         alerta.setHeaderText(header);
         alerta.setContentText(contentText);
-        alerta.getDialogPane().getStyleClass().add("alert-error"); // Estilo CSS
+        alerta.getDialogPane().setStyle("-fx-background-color:  #ffcccc;"); // Vermelho claro
         alerta.showAndWait();
     }
 
@@ -76,9 +78,10 @@ public class ControllerEditarBemPopUp {
         alert.setTitle(titulo);
         alert.setHeaderText(header);
         alert.setContentText(contentText);
-        alert.getDialogPane().getStyleClass().add("alert-info"); // Estilo CSS
+        alert.getDialogPane().setStyle("-fx-background-color: #ccffcc;"); // Verde claro
         alert.showAndWait();
     }
+
 
     public void setBem(Bem bem) {
         if (bem == null) {
@@ -190,19 +193,31 @@ public class ControllerEditarBemPopUp {
     }
 
     public void btnExcluirBem() {
-        try {
-            controladorBens.remover((int) bem.getId());
-            System.out.println("Bem removido com sucesso!");
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmação");
+        alert.setHeaderText("Deseja realmente excluir o Bem?");
+        alert.setContentText("Clique em OK para confirmar ou Cancelar para voltar.");
+        // Exibindo o alerta e capturando a resposta
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            ScreenManager.getInstance().showLoginScreen();
+            System.out.println("Usuário confirmou a ação!");
+            try {
+                controladorBens.remover((int) bem.getId());
+                System.out.println("Bem removido com sucesso!");
 
-            //fechar a janela após a exclusão
-            fecharPopup();
+                //fechar a janela após a exclusão
+                fecharPopup();
 
-            //atualizar a listagem na tela principal, se necessário
-            if (mainController != null) {
-                mainController.carregarListaDeBens();
+                //atualizar a listagem na tela principal, se necessário
+                if (mainController != null) {
+                    mainController.carregarListaDeBens();
+                }
+            } catch (BemNaoExisteException | IllegalAccessException e) {
+                exibirAlertaErro("Erro", "Erro ao remover bem", e.getMessage());
             }
-        } catch (BemNaoExisteException | IllegalAccessException e) {
-            exibirAlertaErro("Erro", "Erro ao remover bem", e.getMessage());
+        } else {
+            System.out.println("Usuário cancelou a ação!");
         }
     }
 

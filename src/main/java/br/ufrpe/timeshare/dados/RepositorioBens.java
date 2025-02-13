@@ -28,23 +28,6 @@ public class RepositorioBens extends RepositorioGenerico<Bem> implements IReposi
     }
 
 
-    @Override
-    public Bem buscarBemPorNome(String nome) {
-        Bem bemProcurado = null;
-        boolean encontrado = false;
-        int i;
-        for (i = 0; i < lista.size() && !encontrado; i++) {
-            if (lista.get(i).getNome().equalsIgnoreCase(nome)) {
-                encontrado = true;
-            }
-        }
-
-        if (encontrado) {
-            bemProcurado = lista.get(i - 1);
-        }
-        return bemProcurado;
-    }
-
 
     @Override
     public List<Bem> listarBensDisponiveis() {
@@ -59,10 +42,22 @@ public class RepositorioBens extends RepositorioGenerico<Bem> implements IReposi
     }
 
     @Override
-    public List<Bem> listarBensByNome(String nome) {
+    public List<Bem> listarBensPorNome(String nome) {
         List<Bem> listaBensByNome = new ArrayList<>();
         for (Bem bem : lista) {
             if (bem.getNome().equalsIgnoreCase(nome) || bem.getNome().contains(nome)) {
+                listaBensByNome.add(bem);
+            }
+        }
+        Collections.sort(listaBensByNome);
+        return listaBensByNome;
+    }
+
+    @Override
+    public List<Bem> listarBensUsuarioPorNome(String nome, int idUsuario) {
+        List<Bem> listaBensByNome = new ArrayList<>();
+        for (Bem bem : lista) {
+            if ((bem.getCadastradoPor().getId() == idUsuario) && (bem.getNome().equalsIgnoreCase(nome) || bem.getNome().contains(nome))) {
                 listaBensByNome.add(bem);
             }
         }

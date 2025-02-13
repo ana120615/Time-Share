@@ -37,7 +37,7 @@ public class ControllerCadastro {
         alerta.setTitle(titulo);
         alerta.setHeaderText(header);
         alerta.setContentText(contentText);
-        alerta.getDialogPane().getStyleClass().add("alert-error"); // Estilo CSS
+        alerta.getDialogPane().setStyle("-fx-background-color:  #ffcccc;"); // Vermelho claro
         alerta.showAndWait();
     }
 
@@ -46,7 +46,7 @@ public class ControllerCadastro {
         alert.setTitle(titulo);
         alert.setHeaderText(header);
         alert.setContentText(contentText);
-        alert.getDialogPane().getStyleClass().add("alert-info"); // Estilo CSS
+        alert.getDialogPane().setStyle("-fx-background-color: #ccffcc;"); // Verde claro
         alert.showAndWait();
     }
 

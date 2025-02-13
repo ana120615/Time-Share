@@ -109,9 +109,11 @@ public class ControladorBens {
         return repositorioBens.listar();
     }
 
-    //TODO: colocar excecao
-    public List<Bem> listarBensUsuario(Usuario usuario) {
 
+    public List<Bem> listarBensUsuario(Usuario usuario) throws DadosInsuficientesException {
+        if(usuario == null) {
+            throw new DadosInsuficientesException("Usuario nulo");
+        }
         List<Bem> resultado = new ArrayList<>();
         if (repositorioBens != null && usuario != null) {
             for (Bem bem : repositorioBens.listar()) {
@@ -146,9 +148,16 @@ public class ControladorBens {
         if(nome == null) {
             throw new DadosInsuficientesException("Nome nulo");
         }
-        return repositorioBens.listarBensByNome(nome);
+        return repositorioBens.listarBensPorNome(nome);
     }
 
+
+    public List<Bem> listarBensUsuarioPorNome(String nome, int idusuario) throws DadosInsuficientesException {
+        if(nome == null) {
+            throw new DadosInsuficientesException("Nome nulo");
+        }
+        return repositorioBens.listarBensUsuarioPorNome(nome, idusuario);
+    }
 
     public void listarCotasDisponiveis() {
         List<Cota> cotas = repositorioCotas.listarCotasDisponiveisParaVenda();

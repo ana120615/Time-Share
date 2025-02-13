@@ -10,6 +10,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Alert;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
@@ -17,6 +18,7 @@ import javafx.scene.layout.HBox;
 import javafx.util.Callback;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ControllerListarCotas implements ControllerBase{
@@ -42,6 +44,16 @@ public class ControllerListarCotas implements ControllerBase{
         }
     }
 
+    private void exibirAlertaErro(String titulo, String header, String contentText) {
+        Alert alerta = new Alert(Alert.AlertType.ERROR);
+        alerta.setTitle(titulo);
+        alerta.setHeaderText(header);
+        alerta.setContentText(contentText);
+        alerta.getDialogPane().setStyle("-fx-background-color:  #ffcccc;"); // Vermelho claro
+        alerta.showAndWait();
+    }
+
+
     @FXML
     public void initialize() {
         System.out.println("initialize() chamado.");
@@ -52,8 +64,7 @@ public class ControllerListarCotas implements ControllerBase{
         carregarListaDeCotas();
     }
 
-    //TODO: adicionar alertas de erro
-    private void carregarListaDeCotas() {
+   private void carregarListaDeCotas() {
         if (usuario == null) {
             System.err.println("Erro: Usuário está null em carregarListaDeCotas()!");
             return;
@@ -62,13 +73,15 @@ public class ControllerListarCotas implements ControllerBase{
         // limpar a ListView antes de carregar novos itens
         listViewItensCotas.getItems().clear();
 
-        List<Cota> cotas;
-        try {
-             cotas = controladorBens.listarCotasDeUmBem(Integer.parseInt(idBemProcurado.getText()));
-        } catch (BemNaoExisteException e){
-            System.out.println(e.getMessage());
-            System.err.println("Bem com este id nao existe!");
-            return;
+        List<Cota> cotas = new ArrayList<>();
+        if(!idBemProcurado.getText().isEmpty()) {
+            try {
+                cotas = controladorBens.listarCotasDeUmBem(Integer.parseInt(idBemProcurado.getText()));
+            } catch (BemNaoExisteException e){
+                System.err.println("Bem com este id nao existe!");
+                exibirAlertaErro("Erro", "Erro ao procurar bem", "Bem com este id nao existe!");
+                return;
+            }
         }
 
         if (cotas == null || cotas.isEmpty()) {
