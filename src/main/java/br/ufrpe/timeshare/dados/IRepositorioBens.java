@@ -6,10 +6,10 @@ import java.util.List;
 
 public interface IRepositorioBens extends IRepositorio<Bem> {
 
-    Bem buscarBemPorNome(String nome);
+    List<Bem> listarBensUsuarioPorNome(String nome, int idUsuario);
 
     List<Bem> listarBensDisponiveis();
 
-    List<Bem> listarBensByNome(String nome);
+    List<Bem> listarBensPorNome(String nome);
 
 }

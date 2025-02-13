@@ -10,26 +10,26 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.util.Callback;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
-public class ControllerListarCotas implements ControllerBase{
+public class ControllerDeslocamentoDeCotas implements ControllerBase {
 
-    @FXML private TextField idBemProcurado;
-    @FXML private ListView<Cota> listViewItensCotas;
+    @FXML
+    private TextField idBemProcurado;
+    @FXML
+    private DatePicker dataDeslocamentoPicker;
+    @FXML
+    private ListView<Cota> listViewItensCotas;
 
     private Usuario usuario;
     private final ControladorBens controladorBens;
 
-    public ControllerListarCotas() {
+    public ControllerDeslocamentoDeCotas() {
         this.controladorBens = new ControladorBens();
     }
 
@@ -60,11 +60,11 @@ public class ControllerListarCotas implements ControllerBase{
     }
 
     @FXML
-    public void buscarCotas(ActionEvent event) {
-        carregarListaDeCotas();
+    public void calcularDeslocamento(ActionEvent event) {
+        carregarCotasDeslocadas();
     }
 
-   private void carregarListaDeCotas() {
+    private void carregarCotasDeslocadas() {
         if (usuario == null) {
             System.err.println("Erro: Usuário está null em carregarListaDeCotas()!");
             return;
@@ -73,16 +73,20 @@ public class ControllerListarCotas implements ControllerBase{
         // limpar a ListView antes de carregar novos itens
         listViewItensCotas.getItems().clear();
 
-        List<Cota> cotas = new ArrayList<>();
-        if(!idBemProcurado.getText().isEmpty()) {
-            try {
-                cotas = controladorBens.listarCotasDeUmBem(Integer.parseInt(idBemProcurado.getText()));
-            } catch (BemNaoExisteException e){
-                System.err.println("Bem com este id nao existe!");
-                exibirAlertaErro("Erro", "Erro ao procurar bem", "Bem com este id nao existe!");
-                return;
-            }
+        if (idBemProcurado.getText().isEmpty() || dataDeslocamentoPicker.getValue() == null) {
+            exibirAlertaErro("Erro", "Campos obrigatórios não preenchidos", "Por favor, preencha todos os campos.");
+            return;
         }
+
+        List<Cota> cotas;
+        try {
+            cotas = controladorBens.calcularDeslocamentoDasCotas(Integer.parseInt(idBemProcurado.getText()), dataDeslocamentoPicker.getValue().atStartOfDay());
+        } catch (BemNaoExisteException e) {
+            System.err.println("Bem com este id nao existe!");
+            exibirAlertaErro("Erro", "Erro ao procurar bem", "Bem com este id nao existe!");
+            return;
+        }
+
 
         if (cotas == null || cotas.isEmpty()) {
             System.err.println("Erro: lista de bens vazia ou null.");
@@ -109,7 +113,7 @@ public class ControllerListarCotas implements ControllerBase{
                                 HBox root = loader.load();
                                 ControllerItemCellCota controller = loader.getController();
                                 controller.setItem(item);
-                                controller.setMainControllerCotas(ControllerListarCotas.this); // Passa referência do controlador principal
+                                controller.setMainControllerCotasDeslocamento(ControllerDeslocamentoDeCotas.this); // Passa referência do controlador principal
                                 setGraphic(root);
                             } catch (IOException e) {
                                 System.err.println("Erro ao carregar ItemCellCota.fxml: " + e.getMessage());

@@ -1,10 +1,11 @@
 package br.ufrpe.timeshare.gui.controllers;
 
-import br.ufrpe.timeshare.excecoes.*;
+import br.ufrpe.timeshare.excecoes.BemJaOfertadoException;
+import br.ufrpe.timeshare.excecoes.BemNaoExisteException;
+import br.ufrpe.timeshare.excecoes.DadosInsuficientesException;
 import br.ufrpe.timeshare.gui.application.ScreenManager;
 import br.ufrpe.timeshare.negocio.ControladorBens;
 import br.ufrpe.timeshare.negocio.beans.Bem;
-import br.ufrpe.timeshare.negocio.beans.Usuario;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -13,7 +14,6 @@ import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
-
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -21,8 +21,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.UUID;
 
 public class ControllerEditarBemPopUp {
@@ -56,7 +56,7 @@ public class ControllerEditarBemPopUp {
     private TextField precoTextField;
     @FXML
     private ToggleButton btnLigarDesligarOfertado;
-    private boolean isTrue;
+    private boolean isTrue = false;
     private File imagemSelecionada;
     private ControllerListarBens mainController;
 
@@ -70,7 +70,7 @@ public class ControllerEditarBemPopUp {
         alerta.setTitle(titulo);
         alerta.setHeaderText(header);
         alerta.setContentText(contentText);
-        alerta.getDialogPane().getStyleClass().add("alert-error"); // Estilo CSS
+        alerta.getDialogPane().setStyle("-fx-background-color:  #ffcccc;"); // Vermelho claro
         alerta.showAndWait();
     }
 
@@ -79,9 +79,10 @@ public class ControllerEditarBemPopUp {
         alert.setTitle(titulo);
         alert.setHeaderText(header);
         alert.setContentText(contentText);
-        alert.getDialogPane().getStyleClass().add("alert-info"); // Estilo CSS
+        alert.getDialogPane().setStyle("-fx-background-color: #ccffcc;"); // Verde claro
         alert.showAndWait();
     }
+
 
     public void setBem(Bem bem) {
         if (bem == null) {
@@ -167,9 +168,20 @@ public class ControllerEditarBemPopUp {
             controladorBens.alterarDescricaoBem((int) bem.getId(), descricao);
             controladorBens.alterarCapacidadeBem((int) bem.getId(), capacidade);
             controladorBens.alterarCaminhoDaImagemBem((int) bem.getId(), caminhoImagem);
-            controladorBens.ofertarBem((int) bem.getId());
+            if(isTrue) {
+                controladorBens.ofertarBem((int) bem.getId());
+            }
+            exibirAlertaInformation("Operacao concluída", "Operacao realizada com sucesso!", "Fechando tela de edicao...");
             System.out.println("Bem alterado com sucesso!");
-        } catch (BemNaoExisteException | NullPointerException | BemJaOfertadoException e) {
+
+            //fechar a janela após a edicao
+            fecharPopup();
+
+            //atualizar a listagem na tela principal, se necessário
+            if (mainController != null) {
+                mainController.carregarListaDeBens();
+            }
+        } catch (DadosInsuficientesException | BemNaoExisteException | NullPointerException | BemJaOfertadoException e) {
             exibirAlertaErro("Erro", "Erro ao alterar nome do bem", e.getMessage());
         }
 
@@ -182,7 +194,32 @@ public class ControllerEditarBemPopUp {
     }
 
     public void btnExcluirBem() {
-        System.out.println("Excluir bem...");
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmação");
+        alert.setHeaderText("Deseja realmente excluir o Bem?");
+        alert.setContentText("Clique em OK para confirmar ou Cancelar para voltar.");
+        // Exibindo o alerta e capturando a resposta
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            ScreenManager.getInstance().showLoginScreen();
+            System.out.println("Usuário confirmou a ação!");
+            try {
+                controladorBens.remover((int) bem.getId());
+                System.out.println("Bem removido com sucesso!");
+
+                //fechar a janela após a exclusão
+                fecharPopup();
+
+                //atualizar a listagem na tela principal, se necessário
+                if (mainController != null) {
+                    mainController.carregarListaDeBens();
+                }
+            } catch (DadosInsuficientesException | BemNaoExisteException | IllegalAccessException e) {
+                exibirAlertaErro("Erro", "Erro ao remover bem", e.getMessage());
+            }
+        } else {
+            System.out.println("Usuário cancelou a ação!");
+        }
     }
 
     public void handleSelecionarImagem() {

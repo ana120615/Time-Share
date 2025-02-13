@@ -9,7 +9,6 @@ import br.ufrpe.timeshare.negocio.beans.TipoUsuario;
 import br.ufrpe.timeshare.negocio.beans.Usuario;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.control.Alert.AlertType;
 
 import java.time.LocalDate;
 
@@ -33,6 +32,24 @@ public class ControllerCadastro {
     @FXML
     private ComboBox<String> tipoUsuarioCombo;
 
+    private void exibirAlertaErro(String titulo, String header, String contentText) {
+        Alert alerta = new Alert(Alert.AlertType.ERROR);
+        alerta.setTitle(titulo);
+        alerta.setHeaderText(header);
+        alerta.setContentText(contentText);
+        alerta.getDialogPane().setStyle("-fx-background-color:  #ffcccc;"); // Vermelho claro
+        alerta.showAndWait();
+    }
+
+    private void exibirAlertaInformation(String titulo, String header, String contentText) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(titulo);
+        alert.setHeaderText(header);
+        alert.setContentText(contentText);
+        alert.getDialogPane().setStyle("-fx-background-color: #ccffcc;"); // Verde claro
+        alert.showAndWait();
+    }
+
     @FXML
     private void handleCadastro() {
         String nome = nomeField.getText();
@@ -43,26 +60,26 @@ public class ControllerCadastro {
         String gmail = emailField.getText();
         String tipoUsuario = tipoUsuarioCombo.getValue();
 
+        boolean valorInvalido = false;
+        for (char c : cpf.toCharArray()) {
+            if (!Character.isDigit(c)) {
+                valorInvalido = true;
+            }
+        }
+
         if (nome.isEmpty() || cpf.isEmpty() || dataNascimento == null || senha.isEmpty() || gmail.isEmpty() || tipoUsuario == null) {
-            Alert alert = new Alert(AlertType.ERROR);
-            alert.setTitle("Erro");
-            alert.setHeaderText("Campos obrigatórios não preenchidos");
-            alert.setContentText("Por favor, preencha todos os campos.");
-            alert.getDialogPane().setStyle("-fx-background-color: #ffcccc;"); // Vermelho claro
-            alert.showAndWait();
+            exibirAlertaErro("Erro", "Campos obrigatórios não preenchidos", "Por favor, preencha todos os campos");
+        } else if (valorInvalido) {
+            exibirAlertaErro("Erro", "CPF invalido", "Por favor, insira apenas numeros");
         } else {
             try {
+
                 Usuario usuario = new Usuario(Long.parseLong(cpf), nome, gmail, senha, dataNascimento,
                         tipoUsuario.equals("Administrador") ? TipoUsuario.ADMINISTRADOR : TipoUsuario.COMUM);
 
                 controladorUsuarioGeral.cadastrar(usuario);
 
-                Alert alert = new Alert(AlertType.INFORMATION);
-                alert.setTitle("Cadastro concluído");
-                alert.setHeaderText("Cadastro realizado com sucesso!");
-                alert.setContentText("Usuário " + nome + " cadastrado como " + tipoUsuario + " com nascimento em " + dataNascimento + ".");
-                alert.getDialogPane().setStyle("-fx-background-color: #ccffcc;"); // Verde claro
-                alert.showAndWait();
+                exibirAlertaInformation("Cadastro concluído", "Cadastro realizado com sucesso!", ("Usuário " + nome + " cadastrado como " + tipoUsuario + " com nascimento em " + dataNascimento + "."));
 
                 // Limpar os campos do formulário após cadastro
                 nomeField.clear();
@@ -73,12 +90,7 @@ public class ControllerCadastro {
                 tipoUsuarioCombo.getSelectionModel().clearSelection();
 
             } catch (UsuarioJaExisteException | UsuarioNaoPermitidoException e) {
-                Alert alert = new Alert(AlertType.ERROR);
-                alert.setTitle("Erro");
-                alert.setHeaderText("Erro ao cadastrar usuário");
-                alert.setContentText(e.getMessage());
-                alert.getDialogPane().setStyle("-fx-background-color: #ffcccc;"); // Vermelho claro
-                alert.showAndWait();
+                exibirAlertaErro("Erro", "Erro ao cadastrar usuário", e.getMessage());
             }
 
             System.out.println(controladorUsuarioGeral.listarUsuarioComum());
@@ -86,7 +98,7 @@ public class ControllerCadastro {
     }
 
     @FXML
-    public void irParaTelaLogin () {
+    public void irParaTelaLogin() {
         ScreenManager.getInstance().showLoginScreen();
     }
 
@@ -99,7 +111,6 @@ public class ControllerCadastro {
     private void handleLogin() {
         System.out.println("Login");
     }
-
 
 
 }

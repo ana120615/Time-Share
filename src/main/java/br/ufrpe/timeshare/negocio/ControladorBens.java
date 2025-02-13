@@ -109,7 +109,11 @@ public class ControladorBens {
         return repositorioBens.listar();
     }
 
-    public List<Bem> listarBensUsuario(Usuario usuario) {
+
+    public List<Bem> listarBensUsuario(Usuario usuario) throws DadosInsuficientesException {
+        if(usuario == null) {
+            throw new DadosInsuficientesException("Usuario nulo");
+        }
         List<Bem> resultado = new ArrayList<>();
         if (repositorioBens != null && usuario != null) {
             for (Bem bem : repositorioBens.listar()) {
@@ -118,6 +122,7 @@ public class ControladorBens {
                 }
             }
         }
+        Collections.sort(resultado);
         return resultado;
     }
 
@@ -131,6 +136,7 @@ public class ControladorBens {
                 }
             }
         }
+        Collections.sort(resultado);
         return resultado;
     }
 
@@ -138,6 +144,20 @@ public class ControladorBens {
         return repositorioBens.listarBensDisponiveis();
     }
 
+    public List<Bem> listarBensPorNome(String nome) throws DadosInsuficientesException {
+        if(nome == null) {
+            throw new DadosInsuficientesException("Nome nulo");
+        }
+        return repositorioBens.listarBensPorNome(nome);
+    }
+
+
+    public List<Bem> listarBensUsuarioPorNome(String nome, int idusuario) throws DadosInsuficientesException {
+        if(nome == null) {
+            throw new DadosInsuficientesException("Nome nulo");
+        }
+        return repositorioBens.listarBensUsuarioPorNome(nome, idusuario);
+    }
 
     public void listarCotasDisponiveis() {
         List<Cota> cotas = repositorioCotas.listarCotasDisponiveisParaVenda();
@@ -318,9 +338,6 @@ public class ControladorBens {
         return resultado;
     }
 
-    //RELATORIOS
-
-    //FRACOES MAIS COMPRADAS
 }
 
 

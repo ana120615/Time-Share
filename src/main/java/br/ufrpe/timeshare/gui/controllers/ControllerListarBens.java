@@ -1,16 +1,19 @@
 package br.ufrpe.timeshare.gui.controllers;
 
+import br.ufrpe.timeshare.excecoes.DadosInsuficientesException;
 import br.ufrpe.timeshare.gui.application.ScreenManager;
 import br.ufrpe.timeshare.negocio.ControladorBens;
-import br.ufrpe.timeshare.negocio.beans.Usuario;
 import br.ufrpe.timeshare.negocio.beans.Bem;
+import br.ufrpe.timeshare.negocio.beans.Usuario;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Alert;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.util.Callback;
 
@@ -27,9 +30,10 @@ public class ControllerListarBens implements ControllerBase {
 
     @FXML
     private ListView<Bem> listViewItens;
+    @FXML private TextField nomeBemProcurado;
 
     @Override
-    public void receiveData(Object data) {
+    public void receiveData(Object data) throws DadosInsuficientesException {
         System.out.println("receiveData chamado com: " + data);
         if (data instanceof Usuario) {
             this.usuario = (Usuario) data;
@@ -45,13 +49,39 @@ public class ControllerListarBens implements ControllerBase {
         System.out.println("initialize() chamado.");
     }
 
-    private void carregarListaDeBens() {
+    private void exibirAlertaErro(String titulo, String header, String contentText) {
+        Alert alerta = new Alert(Alert.AlertType.ERROR);
+        alerta.setTitle(titulo);
+        alerta.setHeaderText(header);
+        alerta.setContentText(contentText);
+        alerta.getDialogPane().setStyle("-fx-background-color:  #ffcccc;"); // Vermelho claro
+        alerta.showAndWait();
+    }
+
+    @FXML
+    public void buscarBens(ActionEvent event) throws DadosInsuficientesException {
+        carregarListaDeBens();
+    }
+
+    public void carregarListaDeBens() throws DadosInsuficientesException {
         if (usuario == null) {
             System.err.println("Erro: Usuário está null em carregarListaDeBens()!");
             return;
         }
 
-        List<Bem> bens = controladorBens.listarBensUsuario(usuario);
+        // limpar a ListView antes de carregar novos itens
+        listViewItens.getItems().clear();
+
+
+        List<Bem> bens;
+        if(!nomeBemProcurado.getText().isEmpty()) {
+            bens = controladorBens.listarBensUsuarioPorNome(String.valueOf(nomeBemProcurado), (int)usuario.getId());
+        }
+
+        else {
+            bens = controladorBens.listarBensUsuario(usuario);
+        }
+
         if (bens == null || bens.isEmpty()) {
             System.err.println("Erro: lista de bens vazia ou null.");
             return;
@@ -94,6 +124,7 @@ public class ControllerListarBens implements ControllerBase {
     public ListView<Bem> getListViewItens() {
         return listViewItens;
     }
+
 
     @FXML
     public void voltarParaTelaAdm(ActionEvent event) {

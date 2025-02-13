@@ -2,7 +2,6 @@ package br.ufrpe.timeshare.gui.controllers;
 
 import br.ufrpe.timeshare.negocio.beans.Cota;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 
 public class ControllerItemCellCota {
@@ -19,6 +18,7 @@ public class ControllerItemCellCota {
 
     private Cota cota;
     private ControllerListarCotas mainControllerCotas;
+    private ControllerDeslocamentoDeCotas mainControllerDeslocamentoDeCotas;
 
     public void setItem(Cota item) {
         this.cota = item;
@@ -35,5 +35,9 @@ public class ControllerItemCellCota {
 
     public void setMainControllerCotas(ControllerListarCotas mainControllerCotas) {
         this.mainControllerCotas = mainControllerCotas;
+    }
+
+    public void setMainControllerCotasDeslocamento(ControllerDeslocamentoDeCotas mainControllerCota) {
+        this.mainControllerDeslocamentoDeCotas = mainControllerCota;
     }
 }

@@ -41,10 +41,14 @@ public class ControladorUsuarioGeral {
                 throw new UsuarioNaoPermitidoException("CPF invalido.");
             }
 
+            boolean valorInvalido = false;
             for (char c : verificador) {
                 if (!Character.isDigit(c)) {
-                    throw new UsuarioNaoPermitidoException("CPF invalido.");
+                    valorInvalido = true;
                 }
+            }
+            if (valorInvalido) {
+                throw new UsuarioNaoPermitidoException("CPF invalido.");
             }
         }
 
