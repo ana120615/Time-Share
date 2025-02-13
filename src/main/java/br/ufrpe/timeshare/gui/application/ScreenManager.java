@@ -1,6 +1,5 @@
 package br.ufrpe.timeshare.gui.application;
 
-import br.ufrpe.timeshare.excecoes.DadosInsuficientesException;
 import br.ufrpe.timeshare.gui.controllers.ControllerBase;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -43,6 +42,7 @@ public class ScreenManager {
         carregarTela("TelaDeVendas", "/br/ufrpe/timeshare/gui/application/TelaDeVenda.fxml");
         carregarTela("TelaDeslocamentoDeCotas", "/br/ufrpe/timeshare/gui/application/TelaDeslocamentoCotas.fxml");
         carregarTela("TelaDeVenda2", "/br/ufrpe/timeshare/gui/application/TelaDeVenda2.fxml");
+        carregarTela("TelaMinhasCotas", "/br/ufrpe/timeshare/gui/application/TelaMinhasCotas.fxml");
     }
 
     private void carregarTela(String nome, String caminhoFXML) {
@@ -128,5 +128,9 @@ public class ScreenManager {
     }
     public void showTelaDeVenda2Screen() {
         showScreen("TelaDeVenda2");
+    }
+
+    public void showTelaMinhasCotasScreen() {
+        showScreen("TelaMinhasCotas");
     }
 }

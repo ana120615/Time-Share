@@ -127,4 +127,10 @@ public class ControllerUsuarioComum implements ControllerBase {
     public void irParaTelaDeVendas2(ActionEvent event) {
         ScreenManager.getInstance().showTelaDeVenda2Screen();
     }
+
+    @FXML
+    public void irParaTelaMinhasCotas(ActionEvent event) {
+        ScreenManager.getInstance().showTelaMinhasCotasScreen();
+    }
+
 }

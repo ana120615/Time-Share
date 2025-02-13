@@ -179,8 +179,8 @@ public class ControllerComprarCota implements ControllerBase {
             idCotaRemover.clear();
             totalCompra.setText("Total: R$ " + vendaAtual.calcularValorTotal());
         } catch (CotaNaoExisteException | CotaNaoOfertadaException e) {
-            System.err.println("Erro: Usuário não existe!");
-            exibirAlertaErro("Erro", "Erro ao adicionar cota", "Usuário não existe!");
+            System.err.println("Erro: Cota nao ofertada ou nao existe");
+            exibirAlertaErro("Erro", "Erro ao adicionar cota", "Cota nao existe ou nao ofertada");
         }
     }
 
@@ -229,7 +229,7 @@ public class ControllerComprarCota implements ControllerBase {
 
         } catch (CompraNaoFinalizada e) {
             System.err.println("Erro: Usuário não existe!");
-            exibirAlertaErro("Erro", "Erro ao adicionar cota", "Usuário não existe!");
+            exibirAlertaErro("Erro", "Erro ao adicionar cota", "Verifique se esta tudo correto");
         }
     }
 
