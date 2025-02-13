@@ -205,8 +205,8 @@ public class ControllerComprarCota implements ControllerBase {
             idCotaRemover.clear();
 
         } catch (CotaNaoExisteException e) {
-            System.err.println("Erro: Usuário não existe!");
-            exibirAlertaErro("Erro", "Erro ao adicionar cota", "Usuário não existe!");
+            System.err.println("Erro");
+            exibirAlertaErro("Erro", "Erro ao adicionar cota", "Não existe!");
         }
     }
 
