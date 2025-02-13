@@ -42,6 +42,7 @@ public class ScreenManager {
         carregarTela("ListarCotas", "/br/ufrpe/timeshare/gui/application/TelaListaCotas.fxml");
         carregarTela("TelaDeVendas", "/br/ufrpe/timeshare/gui/application/TelaDeVenda.fxml");
         carregarTela("TelaDeslocamentoDeCotas", "/br/ufrpe/timeshare/gui/application/TelaDeslocamentoCotas.fxml");
+        carregarTela("TelaDeVenda2", "/br/ufrpe/timeshare/gui/application/TelaDeVenda2.fxml");
     }
 
     private void carregarTela(String nome, String caminhoFXML) {
@@ -124,5 +125,8 @@ public class ScreenManager {
 
     public void showTelaDeslocamentoCotasScreen() {
         showScreen("TelaDeslocamentoDeCotas");
+    }
+    public void showTelaDeVenda2Screen() {
+        showScreen("TelaDeVenda2");
     }
 }

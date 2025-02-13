@@ -23,6 +23,7 @@ public class ControllerItemCellCota {
     private ControllerListarCotas mainControllerCotas;
     private ControllerDeslocamentoDeCotas mainControllerDeslocamentoDeCotas;
     private ControllerAdicionarCotaPopUp mainControllerAdicionarCotaPopUp;
+    private ControllerComprarCota mainControllerComprarCota;
 
     public void setItem(Cota item) {
         this.cota = item;
@@ -51,6 +52,10 @@ public class ControllerItemCellCota {
 
     public void adicionarCotaCarrinhoVenda (ActionEvent event) {
         mainControllerAdicionarCotaPopUp.adicionarCotaCarrinhoVenda();
+    }
+
+    public void setMainControllerComprarCota (ControllerComprarCota mainControllerComprarCota) {
+        this.mainControllerComprarCota = mainControllerComprarCota;
     }
 
 
