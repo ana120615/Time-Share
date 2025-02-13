@@ -5,8 +5,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 
-import javax.swing.*;
-
 public class ControllerItemCellCota {
 
     @FXML private Label itemLabelNomeBem;
@@ -22,6 +20,7 @@ public class ControllerItemCellCota {
     private Cota cota;
     private ControllerListarCotas mainControllerCotas;
     private ControllerDeslocamentoDeCotas mainControllerDeslocamentoDeCotas;
+    private ControllerMinhasCotas mainControllerMinhasCotas;
     private ControllerAdicionarCotaPopUp mainControllerAdicionarCotaPopUp;
 
     public void setItem(Cota item) {
@@ -43,6 +42,10 @@ public class ControllerItemCellCota {
 
     public void setMainControllerCotasDeslocamento(ControllerDeslocamentoDeCotas mainControllerCota) {
         this.mainControllerDeslocamentoDeCotas = mainControllerCota;
+    }
+
+    public void setMainControllerMinhasCotas(ControllerMinhasCotas mainControllerCota) {
+        this.mainControllerMinhasCotas = mainControllerCota;
     }
 
     public void setMainControllerAdicionarCotaPopUp(ControllerAdicionarCotaPopUp mainControllerAdicionarCotaPopUp) {
