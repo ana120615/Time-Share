@@ -1,13 +1,18 @@
 package br.ufrpe.timeshare.gui.controllers;
 
 import br.ufrpe.timeshare.excecoes.BemNaoExisteException;
+import br.ufrpe.timeshare.excecoes.CotaNaoExisteException;
+import br.ufrpe.timeshare.excecoes.CotaNaoOfertadaException;
 import br.ufrpe.timeshare.negocio.ControladorBens;
+import br.ufrpe.timeshare.negocio.ControladorVendas;
 import br.ufrpe.timeshare.negocio.beans.Bem;
 import br.ufrpe.timeshare.negocio.beans.Cota;
+import br.ufrpe.timeshare.negocio.beans.Venda;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Alert;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.HBox;
@@ -19,7 +24,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ControllerAdicionarCotaPopUp {
-    private final ControladorBens controladorBens = new ControladorBens();
+    private final ControladorBens controladorBens;
+    private final ControladorVendas controladorVendas;
+
+    {
+        controladorBens = new ControladorBens();
+        controladorVendas = new ControladorVendas();
+    }
     private Bem bem;
     private ControllerTelaDeVenda mainControllerVenda;
 
@@ -29,6 +40,24 @@ public class ControllerAdicionarCotaPopUp {
     @FXML
     public void initialize() {
         configurarCelulas();
+    }
+
+    private void exibirAlertaErro(String titulo, String header, String contentText) {
+        Alert alerta = new Alert(Alert.AlertType.ERROR);
+        alerta.setTitle(titulo);
+        alerta.setHeaderText(header);
+        alerta.setContentText(contentText);
+        alerta.getDialogPane().setStyle("-fx-background-color:  #ffcccc;"); // Vermelho claro
+        alerta.showAndWait();
+    }
+
+    private void exibirAlertaInformation(String titulo, String header, String contentText) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(titulo);
+        alert.setHeaderText(header);
+        alert.setContentText(contentText);
+        alert.getDialogPane().setStyle("-fx-background-color: #ccffcc;"); // Verde claro
+        alert.showAndWait();
     }
 
     public void setBem(Bem bem) {
@@ -94,5 +123,31 @@ public class ControllerAdicionarCotaPopUp {
                 };
             }
         });
+    }
+
+
+    public void adicionarCotaCarrinhoVenda () {
+        Cota cotaSelecionada = listViewCotasBemOfertado.getSelectionModel().getSelectedItem();
+        if (cotaSelecionada == null) {
+            exibirAlertaErro("Erro", "Cota não selecionada", "Selecione uma cota para adicionar ao carrinho.");
+            return;
+        }
+
+        if (mainControllerVenda == null) {
+            System.err.println("Erro: mainControllerVenda está null em adicionarCotaCarrinhoVenda()!");
+            return;
+        }
+        Venda venda = mainControllerVenda.getVendaAtual();
+        if (venda == null) {
+            System.err.println("Erro: venda está null em adicionarCotaCarrinhoVenda()!");
+            return;
+        }
+        try {
+            controladorVendas.adicionarCotaCarrinho((int) cotaSelecionada.getId(), venda);
+            exibirAlertaInformation("Sucesso", "Cota adicionada", "Cota adicionada ao carrinho com sucesso.");
+        } catch (CotaNaoExisteException | CotaNaoOfertadaException e) {
+            System.out.println(e.getMessage());
+        }
+
     }
 }
