@@ -1,10 +1,12 @@
 package br.ufrpe.timeshare.gui.application;
 
+import br.ufrpe.timeshare.excecoes.DadosInsuficientesException;
 import br.ufrpe.timeshare.gui.controllers.ControllerBase;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -39,6 +41,7 @@ public class ScreenManager {
         carregarTela("ListarBens", "/br/ufrpe/timeshare/gui/application/telaListaDeBens.fxml");
         carregarTela("ListarCotas", "/br/ufrpe/timeshare/gui/application/TelaListaCotas.fxml");
         carregarTela("TelaDeVendas", "/br/ufrpe/timeshare/gui/application/TelaDeVenda.fxml");
+        carregarTela("TelaDeslocamentoDeCotas", "/br/ufrpe/timeshare/gui/application/TelaDeslocamentoCotas.fxml");
     }
 
     private void carregarTela(String nome, String caminhoFXML) {
@@ -106,13 +109,20 @@ public class ScreenManager {
     public void showCadastroBensScreen() {
         showScreen("CadastroBens");
     }
+
     public void showListarBensScreen() {
         showScreen("ListarBens");
     }
+
     public void showListarCotasScreen() {
         showScreen("ListarCotas");
     }
+
     public void showTelaDeVendasScreen() {
         showScreen("TelaDeVendas");
+    }
+
+    public void showTelaDeslocamentoCotasScreen() {
+        showScreen("TelaDeslocamentoDeCotas");
     }
 }

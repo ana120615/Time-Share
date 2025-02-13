@@ -18,6 +18,7 @@ import javafx.scene.layout.HBox;
 import javafx.util.Callback;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ControllerListarBens implements ControllerBase {
@@ -33,7 +34,7 @@ public class ControllerListarBens implements ControllerBase {
     @FXML private TextField nomeBemProcurado;
 
     @Override
-    public void receiveData(Object data) throws DadosInsuficientesException {
+    public void receiveData(Object data) {
         System.out.println("receiveData chamado com: " + data);
         if (data instanceof Usuario) {
             this.usuario = (Usuario) data;
@@ -63,7 +64,7 @@ public class ControllerListarBens implements ControllerBase {
         carregarListaDeBens();
     }
 
-    public void carregarListaDeBens() throws DadosInsuficientesException {
+    public void carregarListaDeBens() {
         if (usuario == null) {
             System.err.println("Erro: Usuário está null em carregarListaDeBens()!");
             return;
@@ -73,13 +74,21 @@ public class ControllerListarBens implements ControllerBase {
         listViewItens.getItems().clear();
 
 
-        List<Bem> bens;
+        List<Bem> bens = new ArrayList<>();
         if(!nomeBemProcurado.getText().isEmpty()) {
-            bens = controladorBens.listarBensUsuarioPorNome(String.valueOf(nomeBemProcurado), (int)usuario.getId());
+            try {
+                bens = controladorBens.listarBensUsuarioPorNome(String.valueOf(nomeBemProcurado), (int)usuario.getId());
+            } catch (DadosInsuficientesException e) {
+                System.out.println(e.getMessage());
+            }
         }
 
         else {
-            bens = controladorBens.listarBensUsuario(usuario);
+            try {
+                bens = controladorBens.listarBensUsuario(usuario);
+            } catch (DadosInsuficientesException e) {
+                System.out.println(e.getMessage());
+            }
         }
 
         if (bens == null || bens.isEmpty()) {

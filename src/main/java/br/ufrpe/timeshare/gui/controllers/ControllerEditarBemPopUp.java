@@ -181,7 +181,7 @@ public class ControllerEditarBemPopUp {
             if (mainController != null) {
                 mainController.carregarListaDeBens();
             }
-        } catch (DadosInsuficientesException | BemNaoExisteException | NullPointerException | BemJaOfertadoException e) {
+        } catch (BemNaoExisteException | NullPointerException | BemJaOfertadoException e) {
             exibirAlertaErro("Erro", "Erro ao alterar nome do bem", e.getMessage());
         }
 
@@ -214,7 +214,7 @@ public class ControllerEditarBemPopUp {
                 if (mainController != null) {
                     mainController.carregarListaDeBens();
                 }
-            } catch (DadosInsuficientesException | BemNaoExisteException | IllegalAccessException e) {
+            } catch (BemNaoExisteException | IllegalAccessException e) {
                 exibirAlertaErro("Erro", "Erro ao remover bem", e.getMessage());
             }
         } else {
