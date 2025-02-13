@@ -122,4 +122,9 @@ public class ControllerUsuarioComum implements ControllerBase {
             nomeUsuario.setText(usuario.getNome().split(" ")[0]);
         }
     }
+
+    @FXML
+    public void irParaTelaDeVendas(ActionEvent event) {
+        ScreenManager.getInstance().showTelaDeVendasScreen();
+    }
 }
