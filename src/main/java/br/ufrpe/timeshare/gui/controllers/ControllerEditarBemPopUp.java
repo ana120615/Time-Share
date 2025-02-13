@@ -60,6 +60,7 @@ public class ControllerEditarBemPopUp {
     private File imagemSelecionada;
     private ControllerListarBens mainController;
 
+
     @FXML
     private void initialize() {
         btnLigarDesligarOfertado.setOnAction(this::AcaoMudarOfertado);
@@ -118,6 +119,7 @@ public class ControllerEditarBemPopUp {
         this.mainController = mainController;
     }
 
+
     @FXML
     private void fecharPopup() {
         Stage stage = (Stage) btnFechar.getScene().getWindow();
@@ -167,7 +169,7 @@ public class ControllerEditarBemPopUp {
             controladorBens.alterarLocalizacaoBem((int) bem.getId(), localizacao);
             controladorBens.alterarDescricaoBem((int) bem.getId(), descricao);
             controladorBens.alterarCapacidadeBem((int) bem.getId(), capacidade);
-            controladorBens.alterarCaminhoDaImagemBem((int) bem.getId(), caminhoImagem);
+
             if(isTrue) {
                 controladorBens.ofertarBem((int) bem.getId());
             }

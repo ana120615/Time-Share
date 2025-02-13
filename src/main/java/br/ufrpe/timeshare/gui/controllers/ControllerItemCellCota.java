@@ -19,6 +19,7 @@ public class ControllerItemCellCota {
     private Cota cota;
     private ControllerListarCotas mainControllerCotas;
     private ControllerDeslocamentoDeCotas mainControllerDeslocamentoDeCotas;
+    private ControllerAdicionarCotaPopUp mainControllerAdicionarCotaPopUp;
 
     public void setItem(Cota item) {
         this.cota = item;
@@ -39,5 +40,9 @@ public class ControllerItemCellCota {
 
     public void setMainControllerCotasDeslocamento(ControllerDeslocamentoDeCotas mainControllerCota) {
         this.mainControllerDeslocamentoDeCotas = mainControllerCota;
+    }
+
+    public void setMainControllerAdicionarCotaPopUp(ControllerAdicionarCotaPopUp mainControllerAdicionarCotaPopUp) {
+        this.mainControllerAdicionarCotaPopUp = mainControllerAdicionarCotaPopUp;
     }
 }

@@ -11,9 +11,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="320.0" prefWidth="320.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.ufrpe.timeshare.gui.controllers.ControllerItemCellBemOfertado">
+<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="256.0" prefWidth="286.0" style="-fx-background-color: transparent;" stylesheets="@styles/basico/item-cell-bem-ofertado.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.ufrpe.timeshare.gui.controllers.ControllerItemCellBemOfertado">
    <children>
-      <Button contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" prefHeight="284.0" prefWidth="292.0">
+      <Button fx:id="itemButton" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" prefHeight="284.0" prefWidth="292.0" styleClass="item-button">
          <graphic>
             <GridPane prefHeight="477.0" prefWidth="320.0">
               <columnConstraints>
@@ -24,12 +24,15 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <HBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="200.0">
+                  <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" styleClass="item-hbox">
                      <children>
-                        <ImageView fx:id="itemImage" fitHeight="150.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true" />
+                        <ImageView fx:id="itemImage" fitHeight="80.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true" styleClass="item-image" />
                      </children>
+                     <padding>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </padding>
                   </HBox>
-                  <VBox prefHeight="200.0" prefWidth="100.0" GridPane.rowIndex="1">
+                  <VBox prefHeight="200.0" prefWidth="100.0" styleClass="item-info-box" GridPane.rowIndex="1">
                      <children>
                         <GridPane>
                           <columnConstraints>
@@ -41,29 +44,29 @@
                             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                           </rowConstraints>
                            <children>
-                              <Label fx:id="nomeDoBem" prefHeight="22.0" prefWidth="172.0" style="-fx-font-weight: bold;" text="Nome do Bem">
+                              <Label fx:id="nomeDoBem" prefHeight="22.0" prefWidth="172.0" styleClass="item-nome" text="Nome do Bem">
                                  <font>
                                     <Font size="16.0" />
                                  </font>
                               </Label>
-                              <Label fx:id="cotasDisponiveis" text="Cotas Disponiveis" GridPane.rowIndex="1">
+                              <Label fx:id="cotasDisponiveis" styleClass="item-cotas" text="Cotas Disponiveis" GridPane.rowIndex="1">
                                  <font>
                                     <Font size="11.0" />
                                  </font>
                               </Label>
                               <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="2">
                                  <children>
-                                    <Label text="R$ ">
+                                    <Label styleClass="item-cotas" text="R$ ">
                                        <font>
                                           <Font size="11.0" />
                                        </font>
                                     </Label>
-                                    <Label fx:id="precoCota" text="preço">
+                                    <Label fx:id="precoCota" styleClass="item-preco" text="preço">
                                        <font>
                                           <Font size="14.0" />
                                        </font>
                                     </Label>
-                                    <Label text=" / cota">
+                                    <Label styleClass="item-cotas" text=" / cota">
                                        <font>
                                           <Font size="11.0" />
                                        </font>

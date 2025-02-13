@@ -1,8 +1,0 @@
-.tab .tab-label {
-    visibility: hidden;
-}
-.tab-header-area {
-    visibility: hidden;
-    pointer-events: none;
-    -fx-focus-traversable: false;
-}

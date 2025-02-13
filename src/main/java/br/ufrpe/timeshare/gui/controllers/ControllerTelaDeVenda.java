@@ -11,6 +11,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.util.Callback;
@@ -21,14 +23,19 @@ import java.util.List;
 public class ControllerTelaDeVenda implements ControllerBase{
     private Usuario usuario;
     private final ControladorBens controladorBens;
+    @FXML
+    private TabPane tabPaneUsuarioComumTelaVenda; // Estado inicial
+    @FXML
+    private Tab tabBensOfertados;
+    @FXML
+    private Tab tabCarrinho;
+    @FXML
+    private ListView<Bem> listViewItens;
+    private ControllerTelaDeVenda mainControllerVenda;
 
     public ControllerTelaDeVenda() {
         this.controladorBens = new ControladorBens();
     }
-
-    @FXML
-    private ListView<Bem> listViewItens;
-
 
     @Override
     public void receiveData(Object data) {
@@ -47,6 +54,9 @@ public class ControllerTelaDeVenda implements ControllerBase{
         System.out.println("initialize() chamado.");
     }
 
+    public void setMainControllerVenda(ControllerTelaDeVenda mainControllerVenda) {
+        this.mainControllerVenda = mainControllerVenda;
+    }
     private void carregarListaDeBens() {
         if (usuario == null) {
             System.err.println("Erro: Usuário está null em carregarListaDeBens()!");
@@ -102,5 +112,15 @@ public class ControllerTelaDeVenda implements ControllerBase{
     @FXML
     public void irParaTelaPrincipalUsuarioComum(ActionEvent event) {
         ScreenManager.getInstance().showUsuarioComumPrincipalScreen();
+    }
+
+    @FXML
+    private void mudarAbaBensOfertados(ActionEvent event) {
+        tabPaneUsuarioComumTelaVenda.getSelectionModel().select(tabBensOfertados);
+    }
+
+    @FXML
+    private void mudarAbaCarrinho(ActionEvent event) {
+        tabPaneUsuarioComumTelaVenda.getSelectionModel().select(tabCarrinho);
     }
 }
