@@ -38,6 +38,7 @@ public class ControllerCadastro {
         String nome = nomeField.getText();
         String cpf = cpfField.getText();
         LocalDate dataNascimento = dataNascimentoPicker.getValue();
+
         String senha = senhaField.getText();
         String gmail = emailField.getText();
         String tipoUsuario = tipoUsuarioCombo.getValue();
