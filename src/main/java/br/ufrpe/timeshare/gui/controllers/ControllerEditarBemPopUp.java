@@ -2,6 +2,7 @@ package br.ufrpe.timeshare.gui.controllers;
 
 import br.ufrpe.timeshare.excecoes.BemJaOfertadoException;
 import br.ufrpe.timeshare.excecoes.BemNaoExisteException;
+import br.ufrpe.timeshare.excecoes.DadosInsuficientesException;
 import br.ufrpe.timeshare.gui.application.ScreenManager;
 import br.ufrpe.timeshare.negocio.ControladorBens;
 import br.ufrpe.timeshare.negocio.beans.Bem;
@@ -180,7 +181,7 @@ public class ControllerEditarBemPopUp {
             if (mainController != null) {
                 mainController.carregarListaDeBens();
             }
-        } catch (BemNaoExisteException | NullPointerException | BemJaOfertadoException e) {
+        } catch (DadosInsuficientesException | BemNaoExisteException | NullPointerException | BemJaOfertadoException e) {
             exibirAlertaErro("Erro", "Erro ao alterar nome do bem", e.getMessage());
         }
 
@@ -213,7 +214,7 @@ public class ControllerEditarBemPopUp {
                 if (mainController != null) {
                     mainController.carregarListaDeBens();
                 }
-            } catch (BemNaoExisteException | IllegalAccessException e) {
+            } catch (DadosInsuficientesException | BemNaoExisteException | IllegalAccessException e) {
                 exibirAlertaErro("Erro", "Erro ao remover bem", e.getMessage());
             }
         } else {
