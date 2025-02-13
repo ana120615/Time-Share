@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface IRepositorioBens extends IRepositorio<Bem> {
 
-    List<Bem> listarBensUsuarioPorNome(String nome, int idUsuario);
+    List<Bem> listarBensUsuarioPorNome(String nome, long idUsuario);
 
     List<Bem> listarBensDisponiveis();
 

@@ -152,7 +152,7 @@ public class ControladorBens {
     }
 
 
-    public List<Bem> listarBensUsuarioPorNome(String nome, int idusuario) throws DadosInsuficientesException {
+    public List<Bem> listarBensUsuarioPorNome(String nome, long idusuario) throws DadosInsuficientesException {
         if(nome == null) {
             throw new DadosInsuficientesException("Nome nulo");
         }

@@ -133,6 +133,9 @@ public class ControllerDeslocamentoDeCotas implements ControllerBase {
 
     @FXML
     public void voltarParaTelaAdm(ActionEvent event) {
+        idBemProcurado.clear();
+        dataDeslocamentoPicker.setValue(null);
+        listViewItensCotas.getItems().clear();
         System.out.println("Botão voltar clicado.");
         ScreenManager.getInstance().showAdmPrincipalScreen();
     }
