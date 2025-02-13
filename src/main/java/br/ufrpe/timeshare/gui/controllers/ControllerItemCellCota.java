@@ -1,8 +1,11 @@
 package br.ufrpe.timeshare.gui.controllers;
 
 import br.ufrpe.timeshare.negocio.beans.Cota;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+
+import javax.swing.*;
 
 public class ControllerItemCellCota {
 
@@ -45,4 +48,10 @@ public class ControllerItemCellCota {
     public void setMainControllerAdicionarCotaPopUp(ControllerAdicionarCotaPopUp mainControllerAdicionarCotaPopUp) {
         this.mainControllerAdicionarCotaPopUp = mainControllerAdicionarCotaPopUp;
     }
+
+    public void adicionarCotaCarrinhoVenda (ActionEvent event) {
+        mainControllerAdicionarCotaPopUp.adicionarCotaCarrinhoVenda();
+    }
+
+
 }

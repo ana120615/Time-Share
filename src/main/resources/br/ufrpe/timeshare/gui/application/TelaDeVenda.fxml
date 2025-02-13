@@ -41,7 +41,7 @@
                            <children>
                               <ImageView fitHeight="64.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@logo.png" />
+                                    <Image url="@images/logo.png" />
                                  </image>
                                  <HBox.margin>
                                     <Insets left="5.0" />
@@ -157,7 +157,26 @@
                         </VBox>
                      </content>
                   </Tab>
-                  <Tab fx:id="tabCarrinho" text="Carrinho" />
+                  <Tab fx:id="tabCarrinho" text="Carrinho">
+                     <content>
+                        <VBox prefHeight="200.0" prefWidth="100.0">
+                           <children>
+                              <HBox alignment="CENTER_LEFT" prefHeight="43.0" prefWidth="754.0">
+                                 <children>
+                                    <Label style="-fx-font-weight: bold;" text="Carrinho de Compras">
+                                       <font>
+                                          <Font size="21.0" />
+                                       </font>
+                                       <HBox.margin>
+                                          <Insets left="20.0" />
+                                       </HBox.margin>
+                                    </Label>
+                                 </children>
+                              </HBox>
+                              <ListView prefHeight="206.0" prefWidth="754.0" />
+                           </children>
+                        </VBox>
+                     </content></Tab>
                </tabs>
             </TabPane>
          </children>

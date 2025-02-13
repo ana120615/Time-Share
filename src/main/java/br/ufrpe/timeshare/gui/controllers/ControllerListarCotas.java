@@ -134,4 +134,5 @@ public class ControllerListarCotas implements ControllerBase{
         System.out.println("Botão voltar clicado.");
         ScreenManager.getInstance().showAdmPrincipalScreen();
     }
+
 }

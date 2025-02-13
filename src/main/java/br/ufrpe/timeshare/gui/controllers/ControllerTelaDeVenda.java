@@ -1,9 +1,12 @@
 package br.ufrpe.timeshare.gui.controllers;
 
+import br.ufrpe.timeshare.excecoes.UsuarioNaoExisteException;
 import br.ufrpe.timeshare.gui.application.ScreenManager;
 import br.ufrpe.timeshare.negocio.ControladorBens;
+import br.ufrpe.timeshare.negocio.ControladorVendas;
 import br.ufrpe.timeshare.negocio.beans.Bem;
 import br.ufrpe.timeshare.negocio.beans.Usuario;
+import br.ufrpe.timeshare.negocio.beans.Venda;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -22,7 +25,10 @@ import java.util.List;
 
 public class ControllerTelaDeVenda implements ControllerBase{
     private Usuario usuario;
+    private Venda vendaAtual;
     private final ControladorBens controladorBens;
+    private final ControladorVendas controladorVendas;
+
     @FXML
     private TabPane tabPaneUsuarioComumTelaVenda; // Estado inicial
     @FXML
@@ -35,6 +41,7 @@ public class ControllerTelaDeVenda implements ControllerBase{
 
     public ControllerTelaDeVenda() {
         this.controladorBens = new ControladorBens();
+        this.controladorVendas = new ControladorVendas();
     }
 
     @Override
@@ -44,9 +51,17 @@ public class ControllerTelaDeVenda implements ControllerBase{
             this.usuario = (Usuario) data;
             System.out.println("Usuário definido: " + usuario.getNome());
             carregarListaDeBens();
+            try {
+                this.vendaAtual = controladorVendas.iniciarVenda((int) usuario.getId());
+            } catch (UsuarioNaoExisteException e) {
+                System.out.println(e.getMessage());
+            }
+
         } else {
             System.err.println("Erro: receiveData recebeu um objeto inválido.");
         }
+
+
     }
 
     @FXML
@@ -106,8 +121,12 @@ public class ControllerTelaDeVenda implements ControllerBase{
     public ListView<Bem> getListViewItens() {
         return listViewItens;
     }
-
-
+    public Usuario getUsuario() {
+        return usuario;
+    }
+    public Venda getVendaAtual() {
+        return vendaAtual;
+    }
 
     @FXML
     public void irParaTelaPrincipalUsuarioComum(ActionEvent event) {

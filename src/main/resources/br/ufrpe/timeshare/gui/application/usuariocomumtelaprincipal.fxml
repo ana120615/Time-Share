@@ -249,7 +249,7 @@
                   </Label>
                   <ImageView fx:id="imageView" fitHeight="80.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="1">
                      <image>
-                        <Image url="@logo.png" />
+                        <Image url="@images/logo.png" />
                      </image>
                   </ImageView>
                </children>
