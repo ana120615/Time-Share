@@ -5,10 +5,12 @@ import br.ufrpe.timeshare.gui.controllers.usuarioAdmin.telaListarCotas.Controlle
 import br.ufrpe.timeshare.gui.controllers.usuarioComum.telaMinhasCotas.ControllerMinhasCotas;
 import br.ufrpe.timeshare.gui.controllers.usuarioComum.telaVendaCotas.ControllerAdicionarCotaPopUp;
 import br.ufrpe.timeshare.gui.controllers.usuarioComum.telaVendaCotas.ControllerComprarCota;
+import br.ufrpe.timeshare.gui.controllers.usuarioComum.telaVendaCotas.ControllerTelaDeVenda;
 import br.ufrpe.timeshare.negocio.beans.Cota;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.layout.HBox;
 
 public class ControllerItemCellCota {
 
@@ -20,7 +22,7 @@ public class ControllerItemCellCota {
     @FXML private Label itemLabelProprietarioCota;
     @FXML private Label itemLabelDisponibilidadeCompra;
     @FXML private Label itemLabelDisponibilidadeReserva;
-
+    @FXML private HBox rootCell; // Adicione essa linha
 
     private Cota cota;
     private ControllerListarCotas mainControllerCotas;
@@ -28,6 +30,7 @@ public class ControllerItemCellCota {
     private ControllerMinhasCotas mainControllerMinhasCotas;
     private ControllerAdicionarCotaPopUp mainControllerAdicionarCotaPopUp;
     private ControllerComprarCota mainControllerComprarCota;
+    private ControllerTelaDeVenda mainControllerVendaCotas;
 
     public void setItem(Cota item) {
         this.cota = item;
@@ -39,11 +42,14 @@ public class ControllerItemCellCota {
         itemLabelProprietarioCota.setText(item.getProprietario() != null ? item.getProprietario().getNome() : "Não disponível");
         itemLabelDisponibilidadeCompra.setText(item.getStatusDeDisponibilidadeParaCompra() ? "Disponível" : "Indisponível");
         itemLabelDisponibilidadeReserva.setText(item.getStatusDeDisponibilidadeParaReserva() ? "Disponível" : "Indisponível");
-
     }
 
     public void setMainControllerCotas(ControllerListarCotas mainControllerCotas) {
         this.mainControllerCotas = mainControllerCotas;
+    }
+
+    public void setMainControllerVendaCotas (ControllerTelaDeVenda mainControllerVendaCotas) {
+        this.mainControllerVendaCotas = mainControllerVendaCotas;
     }
 
     public void setMainControllerCotasDeslocamento(ControllerDeslocamentoDeCotas mainControllerCota) {
@@ -58,8 +64,8 @@ public class ControllerItemCellCota {
         this.mainControllerAdicionarCotaPopUp = mainControllerAdicionarCotaPopUp;
     }
 
-    public void adicionarCotaCarrinhoVenda (ActionEvent event) {
-        mainControllerAdicionarCotaPopUp.adicionarCotaCarrinhoVenda();
+    public void onActionadicionarCotaCarrinhoVenda (ActionEvent event) {
+        mainControllerAdicionarCotaPopUp.adicionarCotaCarrinhoVenda(this.cota);
     }
 
     public void setMainControllerComprarCota (ControllerComprarCota mainControllerComprarCota) {

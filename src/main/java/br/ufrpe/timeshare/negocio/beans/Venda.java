@@ -3,6 +3,7 @@ package br.ufrpe.timeshare.negocio.beans;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.UUID;
 
 import java.util.ArrayList;
@@ -98,7 +99,7 @@ public class Venda extends Entidade{
         System.out.println("Compra finalizada");
     }
 
-    public ArrayList<Cota> getCarrinhoDeComprasCotas() {
+    public List<Cota> getCarrinhoDeComprasCotas() {
         return this.carrinhoDeComprasCotas;
     }
 
