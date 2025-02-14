@@ -1,6 +1,6 @@
 package br.ufrpe.timeshare.gui.application;
 
-import br.ufrpe.timeshare.gui.controllers.ControllerBase;
+import br.ufrpe.timeshare.gui.controllers.basico.ControllerBase;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -31,13 +31,13 @@ public class ScreenManager {
     }
 
     private void carregarTelas() {
-        carregarTela("Cadastro", "/br/ufrpe/timeshare/gui/application/cadastro.fxml");
-        carregarTela("Login", "/br/ufrpe/timeshare/gui/application/login.fxml");
-        carregarTela("UsuarioComumPrincipal", "/br/ufrpe/timeshare/gui/application/usuariocomumtelaprincipal.fxml");
-        carregarTela("AdmPrincipal", "/br/ufrpe/timeshare/gui/application/usuarioadmtelaprincipal.fxml");
-        carregarTela("ConfiguracoesUsuario", "/br/ufrpe/timeshare/gui/application/configuracoesusuario.fxml");
-        carregarTela("CadastroBens", "/br/ufrpe/timeshare/gui/application/telaCadastroBens.fxml");
-        carregarTela("ListarBens", "/br/ufrpe/timeshare/gui/application/telaListaDeBens.fxml");
+        carregarTela("Cadastro", "/br/ufrpe/timeshare/gui/application/CadastroUsuario.fxml");
+        carregarTela("Login", "/br/ufrpe/timeshare/gui/application/LoginUsuario.fxml");
+        carregarTela("UsuarioComumPrincipal", "/br/ufrpe/timeshare/gui/application/UsuarioComumTelaPrincipal.fxml");
+        carregarTela("AdmPrincipal", "/br/ufrpe/timeshare/gui/application/UsuarioAdmTelaPrincipal.fxml");
+        carregarTela("ConfiguracoesUsuario", "/br/ufrpe/timeshare/gui/application/ConfiguracoesUsuario.fxml");
+        carregarTela("CadastroBens", "/br/ufrpe/timeshare/gui/application/TelaCadastroBens.fxml");
+        carregarTela("ListarBens", "/br/ufrpe/timeshare/gui/application/TelaListaDeBens.fxml");
         carregarTela("ListarCotas", "/br/ufrpe/timeshare/gui/application/TelaListaCotas.fxml");
         carregarTela("TelaDeVendas", "/br/ufrpe/timeshare/gui/application/TelaDeVenda.fxml");
         carregarTela("TelaDeslocamentoDeCotas", "/br/ufrpe/timeshare/gui/application/TelaDeslocamentoCotas.fxml");

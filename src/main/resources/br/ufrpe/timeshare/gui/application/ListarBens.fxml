@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane xmlns:fx="http://javafx.com/fxml" fx:controller="br.ufrpe.timeshare.gui.controllers.usuarioAdmin.telaMeusBens.ControllerListarBens">
+    <!-- Layout principal -->
+    <VBox spacing="15" alignment="TOP_CENTER" style="-fx-padding: 10px;">
+        <!-- Título -->
+        <Label text="Lista de Bens" style="-fx-font-size: 18px; -fx-font-weight: bold;" />
+
+        <!-- ListView para exibição dos bens -->
+        <ListView fx:id="listViewBens" prefWidth="600" prefHeight="400" />
+
+        <!-- Botão de voltar -->
+        <Button text="Voltar"  style="-fx-font-size: 14px; -fx-padding: 10px 20px;" />
+    </VBox>
+</AnchorPane>

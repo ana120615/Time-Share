@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="256.0" prefWidth="286.0" style="-fx-background-color: transparent;" stylesheets="@styles/basico/item-cell-bem-ofertado.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.ufrpe.timeshare.gui.controllers.ControllerItemCellBemOfertado">
+<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="256.0" prefWidth="286.0" style="-fx-background-color: transparent;" stylesheets="@styles/basico/item-cell-bem-ofertado.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.ufrpe.timeshare.gui.controllers.celulas.ControllerItemCellBemOfertado">
    <children>
       <Button fx:id="itemButton" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" prefHeight="284.0" prefWidth="292.0" styleClass="item-button">
          <graphic>
