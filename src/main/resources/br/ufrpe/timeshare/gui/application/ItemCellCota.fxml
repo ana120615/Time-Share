@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<HBox alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="192.0" prefWidth="563.0" stylesheets="@styles/basico/item-cell-cota.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.ufrpe.timeshare.gui.controllers.ControllerItemCellCota">
+<HBox alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="192.0" prefWidth="563.0" stylesheets="@styles/basico/item-cell-cota.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.ufrpe.timeshare.gui.controllers.celulas.ControllerItemCellCota">
    <children>
       <Button contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#adicionarCotaCarrinhoVenda" prefHeight="201.0" prefWidth="563.0" styleClass="button-cota" HBox.hgrow="ALWAYS">
          <graphic>
