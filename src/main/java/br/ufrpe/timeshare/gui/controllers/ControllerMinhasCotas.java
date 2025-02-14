@@ -18,7 +18,6 @@ import javafx.scene.layout.HBox;
 import javafx.util.Callback;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 public class ControllerMinhasCotas implements ControllerBase {
