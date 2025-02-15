@@ -24,18 +24,26 @@ import java.io.IOException;
 
 public class ControllerItemCellCota {
 
-    @FXML private Label itemLabelNomeBem;
-    @FXML private Label itemLabelDataInicial;
-    @FXML private Label itemLabelDataFinal;
-    @FXML private Label itemLabelIdCota;
-    @FXML private Label itemLabelPrecoCota;
-    @FXML private Label itemLabelProprietarioCota;
-    @FXML private Label itemLabelDisponibilidadeCompra;
-    @FXML private Label itemLabelDisponibilidadeReserva;
-    @FXML private HBox rootCell; // Adicione essa linha
-    @FXML private Button idButtonCelulaCota;
+    @FXML
+    private Label itemLabelNomeBem;
+    @FXML
+    private Label itemLabelDataInicial;
+    @FXML
+    private Label itemLabelDataFinal;
+    @FXML
+    private Label itemLabelIdCota;
+    @FXML
+    private Label itemLabelPrecoCota;
+    @FXML
+    private Label itemLabelProprietarioCota;
+    @FXML
+    private Label itemLabelDisponibilidadeCompra;
+    private HBox rootCell; // Adicione essa linha
+    @FXML
+    private Button idButtonCelulaCota;
 
     private int valorTelaDeDeslocamento;
+    private int valorTelaDeVenda;
 
     private Cota cota;
     private ControllerListarCotas mainControllerCotas;
@@ -55,10 +63,16 @@ public class ControllerItemCellCota {
         itemLabelPrecoCota.setText(String.valueOf(item.getPreco()));
         itemLabelProprietarioCota.setText(item.getProprietario() != null ? item.getProprietario().getNome() : "Não disponível");
         itemLabelDisponibilidadeCompra.setText(item.getStatusDeDisponibilidadeParaCompra() ? "Disponível" : "Indisponível");
-        itemLabelDisponibilidadeReserva.setText(item.getStatusDeDisponibilidadeParaReserva() ? "Disponível" : "Indisponível");
 
-        if(valorTelaDeDeslocamento == 2) {
+        if (valorTelaDeDeslocamento == 2) {
             idButtonCelulaCota.setOnAction(e -> showPopupDeslocamentoCotas()); // Agora chama o pop-up ao clicar no botão
+        }
+
+        if (valorTelaDeVenda == 1) { // ADICIONAR A COTA NO CARRINHO
+            idButtonCelulaCota.setOnAction(e -> {
+                mainControllerAdicionarCotaPopUp.adicionarCotaCarrinhoVenda(cota);
+            });
+
         }
     }
 
@@ -66,7 +80,7 @@ public class ControllerItemCellCota {
         this.mainControllerCotas = mainControllerCotas;
     }
 
-    public void setMainControllerVendaCotas (ControllerTelaDeVenda mainControllerVendaCotas) {
+    public void setMainControllerVendaCotas(ControllerTelaDeVenda mainControllerVendaCotas) {
         this.mainControllerVendaCotas = mainControllerVendaCotas;
     }
 
@@ -82,26 +96,23 @@ public class ControllerItemCellCota {
         this.mainControllerAdicionarCotaPopUp = mainControllerAdicionarCotaPopUp;
     }
 
-    public void onActionadicionarCotaCarrinhoVenda (ActionEvent event) {
-        mainControllerAdicionarCotaPopUp.adicionarCotaCarrinhoVenda(this.cota);
-    }
 
-    public Cota onActionRetornarCota(ActionEvent event) {
-        return this.cota;
-    }
-
-    public void setMainControllerComprarCota (ControllerComprarCota mainControllerComprarCota) {
+    public void setMainControllerComprarCota(ControllerComprarCota mainControllerComprarCota) {
         this.mainControllerComprarCota = mainControllerComprarCota;
     }
 
-    public void setMainControllerDeslocamentoCotas (ControllerDeslocamentoCotas mainControllerDeslocamentoCotas) {
+    public void setMainControllerDeslocamentoCotas(ControllerDeslocamentoCotas mainControllerDeslocamentoCotas) {
         this.mainControllerDeslocamentoCotas = mainControllerDeslocamentoCotas;
     }
 
 
     //SET VALORES DE TELA
-    public void setValorTelaDeDeslocamento (int valorTelaDeDeslocamento) {
+    public void setValorTelaDeDeslocamento(int valorTelaDeDeslocamento) {
         this.valorTelaDeDeslocamento = valorTelaDeDeslocamento;
+    }
+
+    public void setValorTelaDeVenda(int valorTelaDeVenda) {
+        this.valorTelaDeVenda = valorTelaDeVenda;
     }
 
 
