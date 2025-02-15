@@ -176,10 +176,16 @@ public class ControladorBens {
 
         Bem bemClonado = bem.clone();
         List<Cota> cotasGeradas = new ArrayList<>();
+        int anoAtual = LocalDateTime.now().getYear();
 
         for (Cota cotaOriginal : bemClonado.getCotas()) {
             LocalDateTime dataInicio = cotaOriginal.getDataInicio();
             LocalDateTime dataFim = cotaOriginal.getDataFim();
+
+            if (dataInicio.getYear() == anoAtual) {
+                dataInicio = dataInicio.plusYears(1);
+                dataFim = dataInicio.plusDays(6);
+            }
 
             while (!dataInicio.isAfter(dataParaDeslocamento)) {
                 Cota novaCota = cotaOriginal.clone();
@@ -190,6 +196,35 @@ public class ControladorBens {
                 dataInicio = dataInicio.plusYears(1).plusDays(7);
                 dataFim = dataInicio.plusDays(6);
             }
+        }
+
+        Collections.sort(cotasGeradas);
+        return new ArrayList<>(cotasGeradas);
+    }
+
+    public ArrayList<Cota> calcularDeslocamentoDeCota(Cota cota, LocalDateTime dataParaDeslocamento) {
+        List<Cota> cotasGeradas = new ArrayList<>();
+        int anoAtual = LocalDateTime.now().getYear(); // Obtém o ano atual
+
+        LocalDateTime dataInicio = cota.getDataInicio();
+        LocalDateTime dataFim = cota.getDataFim();
+
+        // Se a cota estiver no ano atual, ajusta para começar no próximo ano
+        if (dataInicio.getYear() == anoAtual) {
+            dataInicio = dataInicio.plusYears(1);
+            dataFim = dataInicio.plusDays(6);
+        }
+
+        // Gera deslocamentos até a data desejada
+        while (!dataInicio.isAfter(dataParaDeslocamento)) {
+            Cota novaCota = cota.clone();
+            novaCota.setDataInicio(dataInicio);
+            novaCota.setDataFim(dataFim);
+            cotasGeradas.add(novaCota);
+
+            // Avança para o próximo deslocamento (1 ano e 7 dias)
+            dataInicio = dataInicio.plusYears(1).plusDays(7);
+            dataFim = dataInicio.plusDays(6);
         }
 
         Collections.sort(cotasGeradas);

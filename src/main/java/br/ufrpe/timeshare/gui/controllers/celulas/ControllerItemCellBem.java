@@ -63,8 +63,8 @@ public class ControllerItemCellBem {
         if (valorTela == 1) {
             itemButton.setOnAction(e -> showPopup()); // Agora chama o pop-up ao clicar no botão
         }
-        else{
-            itemButton.setOnAction(e -> showPopupDeslocamentoCotas());
+        else if (valorTela == 2){
+           itemButton.setOnAction(e -> mainControllerDeslocamento.mudarTabCotas(bem)); //Mudar na tela de deslocamento de telas a tab
         }
     }
 
@@ -141,7 +141,6 @@ public class ControllerItemCellBem {
             e.printStackTrace();
         }
     }
-
 
     private Image carregarImagem(String caminhoImagem) {
         if (caminhoImagem == null || caminhoImagem.isEmpty()) {

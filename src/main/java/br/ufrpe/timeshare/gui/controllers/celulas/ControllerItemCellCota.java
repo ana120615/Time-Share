@@ -1,5 +1,6 @@
 package br.ufrpe.timeshare.gui.controllers.celulas;
 
+import br.ufrpe.timeshare.gui.controllers.usuarioAdmin.telaCotasDeslocamento.ControllerDeslocamentoCotas;
 import br.ufrpe.timeshare.gui.controllers.usuarioAdmin.telaCotasDeslocamento.ControllerDeslocamentoDeCotasPopUP;
 import br.ufrpe.timeshare.gui.controllers.usuarioAdmin.telaListarCotas.ControllerListarCotas;
 import br.ufrpe.timeshare.gui.controllers.usuarioComum.telaMinhasCotas.ControllerMinhasCotas;
@@ -9,6 +10,7 @@ import br.ufrpe.timeshare.gui.controllers.usuarioComum.telaVendaCotas.Controller
 import br.ufrpe.timeshare.negocio.beans.Cota;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 
@@ -23,6 +25,9 @@ public class ControllerItemCellCota {
     @FXML private Label itemLabelDisponibilidadeCompra;
     @FXML private Label itemLabelDisponibilidadeReserva;
     @FXML private HBox rootCell; // Adicione essa linha
+    @FXML private Button idButtonCelulaCota;
+
+    private int valorTelaDeDeslocamento;
 
     private Cota cota;
     private ControllerListarCotas mainControllerCotas;
@@ -31,6 +36,7 @@ public class ControllerItemCellCota {
     private ControllerAdicionarCotaPopUp mainControllerAdicionarCotaPopUp;
     private ControllerComprarCota mainControllerComprarCota;
     private ControllerTelaDeVenda mainControllerVendaCotas;
+    private ControllerDeslocamentoCotas mainControllerDeslocamentoCotas;
 
     public void setItem(Cota item) {
         this.cota = item;
@@ -68,9 +74,16 @@ public class ControllerItemCellCota {
         mainControllerAdicionarCotaPopUp.adicionarCotaCarrinhoVenda(this.cota);
     }
 
+    public Cota onActionRetornarCota(ActionEvent event) {
+        return this.cota;
+    }
+
     public void setMainControllerComprarCota (ControllerComprarCota mainControllerComprarCota) {
         this.mainControllerComprarCota = mainControllerComprarCota;
     }
 
+    public void setMainControllerDeslocamentoCotas (ControllerDeslocamentoCotas mainControllerDeslocamentoCotas) {
+        this.mainControllerDeslocamentoCotas = mainControllerDeslocamentoCotas;
+    }
 
 }
