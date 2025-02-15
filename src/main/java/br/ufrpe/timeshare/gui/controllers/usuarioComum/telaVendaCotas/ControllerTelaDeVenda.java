@@ -1,6 +1,5 @@
 package br.ufrpe.timeshare.gui.controllers.usuarioComum.telaVendaCotas;
 
-import br.ufrpe.timeshare.excecoes.BemNaoExisteException;
 import br.ufrpe.timeshare.excecoes.UsuarioNaoExisteException;
 import br.ufrpe.timeshare.gui.application.ScreenManager;
 import br.ufrpe.timeshare.gui.controllers.basico.ControllerBase;
@@ -58,11 +57,14 @@ public class ControllerTelaDeVenda implements ControllerBase {
         if (data instanceof Usuario) {
             this.usuario = (Usuario) data;
             System.out.println("Usuário definido: " + usuario.getNome());
-            try {
-                this.vendaAtual = controladorVendas.iniciarVenda(usuario.getId());
-            } catch (UsuarioNaoExisteException e) {
-                System.out.println(e.getMessage());
+            if (vendaAtual == null) {
+                try {
+                    this.vendaAtual = controladorVendas.iniciarVenda(usuario.getId());
+                } catch (UsuarioNaoExisteException e) {
+                    System.out.println(e.getMessage());
+                }
             }
+
             carregarListaDeBens();
             carregarListaCarrinho();
         } else {
@@ -205,10 +207,18 @@ public class ControllerTelaDeVenda implements ControllerBase {
 
     public void btnFinalizarCompra () {
         vendaAtual.finalizarCompra();
-        exibirAlertaInformation("Operção finalizada", "Compra finalizada com sucesso!", "Parabéns pela Compra!");
+        exibirAlertaInformation("Operação finalizada", "Compra finalizada com sucesso!", "Parabéns pela compra!");
+
+        // Limpar carrinho de compras
+        vendaAtual.getCarrinhoDeComprasCotas().clear(); // Remove todos os itens do carrinho
+
+        // Atualizar interface gráfica
+        listViewCotasSelecionadas.getItems().clear();
+        labelValorTotal.setText("0.00");
+        labelQuantidadeCotasCarrinho.setText("0");
+
         try {
             vendaAtual = controladorVendas.iniciarVenda(usuario.getId());
-            carregarListaCarrinho();
         } catch (UsuarioNaoExisteException e) {
             System.out.println(e.getMessage());
         }
