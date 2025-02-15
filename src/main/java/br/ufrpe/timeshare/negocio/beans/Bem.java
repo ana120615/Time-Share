@@ -168,7 +168,7 @@ public class Bem extends Entidade implements Cloneable, Comparable<Bem> {
 
     @Override
     public int compareTo(Bem o) {
-        return (this.getQuantidadeCotasVendidas() - o.getQuantidadeCotasVendidas());
+        return Integer.compare(o.getQuantidadeCotasVendidas(), this.getQuantidadeCotasVendidas());
     }
 
 }

@@ -51,11 +51,7 @@
       </VBox>
    </center>
    <top>
-      <HBox prefHeight="49.0" prefWidth="600.0" BorderPane.alignment="CENTER">
-         <children>
-            <Button mnemonicParsing="false" onAction="#voltarParaTelaAdm" text="Voltar" />
-         </children>
-      </HBox>
+      <HBox prefHeight="49.0" prefWidth="600.0" BorderPane.alignment="CENTER" />
    </top>
    <bottom>
       <HBox prefHeight="34.0" prefWidth="600.0" BorderPane.alignment="CENTER" />
