@@ -1,4 +1,4 @@
-package br.ufrpe.timeshare.gui.controllers.usuarioAdmin.telaMeusBens;
+package br.ufrpe.timeshare.gui.controllers.usuarioAdmin.telaCotasDeslocamento;
 
 import br.ufrpe.timeshare.excecoes.DadosInsuficientesException;
 import br.ufrpe.timeshare.gui.application.ScreenManager;
@@ -23,11 +23,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ControllerListarBens implements ControllerBase {
+public class ControllerDeslocamentoCotas implements ControllerBase {
     private Usuario usuario;
     private final ControladorBens controladorBens;
 
-    public ControllerListarBens() {
+    public ControllerDeslocamentoCotas() {
         this.controladorBens = new ControladorBens();
     }
 
@@ -116,9 +116,9 @@ public class ControllerListarBens implements ControllerBase {
                                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/br/ufrpe/timeshare/gui/application/ItemCell.fxml"));
                                 HBox root = loader.load();
                                 ControllerItemCellBem controller = loader.getController();
-                                controller.setValorTela(1);
+                                controller.setValorTela(2);
                                 controller.setItem(item);
-                                controller.setMainControllerBens(ControllerListarBens.this); // Passa referência do controlador principal
+                                controller.setMainControllerDeslocamento(ControllerDeslocamentoCotas.this); // Passa referência do controlador principal
                                 setGraphic(root);
                             } catch (IOException e) {
                                 System.err.println("Erro ao carregar ItemCell.fxml: " + e.getMessage());
