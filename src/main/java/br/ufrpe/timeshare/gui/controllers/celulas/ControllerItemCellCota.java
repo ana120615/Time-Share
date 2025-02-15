@@ -10,9 +10,17 @@ import br.ufrpe.timeshare.gui.controllers.usuarioComum.telaVendaCotas.Controller
 import br.ufrpe.timeshare.negocio.beans.Cota;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.effect.GaussianBlur;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+
+import java.io.IOException;
 
 public class ControllerItemCellCota {
 
@@ -48,6 +56,11 @@ public class ControllerItemCellCota {
         itemLabelProprietarioCota.setText(item.getProprietario() != null ? item.getProprietario().getNome() : "Não disponível");
         itemLabelDisponibilidadeCompra.setText(item.getStatusDeDisponibilidadeParaCompra() ? "Disponível" : "Indisponível");
         itemLabelDisponibilidadeReserva.setText(item.getStatusDeDisponibilidadeParaReserva() ? "Disponível" : "Indisponível");
+
+        if(valorTelaDeDeslocamento == 2) {
+            idButtonCelulaCota.setOnAction(e -> showPopupDeslocamentoCotas()); // Agora chama o pop-up ao clicar no botão
+        }
+
     }
 
     public void setMainControllerCotas(ControllerListarCotas mainControllerCotas) {
@@ -84,6 +97,47 @@ public class ControllerItemCellCota {
 
     public void setMainControllerDeslocamentoCotas (ControllerDeslocamentoCotas mainControllerDeslocamentoCotas) {
         this.mainControllerDeslocamentoCotas = mainControllerDeslocamentoCotas;
+    }
+
+
+    //SET VALORES DE TELA
+    public void setValorTelaDeDeslocamento (int valorTelaDeDeslocamento) {
+        this.valorTelaDeDeslocamento = valorTelaDeDeslocamento;
+    }
+
+
+    //POP UPS
+    private void showPopupDeslocamentoCotas() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/br/ufrpe/timeshare/gui/application/TelaDeslocamentoCotasPopUp.fxml"));
+            BorderPane popupRoot = loader.load(); // Carrega a interface corretamente
+
+            // Obtém o controlador da tela do pop-up
+            ControllerDeslocamentoDeCotasPopUP popupController = loader.getController();
+            popupController.setCota(cota);
+            popupController.setMainController(mainControllerDeslocamentoCotas);
+
+            Stage popupStage = new Stage();
+            popupStage.initModality(Modality.APPLICATION_MODAL);
+            popupStage.setScene(new Scene(popupRoot));
+            popupStage.setTitle("Detalhes do Bem");
+            popupStage.setMinWidth(932);
+            popupStage.setMinHeight(650);
+
+            // Aplica efeito de desfoque na tela principal
+            if (mainControllerCotas != null && mainControllerCotas.getListViewItens().getScene() != null) {
+                mainControllerCotas.getListViewItens().getScene().getRoot().setEffect(new GaussianBlur(10));
+            }
+
+            popupStage.showAndWait();
+
+            // Remove efeito de desfoque ao fechar
+            if (mainControllerCotas != null && mainControllerCotas.getListViewItens().getScene() != null) {
+                mainControllerCotas.getListViewItens().getScene().getRoot().setEffect(null);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }

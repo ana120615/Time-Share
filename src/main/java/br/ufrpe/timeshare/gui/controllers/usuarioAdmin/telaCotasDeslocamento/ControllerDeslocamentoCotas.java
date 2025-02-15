@@ -182,6 +182,7 @@ public class ControllerDeslocamentoCotas implements ControllerBase {
                                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/br/ufrpe/timeshare/gui/application/ItemCellCota.fxml"));
                                 HBox root = loader.load();
                                 ControllerItemCellCota controller = loader.getController();
+                                controller.setValorTelaDeDeslocamento(2);
                                 controller.setItem(item);
                                 controller.setMainControllerDeslocamentoCotas(ControllerDeslocamentoCotas.this);
                                 setGraphic(root);

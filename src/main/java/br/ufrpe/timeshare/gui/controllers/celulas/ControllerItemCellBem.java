@@ -1,7 +1,6 @@
 package br.ufrpe.timeshare.gui.controllers.celulas;
 
 import br.ufrpe.timeshare.gui.controllers.usuarioAdmin.telaCotasDeslocamento.ControllerDeslocamentoCotas;
-import br.ufrpe.timeshare.gui.controllers.usuarioAdmin.telaCotasDeslocamento.ControllerDeslocamentoDeCotasPopUP;
 import br.ufrpe.timeshare.gui.controllers.usuarioAdmin.telaMeusBens.ControllerEditarBemPopUp;
 import br.ufrpe.timeshare.gui.controllers.usuarioAdmin.telaMeusBens.ControllerListarBens;
 import br.ufrpe.timeshare.negocio.beans.Bem;
@@ -13,7 +12,6 @@ import javafx.scene.control.Label;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -85,39 +83,6 @@ public class ControllerItemCellBem {
             ControllerEditarBemPopUp popupController = loader.getController();
             popupController.setBem(bem);
             popupController.setMainController(mainControllerBens);
-
-            Stage popupStage = new Stage();
-            popupStage.initModality(Modality.APPLICATION_MODAL);
-            popupStage.setScene(new Scene(popupRoot));
-            popupStage.setTitle("Detalhes do Bem");
-            popupStage.setMinWidth(932);
-            popupStage.setMinHeight(650);
-
-            // Aplica efeito de desfoque na tela principal
-            if (mainControllerBens != null && mainControllerBens.getListViewItens().getScene() != null) {
-                mainControllerBens.getListViewItens().getScene().getRoot().setEffect(new GaussianBlur(10));
-            }
-
-            popupStage.showAndWait();
-
-            // Remove efeito de desfoque ao fechar
-            if (mainControllerBens != null && mainControllerBens.getListViewItens().getScene() != null) {
-                mainControllerBens.getListViewItens().getScene().getRoot().setEffect(null);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void showPopupDeslocamentoCotas() {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/br/ufrpe/timeshare/gui/application/TelaDeslocamentoCotasPopUp.fxml"));
-            BorderPane popupRoot = loader.load(); // Carrega a interface corretamente
-
-            // Obtém o controlador da tela do pop-up
-            ControllerDeslocamentoDeCotasPopUP popupController = loader.getController();
-            popupController.setBem(bem);
-            popupController.setMainController(mainControllerDeslocamento);
 
             Stage popupStage = new Stage();
             popupStage.initModality(Modality.APPLICATION_MODAL);
