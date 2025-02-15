@@ -183,7 +183,7 @@ public class ControladorBens {
             LocalDateTime dataFim = cotaOriginal.getDataFim();
 
             if (dataInicio.getYear() == anoAtual) {
-                dataInicio = dataInicio.plusYears(1);
+                dataInicio = dataInicio.plusYears(1).plusDays(7);
                 dataFim = dataInicio.plusDays(6);
             }
 
