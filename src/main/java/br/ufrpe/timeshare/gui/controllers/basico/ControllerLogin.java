@@ -1,9 +1,10 @@
 package br.ufrpe.timeshare.gui.controllers.basico;
 
-import br.ufrpe.timeshare.excecoes.SenhaInvalidaException;
-import br.ufrpe.timeshare.excecoes.UsuarioNaoExisteException;
+import br.ufrpe.timeshare.excecoes.*;
 import br.ufrpe.timeshare.gui.application.ScreenManager;
+import br.ufrpe.timeshare.negocio.ControladorBens;
 import br.ufrpe.timeshare.negocio.ControladorLogin;
+import br.ufrpe.timeshare.negocio.ControladorUsuarioGeral;
 import br.ufrpe.timeshare.negocio.beans.TipoUsuario;
 import br.ufrpe.timeshare.negocio.beans.Usuario;
 import javafx.event.ActionEvent;
@@ -11,12 +12,37 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 public class ControllerLogin implements ControllerBase {
     private ControladorLogin controladorLogin;
+
+    private ControladorUsuarioGeral controladorUsuarioGeral;
+    private ControladorBens controladorBens;
+
     private Object data;
 
     {
         this.controladorLogin = new ControladorLogin();
+        this.controladorUsuarioGeral = new ControladorUsuarioGeral();
+        this.controladorBens = new ControladorBens();
+
+        Usuario admin = null;
+        try {
+            admin = new Usuario(12345678901L, "admin", "admin@gmail.com", "senha123", LocalDate.of(2000, 01, 01), TipoUsuario.ADMINISTRADOR);
+            controladorUsuarioGeral.cadastrar(admin);
+            controladorUsuarioGeral.cadastrar(12345678902L, "comum", "comum@gmail.com", "senha123", LocalDate.of(2000, 01, 01), TipoUsuario.COMUM);
+        } catch (UsuarioJaExisteException | UsuarioNaoPermitidoException | DadosInsuficientesException e) {
+            System.out.println(e.getMessage());
+        }
+
+        try {
+            controladorBens.cadastrar(1111, "Bem 1", "Descrição do bem 1", "Recife-PE", 4, admin, LocalDateTime.now(), 15, 5425, "Imagem 1");
+            controladorBens.ofertarBem(1111);
+        } catch (BemNaoExisteException | UsuarioNaoPermitidoException | QuantidadeDeCotasExcedidasException | BemJaExisteException | UsuarioNaoExisteException | BemJaOfertadoException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     @FXML

@@ -18,7 +18,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="604.0" minWidth="932.0" prefHeight="604.0" prefWidth="932.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.ufrpe.timeshare.gui.controllers.ControllerEditarBemPopUp">
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="604.0" minWidth="932.0" prefHeight="604.0" prefWidth="932.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.ufrpe.timeshare.gui.controllers.usuarioAdmin.telaMeusBens.ControllerEditarBemPopUp">
    <children>
       <BorderPane prefHeight="543.0" prefWidth="801.0" style="-fx-background-color: #001f54;" stylesheets="@styles/basico/tela-cadastro-bem.css">
          <left>

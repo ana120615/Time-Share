@@ -4,9 +4,11 @@ import br.ufrpe.timeshare.excecoes.UsuarioNaoExisteException;
 import br.ufrpe.timeshare.gui.application.ScreenManager;
 import br.ufrpe.timeshare.gui.controllers.basico.ControllerBase;
 import br.ufrpe.timeshare.gui.controllers.celulas.ControllerItemCellBemOfertado;
+import br.ufrpe.timeshare.gui.controllers.celulas.ControllerItemCellCota;
 import br.ufrpe.timeshare.negocio.ControladorBens;
 import br.ufrpe.timeshare.negocio.ControladorVendas;
 import br.ufrpe.timeshare.negocio.beans.Bem;
+import br.ufrpe.timeshare.negocio.beans.Cota;
 import br.ufrpe.timeshare.negocio.beans.Usuario;
 import br.ufrpe.timeshare.negocio.beans.Venda;
 import javafx.collections.FXCollections;
@@ -14,10 +16,8 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.ListView;
-import javafx.scene.control.Tab;
-import javafx.scene.control.TabPane;
+import javafx.scene.control.*;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.util.Callback;
 
@@ -38,6 +38,12 @@ public class ControllerTelaDeVenda implements ControllerBase {
     private Tab tabCarrinho;
     @FXML
     private ListView<Bem> listViewItens;
+    @FXML
+    private ListView<Cota> listViewCotasSelecionadas;
+    @FXML
+    private Label labelValorTotal;
+    @FXML
+    private Label labelQuantidadeCotasCarrinho;
     private ControllerTelaDeVenda mainControllerVenda;
 
     public ControllerTelaDeVenda() {
@@ -51,13 +57,16 @@ public class ControllerTelaDeVenda implements ControllerBase {
         if (data instanceof Usuario) {
             this.usuario = (Usuario) data;
             System.out.println("Usuário definido: " + usuario.getNome());
-            carregarListaDeBens();
-            try {
-                this.vendaAtual = controladorVendas.iniciarVenda((int) usuario.getId());
-            } catch (UsuarioNaoExisteException e) {
-                System.out.println(e.getMessage());
+            if (vendaAtual == null) {
+                try {
+                    this.vendaAtual = controladorVendas.iniciarVenda(usuario.getId());
+                } catch (UsuarioNaoExisteException e) {
+                    System.out.println(e.getMessage());
+                }
             }
 
+            carregarListaDeBens();
+            carregarListaCarrinho();
         } else {
             System.err.println("Erro: receiveData recebeu um objeto inválido.");
         }
@@ -73,6 +82,7 @@ public class ControllerTelaDeVenda implements ControllerBase {
     public void setMainControllerVenda(ControllerTelaDeVenda mainControllerVenda) {
         this.mainControllerVenda = mainControllerVenda;
     }
+
     private void carregarListaDeBens() {
         if (usuario == null) {
             System.err.println("Erro: Usuário está null em carregarListaDeBens()!");
@@ -104,6 +114,8 @@ public class ControllerTelaDeVenda implements ControllerBase {
                                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/br/ufrpe/timeshare/gui/application/ItemCellBemOfertado.fxml"));
                                 VBox root = loader.load();
                                 ControllerItemCellBemOfertado controller = loader.getController();
+
+                                controller.setVendaAtual(vendaAtual);
                                 controller.setItem(item);
                                 controller.setMainControllerVenda(ControllerTelaDeVenda.this); // Passa referência do controlador principal
                                 setGraphic(root);
@@ -122,9 +134,11 @@ public class ControllerTelaDeVenda implements ControllerBase {
     public ListView<Bem> getListViewItens() {
         return listViewItens;
     }
+
     public Usuario getUsuario() {
         return usuario;
     }
+
     public Venda getVendaAtual() {
         return vendaAtual;
     }
@@ -143,4 +157,90 @@ public class ControllerTelaDeVenda implements ControllerBase {
     private void mudarAbaCarrinho(ActionEvent event) {
         tabPaneUsuarioComumTelaVenda.getSelectionModel().select(tabCarrinho);
     }
+
+
+    // Parte Carrinho
+    public void carregarListaCarrinho() {
+
+        this.labelValorTotal.setText(String.valueOf(vendaAtual.calcularValorTotal()));
+        this.labelQuantidadeCotasCarrinho.setText(String.valueOf(vendaAtual.getCarrinhoDeComprasCotas().size()));
+
+        List<Cota> cotas = vendaAtual.getCarrinhoDeComprasCotas();
+        if (cotas == null || cotas.isEmpty()) {
+            System.err.println("Erro: lista de cotas vazia ou null.");
+            return;
+        } else {
+            System.out.println("Lista de cotas carregada com " + cotas.size() + " itens.");
+        }
+
+        ObservableList<Cota> listaDeItens = FXCollections.observableArrayList(cotas);
+        listViewCotasSelecionadas.getItems().setAll(listaDeItens);
+
+        listViewCotasSelecionadas.setCellFactory(new Callback<>() {
+            @Override
+            public ListCell<Cota> call(ListView<Cota> cotaListView) {
+                return new ListCell<Cota>() {
+                    @Override
+                    protected void updateItem(Cota item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if (empty || item == null) {
+                            setGraphic(null);
+                        } else {
+                            try {
+                                FXMLLoader loader = new FXMLLoader(getClass().getResource("/br/ufrpe/timeshare/gui/application/ItemCellCota.fxml"));
+                                HBox root = loader.load();
+                                ControllerItemCellCota controller = loader.getController();
+                                controller.setItem(item);
+                                controller.setMainControllerVendaCotas(ControllerTelaDeVenda.this);// Passa referência do controlador principal
+                                setGraphic(root);
+                            } catch (IOException e) {
+                                System.err.println("Erro ao carregar ItemCellCota.fxml: " + e.getMessage());
+                                e.printStackTrace();
+                                setGraphic(null);
+                            }
+                        }
+                    }
+                };
+            }
+        });
+    }
+
+    public void btnFinalizarCompra () {
+        vendaAtual.finalizarCompra();
+        exibirAlertaInformation("Operação finalizada", "Compra finalizada com sucesso!", "Parabéns pela compra!");
+
+        // Limpar carrinho de compras
+        vendaAtual.getCarrinhoDeComprasCotas().clear(); // Remove todos os itens do carrinho
+
+        // Atualizar interface gráfica
+        listViewCotasSelecionadas.getItems().clear();
+        labelValorTotal.setText("0.00");
+        labelQuantidadeCotasCarrinho.setText("0");
+
+        try {
+            vendaAtual = controladorVendas.iniciarVenda(usuario.getId());
+        } catch (UsuarioNaoExisteException e) {
+            System.out.println(e.getMessage());
+        }
+
+    }
+
+    private void exibirAlertaErro(String titulo, String header, String contentText) {
+        Alert alerta = new Alert(Alert.AlertType.ERROR);
+        alerta.setTitle(titulo);
+        alerta.setHeaderText(header);
+        alerta.setContentText(contentText);
+        alerta.getDialogPane().setStyle("-fx-background-color:  #ffcccc;");
+        alerta.showAndWait();
+    }
+
+    private void exibirAlertaInformation(String titulo, String header, String contentText) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(titulo);
+        alert.setHeaderText(header);
+        alert.setContentText(contentText);
+        alert.getDialogPane().setStyle("-fx-background-color: #ccffcc;");
+        alert.showAndWait();
+    }
+
 }

@@ -32,6 +32,7 @@ public class ControllerAdicionarCotaPopUp {
         controladorVendas = new ControladorVendas();
     }
     private Bem bem;
+    private Venda vendaAtual;
     private ControllerTelaDeVenda mainControllerVenda;
 
     @FXML
@@ -40,6 +41,7 @@ public class ControllerAdicionarCotaPopUp {
     @FXML
     public void initialize() {
         configurarCelulas();
+
     }
 
     private void exibirAlertaErro(String titulo, String header, String contentText) {
@@ -47,7 +49,7 @@ public class ControllerAdicionarCotaPopUp {
         alerta.setTitle(titulo);
         alerta.setHeaderText(header);
         alerta.setContentText(contentText);
-        alerta.getDialogPane().setStyle("-fx-background-color:  #ffcccc;"); // Vermelho claro
+        alerta.getDialogPane().setStyle("-fx-background-color:  #ffcccc;");
         alerta.showAndWait();
     }
 
@@ -56,7 +58,7 @@ public class ControllerAdicionarCotaPopUp {
         alert.setTitle(titulo);
         alert.setHeaderText(header);
         alert.setContentText(contentText);
-        alert.getDialogPane().setStyle("-fx-background-color: #ccffcc;"); // Verde claro
+        alert.getDialogPane().setStyle("-fx-background-color: #ccffcc;");
         alert.showAndWait();
     }
 
@@ -66,11 +68,22 @@ public class ControllerAdicionarCotaPopUp {
             return;
         }
         this.bem = bem;
+        System.out.println("Nome do Bem: " + bem.getNome());
         carregarListaDeCotas();
     }
 
     public void setMainControllerVenda(ControllerTelaDeVenda mainControllerVenda) {
         this.mainControllerVenda = mainControllerVenda;
+    }
+
+    public void setVenda (Venda venda) {
+        if (venda != null) {
+            this.vendaAtual = venda;
+            System.out.println("Usuario: " + vendaAtual.getUsuario());
+        }
+        else {
+            System.out.println("Venda está null");
+        }
     }
 
     private void carregarListaDeCotas() {
@@ -114,7 +127,7 @@ public class ControllerAdicionarCotaPopUp {
                                 controller.setMainControllerAdicionarCotaPopUp(ControllerAdicionarCotaPopUp.this);
                                 setGraphic(root);
                             } catch (IOException e) {
-                                System.err.println("Erro ao carregar AdicionarCotaDeUmBemPopUp.fxml: " + e.getMessage());
+                                System.err.println("Erro ao carregar ItemCellCota.fxml: " + e.getMessage());
                                 e.printStackTrace();
                                 setGraphic(null);
                             }
@@ -125,29 +138,34 @@ public class ControllerAdicionarCotaPopUp {
         });
     }
 
-
-    public void adicionarCotaCarrinhoVenda () {
-        Cota cotaSelecionada = listViewCotasBemOfertado.getSelectionModel().getSelectedItem();
+    public void adicionarCotaCarrinhoVenda(Cota cotaSelecionada) {
         if (cotaSelecionada == null) {
+            System.err.println("Erro: Nenhuma cota foi selecionada!");
             exibirAlertaErro("Erro", "Cota não selecionada", "Selecione uma cota para adicionar ao carrinho.");
             return;
         }
 
-        if (mainControllerVenda == null) {
-            System.err.println("Erro: mainControllerVenda está null em adicionarCotaCarrinhoVenda()!");
+        System.out.println("Tentando adicionar a cota: " + cotaSelecionada.getId() + " - " + cotaSelecionada.getPreco());
+
+        if (this.vendaAtual == null) {
+            System.err.println("Erro: vendaAtual está null!");
             return;
         }
-        Venda venda = mainControllerVenda.getVendaAtual();
-        if (venda == null) {
-            System.err.println("Erro: venda está null em adicionarCotaCarrinhoVenda()!");
-            return;
-        }
+
         try {
-            controladorVendas.adicionarCotaCarrinho((int) cotaSelecionada.getId(), venda);
+            // Força a seleção da cota antes de adicionar ao carrinho
+            listViewCotasBemOfertado.getSelectionModel().select(cotaSelecionada);
+
+            controladorVendas.adicionarCotaCarrinho((int) cotaSelecionada.getId(), this.vendaAtual);
+            System.out.println("Cota adicionada com sucesso!");
             exibirAlertaInformation("Sucesso", "Cota adicionada", "Cota adicionada ao carrinho com sucesso.");
+            mainControllerVenda.carregarListaCarrinho();
         } catch (CotaNaoExisteException | CotaNaoOfertadaException e) {
             System.out.println(e.getMessage());
         }
+    }
 
+    public ListView<Cota> getListViewCotasBemOfertado () {
+        return listViewCotasBemOfertado;
     }
 }

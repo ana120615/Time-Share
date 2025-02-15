@@ -3,6 +3,7 @@ package br.ufrpe.timeshare.gui.controllers.celulas;
 import br.ufrpe.timeshare.gui.controllers.usuarioComum.telaVendaCotas.ControllerAdicionarCotaPopUp;
 import br.ufrpe.timeshare.gui.controllers.usuarioComum.telaVendaCotas.ControllerTelaDeVenda;
 import br.ufrpe.timeshare.negocio.beans.Bem;
+import br.ufrpe.timeshare.negocio.beans.Venda;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -34,6 +35,7 @@ public class ControllerItemCellBemOfertado {
 
 
     private Bem bem;
+    private Venda vendaAtual;
     private ControllerTelaDeVenda mainControllerVenda;
 
     public void setItem(Bem item) {
@@ -64,6 +66,14 @@ public class ControllerItemCellBemOfertado {
         this.mainControllerVenda = mainControllerVenda;
     }
 
+    public void setVendaAtual(Venda venda) {
+        if (venda == null) {
+            System.err.println("Erro: Venda está nula em setVendaAtual()!");
+            return;
+        }
+        this.vendaAtual = venda;
+    }
+
     private void showPopupAdicionarCotaCarrinho() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/br/ufrpe/timeshare/gui/application/AdicionarCotaDeUmBemPopUp.fxml"));
@@ -72,6 +82,7 @@ public class ControllerItemCellBemOfertado {
             // Obtém o controlador da tela do pop-up
             ControllerAdicionarCotaPopUp popupController = loader.getController();
             popupController.setBem(bem);
+            popupController.setVenda(vendaAtual);
             popupController.setMainControllerVenda(mainControllerVenda);
 
             Stage popupStage = new Stage();
