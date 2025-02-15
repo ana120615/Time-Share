@@ -32,17 +32,23 @@ public class ControllerDeslocamentoCotas implements ControllerBase {
     }
 
     @FXML
+    private DatePicker dataDeslocamento;
+    @FXML
     private ListView<Bem> listViewItens;
     @FXML
     private TextField nomeBemProcurado;
     @FXML
     private ListView<Cota> listViewCotas;
     @FXML
+    private ListView<Cota> listViewDeslocamentoAll;
+    @FXML
     private TabPane tabPaneTelaDeslocarCotasPrincipal;
     @FXML
     private Tab tabBens;
     @FXML
     private Tab tabCotas;
+    @FXML
+    Tab tabDeslocamentoAll;
 
     @Override
     public void receiveData(Object data) {
@@ -138,8 +144,62 @@ public class ControllerDeslocamentoCotas implements ControllerBase {
         });
     }
 
-    public TabPane getTabPaneTelaDeslocarCotasPrincipal() {
-        return tabPaneTelaDeslocarCotasPrincipal;
+
+    public void calcularDeslocamentoAll(ActionEvent event) {
+
+        // limpar a ListView antes de carregar novos itens
+        listViewDeslocamentoAll.getItems().clear();
+
+        if (dataDeslocamento.getValue() == null) {
+            exibirAlertaErro("Erro", "Campos obrigatórios não preenchidos", "Por favor, preencha todos os campos.");
+            return;
+        }
+
+        List<Cota> cotas = new ArrayList<>();
+
+        try{
+            cotas = controladorBens.calcularDeslocamentoDasCotas(listViewCotas.getItems().getFirst().getBemAssociado().getId(), dataDeslocamento.getValue().atStartOfDay());
+        } catch (BemNaoExisteException e) {
+            exibirAlertaErro("Erro", "Erro ao listar cotas", e.getMessage());
+        }
+
+        if (cotas == null || cotas.isEmpty()) {
+            System.err.println("Erro: lista de bens vazia ou null.");
+            return;
+        } else {
+            System.out.println("Lista de bens carregada com " + cotas.size() + " itens.");
+        }
+
+        ObservableList<Cota> listaDeItens = FXCollections.observableArrayList(cotas);
+        listViewDeslocamentoAll.getItems().setAll(listaDeItens);
+
+        listViewDeslocamentoAll.setCellFactory(new Callback<>() {
+            @Override
+            public ListCell<Cota> call(ListView<Cota> cotaListView) {
+                return new ListCell<Cota>() {
+                    @Override
+                    protected void updateItem(Cota item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if (empty || item == null) {
+                            setGraphic(null);
+                        } else {
+                            try {
+                                FXMLLoader loader = new FXMLLoader(getClass().getResource("/br/ufrpe/timeshare/gui/application/ItemCellCota.fxml"));
+                                HBox root = loader.load();
+                                ControllerItemCellCota controller = loader.getController();
+                                controller.setItem(item);
+                                controller.setMainControllerDeslocamentoCotas(ControllerDeslocamentoCotas.this); // Passa referência do controlador principal
+                                setGraphic(root);
+                            } catch (IOException e) {
+                                System.err.println("Erro ao carregar ItemCellCota.fxml: " + e.getMessage());
+                                e.printStackTrace();
+                                setGraphic(null);
+                            }
+                        }
+                    }
+                };
+            }
+        });
     }
 
     public void carregarCotasDoBem(Bem bem) {
@@ -210,6 +270,11 @@ public class ControllerDeslocamentoCotas implements ControllerBase {
     public void mudarTabCotas(Bem bem) {
         carregarCotasDoBem(bem);
         tabPaneTelaDeslocarCotasPrincipal.getSelectionModel().select(tabCotas);
+    }
+
+    @FXML
+    public void mudarTabDeslocamentoAll() {
+        tabPaneTelaDeslocarCotasPrincipal.getSelectionModel().select(tabDeslocamentoAll);
     }
 
     @FXML
