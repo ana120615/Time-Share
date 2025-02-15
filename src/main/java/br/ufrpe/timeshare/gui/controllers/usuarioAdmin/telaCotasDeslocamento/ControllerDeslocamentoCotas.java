@@ -266,7 +266,6 @@ public class ControllerDeslocamentoCotas implements ControllerBase {
         tabPaneTelaDeslocarCotasPrincipal.getSelectionModel().select(tabBens);
     }
 
-    @FXML
     public void mudarTabCotas(Bem bem) {
         carregarCotasDoBem(bem);
         tabPaneTelaDeslocarCotasPrincipal.getSelectionModel().select(tabCotas);
@@ -283,5 +282,10 @@ public class ControllerDeslocamentoCotas implements ControllerBase {
         listViewItens.getItems().clear();
         System.out.println("Botão voltar clicado.");
         ScreenManager.getInstance().showAdmPrincipalScreen();
+    }
+
+
+    public void mudarTabCotas(ActionEvent event) {
+        tabPaneTelaDeslocarCotasPrincipal.getSelectionModel().select(tabCotas);
     }
 }
