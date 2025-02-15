@@ -1,24 +1,25 @@
 package br.ufrpe.timeshare.negocio;
 
 import br.ufrpe.timeshare.excecoes.*;
-import br.ufrpe.timeshare.negocio.beans.Cota;
-import br.ufrpe.timeshare.negocio.beans.Promocao;
-import br.ufrpe.timeshare.negocio.beans.Usuario;
-import br.ufrpe.timeshare.negocio.beans.Venda;
+import br.ufrpe.timeshare.negocio.beans.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 
 public class ControladorVendas {
     ControladorBens controladorBens;
     ControladorUsuarioGeral controladorUsuarioGeral;
+    ControladorReservas controladorReservas;
 
     {
         this.controladorBens = new ControladorBens();
         this.controladorUsuarioGeral = new ControladorUsuarioGeral();
+        this.controladorReservas = new ControladorReservas();
     }
 
     public Venda iniciarVenda(long cpfUsuario) throws UsuarioNaoExisteException {
@@ -113,6 +114,18 @@ public class ControladorVendas {
             resultado = true;
         }
         return resultado;
+    }
+
+    public List<Reserva> getReservasNoPeriodoVenda(Venda venda) {
+        List<Reserva> resultado = new ArrayList<>();
+        for(Cota cotas : venda.getCarrinhoDeComprasCotas()) {
+            resultado.addAll(controladorReservas.buscarReservasPorMultiplosPeriodos(cotas.getBemAssociado(), cotas.getDataInicio(), cotas.getDataFim()));
+        }
+        return resultado;
+    }
+
+    private void cancelarReservasEmCota(Venda venda) {
+        controladorReservas.cancelarListaReservas(getReservasNoPeriodoVenda(venda));
     }
 
     public String gerarComprovanteTransferencia(long cpfUsuarioRemetente, long cpfUsuarioDestinario, int idCota) throws CotaNaoExisteException, UsuarioNaoExisteException, TransferenciaInvalidaException {
