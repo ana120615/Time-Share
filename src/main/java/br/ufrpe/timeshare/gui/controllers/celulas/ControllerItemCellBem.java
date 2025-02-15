@@ -1,6 +1,6 @@
 package br.ufrpe.timeshare.gui.controllers.celulas;
 
-import br.ufrpe.timeshare.gui.controllers.usuarioAdmin.telaCotasDeslocamento.ControllerDeslocamentoCotas;
+import br.ufrpe.timeshare.gui.controllers.usuarioAdmin.telaCotas.ControllerTelaDeCotas;
 import br.ufrpe.timeshare.gui.controllers.usuarioAdmin.telaMeusBens.ControllerEditarBemPopUp;
 import br.ufrpe.timeshare.gui.controllers.usuarioAdmin.telaMeusBens.ControllerListarBens;
 import br.ufrpe.timeshare.negocio.beans.Bem;
@@ -37,7 +37,7 @@ public class ControllerItemCellBem {
     private Bem bem;
     private int valorTela;
     private ControllerListarBens mainControllerBens;
-    private ControllerDeslocamentoCotas mainControllerDeslocamento;
+    private ControllerTelaDeCotas mainControllerDeslocamento;
 
 
     public void setValorTela(int valorTela) {
@@ -70,7 +70,7 @@ public class ControllerItemCellBem {
         this.mainControllerBens = mainControllerBens;
     }
 
-    public void setMainControllerDeslocamento(ControllerDeslocamentoCotas mainControllerDeslocamento) {
+    public void setMainControllerDeslocamento(ControllerTelaDeCotas mainControllerDeslocamento) {
         this.mainControllerDeslocamento = mainControllerDeslocamento;
     }
 

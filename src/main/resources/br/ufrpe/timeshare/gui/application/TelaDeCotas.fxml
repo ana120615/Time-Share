@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="750.0" stylesheets="@styles/basico/tela-lista-bens.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.ufrpe.timeshare.gui.controllers.usuarioAdmin.telaCotasDeslocamento.ControllerDeslocamentoCotas">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="750.0" stylesheets="@styles/basico/tela-lista-bens.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.ufrpe.timeshare.gui.controllers.usuarioAdmin.telaCotas.ControllerTelaDeCotas">
    <center>
       <VBox VBox.vgrow="ALWAYS">
          <children>

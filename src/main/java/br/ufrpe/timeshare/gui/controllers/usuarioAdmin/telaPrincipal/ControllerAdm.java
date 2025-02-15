@@ -124,11 +124,8 @@ public class ControllerAdm implements ControllerBase {
         ScreenManager.getInstance().showConfiguracoesUsuarioScreen();
     }
 
-    public void irParaTelaDeCotasAdm(ActionEvent event) {
-        ScreenManager.getInstance().showListarCotasScreen();
-    }
-    public void irParaTelaDeslocamentoDeCotas(ActionEvent event) {
-        ScreenManager.getInstance().showTelaDeslocamentoCotasScreen();
+    public void irParaTelaDeCotas(ActionEvent event) {
+        ScreenManager.getInstance().showTelaDeCotasScreen();
     }
 }
 

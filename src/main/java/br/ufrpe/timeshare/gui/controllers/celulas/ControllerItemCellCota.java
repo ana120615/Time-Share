@@ -1,14 +1,11 @@
 package br.ufrpe.timeshare.gui.controllers.celulas;
 
-import br.ufrpe.timeshare.gui.controllers.usuarioAdmin.telaCotasDeslocamento.ControllerDeslocamentoCotas;
-import br.ufrpe.timeshare.gui.controllers.usuarioAdmin.telaCotasDeslocamento.ControllerDeslocamentoDeCotasPopUP;
-import br.ufrpe.timeshare.gui.controllers.usuarioAdmin.telaListarCotas.ControllerListarCotas;
+import br.ufrpe.timeshare.gui.controllers.usuarioAdmin.telaCotas.ControllerTelaDeCotas;
+import br.ufrpe.timeshare.gui.controllers.usuarioAdmin.telaCotas.ControllerDeslocamentoDeCotasPopUP;
 import br.ufrpe.timeshare.gui.controllers.usuarioComum.telaMinhasCotas.ControllerMinhasCotas;
 import br.ufrpe.timeshare.gui.controllers.usuarioComum.telaVendaCotas.ControllerAdicionarCotaPopUp;
-import br.ufrpe.timeshare.gui.controllers.usuarioComum.telaVendaCotas.ControllerComprarCota;
 import br.ufrpe.timeshare.gui.controllers.usuarioComum.telaVendaCotas.ControllerTelaDeVenda;
 import br.ufrpe.timeshare.negocio.beans.Cota;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -46,13 +43,11 @@ public class ControllerItemCellCota {
     private int valorTelaDeVenda;
 
     private Cota cota;
-    private ControllerListarCotas mainControllerCotas;
     private ControllerDeslocamentoDeCotasPopUP mainControllerDeslocamentoDeCotas;
     private ControllerMinhasCotas mainControllerMinhasCotas;
     private ControllerAdicionarCotaPopUp mainControllerAdicionarCotaPopUp;
-    private ControllerComprarCota mainControllerComprarCota;
     private ControllerTelaDeVenda mainControllerVendaCotas;
-    private ControllerDeslocamentoCotas mainControllerDeslocamentoCotas;
+    private ControllerTelaDeCotas mainControllerDeslocamentoCotas;
 
     public void setItem(Cota item) {
         this.cota = item;
@@ -76,9 +71,6 @@ public class ControllerItemCellCota {
         }
     }
 
-    public void setMainControllerCotas(ControllerListarCotas mainControllerCotas) {
-        this.mainControllerCotas = mainControllerCotas;
-    }
 
     public void setMainControllerVendaCotas(ControllerTelaDeVenda mainControllerVendaCotas) {
         this.mainControllerVendaCotas = mainControllerVendaCotas;
@@ -96,12 +88,7 @@ public class ControllerItemCellCota {
         this.mainControllerAdicionarCotaPopUp = mainControllerAdicionarCotaPopUp;
     }
 
-
-    public void setMainControllerComprarCota(ControllerComprarCota mainControllerComprarCota) {
-        this.mainControllerComprarCota = mainControllerComprarCota;
-    }
-
-    public void setMainControllerDeslocamentoCotas(ControllerDeslocamentoCotas mainControllerDeslocamentoCotas) {
+    public void setMainControllerDeslocamentoCotas(ControllerTelaDeCotas mainControllerDeslocamentoCotas) {
         this.mainControllerDeslocamentoCotas = mainControllerDeslocamentoCotas;
     }
 
@@ -134,17 +121,8 @@ public class ControllerItemCellCota {
             popupStage.setMinWidth(932);
             popupStage.setMinHeight(650);
 
-            // Aplica efeito de desfoque na tela principal
-            if (mainControllerCotas != null && mainControllerCotas.getListViewItens().getScene() != null) {
-                mainControllerCotas.getListViewItens().getScene().getRoot().setEffect(new GaussianBlur(10));
-            }
-
             popupStage.showAndWait();
 
-            // Remove efeito de desfoque ao fechar
-            if (mainControllerCotas != null && mainControllerCotas.getListViewItens().getScene() != null) {
-                mainControllerCotas.getListViewItens().getScene().getRoot().setEffect(null);
-            }
         } catch (IOException e) {
             e.printStackTrace();
         }

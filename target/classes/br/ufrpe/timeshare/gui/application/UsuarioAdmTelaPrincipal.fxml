@@ -129,9 +129,9 @@
                                     </VBox>
                                     <VBox alignment="CENTER" prefHeight="118.0" prefWidth="264.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                                        <children>
-                                          <Button contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#irParaTelaDeCotasAdm" prefHeight="500.0" prefWidth="500.0" styleClass="button2" stylesheets="@styles/basico/button.css" text="Editar">
+                                          <Button contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#irParaTelaDeCotas" prefHeight="500.0" prefWidth="500.0" styleClass="button2" stylesheets="@styles/basico/button.css" text="Cotas">
                                              <graphic>
-                                                <VBox alignment="CENTER" prefHeight="134.0" prefWidth="158.0">
+                                                <VBox alignment="CENTER" prefHeight="120.0" prefWidth="149.0">
                                                    <children>
                                                       <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
                                                          <image>
@@ -139,28 +139,6 @@
                                                          </image>
                                                       </ImageView>
                                                       <Label styleClass="label2" stylesheets="@styles/basico/button.css" text="Cotas">
-                                                         <VBox.margin>
-                                                            <Insets top="10.0" />
-                                                         </VBox.margin>
-                                                      </Label>
-                                                   </children>
-                                                </VBox>
-                                             </graphic>
-                                          </Button>
-                                       </children>
-                                    </VBox>
-                                    <VBox alignment="CENTER" prefHeight="118.0" prefWidth="264.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
-                                       <children>
-                                          <Button contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#irParaTelaDeslocamentoDeCotas" prefHeight="500.0" prefWidth="500.0" styleClass="button2" stylesheets="@styles/basico/button.css" text="Calcular deslocamento de cotas">
-                                             <graphic>
-                                                <VBox alignment="CENTER" prefHeight="120.0" prefWidth="149.0">
-                                                   <children>
-                                                      <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
-                                                         <image>
-                                                            <Image url="@images/calendar-clock.png" />
-                                                         </image>
-                                                      </ImageView>
-                                                      <Label styleClass="label2" stylesheets="@styles/basico/button.css" text="Deslocamento Cotas">
                                                          <VBox.margin>
                                                             <Insets top="10.0" />
                                                          </VBox.margin>

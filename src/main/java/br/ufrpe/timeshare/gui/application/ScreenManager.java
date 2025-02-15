@@ -38,10 +38,8 @@ public class ScreenManager {
         carregarTela("ConfiguracoesUsuario", "/br/ufrpe/timeshare/gui/application/ConfiguracoesUsuario.fxml");
         carregarTela("CadastroBens", "/br/ufrpe/timeshare/gui/application/TelaCadastroBens.fxml");
         carregarTela("ListarBens", "/br/ufrpe/timeshare/gui/application/TelaListaDeBens.fxml");
-        carregarTela("ListarCotas", "/br/ufrpe/timeshare/gui/application/TelaListaCotas.fxml");
         carregarTela("TelaDeVendas", "/br/ufrpe/timeshare/gui/application/TelaDeVenda.fxml");
-        carregarTela("TelaDeslocamentoDeCotas", "/br/ufrpe/timeshare/gui/application/TelaDeslocamentoCotas.fxml");
-        carregarTela("TelaDeVenda2", "/br/ufrpe/timeshare/gui/application/TelaDeVenda2.fxml");
+        carregarTela("TelaDeCotas", "/br/ufrpe/timeshare/gui/application/TelaDeCotas.fxml");
         carregarTela("TelaMinhasCotas", "/br/ufrpe/timeshare/gui/application/TelaMinhasCotas.fxml");
     }
 
@@ -115,19 +113,12 @@ public class ScreenManager {
         showScreen("ListarBens");
     }
 
-    public void showListarCotasScreen() {
-        showScreen("ListarCotas");
-    }
-
     public void showTelaDeVendasScreen() {
         showScreen("TelaDeVendas");
     }
 
-    public void showTelaDeslocamentoCotasScreen() {
-        showScreen("TelaDeslocamentoDeCotas");
-    }
-    public void showTelaDeVenda2Screen() {
-        showScreen("TelaDeVenda2");
+    public void showTelaDeCotasScreen() {
+        showScreen("TelaDeCotas");
     }
 
     public void showTelaMinhasCotasScreen() {
