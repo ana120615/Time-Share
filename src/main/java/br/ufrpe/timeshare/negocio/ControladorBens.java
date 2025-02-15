@@ -167,33 +167,34 @@ public class ControladorBens {
     }
 
 
+
     public ArrayList<Cota> calcularDeslocamentoDasCotas(long bemId, LocalDateTime dataParaDeslocamento) throws BemNaoExisteException {
         Bem bem = repositorioBens.buscar(bemId);
         if (bem == null) {
             throw new BemNaoExisteException("Bem não existe");
         }
+
         Bem bemClonado = bem.clone();
-        List<Cota> cotasClonadas = new ArrayList<>();
-        for (Cota cota : bemClonado.getCotas()) {
-            cotasClonadas.add(cota.clone());
-        }
-        for (Cota cota : cotasClonadas) {
-            LocalDateTime dataInicialCota = cota.getDataInicio();
-            LocalDateTime dataFinalCota = cota.getDataFim();
-            // Verifica se passou 1 ano da data inicial de uma única Cota
-            if (dataParaDeslocamento.isAfter(dataFinalCota)) {
-                // Bem remove a cota
-                bemClonado.getCotas().remove(cota);
-                cota.setDataInicio(dataInicialCota.plusYears(1).plusDays(7));
-                cota.setDataFim(cota.getDataInicio().plusDays(6));
-                // Joga para o final da lista de cotas do bem
-                bemClonado.getCotas().add(cota);// Atualiza a data final
+        List<Cota> cotasGeradas = new ArrayList<>();
+
+        for (Cota cotaOriginal : bemClonado.getCotas()) {
+            LocalDateTime dataInicio = cotaOriginal.getDataInicio();
+            LocalDateTime dataFim = cotaOriginal.getDataFim();
+
+            while (!dataInicio.isAfter(dataParaDeslocamento)) {
+                Cota novaCota = cotaOriginal.clone();
+                novaCota.setDataInicio(dataInicio);
+                novaCota.setDataFim(dataFim);
+                cotasGeradas.add(novaCota);
+
+                dataInicio = dataInicio.plusYears(1).plusDays(7);
+                dataFim = dataInicio.plusDays(6);
             }
         }
-        Collections.sort(bemClonado.getCotas());
-        return bemClonado.getCotas();
-    }
 
+        Collections.sort(cotasGeradas);
+        return new ArrayList<>(cotasGeradas);
+    }
 
     public Cota buscarCota(int idCota) throws CotaNaoExisteException {
         Cota cota = repositorioCotas.buscar(idCota);

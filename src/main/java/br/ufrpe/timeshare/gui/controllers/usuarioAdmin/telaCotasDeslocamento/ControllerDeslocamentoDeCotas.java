@@ -27,6 +27,8 @@ public class ControllerDeslocamentoDeCotas implements ControllerBase {
     private DatePicker dataDeslocamentoPicker;
     @FXML
     private ListView<Cota> listViewItensCotas;
+    @FXML
+    private String nomeBemProcurado;
 
     private Usuario usuario;
     private final ControladorBens controladorBens;
@@ -60,6 +62,7 @@ public class ControllerDeslocamentoDeCotas implements ControllerBase {
     public void initialize() {
         System.out.println("initialize() chamado.");
     }
+
 
     @FXML
     public void calcularDeslocamento(ActionEvent event) {
@@ -128,6 +131,7 @@ public class ControllerDeslocamentoDeCotas implements ControllerBase {
             }
         });
     }
+
 
     public ListView<Cota> getListViewItens() {
         return listViewItensCotas;

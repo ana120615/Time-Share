@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="750.0" stylesheets="@styles/basico/tela-lista-bens.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.ufrpe.timeshare.gui.controllers.usuarioAdmin.telaCotasDeslocamento.ControllerDeslocamentoDeCotas">
+   <center>
+      <VBox VBox.vgrow="ALWAYS">
+         <children>
+            <TabPane fx:id="tabPaneTelaDeslocarCotasPrincipal" stylesheets="@styles/basico/tabpane.css">
+               <tabs>
+                  <Tab fx:id="tabBens" text="tabBens">
+                     <content>
+                        <VBox alignment="CENTER">
+                           <children>
+                              <HBox alignment="CENTER" styleClass="search-box">
+                                 <children>
+                                    <GridPane prefHeight="30.0" prefWidth="648.0">
+                                       <columnConstraints>
+                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="387.6666259765625" minWidth="10.0" prefWidth="387.6666259765625" />
+                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="282.0" minWidth="10.0" prefWidth="155.000010172526" />
+                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="187.0" minWidth="10.0" prefWidth="97.66665649414062" />
+                                       </columnConstraints>
+                                       <rowConstraints>
+                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                       </rowConstraints>
+                                       <children>
+                                          <TextField fx:id="nomeBemProcurado" maxWidth="700.0" prefHeight="30.0" prefWidth="349.0" promptText="Inserir nome do Bem" />
+                                          <Button mnemonicParsing="false" onAction="#calcularDeslocamento" prefHeight="30.0" prefWidth="71.0" text="Buscar" GridPane.columnIndex="1" />
+                                       </children>
+                                    </GridPane>
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets bottom="10.0" />
+                                 </VBox.margin>
+                              </HBox>
+                              <ListView fx:id="listViewItensCotas1" maxWidth="700.0" prefHeight="278.0" prefWidth="639.0" VBox.vgrow="ALWAYS">
+                                 <padding>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </padding>
+                              </ListView>
+                           </children>
+                           <padding>
+                              <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
+                           </padding>
+                        </VBox>
+                     </content>
+                  </Tab>
+                  <Tab fx:id="tabDeslocarCotas" text="tabDeslocarCotas">
+                     <content>
+                        <VBox alignment="CENTER">
+                           <children>
+                              <HBox alignment="CENTER" styleClass="search-box">
+                                 <children>
+                                    <GridPane prefHeight="30.0" prefWidth="449.0">
+                                      <columnConstraints>
+                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="282.0" minWidth="10.0" prefWidth="230.0" />
+                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="282.0" minWidth="10.0" prefWidth="262.0" />
+                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="282.0" minWidth="0.0" prefWidth="0.0" />
+                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="187.0" minWidth="10.0" prefWidth="156.0" />
+                                      </columnConstraints>
+                                      <rowConstraints>
+                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                      </rowConstraints>
+                                       <children>
+                                          <TextField fx:id="idBemProcurado" maxWidth="700.0" prefHeight="33.0" prefWidth="400.0" promptText="Inserir ID do Bem" />
+                                          <Button mnemonicParsing="false" onAction="#calcularDeslocamento" prefHeight="30.0" prefWidth="112.0" text="Calcular" GridPane.columnIndex="3" />
+                                          <DatePicker fx:id="dataDeslocamentoPicker" prefHeight="30.0" prefWidth="173.0" promptText="Data para Deslocamento" GridPane.columnIndex="1" />
+                                       </children>
+                                    </GridPane>
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets bottom="10.0" />
+                                 </VBox.margin>
+                              </HBox>
+                              <ListView fx:id="listViewItensCotas" maxWidth="700.0" prefHeight="278.0" prefWidth="639.0" VBox.vgrow="ALWAYS">
+                                 <padding>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </padding>
+                              </ListView>
+                           </children>
+                           <padding>
+                              <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
+                           </padding>
+                        </VBox>
+                     </content>
+                  </Tab>
+               </tabs>
+            </TabPane>
+         </children>
+      </VBox>
+   </center>
+   <top>
+      <HBox prefHeight="49.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+         <children>
+            <Button mnemonicParsing="false" onAction="#voltarParaTelaAdm" text="Voltar" />
+         </children>
+      </HBox>
+   </top>
+   <bottom>
+      <HBox prefHeight="34.0" prefWidth="600.0" BorderPane.alignment="CENTER" />
+   </bottom>
+   <left>
+      <VBox prefHeight="200.0" prefWidth="25.0" BorderPane.alignment="CENTER" />
+   </left>
+   <right>
+      <VBox prefHeight="200.0" prefWidth="25.0" BorderPane.alignment="CENTER" />
+   </right>
+</BorderPane>

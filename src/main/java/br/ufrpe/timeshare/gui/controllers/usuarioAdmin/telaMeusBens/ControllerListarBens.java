@@ -62,7 +62,7 @@ public class ControllerListarBens implements ControllerBase {
     }
 
     @FXML
-    public void buscarBens(ActionEvent event) throws DadosInsuficientesException {
+    public void buscarBens(ActionEvent event) {
         carregarListaDeBens();
     }
 

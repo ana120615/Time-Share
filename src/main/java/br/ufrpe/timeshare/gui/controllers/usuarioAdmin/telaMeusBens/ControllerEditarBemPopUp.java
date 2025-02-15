@@ -154,7 +154,6 @@ public class ControllerEditarBemPopUp {
         String localizacao = localizacaoTextField.getText();
         String descricao = descricaoTextArea.getText();
 
-
         // Verifica se os campos estão preenchidos corretamente
         if (nome.isEmpty() || localizacao.isEmpty() || descricao.isEmpty()) {
             exibirAlertaErro("Erro", "Campos obrigatórios não preenchidos", "Por favor, preencha todos os campos.");
@@ -168,6 +167,7 @@ public class ControllerEditarBemPopUp {
             controladorBens.alterarLocalizacaoBem((int) bem.getId(), localizacao);
             controladorBens.alterarDescricaoBem((int) bem.getId(), descricao);
             controladorBens.alterarCapacidadeBem((int) bem.getId(), capacidade);
+            controladorBens.alterarCaminhoDaImagemBem((int) bem.getId(), caminhoImagem);
 
             if(isTrue) {
                 controladorBens.ofertarBem((int) bem.getId());
