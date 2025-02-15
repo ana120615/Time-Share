@@ -1,10 +1,13 @@
 package br.ufrpe.timeshare.gui.controllers.usuarioComum.telaVendaCotas;
 
+import br.ufrpe.timeshare.excecoes.CotaNaoExisteException;
+import br.ufrpe.timeshare.excecoes.CotaNaoOfertadaException;
 import br.ufrpe.timeshare.excecoes.UsuarioNaoExisteException;
 import br.ufrpe.timeshare.gui.application.ScreenManager;
 import br.ufrpe.timeshare.gui.controllers.basico.ControllerBase;
 import br.ufrpe.timeshare.gui.controllers.celulas.ControllerItemCellBemOfertado;
 import br.ufrpe.timeshare.gui.controllers.celulas.ControllerItemCellCota;
+import br.ufrpe.timeshare.gui.controllers.celulas.ControllerItemCellCotaVenda;
 import br.ufrpe.timeshare.negocio.ControladorBens;
 import br.ufrpe.timeshare.negocio.ControladorVendas;
 import br.ufrpe.timeshare.negocio.beans.Bem;
@@ -187,9 +190,10 @@ public class ControllerTelaDeVenda implements ControllerBase {
                             setGraphic(null);
                         } else {
                             try {
-                                FXMLLoader loader = new FXMLLoader(getClass().getResource("/br/ufrpe/timeshare/gui/application/ItemCellCota.fxml"));
+                                FXMLLoader loader = new FXMLLoader(getClass().getResource("/br/ufrpe/timeshare/gui/application/ItemCellCotaVenda.fxml"));
                                 HBox root = loader.load();
-                                ControllerItemCellCota controller = loader.getController();
+                                ControllerItemCellCotaVenda controller = loader.getController();
+                                controller.setTelaVenda(2); //
                                 controller.setItem(item);
                                 controller.setMainControllerVendaCotas(ControllerTelaDeVenda.this);// Passa referência do controlador principal
                                 setGraphic(root);
@@ -223,6 +227,30 @@ public class ControllerTelaDeVenda implements ControllerBase {
             System.out.println(e.getMessage());
         }
 
+    }
+
+    public void removerCotaCarrinhoVendaTelaPrincipal(Cota cotaSelecionada) {
+        if (cotaSelecionada == null) {
+            System.err.println("Erro: Nenhuma cota foi selecionada!");
+            exibirAlertaErro("Erro", "Cota não selecionada", "Selecione uma cota para remover do carrinho.");
+            return;
+        }
+
+        System.out.println("Tentando remover a cota: " + cotaSelecionada.getId() + " - " + cotaSelecionada.getPreco());
+
+        if (this.vendaAtual == null) {
+            System.err.println("Erro: vendaAtual está null!");
+            return;
+        }
+
+        try {
+            controladorVendas.removeCotaCarrinho((int) cotaSelecionada.getId(), this.vendaAtual);
+            System.out.println("Cota removida com sucesso!");
+            exibirAlertaInformation("Sucesso", "Cota removida", "Cota removida do carrinho com sucesso.");
+            carregarListaCarrinho();
+        } catch (CotaNaoExisteException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     private void exibirAlertaErro(String titulo, String header, String contentText) {

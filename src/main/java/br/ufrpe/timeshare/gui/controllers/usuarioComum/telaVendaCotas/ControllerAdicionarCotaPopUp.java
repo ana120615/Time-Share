@@ -4,6 +4,7 @@ import br.ufrpe.timeshare.excecoes.BemNaoExisteException;
 import br.ufrpe.timeshare.excecoes.CotaNaoExisteException;
 import br.ufrpe.timeshare.excecoes.CotaNaoOfertadaException;
 import br.ufrpe.timeshare.gui.controllers.celulas.ControllerItemCellCota;
+import br.ufrpe.timeshare.gui.controllers.celulas.ControllerItemCellCotaVenda;
 import br.ufrpe.timeshare.negocio.ControladorBens;
 import br.ufrpe.timeshare.negocio.ControladorVendas;
 import br.ufrpe.timeshare.negocio.beans.Bem;
@@ -120,10 +121,10 @@ public class ControllerAdicionarCotaPopUp {
                             setGraphic(null);
                         } else {
                             try {
-                                FXMLLoader loader = new FXMLLoader(getClass().getResource("/br/ufrpe/timeshare/gui/application/ItemCellCota.fxml"));
+                                FXMLLoader loader = new FXMLLoader(getClass().getResource("/br/ufrpe/timeshare/gui/application/ItemCellCotaVenda.fxml"));
                                 HBox root = loader.load();
-                                ControllerItemCellCota controller = loader.getController();
-                                controller.setValorTelaDeVenda(1);
+                                ControllerItemCellCotaVenda controller = loader.getController();
+                                controller.setTelaVenda(1); // primeiria referêrcia de telaVenda
                                 controller.setItem(item);
                                 controller.setMainControllerAdicionarCotaPopUp(ControllerAdicionarCotaPopUp.this);
                                 setGraphic(root);
@@ -154,14 +155,37 @@ public class ControllerAdicionarCotaPopUp {
         }
 
         try {
-            // Força a seleção da cota antes de adicionar ao carrinho
-            listViewCotasBemOfertado.getSelectionModel().select(cotaSelecionada);
-
             controladorVendas.adicionarCotaCarrinho((int) cotaSelecionada.getId(), this.vendaAtual);
             System.out.println("Cota adicionada com sucesso!");
             exibirAlertaInformation("Sucesso", "Cota adicionada", "Cota adicionada ao carrinho com sucesso.");
+            carregarListaDeCotas();
             mainControllerVenda.carregarListaCarrinho();
         } catch (CotaNaoExisteException | CotaNaoOfertadaException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public void removerCotaCarrinhoVenda(Cota cotaSelecionada) {
+        if (cotaSelecionada == null) {
+            System.err.println("Erro: Nenhuma cota foi selecionada!");
+            exibirAlertaErro("Erro", "Cota não selecionada", "Selecione uma cota para remover do carrinho.");
+            return;
+        }
+
+        System.out.println("Tentando remover a cota: " + cotaSelecionada.getId() + " - " + cotaSelecionada.getPreco());
+
+        if (this.vendaAtual == null) {
+            System.err.println("Erro: vendaAtual está null!");
+            return;
+        }
+
+        try {
+            controladorVendas.removeCotaCarrinho((int) cotaSelecionada.getId(), this.vendaAtual);
+            System.out.println("Cota removida com sucesso!");
+            exibirAlertaInformation("Sucesso", "Cota removida", "Cota removida do carrinho com sucesso.");
+            carregarListaDeCotas();
+            mainControllerVenda.carregarListaCarrinho();
+        } catch (CotaNaoExisteException e) {
             System.out.println(e.getMessage());
         }
     }
