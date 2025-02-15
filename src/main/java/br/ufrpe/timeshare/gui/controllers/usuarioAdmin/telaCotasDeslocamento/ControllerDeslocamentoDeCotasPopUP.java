@@ -1,10 +1,8 @@
 package br.ufrpe.timeshare.gui.controllers.usuarioAdmin.telaCotasDeslocamento;
 
-import br.ufrpe.timeshare.excecoes.BemNaoExisteException;
 import br.ufrpe.timeshare.gui.application.ScreenManager;
 import br.ufrpe.timeshare.gui.controllers.celulas.ControllerItemCellCota;
 import br.ufrpe.timeshare.negocio.ControladorBens;
-import br.ufrpe.timeshare.negocio.beans.Bem;
 import br.ufrpe.timeshare.negocio.beans.Cota;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -28,7 +26,7 @@ public class ControllerDeslocamentoDeCotasPopUP {
     @FXML
     private ListView<Cota> listViewItensCotas;
 
-    private Bem bem;
+    private Cota cota;
     private final ControladorBens controladorBens;
     private ControllerDeslocamentoCotas mainController;
 
@@ -36,12 +34,12 @@ public class ControllerDeslocamentoDeCotasPopUP {
         this.controladorBens = new ControladorBens();
     }
 
-    public void setBem(Bem bem) {
-        if (bem == null) {
+    public void setCota(Cota cota) {
+        if (cota == null) {
             System.err.println("Erro: Bem está null em setBem()!");
             return;
         }
-        this.bem = bem;
+        this.cota = cota;
     }
 
 
@@ -76,14 +74,7 @@ public class ControllerDeslocamentoDeCotasPopUP {
             return;
         }
 
-        List<Cota> cotas;
-        try {
-            cotas = controladorBens.calcularDeslocamentoDasCotas(Integer.parseInt(String.valueOf(bem.getId())), dataDeslocamentoPicker.getValue().atStartOfDay());
-        } catch (BemNaoExisteException e) {
-            System.err.println("Bem com este id nao existe!");
-            exibirAlertaErro("Erro", "Erro ao procurar bem", "Bem com este id nao existe!");
-            return;
-        }
+        List<Cota> cotas = controladorBens.calcularDeslocamentoDeCota(cota, dataDeslocamentoPicker.getValue().atStartOfDay());
 
 
         if (cotas == null || cotas.isEmpty()) {

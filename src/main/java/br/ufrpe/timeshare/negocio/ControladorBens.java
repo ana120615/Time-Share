@@ -211,7 +211,7 @@ public class ControladorBens {
 
         // Se a cota estiver no ano atual, ajusta para começar no próximo ano
         if (dataInicio.getYear() == anoAtual) {
-            dataInicio = dataInicio.plusYears(1);
+            dataInicio = dataInicio.plusYears(1).plusDays(7);
             dataFim = dataInicio.plusDays(6);
         }
 
