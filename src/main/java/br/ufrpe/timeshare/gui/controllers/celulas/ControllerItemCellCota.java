@@ -60,7 +60,6 @@ public class ControllerItemCellCota {
         if(valorTelaDeDeslocamento == 2) {
             idButtonCelulaCota.setOnAction(e -> showPopupDeslocamentoCotas()); // Agora chama o pop-up ao clicar no botão
         }
-
     }
 
     public void setMainControllerCotas(ControllerListarCotas mainControllerCotas) {
