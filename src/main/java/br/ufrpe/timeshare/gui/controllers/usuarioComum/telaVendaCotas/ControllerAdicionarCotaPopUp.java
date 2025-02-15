@@ -123,6 +123,7 @@ public class ControllerAdicionarCotaPopUp {
                                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/br/ufrpe/timeshare/gui/application/ItemCellCota.fxml"));
                                 HBox root = loader.load();
                                 ControllerItemCellCota controller = loader.getController();
+                                controller.setValorTelaDeVenda(1);
                                 controller.setItem(item);
                                 controller.setMainControllerAdicionarCotaPopUp(ControllerAdicionarCotaPopUp.this);
                                 setGraphic(root);
