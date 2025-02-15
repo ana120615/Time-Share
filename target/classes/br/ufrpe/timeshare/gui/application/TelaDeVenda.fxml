@@ -19,7 +19,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="582.0" prefWidth="826.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.ufrpe.timeshare.gui.controllers.usuarioComum.telaVendaCotas.ControllerTelaDeVenda">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="575.0" prefWidth="1023.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.ufrpe.timeshare.gui.controllers.usuarioComum.telaVendaCotas.ControllerTelaDeVenda">
    <top>
       <VBox prefHeight="126.0" prefWidth="600.0" BorderPane.alignment="CENTER">
          <children>
@@ -114,7 +114,6 @@
                                  <children>
                                     <Button mnemonicParsing="false" onAction="#mudarAbaBensOfertados" styleClass="button2" text="Bens Ofertados" textFill="WHITE" />
                                     <Button mnemonicParsing="false" onAction="#mudarAbaCarrinho" styleClass="button2" text="Carrinho" textFill="WHITE" GridPane.columnIndex="1" />
-                                    <Button mnemonicParsing="false" prefHeight="26.0" prefWidth="129.0" styleClass="button2" text="Mais Vendidos" textFill="WHITE" GridPane.columnIndex="2" />
                                  </children>
                               </GridPane>
                            </children>
@@ -127,7 +126,7 @@
       </VBox>
    </top>
    <center>
-      <VBox prefHeight="454.0" prefWidth="829.0" BorderPane.alignment="CENTER">
+      <VBox prefHeight="454.0" prefWidth="829.0" BorderPane.alignment="TOP_LEFT">
          <children>
             <TabPane fx:id="tabPaneUsuarioComumTelaVenda" prefHeight="370.0" prefWidth="754.0" style="-fx-background-image: transparent;" tabClosingPolicy="UNAVAILABLE">
                <tabs>
@@ -159,7 +158,7 @@
                   </Tab>
                   <Tab fx:id="tabCarrinho" text="Carrinho">
                      <content>
-                        <VBox prefHeight="200.0" prefWidth="100.0">
+                        <VBox alignment="CENTER" prefHeight="400.0" prefWidth="1023.0">
                            <children>
                               <HBox alignment="CENTER_LEFT" prefHeight="43.0" prefWidth="754.0">
                                  <children>
@@ -173,83 +172,55 @@
                                     </Label>
                                  </children>
                               </HBox>
-                              <GridPane prefHeight="240.0" prefWidth="754.0">
-                                <columnConstraints>
-                                  <ColumnConstraints hgrow="ALWAYS" maxWidth="508.0" minWidth="10.0" prefWidth="484.0" />
-                                    <ColumnConstraints hgrow="ALWAYS" maxWidth="370.0" minWidth="10.0" prefWidth="270.0" />
-                                </columnConstraints>
-                                <rowConstraints>
-                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                </rowConstraints>
+                              <HBox prefHeight="322.0" prefWidth="1023.0">
                                  <children>
-                                    <VBox prefHeight="200.0" prefWidth="100.0">
+                                    <GridPane prefHeight="299.0" prefWidth="928.0" HBox.hgrow="ALWAYS">
+                                       <columnConstraints>
+                                          <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" percentWidth="100.0" prefWidth="100.0" />
+                                          <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" percentWidth="100.0" prefWidth="100.0" />
+                                       </columnConstraints>
+                                       <rowConstraints>
+                                          <RowConstraints maxHeight="70.0" minHeight="0.0" prefHeight="6.0" vgrow="SOMETIMES" />
+                                          <RowConstraints maxHeight="291.0" minHeight="10.0" prefHeight="291.0" vgrow="SOMETIMES" />
+                                          <RowConstraints maxHeight="45.0" minHeight="0.0" prefHeight="0.0" vgrow="SOMETIMES" />
+                                       </rowConstraints>
                                        <children>
-                                          <ListView fx:id="listViewCotasSelecionadas" prefHeight="230.0" prefWidth="475.0" />
-                                       </children>
-                                       <padding>
-                                          <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                                       </padding>
-                                    </VBox>
-                                    <VBox prefHeight="240.0" prefWidth="329.0" GridPane.columnIndex="1">
-                                       <children>
-                                          <GridPane prefHeight="93.0" prefWidth="265.0" VBox.vgrow="ALWAYS">
-                                             <columnConstraints>
-                                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                             </columnConstraints>
-                                             <rowConstraints>
-                                                <RowConstraints maxHeight="145.0" minHeight="10.0" prefHeight="78.0" vgrow="SOMETIMES" />
-                                                <RowConstraints maxHeight="311.0" minHeight="10.0" prefHeight="234.0" vgrow="SOMETIMES" />
-                                                <RowConstraints maxHeight="114.0" minHeight="10.0" prefHeight="102.0" vgrow="SOMETIMES" />
-                                             </rowConstraints>
+                                          <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1">
                                              <children>
-                                                <GridPane GridPane.rowIndex="1">
-                                                   <columnConstraints>
-                                                      <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="100.0" />
-                                                   </columnConstraints>
-                                                   <rowConstraints>
-                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                   </rowConstraints>
-                                                   <children>
-                                                      <HBox prefHeight="100.0" prefWidth="200.0">
-                                                         <children>
-                                                            <Label prefHeight="21.0" prefWidth="89.0" text="SUBTOTAL:">
-                                                               <HBox.margin>
-                                                                  <Insets left="5.0" right="5.0" />
-                                                               </HBox.margin>
-                                                               <font>
-                                                                  <Font size="15.0" />
-                                                               </font>
-                                                            </Label>
-                                                            <Label text="R$">
-                                                               <HBox.margin>
-                                                                  <Insets right="5.0" />
-                                                               </HBox.margin>
-                                                               <font>
-                                                                  <Font size="15.0" />
-                                                               </font>
-                                                            </Label>
-                                                            <Label fx:id="labelValorTotal" text="Preco">
-                                                               <font>
-                                                                  <Font size="15.0" />
-                                                               </font></Label>
-                                                         </children>
-                                                      </HBox>
-                                                      <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="1">
-                                                         <children>
-                                                            <Button mnemonicParsing="false" onAction="#btnFinalizarCompra" text="Finalizar Compra" />
-                                                         </children>
-                                                      </HBox>
-                                                      <HBox prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="2" />
-                                                   </children>
-                                                </GridPane>
+                                                <Label prefHeight="21.0" prefWidth="89.0" text="SUBTOTAL:">
+                                                   <HBox.margin>
+                                                      <Insets left="5.0" right="5.0" />
+                                                   </HBox.margin>
+                                                   <font>
+                                                      <Font size="15.0" />
+                                                   </font>
+                                                </Label>
+                                                <Label text="R$">
+                                                   <HBox.margin>
+                                                      <Insets right="5.0" />
+                                                   </HBox.margin>
+                                                   <font>
+                                                      <Font size="15.0" />
+                                                   </font>
+                                                </Label>
+                                                <Label fx:id="labelValorTotal" text="Preco">
+                                                   <font>
+                                                      <Font size="15.0" />
+                                                   </font>
+                                                </Label>
                                              </children>
-                                          </GridPane>
+                                          </HBox>
+                                          <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                             <children>
+                                                <Button mnemonicParsing="false" onAction="#btnFinalizarCompra" text="Finalizar Compra" />
+                                             </children>
+                                          </HBox>
+                                          <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                          <ListView fx:id="listViewCotasSelecionadas" prefHeight="251.0" prefWidth="464.0" GridPane.rowIndex="1" />
                                        </children>
-                                    </VBox>
+                                    </GridPane>
                                  </children>
-                              </GridPane>
+                              </HBox>
                            </children>
                         </VBox>
                      </content></Tab>

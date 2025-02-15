@@ -1,33 +1,43 @@
-/* Estilizando o botão */
+/* Estilização do botão principal */
 .button-cota {
-    -fx-background-color: white;
-    -fx-border-color: #ccc; /* Cor da borda opcional */
+    -fx-background-color: #ffffff;
+    -fx-border-color: #0078D7;
     -fx-border-width: 2px;
-    -fx-alignment: center;
-}
-
-/* Efeito ao passar o mouse */
-.button:hover {
-    -fx-background-color: #f0f0f0;
+    -fx-border-radius: 10px;
+    -fx-padding: 10px;
+    -fx-alignment: center-left;
     -fx-cursor: hand;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.2), 5, 0, 0, 2);
 }
 
-
-/* Estilizando a imagem dentro do botão */
-.button .graphic {
-    -fx-fit-width: 30px;
-    -fx-fit-height: 30px;
+.button-cota:hover {
+    -fx-background-color: #f0f8ff;
 }
 
-/* Estilizando o texto do botão */
-.button .text-maior {
+/* Estilização do GridPane */
+GridPane {
+    -fx-padding: 10px;
+}
+
+/* Estilização dos textos maiores */
+.text-maior {
     -fx-font-size: 14px;
-    -fx-text-fill: black;
     -fx-font-weight: bold;
+    -fx-text-fill: #333333;
 }
 
-.button .text-menor {
-    -fx-font-size: 14px;
+/* Estilização dos textos menores */
+.text-menor {
+    -fx-font-size: 12px;
     -fx-text-fill: #666666;
 }
 
+/* Estilização da imagem */
+ImageView {
+    -fx-opacity: 0.9;
+}
+
+/* Ajuste do espaçamento */
+HBox {
+    -fx-spacing: 15px;
+}

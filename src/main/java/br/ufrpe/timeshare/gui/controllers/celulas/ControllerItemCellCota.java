@@ -21,7 +21,7 @@ public class ControllerItemCellCota {
     @FXML private Label itemLabelPrecoCota;
     @FXML private Label itemLabelProprietarioCota;
     @FXML private Label itemLabelDisponibilidadeCompra;
-    @FXML private Label itemLabelDisponibilidadeReserva;
+
     @FXML private HBox rootCell; // Adicione essa linha
 
     private Cota cota;
@@ -41,7 +41,6 @@ public class ControllerItemCellCota {
         itemLabelPrecoCota.setText(String.valueOf(item.getPreco()));
         itemLabelProprietarioCota.setText(item.getProprietario() != null ? item.getProprietario().getNome() : "Não disponível");
         itemLabelDisponibilidadeCompra.setText(item.getStatusDeDisponibilidadeParaCompra() ? "Disponível" : "Indisponível");
-        itemLabelDisponibilidadeReserva.setText(item.getStatusDeDisponibilidadeParaReserva() ? "Disponível" : "Indisponível");
     }
 
     public void setMainControllerCotas(ControllerListarCotas mainControllerCotas) {
