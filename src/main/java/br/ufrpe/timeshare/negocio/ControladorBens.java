@@ -148,7 +148,7 @@ public class ControladorBens {
         if (nome == null) {
             throw new DadosInsuficientesException("Nome nulo");
         }
-        return repositorioBens.listarBensPorNome(nome);
+        return repositorioBens.listarBensDisponiveisPorNome(nome);
     }
 
 

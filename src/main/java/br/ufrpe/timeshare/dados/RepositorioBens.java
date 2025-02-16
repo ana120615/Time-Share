@@ -41,15 +41,16 @@ public class RepositorioBens extends RepositorioGenerico<Bem> implements IReposi
     }
 
     @Override
-    public List<Bem> listarBensPorNome(String nome) {
+    public List<Bem> listarBensDisponiveisPorNome(String nome) {
         List<Bem> listaBensByNome = new ArrayList<>();
         String nomePesquisa = nome.trim().toLowerCase();
         for (Bem bem : lista) {
-            String nomeBem = bem.getNome().trim().toLowerCase(); // Removendo espaços e padronizando
-            if (nomeBem.contains(nomePesquisa)) { // Verificando se o nome contém a pesquisa
-                listaBensByNome.add(bem);
+            if (bem.isOfertado()) {
+                String nomeBem = bem.getNome().trim().toLowerCase(); // Removendo espaços e padronizando
+                if (nomeBem.contains(nomePesquisa)) { // Verificando se o nome contém a pesquisa
+                    listaBensByNome.add(bem);
+                }
             }
-
         }
         Collections.sort(listaBensByNome);
         return listaBensByNome;
