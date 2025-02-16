@@ -60,31 +60,35 @@ public class ControllerItemCellCota {
 
         if (valorTelaDeDeslocamento == 2) {
             idButtonCelulaCota.setOnAction(e -> showPopupDeslocamentoCotas()); // Agora chama o pop-up ao clicar no botão
-        } else if (valorTelaDeDeslocamento == 3) {
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-            alert.setTitle("Confirme a Acao");
-            alert.setHeaderText("O que deseja fazer?");
-            alert.setContentText("Escolha entre as opcoes");
-
-            // Criando os botões personalizados
-            ButtonType botaoSim = new ButtonType("Deslocar cota", ButtonBar.ButtonData.YES);
-            ButtonType botaoNao = new ButtonType("Repassar direito de uso", ButtonBar.ButtonData.NO);
-            ButtonType botaoTalvez = new ButtonType("Cancelar", ButtonBar.ButtonData.CANCEL_CLOSE);
-
-            // Adicionando os botões ao alerta
-            alert.getButtonTypes().setAll(botaoSim, botaoNao, botaoTalvez);
-
-            // Exibindo o alerta e capturando a resposta
-            Optional<ButtonType> result = alert.showAndWait();
-
-            if (result.isPresent() && result.get() == botaoSim) {
-                idButtonCelulaCota.setOnAction(e -> showPopupDeslocamentoCotas()); // Agora chama o pop-up ao clicar no botão
-            } else if (result.isPresent() && result.get() == botaoNao) {
-                //idButtonCelulaCota.setOnAction(e -> showPopupDeslocamentoCotas()); // Agora chama o pop-up ao clicar no botão
-            } else {
-                alert.close();
-            }
         }
+        if (valorTelaDeDeslocamento == 3) {
+            idButtonCelulaCota.setOnAction(e -> {
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setTitle("Confirme a Ação");
+                alert.setHeaderText("O que deseja fazer?");
+                alert.setContentText("Escolha entre as opções:");
+
+                ButtonType botaoDeslocar = new ButtonType("Deslocar Cota", ButtonBar.ButtonData.YES);
+                ButtonType botaoRepassar = new ButtonType("Repassar Direito de Uso", ButtonBar.ButtonData.NO);
+                ButtonType botaoCancelar = new ButtonType("Cancelar", ButtonBar.ButtonData.CANCEL_CLOSE);
+
+                alert.getButtonTypes().setAll(botaoDeslocar, botaoRepassar, botaoCancelar);
+
+                Optional<ButtonType> result = alert.showAndWait();
+
+                if (result.isPresent()) {
+                    if (result.get() == botaoDeslocar) {
+                        showPopupDeslocamentoCotas();
+                    } else if (result.get() == botaoRepassar) {
+                        // Implementar ação para repassar direito de uso
+                        System.out.println("Repassar Direito de Uso selecionado.");
+                    } else {
+                        alert.close();
+                    }
+                }
+            });
+        }
+
 
         if (valorTelaDeVenda == 1) { // ADICIONAR A COTA NO CARRINHO
             idButtonCelulaCota.setOnAction(e -> {
