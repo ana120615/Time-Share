@@ -125,7 +125,7 @@ public class ControllerMinhasCotas implements ControllerBase {
     }
 
     @FXML
-    public void voltarParaTelaAdm(ActionEvent event) {
+    public void irParaTelaAdm(ActionEvent event) {
         listViewItensCotas.getItems().clear();
         System.out.println("Botão voltar clicado.");
         ScreenManager.getInstance().showUsuarioComumPrincipalScreen();
