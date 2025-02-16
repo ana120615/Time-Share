@@ -35,11 +35,15 @@
 
 
 .button-search {
-    -fx-background-color: #febd69;
+    -fx-background-color: #007BFF;
     -fx-text-fill: white;
     -fx-background-radius: 0px 8px 8px 0px; /* Bordas arredondadas apenas à direita */
     -fx-border: none;
     -fx-cursor: hand;
+}
+
+.button-search:hover {
+    -fx-background-color: #0056b3;
 }
 
 

@@ -72,8 +72,8 @@
                         </HBox>
                         <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1">
                            <children>
-                              <TextField prefHeight="30.0" prefWidth="281.0" promptText="Pesquisar FlexShare.com,br" HBox.hgrow="ALWAYS" />
-                              <Button contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" prefHeight="29.0" prefWidth="60.0" styleClass="button-pesquisar" text="Button">
+                              <TextField fx:id="campoPesquisaNome" prefHeight="30.0" prefWidth="281.0" promptText="Pesquisar FlexShare.com,br" HBox.hgrow="ALWAYS" />
+                              <Button contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#pesquisarBensNome" prefHeight="29.0" prefWidth="60.0" styleClass="button-pesquisar" text="Button">
                                  <graphic>
                                     <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
