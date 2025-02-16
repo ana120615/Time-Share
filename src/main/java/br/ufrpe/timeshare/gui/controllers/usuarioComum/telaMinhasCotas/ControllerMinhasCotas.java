@@ -17,6 +17,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.util.Callback;
 
 import java.io.IOException;
@@ -101,7 +102,7 @@ public class ControllerMinhasCotas implements ControllerBase {
                         } else {
                             try {
                                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/br/ufrpe/timeshare/gui/application/ItemCellCota.fxml"));
-                                BorderPane root = loader.load();
+                                HBox root = loader.load();
                                 ControllerItemCellCota controller = loader.getController();
                                 controller.setValorTelaDeDeslocamento(3);
                                 controller.setItem(item);

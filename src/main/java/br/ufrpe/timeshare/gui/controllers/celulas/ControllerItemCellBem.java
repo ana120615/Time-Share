@@ -24,15 +24,16 @@ public class ControllerItemCellBem {
 
     @FXML
     private Button itemButton;
-
     @FXML
     private ImageView itemImage;
-
     @FXML
     private Label itemLabelDescricao;
-
     @FXML
     private Label itemLabelNome;
+    @FXML
+    private Label itemLabelQuantidadeCotas;
+    @FXML
+    private Label itemLabelLocalizacao;
 
     private Bem bem;
     private int valorTela;
@@ -57,6 +58,8 @@ public class ControllerItemCellBem {
         itemLabelNome.setText(item.getNome() != null ? item.getNome() : "Nome não disponível");
         itemLabelDescricao.setText(item.getDescricao() != null ? item.getDescricao() : "Descrição não disponível");
         itemImage.setImage(carregarImagem(item.getCaminhoImagem()));
+        itemLabelQuantidadeCotas.setText(item.getCotas() != null ? String.valueOf(item.getCotas().size()) : "0");
+        itemLabelLocalizacao.setText(item.getLocalizacao() != null ? item.getLocalizacao() : "Localização não disponível");
 
         if (valorTela == 1) {
             itemButton.setOnAction(e -> showPopup()); // Agora chama o pop-up ao clicar no botão
