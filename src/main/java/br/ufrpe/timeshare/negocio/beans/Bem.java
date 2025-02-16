@@ -3,7 +3,7 @@ package br.ufrpe.timeshare.negocio.beans;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
-public class Bem extends Entidade implements Cloneable {
+public class Bem extends Entidade implements Cloneable, Comparable<Bem> {
     private int id;
     private String nome;
     private String descricao;
@@ -20,7 +20,7 @@ public class Bem extends Entidade implements Cloneable {
     }
 
     //CONSTRUTOR
-    public Bem(int id, String nome, String descricao, String localizacao, int capacidade, Usuario cadastradoPor) {
+    public Bem(int id, String nome, String descricao, String localizacao, int capacidade, Usuario cadastradoPor, String caminhoImagem) {
         setId(id);
         setCapacidade(capacidade);
         setDescricao(descricao);
@@ -28,11 +28,17 @@ public class Bem extends Entidade implements Cloneable {
         setNome(nome);
         setCadastradoPor(cadastradoPor);
         this.ofertado = false;
-
+        setCaminhoImagem(caminhoImagem);
     }
 
     //METODOS GET E SET
+    public String getCaminhoImagem() {
+        return caminhoImagem;
+    }
 
+    public void setCaminhoImagem(String caminhoImagem) {
+        this.caminhoImagem = caminhoImagem;
+    }
 
     public LocalDateTime getDiaInicial() {
         return diaInicial;
@@ -143,6 +149,18 @@ public class Bem extends Entidade implements Cloneable {
                 '}' + "\n";
     }
 
+    private int getQuantidadeCotasVendidas() {
+        int quantidadeCotas = 0;
+        if (this.ofertado && this.cotas != null) {
+            for (Cota cota : this.cotas) {
+                if (!cota.getStatusDeDisponibilidadeParaCompra()) {
+                    quantidadeCotas++;
+                }
+            }
+        }
+        return quantidadeCotas;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (obj instanceof Bem) {
@@ -152,6 +170,11 @@ public class Bem extends Entidade implements Cloneable {
                     && this.localizacao.equals(bem.getLocalizacao());
         }
         return false;
+    }
+
+    @Override
+    public int compareTo(Bem o) {
+        return Integer.compare(o.getQuantidadeCotasVendidas(), this.getQuantidadeCotasVendidas());
     }
 
 }

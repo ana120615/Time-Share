@@ -1,6 +1,7 @@
 package br.ufrpe.timeshare.negocio;
 
 import br.ufrpe.timeshare.dados.IRepositorioUsuario;
+import br.ufrpe.timeshare.dados.RepositorioUsuarios;
 import br.ufrpe.timeshare.excecoes.*;
 import br.ufrpe.timeshare.negocio.beans.TipoUsuario;
 import br.ufrpe.timeshare.negocio.beans.Usuario;
@@ -11,8 +12,8 @@ import java.util.List;
 public class ControladorUsuarioGeral {
     private IRepositorioUsuario repositorio;
 
-    public ControladorUsuarioGeral(IRepositorioUsuario instanciaInterface) {
-        this.repositorio = instanciaInterface;
+    public ControladorUsuarioGeral() {
+        this.repositorio = RepositorioUsuarios.getInstancia();
     }
 
     public void cadastrar(long cpf, String nome, String email, String senha, LocalDate dataNascimento, TipoUsuario tipo) throws UsuarioJaExisteException, UsuarioNaoPermitidoException, DadosInsuficientesException {
@@ -40,10 +41,14 @@ public class ControladorUsuarioGeral {
                 throw new UsuarioNaoPermitidoException("CPF invalido.");
             }
 
+            boolean valorInvalido = false;
             for (char c : verificador) {
                 if (!Character.isDigit(c)) {
-                    throw new UsuarioNaoPermitidoException("CPF invalido.");
+                    valorInvalido = true;
                 }
+            }
+            if (valorInvalido) {
+                throw new UsuarioNaoPermitidoException("CPF invalido.");
             }
         }
 
@@ -51,8 +56,8 @@ public class ControladorUsuarioGeral {
             throw new UsuarioJaExisteException("Usuário já cadastrado.", usuario.getId(), usuario.getEmail());
         }
 
-        if (LocalDate.now().getYear() - usuario.getDataNascimento().getYear() < 18) {
-            throw new UsuarioNaoPermitidoException("Idade insuficiente.");
+        if (LocalDate.now().getYear() - usuario.getDataNascimento().getYear() < 18 || LocalDate.now().getYear() - usuario.getDataNascimento().getYear() > 100) {
+            throw new UsuarioNaoPermitidoException("Idade invalida.");
         }
     }
 
@@ -97,6 +102,18 @@ public class ControladorUsuarioGeral {
         }
     }
 
+    public void alterarEmailUsuario(long cpf, String novoEmail, TipoUsuario tipo) throws UsuarioNaoExisteException, UsuarioNaoPermitidoException, NullPointerException {
+        if(novoEmail == null) {
+            throw new NullPointerException("Email nulo");
+        }
+        Usuario usuario = procurarUsuarioPorCpf(cpf);
+        if (usuario != null && usuario.getTipo().equals(tipo)) {
+            usuario.setEmail(novoEmail);
+        }  else {
+            throw new UsuarioNaoPermitidoException("O usuario em questao pertence a uma categoria diferente.");
+        }
+    }
+
     public void alterarSenhaUsuario(String email, String senha, TipoUsuario tipo) throws UsuarioNaoExisteException, UsuarioNaoPermitidoException, NullPointerException {
         if(senha == null) {
             throw new NullPointerException("Senha nula");
@@ -112,6 +129,9 @@ public class ControladorUsuarioGeral {
     public void alterarDataAniversario(long cpf, LocalDate dataAniversario, TipoUsuario tipo) throws UsuarioNaoExisteException, UsuarioNaoPermitidoException, NullPointerException {
         if(dataAniversario == null) {
             throw new NullPointerException("Data nula");
+        }
+        if (LocalDate.now().getYear() - dataAniversario.getYear() < 18 || LocalDate.now().getYear() - dataAniversario.getYear() > 100) {
+            throw new UsuarioNaoPermitidoException("Idade invalida.");
         }
         Usuario usuario = procurarUsuarioPorCpf(cpf);
         if (usuario != null && usuario.getTipo().equals(tipo)) {

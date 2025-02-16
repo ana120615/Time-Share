@@ -1,14 +1,15 @@
 package br.ufrpe.timeshare.dados;
 
+import br.ufrpe.timeshare.negocio.beans.Reserva;
+
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-
-import br.ufrpe.timeshare.negocio.beans.Reserva;
 
 public class RepositorioReservas extends RepositorioGenerico<Reserva> implements IRepositorioReservas {
 
     // INSTANCIA UNICA DO REPOSITORIO
-    private static RepositorioReservas instancia;
+    private static volatile RepositorioReservas instancia;
 
     public RepositorioReservas() {
         super();
@@ -43,12 +44,28 @@ public class RepositorioReservas extends RepositorioGenerico<Reserva> implements
         return resultado;
     }
 
+    @Override
+    public boolean verificarConflitoNaReserva(long idBem, LocalDateTime dataInicial, LocalDateTime dataFinal) {
+        boolean conflito = false;
+        for (Reserva reservaAtual : buscarReservasPorBem(idBem)) {
+            if (reservaAtual.getDataInicio().isBefore(dataInicial) && reservaAtual.getDataFim().isAfter(dataInicial)) {
+                conflito = true;
+            } else if (reservaAtual.getDataInicio().isBefore(dataFinal) && reservaAtual.getDataFim().isAfter(dataFinal)) {
+                conflito = true;
+            } else if (reservaAtual.getDataInicio().isAfter(dataInicial) && reservaAtual.getDataFim().isBefore(dataFinal)) {
+                conflito = true;
+            } else if (reservaAtual.getDataInicio().isEqual(dataInicial) || reservaAtual.getDataFim().isEqual(dataFinal)) {
+                conflito = true;
+            }
+        }
+        return conflito;
+    }
 
     @Override
     public List<Reserva> buscarReservasPorUsuario(long idUsuario) {
         List<Reserva> resultado = new ArrayList<>();
         for (Reserva reservaUser : lista) {
-            if (reservaUser.getId() == idUsuario) {
+            if (reservaUser.getUsuarioComum().getId() == idUsuario) {
                 resultado.add(reservaUser);
             }
         }
@@ -59,7 +76,7 @@ public class RepositorioReservas extends RepositorioGenerico<Reserva> implements
     public List<Reserva> buscarReservasPorBem(long idBem) {
         List<Reserva> resultado = new ArrayList<>();
         for (Reserva reservaBem : lista) {
-            if (reservaBem.getId() == idBem) {
+            if (reservaBem.getBem().getId() == idBem) {
                 resultado.add(reservaBem);
             }
         }

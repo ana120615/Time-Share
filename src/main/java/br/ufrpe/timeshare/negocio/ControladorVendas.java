@@ -1,27 +1,25 @@
 package br.ufrpe.timeshare.negocio;
 
-import br.ufrpe.timeshare.dados.RepositorioBens;
-import br.ufrpe.timeshare.dados.RepositorioCotas;
-import br.ufrpe.timeshare.dados.RepositorioUsuarios;
 import br.ufrpe.timeshare.excecoes.*;
-import br.ufrpe.timeshare.negocio.beans.Cota;
-import br.ufrpe.timeshare.negocio.beans.Promocao;
-import br.ufrpe.timeshare.negocio.beans.Usuario;
-import br.ufrpe.timeshare.negocio.beans.Venda;
+import br.ufrpe.timeshare.negocio.beans.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 
 public class ControladorVendas {
     ControladorBens controladorBens;
     ControladorUsuarioGeral controladorUsuarioGeral;
+    ControladorReservas controladorReservas;
 
     {
-        this.controladorBens = new ControladorBens(RepositorioBens.getInstancia(), RepositorioCotas.getInstancia());
-        this.controladorUsuarioGeral = new ControladorUsuarioGeral(RepositorioUsuarios.getInstancia());
+        this.controladorBens = new ControladorBens();
+        this.controladorUsuarioGeral = new ControladorUsuarioGeral();
+        this.controladorReservas = new ControladorReservas();
     }
 
     public Venda iniciarVenda(long cpfUsuario) throws UsuarioNaoExisteException {
@@ -41,7 +39,7 @@ public class ControladorVendas {
     public void adicionarCotaCarrinho(int idCota, Venda venda) throws CotaNaoExisteException, CotaNaoOfertadaException {
         Cota cotaVenda = controladorBens.buscarCota(idCota);
 
-        if (cotaVenda.isStatusDeDisponibilidadeParaCompra()) {
+        if (cotaVenda.getStatusDeDisponibilidadeParaCompra()) {
             venda.adicionarCotaCarrinho(cotaVenda);
         } else {
             throw new CotaNaoOfertadaException("Não está ofertada");
@@ -58,7 +56,8 @@ public class ControladorVendas {
         }
     }
 
-    public String finalizarCompra(Venda venda) {
+
+    public String finalizarCompra(Venda venda) throws CompraNaoFinalizada {
         if (!venda.getCarrinhoDeComprasCotas().isEmpty()) {
             venda.finalizarCompra();
             return venda.toString();
@@ -67,14 +66,13 @@ public class ControladorVendas {
         }
     }
 
-    // TODO: Usuario não pode transferir uma cota que já realizou reserva
     public boolean transferenciaDeDireitos(long cpfUsuarioRemetente, long cpfUsuarioDestinario, int idCota) throws CotaNaoExisteException, UsuarioNaoExisteException, TransferenciaInvalidaException {
         Cota cotaTransferida = controladorBens.buscarCota(idCota);
 
         Usuario usuarioRemetente = controladorUsuarioGeral.procurarUsuarioPorCpf(cpfUsuarioRemetente);
         Usuario usuarioDestinatario = controladorUsuarioGeral.procurarUsuarioPorCpf(cpfUsuarioDestinario);
 
-        if (!cotaTransferida.isStatusDeDisponibilidadeParaReserva()) {
+        if (!cotaTransferida.getStatusDeDisponibilidadeParaReserva()) {
             throw new TransferenciaInvalidaException("Não é possível transferir uma cota que já foi reservada.");
         }
 
@@ -98,11 +96,11 @@ public class ControladorVendas {
 
         if (usuario.verificarAniversario() || promocao.ehAltaTemporada(LocalDateTime.now())) {
             if (usuario.verificarAniversario()) {
-                resultado += "\nDesconto aniversário de" + promocao.getTaxaPromocaoAniversario() * 100 + "%.";
+                resultado += "\nDesconto aniversário de " + promocao.getTaxaPromocaoAniversario() * 100 + "%.";
             }
 
             if (promocao.ehAltaTemporada(LocalDateTime.now())) {
-                resultado += "\nDesconto temporada de" + promocao.getTaxaPromocaoTemporada(LocalDateTime.now()) * 100 + "%.";
+                resultado += "\nDesconto temporada de " + promocao.getTaxaPromocaoTemporada(LocalDateTime.now()) * 100 + "%.";
             }
         }
         return resultado;
@@ -118,23 +116,36 @@ public class ControladorVendas {
         return resultado;
     }
 
+    public List<Reserva> getReservasNoPeriodoVenda(Venda venda) {
+        List<Reserva> resultado = new ArrayList<>();
+        for(Cota cotas : venda.getCarrinhoDeComprasCotas()) {
+            resultado.addAll(controladorReservas.buscarReservasPorMultiplosPeriodos(cotas.getBemAssociado(), cotas.getDataInicio(), cotas.getDataFim()));
+        }
+        return resultado;
+    }
+
+    public void cancelarReservasEmCota(List<Reserva> reservas) {
+        controladorReservas.cancelarListaReservas(reservas);
+    }
+
+
     public String gerarComprovanteTransferencia(long cpfUsuarioRemetente, long cpfUsuarioDestinario, int idCota) throws CotaNaoExisteException, UsuarioNaoExisteException, TransferenciaInvalidaException {
         String resultado = "";
         Cota cotaTransferida = controladorBens.buscarCota(idCota);
 
         Usuario usuarioRemetente = controladorUsuarioGeral.procurarUsuarioPorCpf(cpfUsuarioRemetente);
         Usuario usuarioDestinatario = controladorUsuarioGeral.procurarUsuarioPorCpf(cpfUsuarioDestinario);
-                resultado += "\nComprovante de Transferencia\n";
-                resultado += "Cliente Remetente: " + usuarioRemetente.getNome() + " | CPF: " + usuarioRemetente.getId() + "\n";
-                resultado += "Cliente Destinatario: " + usuarioDestinatario.getNome() + " | CPF: " + usuarioDestinatario.getId() + "\n";
-                resultado += "--------------------------------------\n";
-                resultado += " FLEX SHARE \n";
-                resultado += "--------------------------------------\n";
-                resultado += "Informacoes da Cota Transferida\n";
-                resultado += "Id: " + cotaTransferida.getId() + " | Bem associado: " + cotaTransferida.getBemAssociado() + "\n| Preco: " + cotaTransferida.getPreco() + " | Periodo Correspondente ao Ano Atual: " + cotaTransferida.getDataInicio().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) + "-" + cotaTransferida.getDataFim().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) + "\n";
-                resultado += "Data de Emissão: " + LocalDate.now() + "\n";
-                String numeroComprovante = UUID.randomUUID().toString();
-                resultado += "\nNúmero do Comprovante: " + numeroComprovante + "\n";
-                return resultado;
+        resultado += "\nComprovante de Transferencia\n";
+        resultado += "Cliente Remetente: " + usuarioRemetente.getNome() + " | CPF: " + usuarioRemetente.getId() + "\n";
+        resultado += "Cliente Destinatario: " + usuarioDestinatario.getNome() + " | CPF: " + usuarioDestinatario.getId() + "\n";
+        resultado += "--------------------------------------\n";
+        resultado += " FLEX SHARE \n";
+        resultado += "--------------------------------------\n";
+        resultado += "Informacoes da Cota Transferida\n";
+        resultado += "Id: " + cotaTransferida.getId() + " | Bem associado: " + cotaTransferida.getBemAssociado() + "\n| Preco: " + cotaTransferida.getPreco() + " | Periodo Correspondente ao Ano Atual: " + cotaTransferida.getDataInicio().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) + "-" + cotaTransferida.getDataFim().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) + "\n";
+        resultado += "Data de Emissão: " + LocalDate.now() + "\n";
+        String numeroComprovante = UUID.randomUUID().toString();
+        resultado += "\nNúmero do Comprovante: " + numeroComprovante + "\n";
+        return resultado;
     }
 }

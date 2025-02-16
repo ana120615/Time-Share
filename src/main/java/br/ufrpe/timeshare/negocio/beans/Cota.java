@@ -85,11 +85,7 @@ public class Cota extends Entidade implements Cloneable, Comparable<Cota> {
         this.preco = preco;
     }
 
-    public boolean isStatusDeDisponibilidadeParaCompra() {
-        return statusDeDisponibilidadeParaCompra;
-    }
-
-    public boolean isStatusDeDisponibilidadeParaReserva() {
+    public boolean getStatusDeDisponibilidadeParaReserva() {
         return this.statusDeDisponibilidadeParaReserva;
     }
 
@@ -135,7 +131,6 @@ public class Cota extends Entidade implements Cloneable, Comparable<Cota> {
 
     @Override
     public int compareTo(Cota cota) {
-
         return this.dataInicio.compareTo(cota.getDataInicio());
     }
 

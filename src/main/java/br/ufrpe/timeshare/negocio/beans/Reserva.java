@@ -10,27 +10,13 @@ public class Reserva extends Entidade{
     private LocalDateTime dataFim;
     private Usuario usuarioComum;
     private Bem bem;
-    private boolean cancelada;
 
     public Reserva(int id, LocalDateTime dataInicio, LocalDateTime dataFim, Usuario usuarioComum, Bem bem) {
         this.id = id;
-        this.cancelada = false;
         this.dataInicio = dataInicio;
         this.dataFim = dataFim;
         this.usuarioComum = usuarioComum;
         this.bem = bem;
-    }
-
-    public boolean isCancelada() {
-        return cancelada;
-    }
-
-    public void setCancelada(boolean cancelada) {
-        this.cancelada = cancelada;
-    }
-
-    public void cancelarReserva() {
-        this.cancelada = true;
     }
 
     public Bem getBem() {

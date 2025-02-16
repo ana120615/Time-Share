@@ -10,10 +10,11 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 
 public class Sistema {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws DadosInsuficientesException {
         Scanner input = new Scanner(System.in);
 
         //INICIALIZAR REPOSITORIOS
@@ -21,12 +22,13 @@ public class Sistema {
         IRepositorioBens repositorioBens = RepositorioBens.getInstancia();
         IRepositorioReservas repositorioReservas = RepositorioReservas.getInstancia();
         IRepositorioCotas repositorioCotas = RepositorioCotas.getInstancia();
+        IRepositorioEstadia repositorioEstadia = RepositorioEstadia.getInstancia();
 
         //INICIALIZANDO CONTROLADORES
-        ControladorLogin controladorLogin = new ControladorLogin(repositorioUsuario);
-        ControladorUsuarioGeral controladorUsuario = new ControladorUsuarioGeral(repositorioUsuario);
-        ControladorBens controladorBens = new ControladorBens(repositorioBens, repositorioCotas);
-        ControladorReservas controladorReservas = new ControladorReservas(repositorioReservas);
+        ControladorLogin controladorLogin = new ControladorLogin();
+        ControladorUsuarioGeral controladorUsuario = new ControladorUsuarioGeral();
+        ControladorBens controladorBens = new ControladorBens();
+        ControladorReservas controladorReservas = new ControladorReservas();
         ControladorVendas controladorVendas = new ControladorVendas();
 
         Usuario usuario = null; //Variavel que vai armazenar o usuario apos login
@@ -52,7 +54,9 @@ public class Sistema {
         // CADASTRANDO E OFERTANDO UM BEM
         try {
             controladorBens.cadastrar(1111, "Lar Doce Lar", "Familia Feliz é aqui",
-                    "Recife-PE", 5, usuarioAdm, LocalDateTime.of(2025, 01, 01, 12, 00), 20, 6000, " ");
+                    "Recife-PE", 5, usuarioAdm, LocalDateTime.of(2025, 01, 01, 12, 00), 20, 6000, "as");
+            controladorBens.cadastrar(2222, "Apartamento na Praia", "Familia Feliz é aqui",
+                    "Recife-PE", 5, usuarioAdm, LocalDateTime.of(2025, 01, 01, 12, 00), 20, 6000, "es");
         } catch (BemNaoExisteException | UsuarioNaoPermitidoException | QuantidadeDeCotasExcedidasException |
                  BemJaExisteException | UsuarioNaoExisteException e) {
             System.out.println(e.getMessage());
@@ -60,7 +64,7 @@ public class Sistema {
 
         try {
             controladorBens.ofertarBem(1111);
-        } catch (BemNaoExisteException e) {
+        } catch (BemNaoExisteException | BemJaOfertadoException e) {
             System.out.println(e.getMessage());
         }
 
@@ -79,6 +83,7 @@ public class Sistema {
             System.out.println(e.getMessage());
         }
 
+        RepositorioUsuarios.getInstancia().cadastrar(new Usuario(11111301215L, "usuario10", TipoUsuario.COMUM));
 
         boolean entrarSistema = false;
         boolean sairSistema = false;
@@ -288,10 +293,122 @@ public class Sistema {
                                     escolha = input.nextInt();
                                     switch (escolha) {
                                         case 1:
-                                            System.out.println("\n\n-- *** -- ");
-                                            System.out.println("Minhas reservas");
-                                            System.out.println(controladorReservas.listarReservasUsuario(usuario));
-                                            System.out.println(" ");
+                                            boolean sairReservasRealizadas = false;
+                                            while (!sairReservasRealizadas) {
+                                                System.out.println("\n\n-- *** -- ");
+                                                System.out.println("Minhas reservas");
+                                                System.out.println(controladorReservas.listarReservasUsuario(usuario));
+                                                System.out.println(" ");
+                                                System.out.println("Estadia iniciadas");
+                                                System.out.println(controladorReservas.listarEstadiasUsuario(usuario));
+                                                System.out.println(" ");
+                                                System.out.println("1 - Alterar periodo reserva");
+                                                System.out.println("2 - Estadia");
+                                                System.out.println("3 - Voltar");
+                                                int respostaEstadia = input.nextInt();
+                                                switch (respostaEstadia) {
+                                                    case 1:
+                                                        int id;
+                                                        System.out.println("Id reserva: ");
+                                                        id = input.nextInt();
+                                                        input.nextLine();
+                                                        System.out.println("Data inicial: ");
+                                                        String dataInicial = input.nextLine();
+                                                        dataInicial += " 01:00";
+                                                        System.out.println("Data final: ");
+                                                        String dataFinal = input.nextLine();
+                                                        dataFinal += " 23:59";
+                                                        try {
+                                                            controladorReservas.alterarPeriodoReserva(id, LocalDateTime.parse(dataInicial, DateTimeFormatter.ofPattern("dd/MM/yyy HH:mm")), LocalDateTime.parse(dataFinal, DateTimeFormatter.ofPattern("dd/MM/yyy HH:mm")), usuario);
+                                                        } catch (CotaJaReservadaException |
+                                                                 UsuarioNaoPermitidoException |
+                                                                 PeriodoNaoDisponivelParaReservaException
+                                                                 | ReservaJaCanceladaException | ForaPeriodoException |
+                                                                 DadosInsuficientesException |
+                                                                 ReservaNaoExisteException |
+                                                                 ReservaJaExisteException |
+                                                                 PeriodoJaReservadoException e) {
+                                                            System.out.println(e.getMessage());
+                                                            ;
+                                                        }
+                                                        break;
+
+                                                    case 2:
+                                                        boolean telaDeEstadia = false;
+                                                        while (!telaDeEstadia) {
+                                                            System.out.println("\n\n-- *** -- ");
+                                                            System.out.println("1 - Iniciar Estadia (check-in)");
+                                                            System.out.println("2 - Finalizar Estadia (check-out)");
+                                                            System.out.println("3 - Prolongar Estadia");
+                                                            System.out.println("4 - Ver minhas Estadias");
+                                                            System.out.println("5 - Voltar");
+                                                            escolha = input.nextInt();
+                                                            switch (escolha) {
+                                                                case 1:
+                                                                    System.out.println("Informe o id da reserva: ");
+                                                                    int idReserva = input.nextInt();
+                                                                    try {
+                                                                        controladorReservas.checkin(idReserva);
+                                                                        System.out.println("Estadia iniciada com sucesso!");
+                                                                    } catch (ReservaNaoExisteException |
+                                                                             ReservaJaCanceladaException |
+                                                                             ForaPeriodoException |
+                                                                             EstadiaJaInicializadaException e) {
+                                                                        System.out.println(e.getMessage());
+                                                                    }
+                                                                    break;
+                                                                case 2:
+                                                                    System.out.println("Informe o id da Estadia: ");
+                                                                    int idEstadiaFinalizar = input.nextInt();
+                                                                    try {
+                                                                        controladorReservas.checkout(idEstadiaFinalizar);
+                                                                        System.out.println("Estadia finalizada com sucesso!");
+                                                                    } catch (ReservaNaoExisteException |
+                                                                             ReservaJaCanceladaException |
+                                                                             EstadiaNaoExisteException e) {
+                                                                        System.out.println(e.getMessage());
+                                                                    }
+                                                                    break;
+                                                                case 3:
+                                                                    System.out.println("Id da estadia: ");
+                                                                    int idEstadia = input.nextInt();
+                                                                    System.out.println("Quantidade de dias: ");
+                                                                    int quantidade = input.nextInt();
+                                                                    try {
+                                                                        controladorReservas.prolongarEstadia(idEstadia, quantidade);
+                                                                    } catch (UsuarioNaoPermitidoException |
+                                                                             CotaJaReservadaException |
+                                                                             PeriodoNaoDisponivelParaReservaException |
+                                                                             ReservaJaCanceladaException |
+                                                                             ForaPeriodoException |
+                                                                             DadosInsuficientesException |
+                                                                             ReservaNaoExisteException |
+                                                                             EstadiaNaoExisteException |
+                                                                             ReservaJaExisteException |
+                                                                             PeriodoJaReservadoException |
+                                                                             OperacaoNaoPermitidaException e) {
+                                                                        System.out.println(e.getMessage());
+                                                                    }
+                                                                    break;
+                                                                case 4:
+                                                                    System.out.println("*** Minhas Estadias ***");
+                                                                    System.out.println(controladorReservas.listarEstadiasUsuario(usuario));
+                                                                    System.out.println("-----------------------------------------------------------\n");
+                                                                    break;
+                                                                case 5:
+                                                                    telaDeEstadia = true;
+                                                                    break;
+                                                            }
+                                                        }
+                                                        break;
+                                                    case 3:
+                                                        sairReservasRealizadas = true;
+                                                        break;
+                                                    default:
+                                                        System.out.println("Opcao invalida!");
+                                                }
+                                            }
+
                                             break;
 
                                         case 2:
@@ -301,7 +418,8 @@ public class Sistema {
                                                 System.out.println("1 - Periodos disponiveis para reserva");
                                                 System.out.println("2 - Realizar reserva ");
                                                 System.out.println("3 - Cancelar Reserva");
-                                                System.out.println("4 - Voltar");
+                                                System.out.println("4 - Ver periodos mais reservados em um bem");
+                                                System.out.println("5 - Voltar");
                                                 escolha = input.nextInt();
                                                 switch (escolha) {
                                                     case 1:
@@ -309,7 +427,7 @@ public class Sistema {
                                                         int idBemParaReserva = input.nextInt();
                                                         System.out.print("Informe a data Inicial (dd/MM/yyyy): ");
                                                         String inicioPeriodo = input.next();
-                                                        inicioPeriodo += " 00:00";
+                                                        inicioPeriodo += " 01:00";
                                                         System.out.print("Informe a data final (dd/MM/yyyy): ");
                                                         String finalPeriodo = input.next();
                                                         finalPeriodo += " 23:59";
@@ -321,7 +439,7 @@ public class Sistema {
                                                         }
 
                                                         try {
-                                                            List<String> reservas = controladorReservas.consultarDisponibilidade(bemReservaDisponivel, LocalDateTime.parse(inicioPeriodo, DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")), LocalDateTime.parse(finalPeriodo, DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")));
+                                                            List<String> reservas = controladorReservas.consultarDisponibilidadeParaReserva(bemReservaDisponivel, LocalDateTime.parse(inicioPeriodo, DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")), LocalDateTime.parse(finalPeriodo, DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")), usuario);
                                                             System.out.println("\nPeriodos disponíveis para Reserva: ");
                                                             System.out.println(reservas);
 
@@ -331,7 +449,6 @@ public class Sistema {
                                                                  NullPointerException e) {
                                                             System.out.println(e.getMessage());
                                                         }
-
 
                                                         break;
 
@@ -358,12 +475,16 @@ public class Sistema {
 
                                                             try {
                                                                 controladorReservas.criarReserva(LocalDateTime.parse(inicioReserva, DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")), LocalDateTime.parse(fimReserva, DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")), usuario, bemReserva);
+                                                                //controladorReservas.criarReserva(LocalDate.parse(inicioReserva, DateTimeFormatter.ofPattern("dd/MM/yyyy")), LocalDate.parse(fimReserva, DateTimeFormatter.ofPattern("dd/MM/yyyy")), usuario, bemReserva);
                                                             } catch (ReservaJaExisteException |
                                                                      PeriodoJaReservadoException |
                                                                      DadosInsuficientesException |
                                                                      ForaPeriodoException |
                                                                      PeriodoNaoDisponivelParaReservaException e) {
                                                                 System.out.println(e.getMessage());
+                                                            } catch (CotaJaReservadaException |
+                                                                     ReservaNaoExisteException e) {
+                                                                throw new RuntimeException(e);
                                                             }
                                                         } else if (esc == 's') {
                                                             System.out.println("Informe o id da cota: ");
@@ -373,8 +494,16 @@ public class Sistema {
                                                                 Cota cota = controladorBens.buscarCota(idCota);
 
                                                                 try {
-                                                                    controladorReservas.reservaPeriodoCota(cota);
-                                                                } catch (ProprietarioNaoIdentificadoException e) {
+                                                                    controladorReservas.reservaPeriodoCota(cota, usuario);
+                                                                } catch (UsuarioNaoPermitidoException |
+                                                                         ProprietarioNaoIdentificadoException |
+                                                                         DadosInsuficientesException |
+                                                                         ReservaJaExisteException |
+                                                                         ForaPeriodoException |
+                                                                         PeriodoJaReservadoException |
+                                                                         PeriodoNaoDisponivelParaReservaException |
+                                                                         ReservaNaoExisteException |
+                                                                         CotaJaReservadaException e) {
                                                                     System.out.println(e.getMessage());
                                                                 }
 
@@ -393,11 +522,17 @@ public class Sistema {
                                                             System.out.print("id Reserva: ");
                                                             int idReserva = input.nextInt();
                                                             try {
-                                                                controladorReservas.cancelarReserva(idReserva);
+                                                                controladorReservas.cancelarReserva(idReserva, usuario);
                                                             } catch (ReservaNaoExisteException |
                                                                      ReservaJaCanceladaException e) {
                                                                 System.out.println(e.getMessage());
+                                                            } catch (UsuarioNaoPermitidoException |
+                                                                     CotaJaReservadaException |
+                                                                     ReservaNaoReembolsavelException |
+                                                                     DadosInsuficientesException e) {
+                                                                throw new RuntimeException(e);
                                                             }
+
                                                         } else if (resposta == 's') {
                                                             System.out.print("id Reserva: ");
                                                             int idReserva = input.nextInt();
@@ -409,8 +544,11 @@ public class Sistema {
                                                                 if (cota.getProprietario().equals(usuario)) {
 
                                                                     try {
-                                                                        controladorReservas.liberarPeriodoCota(cota, idReserva);
-                                                                    } catch (ReservaJaCanceladaException | ReservaNaoExisteException e) {
+                                                                        controladorReservas.liberarPeriodoCota(cota, idReserva, usuario);
+                                                                    } catch (DadosInsuficientesException |
+                                                                             ReservaNaoExisteException |
+                                                                             UsuarioNaoPermitidoException |
+                                                                             OperacaoNaoPermitidaException e) {
                                                                         System.out.println(e.getMessage());
                                                                     }
 
@@ -423,9 +561,20 @@ public class Sistema {
                                                             }
                                                         }
 
-
                                                         break;
+
                                                     case 4:
+                                                        System.out.println("-- Periodos mais Reservados --");
+                                                        System.out.println("Id do bem: ");
+                                                        int bem = input.nextInt();
+                                                        List<Map.Entry<LocalDate, Long>> periodosMaisReservados = controladorReservas.periodosMaisReservados(bem);
+
+                                                        System.out.println("Períodos mais reservados:");
+                                                        for (Map.Entry<LocalDate, Long> entry : periodosMaisReservados) {
+                                                            System.out.println("Data: " + entry.getKey() + " - Reservas: " + entry.getValue());
+                                                        }
+                                                        break;
+                                                    case 5:
                                                         sairRealizarReserva = true;
                                                         break;
                                                 }
@@ -493,9 +642,15 @@ public class Sistema {
                                                                 controladorVendas.aplicarDesconto(v1, usuario.getId());
                                                             }
                                                         }
-                                                        String compra = controladorVendas.finalizarCompra(v1);
-                                                        System.out.println(compra);
-                                                        parar = true;
+
+                                                        try {
+                                                            String compra = controladorVendas.finalizarCompra(v1);
+                                                            System.out.println(compra);
+                                                            parar = true;
+                                                        } catch (CompraNaoFinalizada e) {
+                                                            System.out.println(e.getMessage());
+                                                        }
+
                                                     } else if (escolhaCompra == 4) {
                                                         String resultado = controladorVendas.verificarSeUsuarioPossuiDescontos(usuario.getId());
                                                         if (resultado.isEmpty()) {
@@ -708,10 +863,10 @@ public class Sistema {
                                             int quantidadeCotas = input.nextInt();
                                             System.out.print("Preço de uma Cota R$: ");
                                             double precoCota = input.nextDouble();
-                                            System.out.print("Informe o caminho da imagem do Bem: ");
+                                            System.out.print("Informe o caminho da imagem: ");
                                             String caminhoImagem = input.nextLine();
                                             try {
-                                                controladorBens.cadastrar(idBem, nome, descricao, localizacao, capacidade, usuario, LocalDateTime.parse(dataInicial, DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")), quantidadeCotas, precoCota, caminhoImagem);
+                                                controladorBens.cadastrar(idBem, nome, descricao, localizacao, capacidade, usuario, LocalDateTime.parse(dataInicial, DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")), quantidadeCotas, precoCota, "as");
                                                 System.out.println("Bem cadastrado com Sucesso!");
                                             } catch (BemNaoExisteException | UsuarioNaoPermitidoException |
                                                      QuantidadeDeCotasExcedidasException | BemJaExisteException |
@@ -795,7 +950,7 @@ public class Sistema {
                                                             int idBemOfertar = input.nextInt();
                                                             controladorBens.ofertarBem(idBemOfertar);
                                                             System.out.println("Bem ofertado com sucesso!");
-                                                        } catch (BemNaoExisteException e) {
+                                                        } catch (BemNaoExisteException | BemJaOfertadoException e) {
                                                             System.out.println(e.getMessage());
                                                         }
 

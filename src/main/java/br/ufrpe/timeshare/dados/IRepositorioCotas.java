@@ -4,7 +4,6 @@ import br.ufrpe.timeshare.negocio.beans.Bem;
 import br.ufrpe.timeshare.negocio.beans.Cota;
 import br.ufrpe.timeshare.negocio.beans.Usuario;
 
-
 import java.util.List;
 
 public interface IRepositorioCotas extends IRepositorio<Cota> {

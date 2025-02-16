@@ -1,9 +1,10 @@
 package br.ufrpe.timeshare.dados;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import br.ufrpe.timeshare.negocio.beans.Bem;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class RepositorioBens extends RepositorioGenerico<Bem> implements IRepositorioBens {
 
@@ -28,24 +29,6 @@ public class RepositorioBens extends RepositorioGenerico<Bem> implements IReposi
 
 
     @Override
-    public Bem buscarBemPorNome(String nome) {
-        Bem bemProcurado = null;
-        boolean encontrado = false;
-        int i;
-        for (i = 0; i < lista.size() && !encontrado; i++) {
-            if (lista.get(i).getNome().equalsIgnoreCase(nome)) {
-                encontrado = true;
-            }
-        }
-
-        if (encontrado) {
-            bemProcurado = lista.get(i - 1);
-        }
-        return bemProcurado;
-    }
-
-
-    @Override
     public List<Bem> listarBensDisponiveis() {
         List<Bem> listaBensDisponiveis = new ArrayList<>();
         for (Bem bem : lista) {
@@ -53,17 +36,56 @@ public class RepositorioBens extends RepositorioGenerico<Bem> implements IReposi
                 listaBensDisponiveis.add(bem);
             }
         }
+        Collections.sort(listaBensDisponiveis);
         return listaBensDisponiveis;
     }
 
     @Override
-    public List<Bem> listarBensByNome(String nome) {
+    public List<Bem> listarBensDisponiveisPorNome(String nome) {
         List<Bem> listaBensByNome = new ArrayList<>();
+        String nomePesquisa = nome.trim().toLowerCase();
         for (Bem bem : lista) {
-            if (bem.getNome().equalsIgnoreCase(nome) || bem.getNome().contains(nome)) {
-                listaBensByNome.add(bem);
+            if (bem.isOfertado()) {
+                String nomeBem = bem.getNome().trim().toLowerCase(); // Removendo espaços e padronizando
+                if (nomeBem.contains(nomePesquisa)) { // Verificando se o nome contém a pesquisa
+                    listaBensByNome.add(bem);
+                }
             }
         }
+        Collections.sort(listaBensByNome);
+        return listaBensByNome;
+    }
+
+    @Override
+    public List<Bem> listarBensPorLocalizacao(String localizacao) {
+        List<Bem> listaBensPorLocalizacao = new ArrayList<>();
+        String descricaoValor = localizacao.trim().toLowerCase();
+        for (Bem bem : lista) {
+            String localizacaoBem = bem.getLocalizacao().trim().toLowerCase(); // Removendo espaços e padronizando
+
+            if (localizacaoBem.contains(descricaoValor)) { // Verificando se o nome contém a pesquisa
+                listaBensPorLocalizacao.add(bem);
+            }
+        }
+        Collections.sort(listaBensPorLocalizacao);
+        return listaBensPorLocalizacao;
+    }
+
+
+    @Override
+    public List<Bem> listarBensUsuarioPorNome(String nome, long idUsuario) {
+        List<Bem> listaBensByNome = new ArrayList<>();
+        String nomePesquisa = nome.trim().toLowerCase();
+        for (Bem bem : lista) {
+            if (bem.getCadastradoPor().getId() == idUsuario) {
+                String nomeBem = bem.getNome().trim().toLowerCase(); // Removendo espaços e padronizando
+
+                if (nomeBem.contains(nomePesquisa)) { // Verificando se o nome contém a pesquisa
+                    listaBensByNome.add(bem);
+                }
+            }
+        }
+        Collections.sort(listaBensByNome);
         return listaBensByNome;
     }
 

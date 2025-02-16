@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="610.0" prefWidth="1023.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.ufrpe.timeshare.gui.controllers.usuarioComum.telaVendaCotas.ControllerTelaDeVenda">
+   <top>
+      <VBox prefHeight="126.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+         <children>
+            <HBox prefHeight="5.0" prefWidth="600.0" style="-fx-background-color: #000814;" />
+            <HBox alignment="CENTER" prefHeight="86.0" prefWidth="600.0" style="-fx-background-color: #001f54;">
+               <children>
+                  <GridPane prefHeight="103.0" prefWidth="600.0" style="-fx-background-image: #001f54;" HBox.hgrow="ALWAYS">
+                     <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                     </columnConstraints>
+                     <rowConstraints>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                     </rowConstraints>
+                     <children>
+                        <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
+                           <children>
+                              <ImageView fitHeight="64.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@images/logo.png" />
+                                 </image>
+                                 <HBox.margin>
+                                    <Insets left="5.0" />
+                                 </HBox.margin>
+                              </ImageView>
+                              <Label style="-fx-text-fill: white;" text="FlexShare">
+                                 <font>
+                                    <Font size="19.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2">
+                           <children>
+                              <Button contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#mudarAbaCarrinho" style="-fx-background-color: transparent;" text="Button">
+                                 <graphic>
+                                    <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+                                       <children>
+                                          <Label fx:id="labelQuantidadeCotasCarrinho" style="-fx-font-weight: bold;" text="0" textFill="#f08804" />
+                                          <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@images/shopping-cart.png" />
+                                             </image>
+                                          </ImageView>
+                                       </children>
+                                    </VBox>
+                                 </graphic>
+                              </Button>
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1">
+                           <children>
+                              <TextField fx:id="campoPesquisaNome" prefHeight="30.0" prefWidth="281.0" promptText="Pesquisar FlexShare.com,br" HBox.hgrow="ALWAYS" />
+                              <Button contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#pesquisarBensNome" prefHeight="29.0" prefWidth="60.0" styleClass="button-pesquisar" text="Button">
+                                 <graphic>
+                                    <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@images/search.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </Button>
+                           </children>
+                        </HBox>
+                     </children>
+                  </GridPane>
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="38.0" prefWidth="688.0" style="-fx-background-color: #000814;">
+               <children>
+                  <GridPane prefHeight="31.0" prefWidth="751.0" HBox.hgrow="ALWAYS">
+                    <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="491.0" minWidth="10.0" prefWidth="458.0" />
+                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="245.0" minWidth="10.0" prefWidth="143.0" />
+                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                     <children>
+                        <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
+                           <children>
+                              <Button contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#irParaTelaPrincipalUsuarioComum" style="-fx-background-color: transparent; -fx-cursor: hand;" text="Button">
+                                 <graphic>
+                                    <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@images/angle-left-white.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                                 <HBox.margin>
+                                    <Insets left="20.0" right="20.0" />
+                                 </HBox.margin>
+                              </Button>
+                              <GridPane prefHeight="37.0" prefWidth="338.0">
+                                <columnConstraints>
+                                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="129.0" minWidth="10.0" prefWidth="120.0" />
+                                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="129.0" minWidth="10.0" prefWidth="78.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="161.0" minWidth="10.0" prefWidth="140.0" />
+                                </columnConstraints>
+                                <rowConstraints>
+                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                </rowConstraints>
+                                 <children>
+                                    <Button mnemonicParsing="false" onAction="#mudarAbaBensOfertados" styleClass="button2" text="Bens Ofertados" textFill="WHITE" />
+                                    <Button mnemonicParsing="false" onAction="#mudarAbaCarrinho" styleClass="button2" text="Carrinho" textFill="WHITE" GridPane.columnIndex="1" />
+                                 </children>
+                              </GridPane>
+                           </children>
+                        </HBox>
+                     </children>
+                  </GridPane>
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </top>
+   <center>
+      <VBox prefHeight="498.0" prefWidth="1023.0" BorderPane.alignment="TOP_LEFT">
+         <children>
+            <TabPane fx:id="tabPaneUsuarioComumTelaVenda" prefHeight="464.0" prefWidth="1013.0" style="-fx-background-image: transparent;" tabClosingPolicy="UNAVAILABLE">
+               <tabs>
+                  <Tab fx:id="tabBensOfertados" text="Bens Ofertados">
+                     <content>
+                        <VBox prefHeight="304.0" prefWidth="754.0" style="-fx-background-color: transparent;">
+                           <children>
+                              <HBox alignment="CENTER_LEFT" prefHeight="56.0" prefWidth="600.0">
+                                 <children>
+                                    <Label prefHeight="35.0" prefWidth="235.0" styleClass="label-grande" text="Bens Ofertados">
+                                       <HBox.margin>
+                                          <Insets left="20.0" />
+                                       </HBox.margin>
+                                       <font>
+                                          <Font size="21.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </HBox>
+                              <ListView fx:id="listViewItens" orientation="HORIZONTAL" prefHeight="375.0" prefWidth="790.0" stylesheets="@styles/basico/item-cell-bem-ofertado.css" />
+                           </children>
+                           <padding>
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                           </padding>
+                        </VBox>
+                     </content>
+                  </Tab>
+                  <Tab fx:id="tabCarrinho" text="Carrinho">
+                     <content>
+                        <VBox alignment="CENTER" prefHeight="442.0" prefWidth="1013.0">
+                           <children>
+                              <HBox alignment="CENTER_LEFT" prefHeight="43.0" prefWidth="754.0">
+                                 <children>
+                                    <Label styleClass="label-grande" text="Carrinho de Compras">
+                                       <font>
+                                          <Font size="21.0" />
+                                       </font>
+                                       <HBox.margin>
+                                          <Insets left="20.0" />
+                                       </HBox.margin>
+                                    </Label>
+                                 </children>
+                              </HBox>
+                              <HBox prefHeight="345.0" prefWidth="1023.0">
+                                 <children>
+                                    <GridPane hgap="5.0" prefHeight="372.0" prefWidth="1013.0" HBox.hgrow="ALWAYS">
+                                       <columnConstraints>
+                                          <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" percentWidth="100.0" prefWidth="100.0" />
+                                          <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" percentWidth="40.0" prefWidth="100.0" />
+                                       </columnConstraints>
+                                       <rowConstraints>
+                                          <RowConstraints maxHeight="70.0" minHeight="0.0" prefHeight="6.0" vgrow="SOMETIMES" />
+                                          <RowConstraints maxHeight="327.0" minHeight="10.0" prefHeight="327.0" vgrow="SOMETIMES" />
+                                          <RowConstraints maxHeight="141.0" minHeight="0.0" prefHeight="0.0" vgrow="SOMETIMES" />
+                                       </rowConstraints>
+                                       <children>
+                                          <HBox prefHeight="338.0" prefWidth="720.0" style="-fx-background-color: transparent;" GridPane.rowIndex="1">
+                                             <children>
+                                                <ListView fx:id="listViewCotasSelecionadas" prefHeight="329.0" prefWidth="720.0" HBox.hgrow="ALWAYS" />
+                                             </children>
+                                          </HBox>
+                                          <GridPane GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                            <columnConstraints>
+                                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                            </columnConstraints>
+                                            <rowConstraints>
+                                              <RowConstraints maxHeight="149.0" minHeight="10.0" prefHeight="119.0" vgrow="SOMETIMES" />
+                                              <RowConstraints maxHeight="191.0" minHeight="10.0" prefHeight="190.0" vgrow="SOMETIMES" />
+                                            </rowConstraints>
+                                             <children>
+                                                <VBox prefHeight="119.0" prefWidth="288.0" styleClass="vbox">
+                                                   <children>
+                                                      <HBox prefHeight="36.0" prefWidth="511.0">
+                                                         <children>
+                                                            <Label prefHeight="25.0" prefWidth="112.0" styleClass="label-media" text="SUBTOTAL:">
+                                                               <HBox.margin>
+                                                                  <Insets left="5.0" right="5.0" />
+                                                               </HBox.margin>
+                                                               <font>
+                                                                  <Font size="15.0" />
+                                                               </font>
+                                                            </Label>
+                                                            <Label styleClass="label-media-bold" text="R$">
+                                                               <HBox.margin>
+                                                                  <Insets right="5.0" />
+                                                               </HBox.margin>
+                                                               <font>
+                                                                  <Font size="15.0" />
+                                                               </font>
+                                                            </Label>
+                                                            <Label fx:id="labelValorTotal" styleClass="label-media-bold" text="Preco">
+                                                               <font>
+                                                                  <Font size="15.0" />
+                                                               </font>
+                                                            </Label>
+                                                         </children>
+                                                      </HBox>
+                                                      <HBox alignment="CENTER" prefHeight="57.0" prefWidth="274.0">
+                                                         <children>
+                                                            <Button mnemonicParsing="false" onAction="#btnFinalizarCompra" prefHeight="31.0" prefWidth="235.0" styleClass="button3" text="Finalizar Compra" />
+                                                         </children>
+                                                      </HBox>
+                                                   </children>
+                                                   <padding>
+                                                      <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                                   </padding>
+                                                </VBox>
+                                             </children>
+                                          </GridPane>
+                                       </children>
+                                    </GridPane>
+                                 </children>
+                              </HBox>
+                           </children>
+                        </VBox>
+                     </content></Tab>
+               </tabs>
+            </TabPane>
+         </children>
+         <padding>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </padding>
+      </VBox>
+   </center>
+   <stylesheets>
+      <URL value="@styles/basico/tabpane.css" />
+      <URL value="@styles/basico/tela-venda.css" />
+   </stylesheets>
+   <bottom>
+      <HBox alignment="CENTER" prefHeight="40.0" prefWidth="1023.0" BorderPane.alignment="CENTER">
+         <children>
+            <Label style="-fx-text-fill: gray; -fx-font-size: 10px;" text="©2025 TimeShare. Todos os direitos reservados." />
+         </children>
+      </HBox>
+   </bottom>
+</BorderPane>

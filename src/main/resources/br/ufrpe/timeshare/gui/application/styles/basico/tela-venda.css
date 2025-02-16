@@ -1,0 +1,101 @@
+.label-grande {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #333;
+}
+
+.label-media {
+    -fx-font-size: 18px;
+    -fx-font-weight: normal;
+    -fx-text-fill: #333;
+}
+
+.label-media-bold {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #333;
+}
+
+/* ===== Novo Estilo button2 ===== */
+.button2 {
+    -fx-text-fill: white; /* Cor do texto */
+    -fx-font-size: 13px;
+    -fx-background-color: transparent;
+
+}
+
+/* Hover: muda apenas o fundo para azul */
+.button2:hover {
+    -fx-cursor: hand;
+    -fx-text-fill: #e16d1b;
+    -fx-transition: all 0.3s ease-in-out;
+}
+
+/* ===== Novo Estilo button2 ===== */
+.button3 {
+    -fx-text-fill: black; /* Cor do texto */
+    -fx-font-size: 13px;
+    -fx-background-color: #ffce12;
+    -fx-font-weight: bold;
+    -fx-border-radius: 8px; /* Arredonda a borda */
+    -fx-background-radius: 8px; /* Mantém o fundo arredondado */
+
+}
+
+/* Hover: muda apenas o fundo para azul */
+.button3:hover {
+    -fx-cursor: hand;
+    -fx-background-color: #ffce00;
+    -fx-transition: all 0.3s ease-in-out;
+}
+
+.button-pesquisar {
+    -fx-background-color: #febd69;
+    -fx-border-radius: 0px 8px 8px 0px; /* Arredonda a borda */
+    -fx-background-radius: 0px 8px 8px 0px; /* Mantém o fundo arredondado */
+    -fx-padding: 5px;
+}
+
+.text-field {
+    -fx-background-color: #ffffff;
+    -fx-border-radius: 8px 0px 0px 8px; /* Arredonda a borda */
+    -fx-background-radius: 8px 0px 0px 8px; /* Mantém o fundo arredondado */
+    -fx-padding: 5px;
+}
+
+.list-view {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #ddd;
+    -fx-border-width: 2px;
+    -fx-border-radius: 8px; /* Arredonda a borda */
+    -fx-background-radius: 8px; /* Mantém o fundo arredondado */
+    -fx-padding: 5px;
+}
+
+.list-cell {
+    -fx-padding: 10px;
+    -fx-border-color: #eee;
+    -fx-border-width: 0 0 1px 0;
+    -fx-background-color: #ffffff;
+    -fx-font-size: 14px;
+    -fx-text-fill: #333;
+}
+
+.list-cell:filled:hover {
+    -fx-background-color: #f5f5f5;
+}
+
+.list-cell:filled:selected {
+    -fx-background-color: #28a745;
+    -fx-text-fill: #fff;
+    -fx-font-weight: bold;
+}
+
+.vbox {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #ddd;
+    -fx-border-width: 2px;
+    -fx-border-radius: 8px; /* Arredonda a borda */
+    -fx-background-radius: 8px; /* Mantém o fundo arredondado */
+    -fx-padding: 5px;
+}

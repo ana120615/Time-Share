@@ -1,11 +1,11 @@
 package br.ufrpe.timeshare.dados;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import br.ufrpe.timeshare.negocio.beans.Bem;
 import br.ufrpe.timeshare.negocio.beans.Cota;
 import br.ufrpe.timeshare.negocio.beans.Usuario;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class RepositorioCotas extends RepositorioGenerico<Cota> implements IRepositorioCotas {
 
@@ -39,7 +39,7 @@ public class RepositorioCotas extends RepositorioGenerico<Cota> implements IRepo
     public List<Cota> buscarCotasPorProprietario(Usuario proprietario) {
         List<Cota> resultado = new ArrayList<>();
         for (Cota cota : lista) {
-            if (!cota.getStatusDeDisponibilidadeParaCompra() && cota.getProprietario().equals(proprietario)) {
+            if (!cota.getStatusDeDisponibilidadeParaCompra() && cota.getProprietario() != null && cota.getProprietario().equals(proprietario)) {
                 resultado.add(cota);
             }
         }
@@ -63,11 +63,12 @@ public class RepositorioCotas extends RepositorioGenerico<Cota> implements IRepo
     public List<Cota> listarCotasDisponiveisParaVenda() {
         List<Cota> resultado = new ArrayList<>();
         for (Cota cota : lista) {
-            if (cota.isStatusDeDisponibilidadeParaCompra()) {
+            if (cota.getStatusDeDisponibilidadeParaCompra()) {
                 resultado.add(cota);
             }
         }
 
         return resultado;
     }
+
 }
