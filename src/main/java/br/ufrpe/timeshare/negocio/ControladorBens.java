@@ -111,7 +111,7 @@ public class ControladorBens {
 
 
     public List<Bem> listarBensUsuario(Usuario usuario) throws DadosInsuficientesException {
-        if(usuario == null) {
+        if (usuario == null) {
             throw new DadosInsuficientesException("Usuario nulo");
         }
         List<Bem> resultado = new ArrayList<>();
@@ -145,18 +145,25 @@ public class ControladorBens {
     }
 
     public List<Bem> listarBensPorNome(String nome) throws DadosInsuficientesException {
-        if(nome == null) {
+        if (nome == null) {
             throw new DadosInsuficientesException("Nome nulo");
         }
-        return repositorioBens.listarBensPorNome(nome);
+        return repositorioBens.listarBensDisponiveisPorNome(nome);
     }
 
 
     public List<Bem> listarBensUsuarioPorNome(String nome, long idusuario) throws DadosInsuficientesException {
-        if(nome == null) {
+        if (nome == null) {
             throw new DadosInsuficientesException("Nome nulo");
         }
         return repositorioBens.listarBensUsuarioPorNome(nome, idusuario);
+    }
+
+    public List<Bem> listarBensUsuarioPorLocalizacao(String localizacao) throws DadosInsuficientesException {
+        if (localizacao == null) {
+            throw new DadosInsuficientesException("Localizacao nula");
+        }
+        return repositorioBens.listarBensPorLocalizacao(localizacao);
     }
 
     public void listarCotasDisponiveis() {
@@ -165,7 +172,6 @@ public class ControladorBens {
             System.out.println(cota + "\n");
         }
     }
-
 
 
     public ArrayList<Cota> calcularDeslocamentoDasCotas(long bemId, LocalDateTime dataParaDeslocamento) throws BemNaoExisteException {

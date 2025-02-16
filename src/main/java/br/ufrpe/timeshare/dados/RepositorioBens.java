@@ -28,7 +28,6 @@ public class RepositorioBens extends RepositorioGenerico<Bem> implements IReposi
     }
 
 
-
     @Override
     public List<Bem> listarBensDisponiveis() {
         List<Bem> listaBensDisponiveis = new ArrayList<>();
@@ -42,16 +41,36 @@ public class RepositorioBens extends RepositorioGenerico<Bem> implements IReposi
     }
 
     @Override
-    public List<Bem> listarBensPorNome(String nome) {
+    public List<Bem> listarBensDisponiveisPorNome(String nome) {
         List<Bem> listaBensByNome = new ArrayList<>();
+        String nomePesquisa = nome.trim().toLowerCase();
         for (Bem bem : lista) {
-            if (bem.getNome().toLowerCase().contains(nome.toLowerCase())) {
-                listaBensByNome.add(bem);
+            if (bem.isOfertado()) {
+                String nomeBem = bem.getNome().trim().toLowerCase(); // Removendo espaços e padronizando
+                if (nomeBem.contains(nomePesquisa)) { // Verificando se o nome contém a pesquisa
+                    listaBensByNome.add(bem);
+                }
             }
         }
         Collections.sort(listaBensByNome);
         return listaBensByNome;
     }
+
+    @Override
+    public List<Bem> listarBensPorLocalizacao(String localizacao) {
+        List<Bem> listaBensPorLocalizacao = new ArrayList<>();
+        String descricaoValor = localizacao.trim().toLowerCase();
+        for (Bem bem : lista) {
+            String localizacaoBem = bem.getLocalizacao().trim().toLowerCase(); // Removendo espaços e padronizando
+
+            if (localizacaoBem.contains(descricaoValor)) { // Verificando se o nome contém a pesquisa
+                listaBensPorLocalizacao.add(bem);
+            }
+        }
+        Collections.sort(listaBensPorLocalizacao);
+        return listaBensPorLocalizacao;
+    }
+
 
     @Override
     public List<Bem> listarBensUsuarioPorNome(String nome, long idUsuario) {
