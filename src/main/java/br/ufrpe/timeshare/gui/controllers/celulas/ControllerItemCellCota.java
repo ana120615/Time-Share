@@ -1,7 +1,7 @@
 package br.ufrpe.timeshare.gui.controllers.celulas;
 
-import br.ufrpe.timeshare.gui.controllers.usuarioAdmin.telaCotas.ControllerTelaDeCotas;
 import br.ufrpe.timeshare.gui.controllers.usuarioAdmin.telaCotas.ControllerDeslocamentoDeCotasPopUP;
+import br.ufrpe.timeshare.gui.controllers.usuarioAdmin.telaCotas.ControllerTelaDeCotas;
 import br.ufrpe.timeshare.gui.controllers.usuarioComum.telaMinhasCotas.ControllerMinhasCotas;
 import br.ufrpe.timeshare.gui.controllers.usuarioComum.telaVendaCotas.ControllerAdicionarCotaPopUp;
 import br.ufrpe.timeshare.gui.controllers.usuarioComum.telaVendaCotas.ControllerTelaDeVenda;
@@ -9,15 +9,14 @@ import br.ufrpe.timeshare.negocio.beans.Cota;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.effect.GaussianBlur;
+import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.Optional;
 
 public class ControllerItemCellCota {
 
@@ -61,6 +60,30 @@ public class ControllerItemCellCota {
 
         if (valorTelaDeDeslocamento == 2) {
             idButtonCelulaCota.setOnAction(e -> showPopupDeslocamentoCotas()); // Agora chama o pop-up ao clicar no botão
+        } else if (valorTelaDeDeslocamento == 3) {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Confirme a Acao");
+            alert.setHeaderText("O que deseja fazer?");
+            alert.setContentText("Escolha entre as opcoes");
+
+            // Criando os botões personalizados
+            ButtonType botaoSim = new ButtonType("Deslocar cota", ButtonBar.ButtonData.YES);
+            ButtonType botaoNao = new ButtonType("Repassar direito de uso", ButtonBar.ButtonData.NO);
+            ButtonType botaoTalvez = new ButtonType("Cancelar", ButtonBar.ButtonData.CANCEL_CLOSE);
+
+            // Adicionando os botões ao alerta
+            alert.getButtonTypes().setAll(botaoSim, botaoNao, botaoTalvez);
+
+            // Exibindo o alerta e capturando a resposta
+            Optional<ButtonType> result = alert.showAndWait();
+
+            if (result.isPresent() && result.get() == botaoSim) {
+                idButtonCelulaCota.setOnAction(e -> showPopupDeslocamentoCotas()); // Agora chama o pop-up ao clicar no botão
+            } else if (result.isPresent() && result.get() == botaoNao) {
+                //idButtonCelulaCota.setOnAction(e -> showPopupDeslocamentoCotas()); // Agora chama o pop-up ao clicar no botão
+            } else {
+                alert.close();
+            }
         }
 
         if (valorTelaDeVenda == 1) { // ADICIONAR A COTA NO CARRINHO

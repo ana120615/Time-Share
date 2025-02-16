@@ -16,7 +16,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
-import javafx.scene.layout.HBox;
+import javafx.scene.layout.BorderPane;
 import javafx.util.Callback;
 
 import java.io.IOException;
@@ -59,9 +59,7 @@ public class ControllerMinhasCotas implements ControllerBase {
     @FXML
     public void initialize() {
         System.out.println("initialize() chamado.");
-
     }
-
 
     private void carregarListaDeCotas() {
         if (usuario == null) {
@@ -103,8 +101,9 @@ public class ControllerMinhasCotas implements ControllerBase {
                         } else {
                             try {
                                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/br/ufrpe/timeshare/gui/application/ItemCellCota.fxml"));
-                                HBox root = loader.load();
+                                BorderPane root = loader.load();
                                 ControllerItemCellCota controller = loader.getController();
+                                controller.setValorTelaDeDeslocamento(3);
                                 controller.setItem(item);
                                 controller.setMainControllerMinhasCotas(ControllerMinhasCotas.this); // Passa referência do controlador principal
                                 setGraphic(root);

@@ -21,7 +21,7 @@
          <children>
             <HBox alignment="CENTER_LEFT" prefHeight="56.0" prefWidth="531.0" styleClass="hbox-search">
                <children>
-                  <TextField prefHeight="34.0" prefWidth="469.0" promptText="Pesquise um bem" styleClass="text-field-search" HBox.hgrow="ALWAYS">
+                  <TextField prefHeight="35.0" prefWidth="469.0" promptText="Pesquise um bem" styleClass="text-field-search" HBox.hgrow="ALWAYS">
                      <HBox.margin>
                         <Insets />
                      </HBox.margin>
