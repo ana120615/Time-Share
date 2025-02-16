@@ -32,14 +32,6 @@ public class Bem extends Entidade implements Cloneable, Comparable<Bem> {
     }
 
     //METODOS GET E SET
-    public String getCaminhoImagem() {
-        return caminhoImagem;
-    }
-
-    public void setCaminhoImagem(String caminhoImagem) {
-        this.caminhoImagem = caminhoImagem;
-    }
-
     public LocalDateTime getDiaInicial() {
         return diaInicial;
     }
