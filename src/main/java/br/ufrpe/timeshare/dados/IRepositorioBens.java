@@ -12,4 +12,6 @@ public interface IRepositorioBens extends IRepositorio<Bem> {
 
     List<Bem> listarBensPorNome(String nome);
 
+    List<Bem> listarBensPorLocalizacao(String localizacao);
+
 }

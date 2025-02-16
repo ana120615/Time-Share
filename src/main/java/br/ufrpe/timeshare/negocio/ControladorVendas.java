@@ -124,9 +124,10 @@ public class ControladorVendas {
         return resultado;
     }
 
-    private void cancelarReservasEmCota(Venda venda) {
-        controladorReservas.cancelarListaReservas(getReservasNoPeriodoVenda(venda));
+    public void cancelarReservasEmCota(List<Reserva> reservas) {
+        controladorReservas.cancelarListaReservas(reservas);
     }
+
 
     public String gerarComprovanteTransferencia(long cpfUsuarioRemetente, long cpfUsuarioDestinario, int idCota) throws CotaNaoExisteException, UsuarioNaoExisteException, TransferenciaInvalidaException {
         String resultado = "";

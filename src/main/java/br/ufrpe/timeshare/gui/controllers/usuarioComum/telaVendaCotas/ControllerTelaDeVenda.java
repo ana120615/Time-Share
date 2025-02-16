@@ -1,19 +1,14 @@
 package br.ufrpe.timeshare.gui.controllers.usuarioComum.telaVendaCotas;
 
 import br.ufrpe.timeshare.excecoes.CotaNaoExisteException;
-import br.ufrpe.timeshare.excecoes.CotaNaoOfertadaException;
 import br.ufrpe.timeshare.excecoes.UsuarioNaoExisteException;
 import br.ufrpe.timeshare.gui.application.ScreenManager;
 import br.ufrpe.timeshare.gui.controllers.basico.ControllerBase;
 import br.ufrpe.timeshare.gui.controllers.celulas.ControllerItemCellBemOfertado;
-import br.ufrpe.timeshare.gui.controllers.celulas.ControllerItemCellCota;
 import br.ufrpe.timeshare.gui.controllers.celulas.ControllerItemCellCotaVenda;
 import br.ufrpe.timeshare.negocio.ControladorBens;
 import br.ufrpe.timeshare.negocio.ControladorVendas;
-import br.ufrpe.timeshare.negocio.beans.Bem;
-import br.ufrpe.timeshare.negocio.beans.Cota;
-import br.ufrpe.timeshare.negocio.beans.Usuario;
-import br.ufrpe.timeshare.negocio.beans.Venda;
+import br.ufrpe.timeshare.negocio.beans.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -26,6 +21,7 @@ import javafx.util.Callback;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 public class ControllerTelaDeVenda implements ControllerBase {
     private Usuario usuario;
@@ -153,6 +149,7 @@ public class ControllerTelaDeVenda implements ControllerBase {
 
     @FXML
     private void mudarAbaBensOfertados(ActionEvent event) {
+        carregarListaDeBens();
         tabPaneUsuarioComumTelaVenda.getSelectionModel().select(tabBensOfertados);
     }
 
@@ -209,9 +206,56 @@ public class ControllerTelaDeVenda implements ControllerBase {
         });
     }
 
-    public void btnFinalizarCompra () {
+    public void btnFinalizarCompra() {
+        String promocao = "";
+
+
+        List<Reserva> reservas = controladorVendas.getReservasNoPeriodoVenda(vendaAtual);
+
+        if(!reservas.isEmpty()) {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Existem reservas no periodo de suas cotas por outros usuarios!");
+            alert.setHeaderText("Deseja cancelar reserva?");
+            alert.setContentText("Aperte OK para confirmar e CANCELAR para nao.");
+
+            // Exibindo o alerta e capturando a resposta
+            Optional<ButtonType> result = alert.showAndWait();
+
+            if (result.isPresent() && result.get() == ButtonType.OK) {
+                controladorVendas.cancelarReservasEmCota(reservas);
+            } else {
+                System.out.println("Usuário cancelou a ação!");
+            }
+        }
+
+        try {
+            promocao = controladorVendas.verificarSeUsuarioPossuiDescontos(usuario.getId());
+        } catch (UsuarioNaoExisteException e) {
+            exibirAlertaErro("Erro", "Erro ao procurar usuario", e.getMessage());
+        }
+
+        if (!promocao.isEmpty()) {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Promocoes disponiveis na compra!");
+            alert.setHeaderText(promocao);
+            alert.setContentText("Deseja aplicar remocao?");
+
+            // Exibindo o alerta e capturando a resposta
+            Optional<ButtonType> result = alert.showAndWait();
+
+            if (result.isPresent() && result.get() == ButtonType.OK) {
+                try {
+                    controladorVendas.aplicarDesconto(vendaAtual, usuario.getId());
+                } catch (UsuarioNaoExisteException e) {
+                    exibirAlertaErro("Erro", "Erro ao buscar usuario", e.getMessage());
+                }
+            } else {
+                System.out.println("Usuário cancelou a ação!");
+            }
+        }
+
         vendaAtual.finalizarCompra();
-        exibirAlertaInformation("Operação finalizada", "Compra finalizada com sucesso!", "Parabéns pela compra!");
+        exibirAlertaInformation("Operação finalizada", "NOTA FISCAL", vendaAtual.toString());
 
         // Limpar carrinho de compras
         vendaAtual.getCarrinhoDeComprasCotas().clear(); // Remove todos os itens do carrinho
@@ -228,6 +272,7 @@ public class ControllerTelaDeVenda implements ControllerBase {
         }
 
     }
+
 
     public void removerCotaCarrinhoVendaTelaPrincipal(Cota cotaSelecionada) {
         if (cotaSelecionada == null) {
