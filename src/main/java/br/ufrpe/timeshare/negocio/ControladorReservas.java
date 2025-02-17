@@ -17,6 +17,7 @@ public class ControladorReservas {
     private IRepositorioReservas repositorioReservas;
     private IRepositorioEstadia repositorioEstadia;
 
+
     public ControladorReservas() {
         this.repositorioReservas = RepositorioReservas.getInstancia();
         this.repositorioEstadia = RepositorioEstadia.getInstancia();
@@ -233,6 +234,7 @@ public class ControladorReservas {
         reserva.setDataFim(novaDataFim);
         return gerarComprovanteReserva(reserva);
     }
+
 
     // Consulta de periodos disponiveis para reserva
     // Considerando o usuario que deseja reservar

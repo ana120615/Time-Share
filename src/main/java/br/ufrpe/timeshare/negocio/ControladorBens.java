@@ -380,6 +380,23 @@ public class ControladorBens {
         return resultado;
     }
 
+    //busca bens que usuario possui cotas
+    public List<Bem> buscarBensPorProprietarioDeCotas(Usuario proprietario) {
+        List<Bem> bensDoProprietario = new ArrayList<>();
+        List<Cota> cotasDoProprietario = repositorioCotas.buscarCotasPorProprietario(proprietario);
+
+        if (cotasDoProprietario != null && !cotasDoProprietario.isEmpty()) {
+            for (Cota cota : cotasDoProprietario) {
+                Bem bem = cota.getBemAssociado();
+                if (bem != null && !bensDoProprietario.contains(bem)) {
+                    bensDoProprietario.add(bem);
+                }
+            }
+        }
+
+        return bensDoProprietario;
+    }
+
 }
 
 

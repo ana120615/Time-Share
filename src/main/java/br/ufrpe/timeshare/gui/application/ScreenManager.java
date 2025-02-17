@@ -41,7 +41,7 @@ public class ScreenManager {
         carregarTela("TelaDeVendas", "/br/ufrpe/timeshare/gui/application/TelaDeVenda.fxml");
         carregarTela("TelaDeCotas", "/br/ufrpe/timeshare/gui/application/TelaDeCotas.fxml");
         carregarTela("TelaMinhasCotas", "/br/ufrpe/timeshare/gui/application/TelaMinhasCotas.fxml");
-        carregarTela("TelaReservasComum", "/br/ufrpe/timeshare/gui/application/BuscarBensReserva.fxml");
+        carregarTela("TelaReservasComum", "/br/ufrpe/timeshare/gui/application/BensDisponReserva.fxml");
     }
 
     private void carregarTela(String nome, String caminhoFXML) {
