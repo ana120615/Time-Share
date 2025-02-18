@@ -8,8 +8,12 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.layout.Region?>
 
-<HBox fx:id="itemCell" alignment="CENTER_LEFT" spacing="10.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.ufrpe.timeshare.gui.controllers.celulas.ControllerItemCellBemReserva">
+<HBox fx:id="itemCell" alignment="CENTER_LEFT" spacing="10.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="br.ufrpe.timeshare.gui.controllers.celulas.ControllerItemCellBemReserva">
+    
+   
     <ImageView fx:id="imagemBem" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true"/>
+
     
     <VBox spacing="5.0">
         <Label fx:id="nomeBem" style="-fx-font-weight: bold;" />
@@ -17,8 +21,14 @@
         <Label fx:id="localizacaoBem" />
         <Label fx:id="capacidadeBem" />
     </VBox>
+
+    
+    <Region HBox.hgrow="ALWAYS"/>
+
     
     <VBox spacing="10.0" alignment="CENTER">
-        <Button text="Reservar" onAction="#abrirMiniTelaReserva" />
+        <Button fx:id="reservaButton" text="Reservar" onAction="#abrirMiniTelaReserva" />
     </VBox>
+
 </HBox>
+
