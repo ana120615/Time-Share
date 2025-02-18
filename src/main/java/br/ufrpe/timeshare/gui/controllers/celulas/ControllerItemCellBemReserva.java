@@ -6,7 +6,6 @@ import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.DateCell;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
@@ -18,7 +17,6 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import br.ufrpe.timeshare.gui.application.ScreenManager;
-import br.ufrpe.timeshare.negocio.ControladorBens;
 import br.ufrpe.timeshare.negocio.ControladorReservas;
 import br.ufrpe.timeshare.negocio.beans.Bem;
 import br.ufrpe.timeshare.negocio.beans.Usuario;
@@ -28,7 +26,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class ControllerItemCellBemReserva {
@@ -95,7 +92,7 @@ public class ControllerItemCellBemReserva {
     
 
   @FXML
-private void abrirMiniTelaReserva(ActionEvent event) {
+public void abrirMiniTelaReserva(ActionEvent event) {
     Stage popupStage = new Stage();
     popupStage.initModality(Modality.APPLICATION_MODAL);
     popupStage.setTitle("Reservar " + bem.getNome());

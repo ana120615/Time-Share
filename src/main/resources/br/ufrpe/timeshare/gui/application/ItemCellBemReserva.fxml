@@ -19,9 +19,6 @@
     </VBox>
     
     <VBox spacing="10.0" alignment="CENTER">
-        
         <Button text="Reservar" onAction="#abrirMiniTelaReserva" />
     </VBox>
 </HBox>
-
-<Alert fx:id="alertaReserva" type="CONFIRMATION" headerText="Selecione o período e as datas para reservar:" />

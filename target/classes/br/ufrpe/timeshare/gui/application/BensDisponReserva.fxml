@@ -47,7 +47,7 @@
                                         <ListView fx:id="meusBensListView" prefHeight="215.0" prefWidth="531.0" />
                                     </content>
                                 </ScrollPane>
-                                <BottomNavigationButton fx:id="buscarMeusBensButton" layoutX="446.0" layoutY="15.0" text="buscar" onAction="#buscarMeusBens"/>
+                                <Button fx:id="buscarMeusBensButton" layoutX="446.0" layoutY="15.0" text="buscar" onAction="#buscarMeusBens"/>
                             </children>
                         </AnchorPane>
                     </content>

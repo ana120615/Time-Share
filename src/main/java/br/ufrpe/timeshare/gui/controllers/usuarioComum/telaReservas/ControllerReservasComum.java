@@ -17,6 +17,10 @@ import br.ufrpe.timeshare.negocio.beans.Bem;
 import br.ufrpe.timeshare.negocio.beans.Usuario;
 import javafx.util.Callback;
 import javafx.scene.layout.HBox;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.List;
@@ -83,6 +87,11 @@ public class ControllerReservasComum {
                                 HBox root = loader.load();
                                 ControllerItemCellBemReserva controller = loader.getController();
                                 controller.setItem(item);
+                                Button reservaButton = (Button) root.lookup("#reservaButton"); 
+                                reservaButton.setOnAction(event -> {
+                                    controller.abrirMiniTelaReserva(event);  
+                                });
+    
                                 setGraphic(root);
                             } catch (IOException e) {
                                 exibirAlertaErro("Erro", "Erro ao exibir bens disponiveis", e.getMessage());
@@ -92,6 +101,9 @@ public class ControllerReservasComum {
                 };
             }
         });
+    
+
+    
 
         // Configuração para meusBensListView (bens com cotas)
         meusBensListView.setCellFactory(new Callback<>() {
@@ -111,7 +123,7 @@ public class ControllerReservasComum {
                                 controller.setItem(item);
                                 setGraphic(root);
                             } catch (IOException e) {
-                               exibirAlertaErro("Erro", "Erro ao exibir bens disponiveis", e.getMessage());
+                                exibirAlertaErro("Erro", "Erro ao exibir bens", e.getMessage());
                             }
                         }
                     }
@@ -162,4 +174,5 @@ public class ControllerReservasComum {
             exibirAlertaErro("Erro", "Erro ao tentar buscar bens", e.getMessage());
         }
     }
+
 }
