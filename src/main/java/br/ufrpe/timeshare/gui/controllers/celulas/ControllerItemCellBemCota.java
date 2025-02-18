@@ -6,7 +6,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import br.ufrpe.timeshare.negocio.beans.Bem;
-import br.ufrpe.timeshare.negocio.beans.Cota;
 
 import java.io.File;
 
