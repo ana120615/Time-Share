@@ -19,9 +19,6 @@ import javafx.util.Callback;
 import javafx.scene.layout.HBox;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
-
 import java.io.IOException;
 import java.util.List;
 
@@ -47,8 +44,11 @@ public class ControllerReservasComum {
     private ControladorBens controladorBens;
     private Usuario usuarioLogado;
 
+{
+    controladorBens = new ControladorBens();
+}
+
     public void inicializar() {
-        this.controladorBens = new ControladorBens();
 
         // Usuário logado
         Object data = ScreenManager.getInstance().getData();
