@@ -56,6 +56,16 @@ public class ControllerReservasComum {
         exibirBensIniciais(); // Exibe todos os bens ao inicializar a tela
     }
 
+    //para mensagem de erro
+    private void exibirAlertaErro(String titulo, String header, String contentText) {
+        Alert alerta = new Alert(AlertType.ERROR);
+        alerta.setTitle(titulo);
+        alerta.setHeaderText(header);
+        alerta.setContentText(contentText);
+        alerta.getDialogPane().setStyle("-fx-background-color:  #ffcccc;"); // Vermelho claro
+        alerta.showAndWait();
+    }
+
     private void configurarListViews() {
         // Configuração para todosBensListView (bens ofertados)
         todosBensListView.setCellFactory(new Callback<>() {
@@ -75,7 +85,7 @@ public class ControllerReservasComum {
                                 controller.setItem(item);
                                 setGraphic(root);
                             } catch (IOException e) {
-                                e.printStackTrace();
+                                exibirAlertaErro("Erro", "Erro ao exibir bens disponiveis", e.getMessage());
                             }
                         }
                     }
@@ -101,7 +111,7 @@ public class ControllerReservasComum {
                                 controller.setItem(item);
                                 setGraphic(root);
                             } catch (IOException e) {
-                                e.printStackTrace();
+                               exibirAlertaErro("Erro", "Erro ao exibir bens disponiveis", e.getMessage());
                             }
                         }
                     }
@@ -130,7 +140,7 @@ public class ControllerReservasComum {
             ObservableList<Bem> items = FXCollections.observableArrayList(bensOfertados);
             todosBensListView.setItems(items);
         } catch (Exception e) {
-            e.printStackTrace();
+            exibirAlertaErro("Erro", "Erro ao tentar buscar bens", e.getMessage());
         }
     }
 
@@ -149,7 +159,7 @@ public class ControllerReservasComum {
             ObservableList<Bem> items = FXCollections.observableArrayList(bensComCotas);
             meusBensListView.setItems(items);
         } catch (Exception e) {
-            e.printStackTrace();
+            exibirAlertaErro("Erro", "Erro ao tentar buscar bens", e.getMessage());
         }
     }
 }
