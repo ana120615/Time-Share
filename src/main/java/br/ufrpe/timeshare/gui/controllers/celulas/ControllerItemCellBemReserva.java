@@ -20,8 +20,6 @@ import javafx.scene.control.DatePicker;
 
 import javafx.scene.control.Label;
 
-import javafx.scene.control.TextField;
-
 import javafx.scene.image.Image;
 
 import javafx.scene.image.ImageView;
@@ -49,7 +47,7 @@ import java.io.File;
 import java.time.LocalDate;
 
 import java.time.LocalDateTime;
-
+import java.time.Year;
 import java.time.format.DateTimeFormatter;
 
 import java.util.List;
@@ -135,7 +133,8 @@ if (data instanceof Usuario) {
 private void configurarDayCellFactory() {
     if(dataInicioPicker!=null && dataFimPicker!=null){
     try {
-        List<String> periodosDisponiveisString = controladorReservas.consultarDisponibilidadeParaReserva(bem, LocalDate.now().atStartOfDay(), LocalDate.now().plusYears(1).atStartOfDay(), usuarioLogado);
+        LocalDate fimDoAno = LocalDate.of(Year.now().getValue(),12,31);
+        List<String> periodosDisponiveisString = controladorReservas.consultarDisponibilidadeParaReserva(bem, LocalDate.now().atStartOfDay(), fimDoAno.atStartOfDay(), usuarioLogado);
         List<LocalDate> datasDisponiveis = periodosDisponiveisString.stream()
                 .map(dateString -> LocalDateTime.parse(dateString, DateTimeFormatter.ISO_LOCAL_DATE_TIME))
                 .map(LocalDateTime::toLocalDate)
@@ -231,13 +230,6 @@ Stage popupStage = new Stage();
  popupStage.setTitle("Reservar " + bem.getNome());
 
 
-
-TextField mesesTextField = new TextField();
-
- mesesTextField.setPromptText("Número de meses");
-
-
-
 Button confirmarButton = new Button("Confirmar");
 
  Button cancelarButton = new Button("Cancelar");
@@ -246,7 +238,6 @@ configurarDayCellFactory();
 
  confirmarButton.setOnAction(e -> {
 
-String mesesStr = mesesTextField.getText();
 
 LocalDate dataInicio = dataInicioPicker.getValue();
 
@@ -254,13 +245,11 @@ LocalDate dataInicio = dataInicioPicker.getValue();
 
 
 
-if (!mesesStr.isEmpty() && dataInicio != null && dataFim != null) {
+if ( dataInicio != null && dataFim != null) {
 
  try {
 
- int meses = Integer.parseInt(mesesStr);
-
-confirmarReserva(event, dataInicio, dataFim, meses);
+confirmarReserva(event, dataInicio, dataFim);
 
  popupStage.close(); // Fechar a mini tela ao confirmar
 
@@ -284,7 +273,7 @@ cancelarButton.setOnAction(e -> popupStage.close());
 
  VBox layout = new VBox(10);
 
- layout.getChildren().addAll(mesesTextField, dataInicioPicker, dataFimPicker, confirmarButton, cancelarButton);
+ layout.getChildren().addAll( dataInicioPicker, dataFimPicker, confirmarButton, cancelarButton);
 
 layout.setPadding(new Insets(20));
 
@@ -305,7 +294,7 @@ layout.setPadding(new Insets(20));
 
 
 
-private boolean reservarBem(LocalDate dataInicio, LocalDate dataFim, int meses) {
+private boolean reservarBem(LocalDate dataInicio, LocalDate dataFim) {
 
 try {
 
@@ -410,9 +399,9 @@ while (dataAtual.isBefore(fimPeriodo)) {
 
 
 
-public void confirmarReserva(ActionEvent event, LocalDate dataInicio, LocalDate dataFim, int meses) {
+public void confirmarReserva(ActionEvent event, LocalDate dataInicio, LocalDate dataFim) {
 
- boolean periodoDisponivel = reservarBem(dataInicio, dataFim, meses);
+ boolean periodoDisponivel = reservarBem(dataInicio, dataFim);
 
  if (periodoDisponivel) {
 
