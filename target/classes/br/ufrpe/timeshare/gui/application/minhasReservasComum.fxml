@@ -8,7 +8,6 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <ScrollPane layoutX="57.0" layoutY="119.0" prefHeight="246.0" prefWidth="481.0">
@@ -24,5 +23,6 @@
       <Label layoutX="26.0" layoutY="76.0" text="buscar reserva:" />
       <TextField layoutX="114.0" layoutY="72.0" prefHeight="25.0" prefWidth="175.0" />
       <Button layoutX="298.0" layoutY="72.0" mnemonicParsing="false" text="buscar" />
+      <Button layoutX="26.0" layoutY="25.0" mnemonicParsing="false" onAction="#voltarParaPrincipalComum" text="voltar" />
    </children>
 </Pane>
