@@ -25,15 +25,13 @@ public class ControllerItemCellBemCota {
     @FXML
     private Label capacidadeBem;
 
-    public void setItem(Bem bem, Cota cota) {
-        if (bem != null && cota != null) {
+    public void setItem(Bem bem) {
+        if (bem != null) {
             nomeBem.setText(bem.getNome());
             descricaoBem.setText(bem.getDescricao());
             localizacaoBem.setText(bem.getLocalizacao());
             capacidadeBem.setText(String.valueOf(bem.getCapacidade()));
-  
 
-            // Carregar a imagem do bem
             if (bem.getCaminhoImagem() != null && !bem.getCaminhoImagem().isEmpty()) {
                 File file = new File(bem.getCaminhoImagem());
                 if (file.exists()) {

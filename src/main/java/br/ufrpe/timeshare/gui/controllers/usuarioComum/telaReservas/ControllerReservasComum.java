@@ -9,15 +9,11 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Button;
-import com.gluonhq.charm.glisten.control.BottomNavigationButton;
-
 import br.ufrpe.timeshare.gui.application.ScreenManager;
 import br.ufrpe.timeshare.gui.controllers.celulas.ControllerItemCellBemCota;
 import br.ufrpe.timeshare.gui.controllers.celulas.ControllerItemCellBemReserva;
 import br.ufrpe.timeshare.negocio.ControladorBens;
-import br.ufrpe.timeshare.negocio.ControladorReservas;
 import br.ufrpe.timeshare.negocio.beans.Bem;
-import br.ufrpe.timeshare.negocio.beans.Cota;
 import br.ufrpe.timeshare.negocio.beans.Usuario;
 import javafx.util.Callback;
 import javafx.scene.layout.HBox;
@@ -38,32 +34,30 @@ public class ControllerReservasComum {
     @FXML
     private TextField buscarMeusBensTextField;
     @FXML
-    private BottomNavigationButton buscarMeusBensButton;
+    private Button buscarMeusBensButton; 
     @FXML
     private ScrollPane todosBensScrollPane;
     @FXML
     private ScrollPane meusBensScrollPane;
 
-    private ControladorReservas controladorReservas;
     private ControladorBens controladorBens;
-    private Usuario usuarioLogado; 
+    private Usuario usuarioLogado;
 
     public void inicializar() {
-        this.controladorReservas = new ControladorReservas();
         this.controladorBens = new ControladorBens();
 
-       //usuario logado
+        // Usuário logado
         Object data = ScreenManager.getInstance().getData();
         if (data instanceof Usuario) {
             this.usuarioLogado = (Usuario) data;
         }
 
         configurarListViews();
-        buscarTodosBens();
-        buscarMeusBens();
+        exibirBensIniciais(); // Exibe todos os bens ao inicializar a tela
     }
 
     private void configurarListViews() {
+        // Configuração para todosBensListView (bens ofertados)
         todosBensListView.setCellFactory(new Callback<>() {
             @Override
             public ListCell<Bem> call(ListView<Bem> listView) {
@@ -101,7 +95,7 @@ public class ControllerReservasComum {
                             setGraphic(null);
                         } else {
                             try {
-                                FXMLLoader loader = new FXMLLoader(getClass().getResource("/br/ufrpe/timeshare/gui/controllers/celular/ItemCellBemCota.fxml"));
+                                FXMLLoader loader = new FXMLLoader(getClass().getResource("/br/ufrpe/timeshare/gui/controllers/celulas/ItemCellBemCota.fxml"));
                                 HBox root = loader.load();
                                 ControllerItemCellBemCota controller = loader.getController();
                                 controller.setItem(item);
@@ -116,10 +110,23 @@ public class ControllerReservasComum {
         });
     }
 
+    private void exibirBensIniciais() {
+        buscarTodosBens();
+        buscarMeusBens();
+    }
+
     @FXML
     private void buscarTodosBens() {
         try {
-            List<Bem> bensOfertados = controladorBens.listarBensOfertados();
+            String filtro = buscarTodosBensTextField.getText();
+            List<Bem> bensOfertados;
+
+            if (filtro == null || filtro.trim().isEmpty()) {
+                bensOfertados = controladorBens.listarBensOfertados();
+            } else {
+                bensOfertados = controladorBens.buscarBensPorAtributo(filtro);
+            }
+
             ObservableList<Bem> items = FXCollections.observableArrayList(bensOfertados);
             todosBensListView.setItems(items);
         } catch (Exception e) {
@@ -130,7 +137,15 @@ public class ControllerReservasComum {
     @FXML
     private void buscarMeusBens() {
         try {
-            List<Bem> bensComCotas = controladorBens.buscarBensPorProprietarioDeCotas(usuarioLogado);
+            String filtro = buscarMeusBensTextField.getText();
+            List<Bem> bensComCotas;
+
+            if (filtro == null || filtro.trim().isEmpty()) {
+                bensComCotas = controladorBens.buscarBensPorProprietarioDeCotas(usuarioLogado);
+            } else {
+                bensComCotas = controladorBens.buscarBensPorAtributo(filtro);
+            }
+
             ObservableList<Bem> items = FXCollections.observableArrayList(bensComCotas);
             meusBensListView.setItems(items);
         } catch (Exception e) {

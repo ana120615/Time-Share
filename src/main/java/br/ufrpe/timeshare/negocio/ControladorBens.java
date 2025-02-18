@@ -368,6 +368,12 @@ public class ControladorBens {
         return bem;
     }
 
+    public List<Bem> listarBensPorDescricao(String descricao) throws DadosInsuficientesException {
+        if (descricao == null) {
+            throw new DadosInsuficientesException("Descricao nula");
+        }
+        return repositorioBens.listarBensPorDescricao(descricao);
+    }
 
     public List<Cota> listarCotasDeUmUsuarioEmUmBem(Usuario usuario, int idBemParaReserva) {
         List<Cota> resultado = new ArrayList<>();
@@ -395,6 +401,56 @@ public class ControladorBens {
         }
 
         return bensDoProprietario;
+    }
+
+
+
+    //busca de bem por nome, localizacao ou id
+    public List<Bem> buscarBensPorAtributo(String filtro) {
+        if (filtro == null || filtro.trim().isEmpty()) {
+            return repositorioBens.listar(); 
+        }
+
+        try {
+            int id = Integer.parseInt(filtro);
+            Bem bem;
+            try {
+                bem = buscarBemPorId(id);
+                if (bem != null) {
+                    return List.of(bem);
+                }
+            } catch (BemNaoExisteException e) {
+                e.printStackTrace();
+            } 
+        } catch (NumberFormatException e) {
+        }
+
+        List<Bem> bensEncontrados = new ArrayList<>();
+        try {
+            bensEncontrados.addAll(listarBensPorNome(filtro));
+        } catch (DadosInsuficientesException e) {
+            e.printStackTrace();
+        }
+        try {
+            bensEncontrados.addAll(listarBensUsuarioPorLocalizacao(filtro));
+        } catch (DadosInsuficientesException e) {
+            e.printStackTrace();
+        }
+        try {
+            bensEncontrados.addAll(listarBensPorDescricao(filtro));
+        } catch (DadosInsuficientesException e) {
+            e.printStackTrace();
+        }
+
+        // Remover duplicatas
+        List<Bem> resultadoFinal = new ArrayList<>();
+        for (Bem bem : bensEncontrados) {
+            if (!resultadoFinal.contains(bem)) {
+                resultadoFinal.add(bem);
+            }
+        }
+
+        return resultadoFinal;
     }
 
 }

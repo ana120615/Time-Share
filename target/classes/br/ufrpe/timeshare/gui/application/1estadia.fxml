@@ -11,8 +11,8 @@
    <children>
       <TabPane layoutY="63.0" prefHeight="338.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE">
         <tabs>
-          <Tab text="Ativas" />
-          <Tab text="Inativas" />
+          <Tab text="Ativa" />
+          <Tab text="Todas as estadias" />
         </tabs>
       </TabPane>
       <Label layoutX="256.0" layoutY="14.0" text="Estadia">
