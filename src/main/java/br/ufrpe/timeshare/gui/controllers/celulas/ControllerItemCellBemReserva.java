@@ -2,7 +2,10 @@ package br.ufrpe.timeshare.gui.controllers.celulas;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.DateCell;
 import javafx.scene.control.DatePicker;
@@ -91,7 +94,7 @@ public class ControllerItemCellBemReserva {
     }
     
 
-    @FXML
+  @FXML
 private void abrirMiniTelaReserva(ActionEvent event) {
     Stage popupStage = new Stage();
     popupStage.initModality(Modality.APPLICATION_MODAL);
@@ -99,20 +102,14 @@ private void abrirMiniTelaReserva(ActionEvent event) {
 
     TextField mesesTextField = new TextField();
     mesesTextField.setPromptText("Número de meses");
+    
     DatePicker dataInicioPicker = new DatePicker();
     DatePicker dataFimPicker = new DatePicker();
 
-    ButtonType confirmarButtonType = new ButtonType("Confirmar");
-    ButtonType cancelarButtonType = new ButtonType("Cancelar", ButtonType.CANCEL.getButtonData());
+    Button confirmarButton = new Button("Confirmar");
+    Button cancelarButton = new Button("Cancelar");
 
-    Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-    alert.setTitle("Reservar " + bem.getNome());
-    alert.setHeaderText("Selecione o período e as datas para reservar:");
-    alert.getDialogPane().setContent(new VBox(mesesTextField, dataInicioPicker, dataFimPicker));
-    alert.getButtonTypes().setAll(confirmarButtonType, cancelarButtonType);
-
-    Optional<ButtonType> result = alert.showAndWait();
-    if (result.isPresent() && result.get() == confirmarButtonType) {
+    confirmarButton.setOnAction(e -> {
         String mesesStr = mesesTextField.getText();
         LocalDate dataInicio = dataInicioPicker.getValue();
         LocalDate dataFim = dataFimPicker.getValue();
@@ -121,14 +118,28 @@ private void abrirMiniTelaReserva(ActionEvent event) {
             try {
                 int meses = Integer.parseInt(mesesStr);
                 confirmarReserva(event, dataInicio, dataFim, meses);
-            } catch (NumberFormatException e) {
+                popupStage.close(); // Fechar a mini tela ao confirmar
+            } catch (NumberFormatException ex) {
                 exibirAlertaErro("Erro", "Período inválido", "Por favor, insira um número válido de meses.");
             }
         } else {
             exibirAlertaErro("Erro", "Dados inválidos", "Por favor, preencha todos os campos.");
         }
-    }
+    });
+
+    cancelarButton.setOnAction(e -> popupStage.close()); 
+
+    
+    VBox layout = new VBox(10);
+    layout.getChildren().addAll(mesesTextField, dataInicioPicker, dataFimPicker, confirmarButton, cancelarButton);
+    layout.setPadding(new Insets(20));
+
+    
+    Scene scene = new Scene(layout);
+    popupStage.setScene(scene);
+    popupStage.showAndWait(); 
 }
+
 
 
 
