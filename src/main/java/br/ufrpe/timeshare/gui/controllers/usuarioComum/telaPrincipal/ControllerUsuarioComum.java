@@ -146,6 +146,17 @@ public class ControllerUsuarioComum implements ControllerBase {
     
   }  
   
+@FXML
+public void irParaTelaEstadia(ActionEvent event){
+    if (usuario != null) {
+        ScreenManager.getInstance().setData(usuario);
+        ScreenManager.getInstance().showEstadiaScreen();
+    } else {
+        System.out.println("Usuario não logado");
+    }  
+}
+
+
   @FXML
   public void irParaTelaMinhasReservas(ActionEvent event){
     

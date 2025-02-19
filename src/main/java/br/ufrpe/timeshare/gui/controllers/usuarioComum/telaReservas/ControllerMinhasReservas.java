@@ -60,6 +60,7 @@ private DatePicker dataInicioPicker;
 
 private DatePicker dataFimPicker;
 
+@FXML
 public void initialize(){
 controladorReservas = new ControladorReservas();
 this.dataInicioPicker = new DatePicker();
