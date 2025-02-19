@@ -6,29 +6,34 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import br.ufrpe.timeshare.negocio.beans.Bem;
-
+import br.ufrpe.timeshare.negocio.beans.Cota;
 import java.io.File;
 
-public class ControllerItemCellBemCota {
+public class ControllerItemCellCotaReserva {
 
     @FXML
     private HBox itemCell;
-    @FXML
-    private ImageView imagemBem;
-    @FXML
-    private Label nomeBem;
-    @FXML
-    private Label descricaoBem;
-    @FXML
-    private Label localizacaoBem;
-    @FXML
-    private Label capacidadeBem;
 
-    public void setItem(Bem bem) {
-        if (bem != null) {
-            nomeBem.setText(bem.getNome());
-            descricaoBem.setText(bem.getDescricao());
-            localizacaoBem.setText(bem.getLocalizacao());
+    @FXML
+    private Label nomeBemAssociado;
+    
+    @FXML
+    private Label dataInicio;
+
+    @FXML
+    private Label dataFim;
+
+    @FXML
+    private Label nomeProprietario;
+
+    @FXML
+    private Label idCota;
+
+    public void setItem(Cota cota) {
+        if (cota != null) {
+            nomeBemAssociado.setText(cota.getBem().getNome());
+            dataInicio.setText(cota.getDataInicio()); //formatar p string
+            dataFim.setText(cota.getDataFim()); //formatar p string
             capacidadeBem.setText(String.valueOf(bem.getCapacidade()));
 
             if (bem.getCaminhoImagem() != null && !bem.getCaminhoImagem().isEmpty()) {

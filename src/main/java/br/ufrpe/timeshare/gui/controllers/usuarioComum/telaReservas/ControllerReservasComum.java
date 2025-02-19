@@ -12,7 +12,7 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Button;
 import br.ufrpe.timeshare.gui.application.ScreenManager;
 import br.ufrpe.timeshare.gui.controllers.basico.ControllerBase;
-import br.ufrpe.timeshare.gui.controllers.celulas.ControllerItemCellBemCota;
+import br.ufrpe.timeshare.gui.controllers.celulas.ControllerItemCellCotaReserva;
 import br.ufrpe.timeshare.gui.controllers.celulas.ControllerItemCellBemReserva;
 import br.ufrpe.timeshare.negocio.ControladorBens;
 import br.ufrpe.timeshare.negocio.beans.Bem;
@@ -134,7 +134,7 @@ public class ControllerReservasComum implements ControllerBase {
                             try {
                                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/br/ufrpe/timeshare/gui/application/ItemCellBemCota.fxml"));
                                 HBox root = loader.load();
-                                ControllerItemCellBemCota controller = loader.getController();
+                                ControllerItemCellCotaReserva controller = loader.getController();
                                 controller.setItem(item);
                                 setGraphic(root);
                             } catch (IOException e) {
