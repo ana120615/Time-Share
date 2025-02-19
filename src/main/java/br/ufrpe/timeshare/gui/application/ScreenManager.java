@@ -41,7 +41,7 @@ public class ScreenManager {
         carregarTela("TelaDeVendas", "/br/ufrpe/timeshare/gui/application/TelaDeVenda.fxml");
         carregarTela("TelaDeCotas", "/br/ufrpe/timeshare/gui/application/TelaDeCotas.fxml");
         carregarTela("TelaMinhasCotas", "/br/ufrpe/timeshare/gui/application/TelaMinhasCotas.fxml");
-        carregarTela("TelaRealizarReserva", "/br/ufrpe/timeshare/gui/application/BensDisponReserva.fxml");
+        carregarTela("TelaRealizarReserva", "/br/ufrpe/timeshare/gui/application/RealizarReserva.fxml");
         carregarTela("TelaMinhasReservas","/br/ufrpe/timeshare/gui/application/MinhasReservasComum.fxml" );
     }
 
