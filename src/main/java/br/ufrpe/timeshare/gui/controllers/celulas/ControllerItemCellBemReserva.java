@@ -1,7 +1,5 @@
 package br.ufrpe.timeshare.gui.controllers.celulas;
 
-
-
 import javafx.event.ActionEvent;
 
 import javafx.fxml.FXML;

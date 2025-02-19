@@ -66,7 +66,6 @@ public class Reserva extends Entidade{
     }
 
 
-    //verificar se precisa formatar os numeros
     @Override
     public String toString() {
      String comprovanteReserva = "FLEX SHARE\n ";
