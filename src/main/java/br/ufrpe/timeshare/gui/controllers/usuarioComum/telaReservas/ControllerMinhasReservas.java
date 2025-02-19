@@ -19,6 +19,7 @@ import br.ufrpe.timeshare.excecoes.ReservaNaoExisteException;
 import br.ufrpe.timeshare.excecoes.ReservaNaoReembolsavelException;
 import br.ufrpe.timeshare.excecoes.UsuarioNaoPermitidoException;
 import br.ufrpe.timeshare.gui.application.ScreenManager;
+import br.ufrpe.timeshare.gui.controllers.basico.ControllerBase;
 import br.ufrpe.timeshare.negocio.ControladorReservas;
 import br.ufrpe.timeshare.negocio.beans.Reserva;
 import br.ufrpe.timeshare.negocio.beans.Usuario;
@@ -40,7 +41,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-public class ControllerMinhasReservas {
+public class ControllerMinhasReservas implements ControllerBase {
 
 //celulas para mostrar reservas
 //botoes de realizar checkin, cancelar reserva e alterar periodo reserva
@@ -61,16 +62,27 @@ private DatePicker dataFimPicker;
 
 public void initialize(){
 controladorReservas = new ControladorReservas();
-Object data = ScreenManager.getInstance().getData();
-if(data instanceof Usuario){
-    this.usuarioLogado = (Usuario) data;
-}
-reservas.addAll(controladorReservas.listarReservasUsuario(usuarioLogado));
-exibirReservas();
-
 this.dataInicioPicker = new DatePicker();
 this.dataFimPicker = new DatePicker();
 }
+
+public void receberReservas(Usuario usuario){
+    reservas.clear();
+    reservas.addAll(controladorReservas.listarReservasUsuario(usuario));
+}
+
+@Override
+    public void receiveData(Object data) {
+        System.out.println("receiveData chamado com: " + data);
+        if (data instanceof Usuario) {
+            this.usuarioLogado = (Usuario) data;
+            System.out.println("Usuário definido: " + usuarioLogado.getNome());
+            receberReservas(usuarioLogado);
+            exibirReservas();
+        } else {
+            System.err.println("Erro: receiveData recebeu um objeto inválido.");
+        }
+    }
 
 private void exibirReservas(){
     ObservableList<VBox> itens = FXCollections.observableArrayList();
@@ -131,6 +143,8 @@ private void fazerCheckin(Reserva reserva) {
     try {
         comprovante = controladorReservas.checkin(id);
         exibirAlertaInfo("Check in realizado com sucesso", "Comprovante", comprovante);
+        receberReservas(usuarioLogado);
+        exibirReservas();
     } catch (EstadiaJaInicializadaException | ReservaNaoExisteException | ReservaJaCanceladaException
             | ForaPeriodoException e) {
         exibirAlertaErro("Erro", "Problema ao realizar check in", e.getMessage());
@@ -301,6 +315,8 @@ public void confirmarAlteracao(ActionEvent event,Reserva reserva, LocalDate data
         try {
             comprovante = controladorReservas.alterarPeriodoReserva(id, inicioPeriodo, fimPeriodo, usuarioLogado);
             exibirAlertaInfo("Alteracao realizada com sucesso", "Comprovante", comprovante);
+            receberReservas(usuarioLogado);
+        exibirReservas();
         } catch (ReservaNaoExisteException | ReservaJaCanceladaException | ForaPeriodoException
                 | PeriodoJaReservadoException | PeriodoNaoDisponivelParaReservaException | CotaJaReservadaException
                 | ReservaJaExisteException | DadosInsuficientesException | UsuarioNaoPermitidoException e) {
@@ -382,6 +398,8 @@ private void cancelarReserva(Reserva reserva) {
     try {
         comprovante = controladorReservas.cancelarReserva(id, usuarioLogado);
         exibirAlertaInfo("Reserva cancelada com sucesso", "Comprovante", comprovante);
+        receberReservas(usuarioLogado);
+        exibirReservas();
     } catch (ReservaNaoExisteException | ReservaJaCanceladaException | CotaJaReservadaException
             | UsuarioNaoPermitidoException | ReservaNaoReembolsavelException | DadosInsuficientesException e) {
             exibirAlertaErro("Erro", "Problema ao cancelar reserva", e.getMessage());

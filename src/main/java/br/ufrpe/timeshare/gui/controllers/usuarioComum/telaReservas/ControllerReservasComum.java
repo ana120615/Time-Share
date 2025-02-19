@@ -11,6 +11,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Button;
 import br.ufrpe.timeshare.gui.application.ScreenManager;
+import br.ufrpe.timeshare.gui.controllers.basico.ControllerBase;
 import br.ufrpe.timeshare.gui.controllers.celulas.ControllerItemCellBemCota;
 import br.ufrpe.timeshare.gui.controllers.celulas.ControllerItemCellBemReserva;
 import br.ufrpe.timeshare.negocio.ControladorBens;
@@ -24,7 +25,7 @@ import javafx.scene.control.Alert.AlertType;
 import java.io.IOException;
 import java.util.List;
 
-public class ControllerReservasComum {
+public class ControllerReservasComum implements ControllerBase {
 
     @FXML
     private ListView<Bem> todosBensListView;
@@ -49,13 +50,18 @@ public class ControllerReservasComum {
 @FXML
     public void initialize() {
         this.controladorBens = new ControladorBens();
-        // Usuário logado
-        Object data = ScreenManager.getInstance().getData();
+        exibirBensIniciais(); // Exibe todos os bens ao inicializar a tela
+    }
+
+@Override
+    public void receiveData(Object data) {
+        System.out.println("receiveData chamado com: " + data);
         if (data instanceof Usuario) {
             this.usuarioLogado = (Usuario) data;
+            System.out.println("Usuário definido: " + usuarioLogado.getNome());
+        } else {
+            System.err.println("Erro: receiveData recebeu um objeto inválido.");
         }
-
-        exibirBensIniciais(); // Exibe todos os bens ao inicializar a tela
     }
 
     //para mensagem de erro

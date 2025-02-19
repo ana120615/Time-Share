@@ -163,11 +163,11 @@ public class ControladorReservas {
             throw new ReservaNaoExisteException("Reserva inexistente");
         }
         Estadia estadia = repositorioEstadia.buscarEstadiaPorReserva((int) reservaCancelada.getId());
-        if (estadia != null && estadia.getDataInicio() != null && estadia.getDataFim() == null) {
+        if (estadia != null && estadia.getDataInicio() != null && estadia.getDataInicio().isBefore(LocalDateTime.now()) && estadia.getDataFim() == null) {
             throw new ReservaJaCanceladaException("Estadia ja iniciada. Nao pode ser cancelada.");
         }
         ArrayList<Cota> cotasBemAssociadoReserva = reservaCancelada.getBem().getCotas();
-        if (!reservaCancelada.getBem().getCadastradoPor().equals(usuario) || !reservaCancelada.getUsuarioComum().equals(usuario)) {
+        if (!reservaCancelada.getBem().getCadastradoPor().equals(usuario) && !reservaCancelada.getUsuarioComum().equals(usuario)) {
             throw new UsuarioNaoPermitidoException("Reserva nao vinculada a este usuario.");
         }
         reembolso = reembolsar(reservaCancelada);
