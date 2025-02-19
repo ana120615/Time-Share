@@ -1,6 +1,7 @@
 br\ufrpe\timeshare\excecoes\UsuarioNaoExisteException.class
 br\ufrpe\timeshare\negocio\beans\Entidade.class
 br\ufrpe\timeshare\dados\RepositorioEstadia.class
+br\ufrpe\timeshare\gui\controllers\usuarioComum\telaReservas\ControllerMinhasReservas.class
 br\ufrpe\timeshare\gui\controllers\celulas\ControllerItemCellCotaVenda.class
 br\ufrpe\timeshare\negocio\beans\TipoUsuario.class
 br\ufrpe\timeshare\gui\controllers\usuarioAdmin\telaCotas\ControllerTelaDeCotas$3$1.class
@@ -21,6 +22,7 @@ br\ufrpe\timeshare\gui\controllers\usuarioComum\telaVendaCotas\ControllerTelaDeV
 br\ufrpe\timeshare\gui\controllers\basico\ControllerConfiguracoes.class
 br\ufrpe\timeshare\gui\controllers\celulas\ControllerItemCellBemOfertado.class
 br\ufrpe\timeshare\gui\controllers\usuarioComum\telaMinhasCotas\ControllerMinhasCotas.class
+br\ufrpe\timeshare\gui\controllers\celulas\ControllerItemCellBemReserva$4.class
 br\ufrpe\timeshare\excecoes\QuantidadeDeCotasExcedidasException.class
 br\ufrpe\timeshare\gui\controllers\basico\ControllerLogin.class
 br\ufrpe\timeshare\excecoes\UsuarioJaExisteException.class
@@ -28,6 +30,7 @@ br\ufrpe\timeshare\dados\IRepositorioReservas.class
 br\ufrpe\timeshare\dados\RepositorioUsuarios.class
 br\ufrpe\timeshare\gui\controllers\usuarioAdmin\telaCotas\ControllerDeslocamentoDeCotasPopUP.class
 br\ufrpe\timeshare\gui\controllers\usuarioComum\telaVendaCotas\ControllerAdicionarCotaPopUp.class
+br\ufrpe\timeshare\gui\controllers\celulas\ControllerItemCellBemReserva$3.class
 br\ufrpe\timeshare\gui\controllers\usuarioAdmin\telaCadastroBem\ControllerCadastroBens.class
 br\ufrpe\timeshare\excecoes\BemJaOfertadoException.class
 br\ufrpe\timeshare\excecoes\DadosInsuficientesException.class

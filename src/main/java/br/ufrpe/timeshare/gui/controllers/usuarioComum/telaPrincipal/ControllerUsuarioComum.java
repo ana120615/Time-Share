@@ -138,5 +138,10 @@ public class ControllerUsuarioComum implements ControllerBase {
   public void irParaTelaRealizarReserva(ActionEvent event){
     ScreenManager.getInstance().showRealizarReservaScreen();
   }  
+  
+  @FXML
+  public void irParaTelaMinhasReservas(ActionEvent event){
+    ScreenManager.getInstance().showMinhasReservasScreen();
+  }
 
 }
