@@ -1,13 +1,27 @@
 package br.ufrpe.timeshare.gui.controllers.celulas;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
-import br.ufrpe.timeshare.negocio.beans.Bem;
+import br.ufrpe.timeshare.excecoes.CotaJaReservadaException;
+import br.ufrpe.timeshare.excecoes.DadosInsuficientesException;
+import br.ufrpe.timeshare.excecoes.ForaPeriodoException;
+import br.ufrpe.timeshare.excecoes.PeriodoJaReservadoException;
+import br.ufrpe.timeshare.excecoes.PeriodoNaoDisponivelParaReservaException;
+import br.ufrpe.timeshare.excecoes.ProprietarioNaoIdentificadoException;
+import br.ufrpe.timeshare.excecoes.ReservaJaExisteException;
+import br.ufrpe.timeshare.excecoes.ReservaNaoExisteException;
+import br.ufrpe.timeshare.excecoes.UsuarioNaoPermitidoException;
+import br.ufrpe.timeshare.gui.application.ScreenManager;
+import br.ufrpe.timeshare.negocio.ControladorReservas;
 import br.ufrpe.timeshare.negocio.beans.Cota;
-import java.io.File;
+import br.ufrpe.timeshare.negocio.beans.Usuario;
+
+import java.time.format.DateTimeFormatter;
+import java.util.Optional;
 
 public class ControllerItemCellCotaReserva {
 
@@ -29,24 +43,108 @@ public class ControllerItemCellCotaReserva {
     @FXML
     private Label idCota;
 
-    public void setItem(Cota cota) {
-        if (cota != null) {
-            nomeBemAssociado.setText(cota.getBem().getNome());
-            dataInicio.setText(cota.getDataInicio()); //formatar p string
-            dataFim.setText(cota.getDataFim()); //formatar p string
-            capacidadeBem.setText(String.valueOf(bem.getCapacidade()));
+    private Cota cota;
 
-            if (bem.getCaminhoImagem() != null && !bem.getCaminhoImagem().isEmpty()) {
-                File file = new File(bem.getCaminhoImagem());
-                if (file.exists()) {
-                    Image image = new Image(file.toURI().toString());
-                    imagemBem.setImage(image);
-                } else {
-                    imagemBem.setImage(null); 
-                }
-            } else {
-                imagemBem.setImage(null); 
-            }
+    @FXML
+    public Button reservarCotaButton;
+    
+    private ControladorReservas controladorReservas;
+
+    private Usuario usuarioLogado;
+
+    public void initialize() {
+
+ this.controladorReservas = new ControladorReservas();
+
+ // Usuario logado
+
+Object data = ScreenManager.getInstance().getData();
+
+if (data instanceof Usuario) {
+
+ this.usuarioLogado = (Usuario) data;
+
+}
+
+}
+    public void setItem(Cota cota) {
+        this.cota = cota;
+        if (cota != null) {
+            
+                    idCota.setText(String.valueOf(cota.getId())); // Formata o ID para String
+                    nomeBemAssociado.setText(cota.getBemAssociado().getNome());
+                    // Formata as datas LocalDateTime para String
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+                    dataInicio.setText(cota.getDataInicio().format(formatter));
+                    dataFim.setText(cota.getDataFim().format(formatter));
+        
+                    nomeProprietario.setText(cota.getProprietario().getNome());
         }
     }
+
+
+    @FXML
+private void handleReservarCota() {
+    String comprovante = null;
+    if (cota != null) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmação de Reserva");
+        alert.setHeaderText("Confirmar reserva da cota " + cota.getId() + "?");
+        alert.setContentText("Deseja realmente reservar esta cota?");
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            // Usuário clicou em OK, prosseguir com a reserva
+            System.out.println("Reservar cota: " + cota.getId());
+            try {
+                comprovante=controladorReservas.reservaPeriodoCota(cota, usuarioLogado);
+                exibirAlertaInfo("Operação realizada com sucesso!", "Cota reservada", comprovante);
+            } catch (ProprietarioNaoIdentificadoException | UsuarioNaoPermitidoException | DadosInsuficientesException
+                    | ReservaJaExisteException | ForaPeriodoException | PeriodoJaReservadoException
+                    | PeriodoNaoDisponivelParaReservaException | ReservaNaoExisteException
+                    | CotaJaReservadaException e) {
+                exibirAlertaErro("Erro", "Problema ao reservar cota", e.getMessage());
+            }
+        } else {
+            // Usuário clicou em Cancelar ou fechou o alerta
+            System.out.println("Reserva cancelada para cota: " + cota.getId());
+        }
+    } else {
+        exibirAlertaErro("Erro", "Cota não encontrada", "Não foi possível encontrar a cota para reserva.");
+    }
+}
+
+
+
+    private void exibirAlertaErro(String titulo, String header, String contentText) {
+
+ Alert alerta = new Alert(Alert.AlertType.ERROR);
+
+ alerta.setTitle(titulo);
+
+ alerta.setHeaderText(header);
+
+ alerta.setContentText(contentText);
+
+ alerta.getDialogPane().setStyle("-fx-background-color: #ffcccc;"); // Vermelho claro
+
+ alerta.showAndWait();
+
+ }
+
+
+
+ private void exibirAlertaInfo(String titulo, String header, String contentText) {
+
+Alert alerta = new Alert(Alert.AlertType.INFORMATION);
+
+alerta.setTitle(titulo);
+
+alerta.setHeaderText(header);
+
+ alerta.setContentText(contentText);
+
+ alerta.showAndWait();
+
+}
 }

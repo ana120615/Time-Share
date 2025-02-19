@@ -42,10 +42,10 @@ C:\Users\laila\Documents\GitHub\Time-Share\src\main\java\br\ufrpe\timeshare\gui\
 C:\Users\laila\Documents\GitHub\Time-Share\src\main\java\br\ufrpe\timeshare\gui\controllers\basico\ControllerConfiguracoes.java
 C:\Users\laila\Documents\GitHub\Time-Share\src\main\java\br\ufrpe\timeshare\gui\controllers\basico\ControllerLogin.java
 C:\Users\laila\Documents\GitHub\Time-Share\src\main\java\br\ufrpe\timeshare\gui\controllers\celulas\ControllerItemCellBem.java
-C:\Users\laila\Documents\GitHub\Time-Share\src\main\java\br\ufrpe\timeshare\gui\controllers\celulas\ControllerItemCellBemCota.java
 C:\Users\laila\Documents\GitHub\Time-Share\src\main\java\br\ufrpe\timeshare\gui\controllers\celulas\ControllerItemCellBemOfertado.java
 C:\Users\laila\Documents\GitHub\Time-Share\src\main\java\br\ufrpe\timeshare\gui\controllers\celulas\ControllerItemCellBemReserva.java
 C:\Users\laila\Documents\GitHub\Time-Share\src\main\java\br\ufrpe\timeshare\gui\controllers\celulas\ControllerItemCellCota.java
+C:\Users\laila\Documents\GitHub\Time-Share\src\main\java\br\ufrpe\timeshare\gui\controllers\celulas\ControllerItemCellCotaReserva.java
 C:\Users\laila\Documents\GitHub\Time-Share\src\main\java\br\ufrpe\timeshare\gui\controllers\celulas\ControllerItemCellCotaVenda.java
 C:\Users\laila\Documents\GitHub\Time-Share\src\main\java\br\ufrpe\timeshare\gui\controllers\usuarioAdmin\telaCadastroBem\ControllerCadastroBens.java
 C:\Users\laila\Documents\GitHub\Time-Share\src\main\java\br\ufrpe\timeshare\gui\controllers\usuarioAdmin\telaCotas\ControllerDeslocamentoDeCotasPopUP.java

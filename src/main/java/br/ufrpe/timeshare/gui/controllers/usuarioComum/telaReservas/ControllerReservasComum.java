@@ -16,6 +16,7 @@ import br.ufrpe.timeshare.gui.controllers.celulas.ControllerItemCellCotaReserva;
 import br.ufrpe.timeshare.gui.controllers.celulas.ControllerItemCellBemReserva;
 import br.ufrpe.timeshare.negocio.ControladorBens;
 import br.ufrpe.timeshare.negocio.beans.Bem;
+import br.ufrpe.timeshare.negocio.beans.Cota;
 import br.ufrpe.timeshare.negocio.beans.Usuario;
 import javafx.util.Callback;
 import javafx.scene.layout.HBox;
@@ -34,16 +35,12 @@ public class ControllerReservasComum implements ControllerBase {
     @FXML
     private Button buscarTodosBensButton;
     @FXML
-    private ListView<Bem> meusBensListView;
-    @FXML
-    private TextField buscarMeusBensTextField;
-    @FXML
-    private Button buscarMeusBensButton; 
+    private ListView<Cota> minhasCotasListView;
     @FXML
     private ScrollPane todosBensScrollPane;
     @FXML
-    private ScrollPane meusBensScrollPane;
-
+    private ScrollPane minhasCotasScrollPane;
+    
     private ControladorBens controladorBens;
     private Usuario usuarioLogado;
 
@@ -119,38 +116,46 @@ public class ControllerReservasComum implements ControllerBase {
     }
     
 
-        // Configuração para meusBensListView (bens com cotas)
-        private void configurarListViewMeusBens(){
-        meusBensListView.setCellFactory(new Callback<>() {
-            @Override
-            public ListCell<Bem> call(ListView<Bem> listView) {
-                return new ListCell<>() {
-                    @Override
-                    protected void updateItem(Bem item, boolean empty) {
-                        super.updateItem(item, empty);
-                        if (empty || item == null) {
-                            setGraphic(null);
-                        } else {
-                            try {
-                                FXMLLoader loader = new FXMLLoader(getClass().getResource("/br/ufrpe/timeshare/gui/application/ItemCellBemCota.fxml"));
-                                HBox root = loader.load();
-                                ControllerItemCellCotaReserva controller = loader.getController();
-                                controller.setItem(item);
+        // Configuração para minhasCotasListView
+        private void configurarListViewMinhasCotas() {
+            minhasCotasListView.setCellFactory(new Callback<>() {
+                @Override
+                public ListCell<Cota> call(ListView<Cota> listView) {
+                    return new ListCell<>() {
+                        private FXMLLoader loader;
+                        private HBox root;
+                        private ControllerItemCellCotaReserva controller;
+    
+                        @Override
+                        protected void updateItem(Cota item, boolean empty) {
+                            super.updateItem(item, empty);
+                            if (empty || item == null) {
+                                setGraphic(null);
+                            } else {
+                                if (loader == null) {
+                                    try {
+                                        loader = new FXMLLoader(getClass().getResource("/br/ufrpe/timeshare/gui/application/ItemCellCotaReserva.fxml"));
+                                        root = loader.load();
+                                        controller = loader.getController();
+                                    } catch (IOException e) {
+                                        exibirAlertaErro("Erro", "Erro ao exibir cotas", e.getMessage());
+                                        return;
+                                    }
+                                }
+                                controller.setItem(item); 
+    
                                 setGraphic(root);
-                            } catch (IOException e) {
-                                exibirAlertaErro("Erro", "Erro ao exibir bens", e.getMessage());
                             }
                         }
-                    }
-                };
-            }
-        });
-    }
+                    };
+                }
+            });
+        }
 
 
     private void exibirBensIniciais() {
         buscarTodosBens();
-        buscarMeusBens();
+        buscarMinhasCotas();
     }
 
     @FXML
@@ -174,24 +179,16 @@ public class ControllerReservasComum implements ControllerBase {
     }
 
     @FXML
-    private void buscarMeusBens() {
-        try {
-            String filtro = buscarMeusBensTextField.getText();
-            List<Bem> bensComCotas;
-
-            if (filtro == null || filtro.trim().isEmpty()) {
-                bensComCotas = controladorBens.buscarBensPorProprietarioDeCotas(usuarioLogado);
-            } else {
-                bensComCotas = controladorBens.buscarBensPorAtributo(filtro);
-            }
-
-            ObservableList<Bem> items = FXCollections.observableArrayList(bensComCotas);
-            meusBensListView.setItems(items);
-            configurarListViewMeusBens();
-        } catch (Exception e) {
-            exibirAlertaErro("Erro", "Erro ao tentar buscar bens", e.getMessage());
-        }
+private void buscarMinhasCotas() {
+    try {
+        List<Cota> cotas = controladorBens.listarCotasDeUmUsuario(usuarioLogado);
+        ObservableList<Cota> items = FXCollections.observableArrayList(cotas);
+        minhasCotasListView.setItems(items);
+        configurarListViewMinhasCotas();
+    } catch (Exception e) {
+        exibirAlertaErro("Erro", "Erro ao exibir cotas", e.getMessage());
     }
+}
 
     @FXML
     public void voltarTelaPrincipalComum(ActionEvent event){
