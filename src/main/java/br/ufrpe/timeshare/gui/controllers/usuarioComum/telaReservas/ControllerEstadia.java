@@ -10,6 +10,7 @@ import br.ufrpe.timeshare.excecoes.ReservaJaCanceladaException;
 import br.ufrpe.timeshare.excecoes.ReservaJaExisteException;
 import br.ufrpe.timeshare.excecoes.ReservaNaoExisteException;
 import br.ufrpe.timeshare.excecoes.UsuarioNaoPermitidoException;
+import br.ufrpe.timeshare.gui.application.ScreenManager;
 import br.ufrpe.timeshare.gui.controllers.basico.ControllerBase;
 import br.ufrpe.timeshare.negocio.ControladorReservas;
 import br.ufrpe.timeshare.negocio.beans.Estadia;
@@ -19,6 +20,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.Label;
 import javafx.scene.control.Button;
 
 import java.util.List;
@@ -27,6 +29,9 @@ import java.util.Optional;
 public class ControllerEstadia implements ControllerBase {
     @FXML
     private ListView<Estadia> listViewEstadias;
+
+    @FXML
+    private Label labelEstadiaAtiva;
     
     @FXML
     private Button btnCheckOut, btnProlongar;
@@ -40,7 +45,6 @@ public class ControllerEstadia implements ControllerBase {
     @FXML
     public void initialize() {
         controladorReservas=new ControladorReservas();
-        carregarEstadias();
     }
     
     @Override
@@ -49,25 +53,37 @@ public class ControllerEstadia implements ControllerBase {
         if (data instanceof Usuario) {
             this.usuarioLogado = (Usuario) data;
             System.out.println("Usuário definido: " + usuarioLogado.getNome());
+            carregarEstadias(usuarioLogado);
         } else {
             System.err.println("Erro: receiveData recebeu um objeto inválido.");
         }
     }
 
-    private void carregarEstadias() {
+    private void carregarEstadias(Usuario usuario) {
         
-        List<Estadia> estadias = controladorReservas.listarEstadiasUsuario(usuarioLogado);
+        List<Estadia> estadias = controladorReservas.listarEstadiasUsuario(usuario);
         listViewEstadias.getItems().setAll(estadias);
 
         // Obtém a estadia ativa, se houver
         for(Estadia estadia: estadias){
-            if(estadia.getReserva()==null){
+            if(estadia.getReserva()!=null){
                 estadiaAtiva = estadia;
+                break;
             }
         }
-    
-        btnCheckOut.setDisable(estadiaAtiva == null);
-        btnProlongar.setDisable(estadiaAtiva == null);
+        if (estadiaAtiva != null) {
+            labelEstadiaAtiva.setText(estadiaAtiva.toString());
+        } else {
+            labelEstadiaAtiva.setText("Nenhuma estadia ativa encontrada.");
+        }
+
+        if(btnCheckOut != null){
+            btnCheckOut.setDisable(estadiaAtiva == null);
+        }
+        if(btnProlongar != null){
+            btnProlongar.setDisable(estadiaAtiva == null);
+        }
+
     }
     
     // Método para realizar o Check-out
@@ -85,14 +101,22 @@ public class ControllerEstadia implements ControllerBase {
             try {
                 controladorReservas.checkout((int)estadiaAtiva.getId());
                 exibirAlertaInfo("Sucesso!","Check out realizado com sucesso","Volte sempre!");
+                limparEstadiaAtiva();
+            carregarEstadias(usuarioLogado);
             } catch (ReservaNaoExisteException | ReservaJaCanceladaException | EstadiaNaoExisteException e) {
                 exibirAlertaErro("Erro", "Problema ao realizar check out", e.getMessage());
             }
-
-            carregarEstadias();
         }
     }
+
+    private void limparEstadiaAtiva() {
+        estadiaAtiva = null; // Remove a referência à estadia ativa
+        labelEstadiaAtiva.setText(""); // Limpa o label que exibe a estadia ativa
+        btnCheckOut.setDisable(true); // Desabilita o botão de checkout
+        btnProlongar.setDisable(true); // Desabilita o botão de prolongar
+    }
     
+    //FALTA CONSERTAR ISSO
     // Método para prolongar a estadia
     //Pede ao usuario a quantidade de dias
     @FXML
@@ -111,7 +135,7 @@ public class ControllerEstadia implements ControllerBase {
                 | UsuarioNaoPermitidoException | OperacaoNaoPermitidaException e) {
             exibirAlertaErro("Erro", "Problema ao prolongar estadia", e.getMessage());
         }
-        carregarEstadias();
+        carregarEstadias(usuarioLogado);
     }
     
     private void exibirAlertaErro(String titulo, String header, String contentText) {
@@ -144,6 +168,12 @@ public class ControllerEstadia implements ControllerBase {
         alert.setHeaderText(null);
         alert.setContentText(mensagem);
         return alert.showAndWait();
+    }
+
+    @FXML
+    private void handleVoltar() {
+       ScreenManager.getInstance().showUsuarioComumPrincipalScreen();
+        System.out.println("Voltando para a tela anterior...");
     }
 }
 

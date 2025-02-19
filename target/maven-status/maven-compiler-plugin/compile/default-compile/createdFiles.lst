@@ -16,6 +16,7 @@ br\ufrpe\timeshare\excecoes\EstadiaJaInicializadaException.class
 br\ufrpe\timeshare\gui\controllers\usuarioComum\telaReservas\ControllerReservasComum$2.class
 br\ufrpe\timeshare\dados\IRepositorioEstadia.class
 br\ufrpe\timeshare\gui\controllers\usuarioComum\telaPrincipal\ControllerUsuarioComum.class
+br\ufrpe\timeshare\gui\controllers\usuarioComum\telaReservas\ControllerEstadia.class
 br\ufrpe\timeshare\gui\controllers\usuarioComum\telaReservas\ControllerMinhasReservas$3.class
 br\ufrpe\timeshare\excecoes\CompraNaoFinalizada.class
 br\ufrpe\timeshare\excecoes\ForaPeriodoException.class
