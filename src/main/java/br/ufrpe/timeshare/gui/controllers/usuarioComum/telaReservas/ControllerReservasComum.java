@@ -54,6 +54,7 @@ public class ControllerReservasComum implements ControllerBase {
         System.out.println("receiveData chamado com: " + data);
         if (data instanceof Usuario) {
             this.usuarioLogado = (Usuario) data;
+            limparMinhasCotas();
             exibirBensIniciais();
             System.out.println("Usuário definido: " + usuarioLogado.getNome());
         } else {
@@ -158,8 +159,14 @@ public class ControllerReservasComum implements ControllerBase {
             });
         }
 
+        @FXML
+private void limparMinhasCotas() {
+    minhasCotasListView.getItems().clear();
+    minhasCotasScrollPane.setVvalue(0.0);
+}
 
     private void exibirBensIniciais() {
+        
         if (usuarioLogado != null) {
             buscarMinhasCotas();
         } else {

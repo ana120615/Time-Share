@@ -398,6 +398,7 @@ while (dataAtual.isBefore(fimPeriodo)) {
 
 
 public void confirmarReserva(ActionEvent event, LocalDate dataInicio, LocalDate dataFim) {
+    String comprovante = null;
 
  boolean periodoDisponivel = reservarBem(dataInicio, dataFim);
 
@@ -409,9 +410,9 @@ LocalDateTime fimPeriodo = dataFim.atStartOfDay();
 
  try {
 
- controladorReservas.criarReserva(inicioPeriodo, fimPeriodo, usuarioLogado, bem);
+ comprovante=controladorReservas.criarReserva(inicioPeriodo, fimPeriodo, usuarioLogado, bem);
 
- exibirAlertaInfo("Sucesso", "Reserva realizada", "Reserva para " + bem.getNome() + " de " + dataInicio + " até " + dataFim + " realizada com sucesso!");
+ exibirAlertaInfo("Sucesso", "Reserva realizada", comprovante);
 
  } catch (Exception e) {
 
