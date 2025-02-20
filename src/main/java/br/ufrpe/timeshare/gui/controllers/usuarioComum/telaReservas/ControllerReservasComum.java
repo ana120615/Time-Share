@@ -47,7 +47,6 @@ public class ControllerReservasComum implements ControllerBase {
 @FXML
     public void initialize() {
         this.controladorBens = new ControladorBens();
-        exibirBensIniciais(); // Exibe todos os bens ao inicializar a tela
     }
 
 @Override
@@ -55,6 +54,7 @@ public class ControllerReservasComum implements ControllerBase {
         System.out.println("receiveData chamado com: " + data);
         if (data instanceof Usuario) {
             this.usuarioLogado = (Usuario) data;
+            exibirBensIniciais();
             System.out.println("Usuário definido: " + usuarioLogado.getNome());
         } else {
             System.err.println("Erro: receiveData recebeu um objeto inválido.");
@@ -129,6 +129,7 @@ public class ControllerReservasComum implements ControllerBase {
                         @Override
                         protected void updateItem(Cota item, boolean empty) {
                             super.updateItem(item, empty);
+    
                             if (empty || item == null) {
                                 setGraphic(null);
                             } else {
@@ -137,12 +138,17 @@ public class ControllerReservasComum implements ControllerBase {
                                         loader = new FXMLLoader(getClass().getResource("/br/ufrpe/timeshare/gui/application/ItemCellCotaReserva.fxml"));
                                         root = loader.load();
                                         controller = loader.getController();
+    
+                                        // *** PASSA O usuarioLogado PARA ControllerItemCellCotaReserva ***
+                                        controller.receiveData(usuarioLogado); // Linha importante!
+    
                                     } catch (IOException e) {
                                         exibirAlertaErro("Erro", "Erro ao exibir cotas", e.getMessage());
                                         return;
                                     }
                                 }
-                                controller.setItem(item); 
+    
+                                controller.setItem(item);
     
                                 setGraphic(root);
                             }
@@ -154,8 +160,12 @@ public class ControllerReservasComum implements ControllerBase {
 
 
     private void exibirBensIniciais() {
+        if (usuarioLogado != null) {
+            buscarMinhasCotas();
+        } else {
+            exibirAlertaErro("Erro", "Erro em exibir cotas", "usuarioLogado não foi inicializado");
+        }
         buscarTodosBens();
-        buscarMinhasCotas();
     }
 
     @FXML
@@ -179,16 +189,21 @@ public class ControllerReservasComum implements ControllerBase {
     }
 
     @FXML
-private void buscarMinhasCotas() {
-    try {
-        List<Cota> cotas = controladorBens.listarCotasDeUmUsuario(usuarioLogado);
-        ObservableList<Cota> items = FXCollections.observableArrayList(cotas);
-        minhasCotasListView.setItems(items);
-        configurarListViewMinhasCotas();
-    } catch (Exception e) {
-        exibirAlertaErro("Erro", "Erro ao exibir cotas", e.getMessage());
+    private void buscarMinhasCotas() {
+        try {
+            List<Cota> cotas = controladorBens.listarCotasDeUmUsuario(usuarioLogado);
+            if (cotas == null || cotas.isEmpty()) {
+                System.out.println("Usuário não possui cotas.");
+                minhasCotasListView.getItems().clear(); // Limpa a lista
+                return; 
+            }
+            ObservableList<Cota> items = FXCollections.observableArrayList(cotas);
+            minhasCotasListView.setItems(items);
+            configurarListViewMinhasCotas();
+        } catch (Exception e) {
+            exibirAlertaErro("Erro", "Erro ao exibir cotas", e.getMessage());
+        }
     }
-}
 
     @FXML
     public void voltarTelaPrincipalComum(ActionEvent event){

@@ -15,7 +15,7 @@ import br.ufrpe.timeshare.excecoes.ProprietarioNaoIdentificadoException;
 import br.ufrpe.timeshare.excecoes.ReservaJaExisteException;
 import br.ufrpe.timeshare.excecoes.ReservaNaoExisteException;
 import br.ufrpe.timeshare.excecoes.UsuarioNaoPermitidoException;
-import br.ufrpe.timeshare.gui.application.ScreenManager;
+import br.ufrpe.timeshare.gui.controllers.basico.ControllerBase;
 import br.ufrpe.timeshare.negocio.ControladorReservas;
 import br.ufrpe.timeshare.negocio.beans.Cota;
 import br.ufrpe.timeshare.negocio.beans.Usuario;
@@ -23,7 +23,7 @@ import br.ufrpe.timeshare.negocio.beans.Usuario;
 import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
-public class ControllerItemCellCotaReserva {
+public class ControllerItemCellCotaReserva implements ControllerBase {
 
     @FXML
     private HBox itemCell;
@@ -56,17 +56,18 @@ public class ControllerItemCellCotaReserva {
 
  this.controladorReservas = new ControladorReservas();
 
- // Usuario logado
-
-Object data = ScreenManager.getInstance().getData();
-
-if (data instanceof Usuario) {
-
- this.usuarioLogado = (Usuario) data;
-
 }
 
-}
+@Override
+    public void receiveData(Object data) {
+        System.out.println("receiveData chamado com: " + data);
+        if (data instanceof Usuario) {
+            this.usuarioLogado = (Usuario) data;
+            System.out.println("Usuário definido: " + usuarioLogado.getNome());
+        } else {
+            System.err.println("Erro: receiveData recebeu um objeto inválido.");
+        }
+    }
     public void setItem(Cota cota) {
         this.cota = cota;
         if (cota != null) {
