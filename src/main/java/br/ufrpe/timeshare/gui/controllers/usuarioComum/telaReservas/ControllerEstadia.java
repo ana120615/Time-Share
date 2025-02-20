@@ -65,8 +65,9 @@ public class ControllerEstadia implements ControllerBase {
         listViewEstadias.getItems().setAll(estadias);
 
         // Obtém a estadia ativa, se houver
+        //implementar isso no controlador de reservas
         for(Estadia estadia: estadias){
-            if(estadia.getReserva()!=null){
+            if(estadia.getReserva()!=null && estadia.getDataFim()==null){
                 estadiaAtiva = estadia;
                 break;
             }
