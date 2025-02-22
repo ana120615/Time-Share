@@ -19,6 +19,9 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ListView;
+import javafx.scene.control.Spinner;
+import javafx.scene.control.SpinnerValueFactory;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.Button;
@@ -27,6 +30,12 @@ import java.util.List;
 import java.util.Optional;
 
 public class ControllerEstadia implements ControllerBase {
+    @FXML
+    private AnchorPane paneProlongar;
+    
+    @FXML
+    private Spinner<Integer> spinnerDias;
+
     @FXML
     private ListView<Estadia> listViewEstadias;
 
@@ -45,6 +54,8 @@ public class ControllerEstadia implements ControllerBase {
     @FXML
     public void initialize() {
         controladorReservas=new ControladorReservas();
+        SpinnerValueFactory<Integer> valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 30, 1);
+        spinnerDias.setValueFactory(valueFactory);
     }
     
     @Override
@@ -123,21 +134,41 @@ public class ControllerEstadia implements ControllerBase {
     @FXML
     private void handleProlongar() {
         if (estadiaAtiva == null) {
-            exibirAlertaInfo("Nenhuma estadia ativa", "Nao foi encontrada nenhuma estadia ativa para o usuario","estadia ativa null");
+            exibirAlertaInfo("Nenhuma estadia ativa", "Nao foi encontrada nenhuma estadia ativa para o usuario", "estadia ativa null");
             return;
         }
 
-        try {
-            controladorReservas.prolongarEstadia((int)estadiaAtiva.getId(), 0);
-            exibirAlertaInfo("Sucesso!","Estadia prolongada com sucesso","Aproveite!");
-        } catch (ReservaNaoExisteException | ReservaJaCanceladaException | ForaPeriodoException
-                | PeriodoJaReservadoException | PeriodoNaoDisponivelParaReservaException | CotaJaReservadaException
-                | ReservaJaExisteException | DadosInsuficientesException | EstadiaNaoExisteException
-                | UsuarioNaoPermitidoException | OperacaoNaoPermitidaException e) {
-            exibirAlertaErro("Erro", "Problema ao prolongar estadia", e.getMessage());
-        }
-        carregarEstadias(usuarioLogado);
+        // Exibe o painel de prolongamento
+        paneProlongar.setVisible(true);
     }
+
+    @FXML
+    private void handleConfirmarProlongamento() {
+        int diasProlongamento = spinnerDias.getValue();
+       String comprovante = null;
+        // Exibe uma janela de confirmação
+        Optional<ButtonType> confirmacao = mostrarConfirmacao("Deseja realmente prolongar a estadia por " + diasProlongamento + " dias?");
+        if (confirmacao.isPresent() && confirmacao.get() == ButtonType.OK) {
+            try {
+                comprovante=controladorReservas.prolongarEstadia((int) estadiaAtiva.getId(), diasProlongamento);
+                exibirAlertaInfo("Sucesso!", "Estadia prolongada com sucesso", "Aproveite!");
+                exibirAlertaInfo("Estadia prolongada", "Comprovante da reserva associada", comprovante);
+            } catch (Exception e) {
+                exibirAlertaErro("Erro", "Problema ao prolongar estadia", e.getMessage());
+            }
+
+            // Esconde o painel após confirmação
+            paneProlongar.setVisible(false);
+            carregarEstadias(usuarioLogado);
+        }
+    }
+
+    @FXML
+    private void handleCancelarProlongamento() {
+        // Apenas esconde o painel de prolongamento sem fazer nada
+        paneProlongar.setVisible(false);
+    }
+
     
     private void exibirAlertaErro(String titulo, String header, String contentText) {
         Alert alerta = new Alert(AlertType.ERROR);
