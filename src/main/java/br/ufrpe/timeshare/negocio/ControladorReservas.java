@@ -177,7 +177,7 @@ public class ControladorReservas {
         if (estadia != null && estadia.getDataInicio() != null && estadia.getDataFim() == null) {
             throw new ReservaJaCanceladaException("Estadia ja iniciada. Nao pode ser cancelada.");
         }
-        if (!reservaCancelada.getBem().getCadastradoPor().equals(usuario) || !reservaCancelada.getUsuarioComum().equals(usuario)) {
+        if (!reservaCancelada.getBem().getCadastradoPor().equals(usuario) && !reservaCancelada.getUsuarioComum().equals(usuario)) {
             throw new UsuarioNaoPermitidoException("Reserva nao vinculada a este usuario.");
         }
         reembolso = reembolsar(reservaCancelada);
