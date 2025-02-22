@@ -1,5 +1,7 @@
 package br.ufrpe.timeshare.negocio;
 
+import br.ufrpe.timeshare.dados.IRepositorioVenda;
+import br.ufrpe.timeshare.dados.RepositorioVenda;
 import br.ufrpe.timeshare.excecoes.*;
 import br.ufrpe.timeshare.negocio.beans.*;
 
@@ -12,31 +14,44 @@ import java.util.Random;
 import java.util.UUID;
 
 public class ControladorVendas {
+    private IRepositorioVenda repositorioVenda;
+
     ControladorBens controladorBens;
     ControladorUsuarioGeral controladorUsuarioGeral;
     ControladorReservas controladorReservas;
 
-    {
+    public ControladorVendas() {
+        this.repositorioVenda = RepositorioVenda.getInstancia();
         this.controladorBens = new ControladorBens();
         this.controladorUsuarioGeral = new ControladorUsuarioGeral();
         this.controladorReservas = new ControladorReservas();
     }
 
+    private Venda buscarVendaUsuario(long cpfUsuario) {
+        return this.repositorioVenda.buscarVendaUsuario(cpfUsuario);
+    }
+
     public Venda iniciarVenda(long cpfUsuario) throws UsuarioNaoExisteException {
         Usuario comprador = controladorUsuarioGeral.procurarUsuarioPorCpf(cpfUsuario);
-        Random random = new Random();
         if (comprador != null) {
-            int randomId = 99999 + random.nextInt(1000000);
-            Venda venda = new Venda(randomId);
-            venda.setUsuario(comprador);
-
-            return venda;
+            Venda venda = buscarVendaUsuario(cpfUsuario);
+            if (venda != null) {
+                return venda;
+            } else {
+                Random random = new Random();
+                int randomId = 99999 + random.nextInt(1000000);
+                Venda novaVenda = new Venda(randomId);
+                novaVenda.setUsuario(comprador);
+                this.repositorioVenda.cadastrar(novaVenda);
+                return novaVenda;
+            }
         } else {
             throw new UsuarioNaoExisteException("Usuário não existe.");
         }
     }
 
-    public void adicionarCotaCarrinho(int idCota, Venda venda) throws CotaNaoExisteException, CotaNaoOfertadaException {
+    public void adicionarCotaCarrinho(long idCota, Venda venda) throws
+            CotaNaoExisteException, CotaNaoOfertadaException {
         Cota cotaVenda = controladorBens.buscarCota(idCota);
 
         if (cotaVenda.getStatusDeDisponibilidadeParaCompra()) {
@@ -46,7 +61,7 @@ public class ControladorVendas {
         }
     }
 
-    public void removeCotaCarrinho(int idCota, Venda venda) throws CotaNaoExisteException {
+    public void removeCotaCarrinho(long idCota, Venda venda) throws CotaNaoExisteException {
         Cota cota = controladorBens.buscarCota(idCota);
 
         if (venda.getCarrinhoDeComprasCotas().contains(cota)) {
@@ -66,13 +81,14 @@ public class ControladorVendas {
         }
     }
 
-    public boolean transferenciaDeDireitos(long cpfUsuarioRemetente, long cpfUsuarioDestinario, int idCota) throws CotaNaoExisteException, UsuarioNaoExisteException, TransferenciaInvalidaException {
+    public boolean transferenciaDeDireitos(long cpfUsuarioRemetente, long cpfUsuarioDestinario, int idCota) throws
+            CotaNaoExisteException, UsuarioNaoExisteException, TransferenciaInvalidaException {
         Cota cotaTransferida = controladorBens.buscarCota(idCota);
 
         Usuario usuarioRemetente = controladorUsuarioGeral.procurarUsuarioPorCpf(cpfUsuarioRemetente);
         Usuario usuarioDestinatario = controladorUsuarioGeral.procurarUsuarioPorCpf(cpfUsuarioDestinario);
 
-        if (!cotaTransferida.getStatusDeDisponibilidadeParaReserva()) {
+        if (controladorReservas.verificarConflitoDeDatasReservaBem(cotaTransferida.getBemAssociado().getId(), cotaTransferida.getDataInicio(), cotaTransferida.getDataFim())) {
             throw new TransferenciaInvalidaException("Não é possível transferir uma cota que já foi reservada.");
         }
 
@@ -106,19 +122,15 @@ public class ControladorVendas {
         return resultado;
     }
 
-    public boolean aplicarDesconto(Venda venda, long cpfUsuario) throws UsuarioNaoExisteException {
-        boolean resultado = false;
-
+    public void aplicarDesconto(Venda venda, long cpfUsuario) throws UsuarioNaoExisteException {
         if (venda != null && !venda.getFoiDescontoAplicado()) {
             venda.setFoiDescontoAplicado(true);
-            resultado = true;
         }
-        return resultado;
     }
 
     public List<Reserva> getReservasNoPeriodoVenda(Venda venda) {
         List<Reserva> resultado = new ArrayList<>();
-        for(Cota cotas : venda.getCarrinhoDeComprasCotas()) {
+        for (Cota cotas : venda.getCarrinhoDeComprasCotas()) {
             resultado.addAll(controladorReservas.buscarReservasPorMultiplosPeriodos(cotas.getBemAssociado(), cotas.getDataInicio(), cotas.getDataFim()));
         }
         return resultado;
@@ -129,7 +141,8 @@ public class ControladorVendas {
     }
 
 
-    public String gerarComprovanteTransferencia(long cpfUsuarioRemetente, long cpfUsuarioDestinario, int idCota) throws CotaNaoExisteException, UsuarioNaoExisteException, TransferenciaInvalidaException {
+    public String gerarComprovanteTransferencia(long cpfUsuarioRemetente, long cpfUsuarioDestinario, int idCota) throws
+            CotaNaoExisteException, UsuarioNaoExisteException, TransferenciaInvalidaException {
         String resultado = "";
         Cota cotaTransferida = controladorBens.buscarCota(idCota);
 

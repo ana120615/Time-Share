@@ -237,7 +237,7 @@ public class ControladorBens {
         return new ArrayList<>(cotasGeradas);
     }
 
-    public Cota buscarCota(int idCota) throws CotaNaoExisteException {
+    public Cota buscarCota(long idCota) throws CotaNaoExisteException {
         Cota cota = repositorioCotas.buscar(idCota);
         if (cota == null) {
             throw new CotaNaoExisteException("Cota não existe");

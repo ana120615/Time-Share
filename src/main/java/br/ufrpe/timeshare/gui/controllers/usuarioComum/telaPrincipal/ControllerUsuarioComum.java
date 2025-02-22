@@ -133,39 +133,39 @@ public class ControllerUsuarioComum implements ControllerBase {
     public void irParaTelaMinhasCotas(ActionEvent event) {
         ScreenManager.getInstance().showTelaMinhasCotasScreen();
     }
-    
-  @FXML
-  public void irParaTelaRealizarReserva(ActionEvent event){
-    
-    if (usuario != null) {
-        ScreenManager.getInstance().setData(usuario);
-        ScreenManager.getInstance().showRealizarReservaScreen();
-    } else {
-        System.out.println("Usuario não logado");
+
+    @FXML
+    public void irParaTelaRealizarReserva(ActionEvent event) {
+
+        if (usuario != null) {
+            ScreenManager.getInstance().setData(usuario);
+            ScreenManager.getInstance().showRealizarReservaScreen();
+        } else {
+            System.out.println("Usuario não logado");
+        }
+
     }
-    
-  }  
-  
-@FXML
-public void irParaTelaEstadia(ActionEvent event){
-    if (usuario != null) {
-        ScreenManager.getInstance().setData(usuario);
-        ScreenManager.getInstance().showEstadiaScreen();
-    } else {
-        System.out.println("Usuario não logado");
-    }  
-}
+
+    @FXML
+    public void irParaTelaEstadia(ActionEvent event) {
+        if (usuario != null) {
+            ScreenManager.getInstance().setData(usuario);
+            ScreenManager.getInstance().showEstadiaScreen();
+        } else {
+            System.out.println("Usuario não logado");
+        }
+    }
 
 
-  @FXML
-  public void irParaTelaMinhasReservas(ActionEvent event){
-    
-    if (usuario != null) {
-        ScreenManager.getInstance().setData(usuario);
-        ScreenManager.getInstance().showMinhasReservasScreen();
-    } else {
-        System.out.println("Usuario não logado");
-    }  
-}
+    @FXML
+    public void irParaTelaMinhasReservas(ActionEvent event) {
+
+        if (usuario != null) {
+            ScreenManager.getInstance().setData(usuario);
+            ScreenManager.getInstance().showMinhasReservasScreen();
+        } else {
+            System.out.println("Usuario não logado");
+        }
+    }
 
 }

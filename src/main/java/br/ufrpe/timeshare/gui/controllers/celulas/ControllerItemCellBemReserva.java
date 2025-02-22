@@ -39,7 +39,6 @@ import br.ufrpe.timeshare.negocio.beans.Bem;
 import br.ufrpe.timeshare.negocio.beans.Usuario;
 
 
-
 import java.io.File;
 
 import java.time.LocalDate;
@@ -53,418 +52,380 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 
-
 public class ControllerItemCellBemReserva {
 
 
-@FXML
+    @FXML
 
- private HBox itemCell;
-
-
-
- @FXML
-
-private ImageView imagemBem;
+    private HBox itemCell;
 
 
+    @FXML
 
- @FXML
-
- private Label nomeBem;
-
+    private ImageView imagemBem;
 
 
- @FXML
+    @FXML
 
-private Label descricaoBem;
-
-
-
- @FXML
-
-private Label localizacaoBem;
+    private Label nomeBem;
 
 
+    @FXML
 
- @FXML
-
- private Label capacidadeBem;
-
+    private Label descricaoBem;
 
 
- private Bem bem;
+    @FXML
 
- private ControladorReservas controladorReservas;
-
-private Usuario usuarioLogado;
-
- private DatePicker dataInicioPicker;
-
-private DatePicker dataFimPicker;
+    private Label localizacaoBem;
 
 
+    @FXML
 
-public void initialize() {
-
- this.controladorReservas = new ControladorReservas();
-
+    private Label capacidadeBem;
 
 
- // Usuario logado
+    private Bem bem;
 
-Object data = ScreenManager.getInstance().getData();
+    private ControladorReservas controladorReservas;
 
-if (data instanceof Usuario) {
+    private Usuario usuarioLogado;
 
- this.usuarioLogado = (Usuario) data;
+    private DatePicker dataInicioPicker;
 
-}
- this.dataInicioPicker = new DatePicker();
-
- this.dataFimPicker = new DatePicker();
-
-}
+    private DatePicker dataFimPicker;
 
 
+    public void initialize() {
 
-private void configurarDayCellFactory() {
-    if(dataInicioPicker!=null && dataFimPicker!=null){
-    try {
-        LocalDate fimDoAno = LocalDate.of(Year.now().getValue(),12,31);
-        List<String> periodosDisponiveisString = controladorReservas.consultarDisponibilidadeParaReserva(bem, LocalDate.now().atStartOfDay(), fimDoAno.atStartOfDay(), usuarioLogado);
-        List<LocalDate> datasDisponiveis = periodosDisponiveisString.stream()
-                .map(dateString -> LocalDateTime.parse(dateString, DateTimeFormatter.ISO_LOCAL_DATE_TIME))
-                .map(LocalDateTime::toLocalDate)
-                .collect(Collectors.toList());
+        this.controladorReservas = new ControladorReservas();
 
-        dataInicioPicker.setDayCellFactory(picker -> new DateCell() {
-            public void updateItem(LocalDate date, boolean empty) {
-                super.updateItem(date, empty);
-                if (empty || date == null || !datasDisponiveis.contains(date)) {
-                    setDisable(true);
-                    setStyle("-fx-background-color: #cccccc;");
-                } else {
-                    setStyle("-fx-background-color: #ccffcc;");
-                }
-            }
-        });
 
-        dataFimPicker.setDayCellFactory(picker -> new DateCell() {
-            public void updateItem(LocalDate date, boolean empty) {
-                super.updateItem(date, empty);
-                if (empty || date == null || !datasDisponiveis.contains(date)) {
-                    setDisable(true);
-                    setStyle("-fx-background-color: #cccccc;");
-                } else {
-                    setStyle("-fx-background-color: #ccffcc;");
-                }
-            }
-        });
-    } catch (Exception e) {
-        exibirAlertaErro("Erro", "Erro ao carregar datas disponíveis", e.getMessage());
+        // Usuario logado
+
+        Object data = ScreenManager.getInstance().getData();
+
+        if (data instanceof Usuario) {
+
+            this.usuarioLogado = (Usuario) data;
+
+        }
+        this.dataInicioPicker = new DatePicker();
+
+        this.dataFimPicker = new DatePicker();
+
     }
-}
-else{
-    exibirAlertaErro("Erro", "Erro ao inicializar date pickers", "Os date pickers não foram inicializados corretamente");
-}
-}
 
 
+    private void configurarDayCellFactory() {
+        if (dataInicioPicker != null && dataFimPicker != null) {
+            try {
+                LocalDate fimDoAno = LocalDate.of(Year.now().getValue(), 12, 31);
+                List<String> periodosDisponiveisString = controladorReservas.consultarDisponibilidadeParaReserva(bem, LocalDate.now().atStartOfDay(), fimDoAno.atStartOfDay(), usuarioLogado);
+                List<LocalDate> datasDisponiveis = periodosDisponiveisString.stream()
+                        .map(dateString -> LocalDateTime.parse(dateString, DateTimeFormatter.ISO_LOCAL_DATE_TIME))
+                        .map(LocalDateTime::toLocalDate)
+                        .collect(Collectors.toList());
 
-public void setItem(Bem bem) {
+                dataInicioPicker.setDayCellFactory(picker -> new DateCell() {
+                    public void updateItem(LocalDate date, boolean empty) {
+                        super.updateItem(date, empty);
+                        if (empty || date == null || !datasDisponiveis.contains(date)) {
+                            setDisable(true);
+                            setStyle("-fx-background-color: #cccccc;");
+                        } else {
+                            setStyle("-fx-background-color: #ccffcc;");
+                        }
+                    }
+                });
 
- if (bem != null) {
+                dataFimPicker.setDayCellFactory(picker -> new DateCell() {
+                    public void updateItem(LocalDate date, boolean empty) {
+                        super.updateItem(date, empty);
+                        if (empty || date == null || !datasDisponiveis.contains(date)) {
+                            setDisable(true);
+                            setStyle("-fx-background-color: #cccccc;");
+                        } else {
+                            setStyle("-fx-background-color: #ccffcc;");
+                        }
+                    }
+                });
+            } catch (Exception e) {
+                exibirAlertaErro("Erro", "Erro ao carregar datas disponíveis", e.getMessage());
+            }
+        } else {
+            exibirAlertaErro("Erro", "Erro ao inicializar date pickers", "Os date pickers não foram inicializados corretamente");
+        }
+    }
 
-    this.bem = bem;
-nomeBem.setText(bem.getNome());
 
- descricaoBem.setText(bem.getDescricao());
+    public void setItem(Bem bem) {
 
- localizacaoBem.setText(bem.getLocalizacao());
+        if (bem != null) {
 
- capacidadeBem.setText(String.valueOf(bem.getCapacidade()));
+            this.bem = bem;
+            nomeBem.setText(bem.getNome());
 
+            descricaoBem.setText(bem.getDescricao());
 
+            localizacaoBem.setText(bem.getLocalizacao());
 
-if (bem.getCaminhoImagem() != null && !bem.getCaminhoImagem().isEmpty()) {
+            capacidadeBem.setText(String.valueOf(bem.getCapacidade()));
 
- File file = new File(bem.getCaminhoImagem());
 
- if (file.exists()) {
+            if (bem.getCaminhoImagem() != null && !bem.getCaminhoImagem().isEmpty()) {
 
- Image image = new Image(file.toURI().toString());
+                File file = new File(bem.getCaminhoImagem());
 
-imagemBem.setImage(image);
+                if (file.exists()) {
 
- } else {
+                    Image image = new Image(file.toURI().toString());
 
- imagemBem.setImage(null);
+                    imagemBem.setImage(image);
 
-}
+                } else {
 
- } else {
+                    imagemBem.setImage(null);
 
- imagemBem.setImage(null);
+                }
 
- }
+            } else {
 
- }
+                imagemBem.setImage(null);
 
- }
+            }
 
+        }
 
+    }
 
 
+    @FXML
 
- @FXML
+    public void abrirMiniTelaReserva(ActionEvent event) {
 
-public void abrirMiniTelaReserva(ActionEvent event) {
+        Stage popupStage = new Stage();
 
-Stage popupStage = new Stage();
+        popupStage.initModality(Modality.APPLICATION_MODAL);
 
- popupStage.initModality(Modality.APPLICATION_MODAL);
+        popupStage.setTitle("Reservar " + bem.getNome());
 
- popupStage.setTitle("Reservar " + bem.getNome());
 
+        Button confirmarButton = new Button("Confirmar");
 
-Button confirmarButton = new Button("Confirmar");
+        Button cancelarButton = new Button("Cancelar");
 
- Button cancelarButton = new Button("Cancelar");
+        configurarDayCellFactory();
 
-configurarDayCellFactory();
+        confirmarButton.setOnAction(e -> {
 
- confirmarButton.setOnAction(e -> {
 
+            LocalDate dataInicio = dataInicioPicker.getValue();
 
-LocalDate dataInicio = dataInicioPicker.getValue();
+            LocalDate dataFim = dataFimPicker.getValue();
 
- LocalDate dataFim = dataFimPicker.getValue();
 
+            if (dataInicio != null && dataFim != null) {
 
+                try {
 
-if ( dataInicio != null && dataFim != null) {
+                    confirmarReserva(event, dataInicio, dataFim);
 
- try {
+                    popupStage.close(); // Fechar a mini tela ao confirmar
 
-confirmarReserva(event, dataInicio, dataFim);
+                } catch (NumberFormatException ex) {
 
- popupStage.close(); // Fechar a mini tela ao confirmar
+                    exibirAlertaErro("Erro", "Período inválido", "Por favor, insira um número válido de meses.");
 
- } catch (NumberFormatException ex) {
+                }
 
- exibirAlertaErro("Erro", "Período inválido", "Por favor, insira um número válido de meses.");
+            } else {
 
- }
+                exibirAlertaErro("Erro", "Dados inválidos", "Por favor, preencha todos os campos.");
 
- } else {
+            }
 
- exibirAlertaErro("Erro", "Dados inválidos", "Por favor, preencha todos os campos.");
+        });
 
- }
 
- });
+        cancelarButton.setOnAction(e -> popupStage.close());
 
+        VBox layout = new VBox(10);
 
+        layout.getChildren().addAll(dataInicioPicker, dataFimPicker, confirmarButton, cancelarButton);
 
-cancelarButton.setOnAction(e -> popupStage.close());
+        layout.setPadding(new Insets(20));
 
- VBox layout = new VBox(10);
 
- layout.getChildren().addAll( dataInicioPicker, dataFimPicker, confirmarButton, cancelarButton);
+        Scene scene = new Scene(layout);
 
-layout.setPadding(new Insets(20));
+        popupStage.setScene(scene);
 
+        popupStage.showAndWait();
 
- Scene scene = new Scene(layout);
+    }
 
- popupStage.setScene(scene);
 
- popupStage.showAndWait();
+    private boolean reservarBem(LocalDate dataInicio, LocalDate dataFim) {
 
-}
+        try {
 
+            LocalDateTime inicioPeriodo = dataInicio.atStartOfDay();
 
+            LocalDateTime fimPeriodo = dataFim.atStartOfDay();
 
 
+            List<String> periodosDisponiveisString = controladorReservas.consultarDisponibilidadeParaReserva(bem, inicioPeriodo, fimPeriodo, usuarioLogado);
 
 
+            List<LocalDate> datasDisponiveis = periodosDisponiveisString.stream()
 
+                    .map(dateString -> LocalDateTime.parse(dateString, DateTimeFormatter.ISO_LOCAL_DATE_TIME))
 
+                    .map(LocalDateTime::toLocalDate)
 
-private boolean reservarBem(LocalDate dataInicio, LocalDate dataFim) {
-
-try {
-
- LocalDateTime inicioPeriodo = dataInicio.atStartOfDay();
-
- LocalDateTime fimPeriodo = dataFim.atStartOfDay();
-
-
-
- List<String> periodosDisponiveisString = controladorReservas.consultarDisponibilidadeParaReserva(bem, inicioPeriodo, fimPeriodo, usuarioLogado);
-
-
-
-List<LocalDate> datasDisponiveis = periodosDisponiveisString.stream()
-
-.map(dateString -> LocalDateTime.parse(dateString, DateTimeFormatter.ISO_LOCAL_DATE_TIME))
-
-.map(LocalDateTime::toLocalDate)
-
-.collect(Collectors.toList());
-
+                    .collect(Collectors.toList());
 
 
 // Filtrar DatePickers para exibir apenas datas disponíveis
 
-dataInicioPicker.setDayCellFactory(picker -> new DateCell() {
+            dataInicioPicker.setDayCellFactory(picker -> new DateCell() {
 
-public void updateItem(LocalDate date, boolean empty) {
+                public void updateItem(LocalDate date, boolean empty) {
 
- super.updateItem(date, empty);
+                    super.updateItem(date, empty);
 
- if (empty || date == null || !datasDisponiveis.contains(date)) {
+                    if (empty || date == null || !datasDisponiveis.contains(date)) {
 
- setDisable(true);
+                        setDisable(true);
 
- setStyle("-fx-background-color: #cccccc;"); // Cinza claro para datas indisponíveis
+                        setStyle("-fx-background-color: #cccccc;"); // Cinza claro para datas indisponíveis
 
- } else {
+                    } else {
 
-setStyle("-fx-background-color: #ccffcc;"); // Verde claro para datas disponíveis
-}
+                        setStyle("-fx-background-color: #ccffcc;"); // Verde claro para datas disponíveis
+                    }
 
-}
+                }
 
- });
+            });
 
- dataFimPicker.setDayCellFactory(picker -> new DateCell() {
+            dataFimPicker.setDayCellFactory(picker -> new DateCell() {
 
-public void updateItem(LocalDate date, boolean empty) {
+                public void updateItem(LocalDate date, boolean empty) {
 
-super.updateItem(date, empty);
-if (empty || date == null || !datasDisponiveis.contains(date)) {
+                    super.updateItem(date, empty);
+                    if (empty || date == null || !datasDisponiveis.contains(date)) {
 
- setDisable(true);
+                        setDisable(true);
 
- setStyle("-fx-background-color: #cccccc;"); // Cinza claro para datas indisponíveis
+                        setStyle("-fx-background-color: #cccccc;"); // Cinza claro para datas indisponíveis
 
-} else {
+                    } else {
 
-setStyle("-fx-background-color: #ccffcc;"); // Verde claro para datas disponíveis
- }
+                        setStyle("-fx-background-color: #ccffcc;"); // Verde claro para datas disponíveis
+                    }
 
- }
+                }
 
- });
-
+            });
 
 
 // Verificar se o período selecionado está disponível
 
- LocalDateTime dataAtual = inicioPeriodo;
+            LocalDateTime dataAtual = inicioPeriodo;
 
- boolean periodoDisponivel = true;
-
-
-
-while (dataAtual.isBefore(fimPeriodo)) {
-
- if (!datasDisponiveis.contains(dataAtual.toLocalDate())) {
-
- periodoDisponivel = false;
-
- break;
-
- }
-
- dataAtual = dataAtual.plusDays(1);
-
- }
-
- return periodoDisponivel;
-
- } catch (Exception e) {
-
- exibirAlertaErro("Erro", "Erro ao verificar disponibilidade", e.getMessage());
-
- return false; 
-
- }
-
-}
+            boolean periodoDisponivel = true;
 
 
+            while (dataAtual.isBefore(fimPeriodo)) {
+
+                if (!datasDisponiveis.contains(dataAtual.toLocalDate())) {
+
+                    periodoDisponivel = false;
+
+                    break;
+
+                }
+
+                dataAtual = dataAtual.plusDays(1);
+
+            }
+
+            return periodoDisponivel;
+
+        } catch (Exception e) {
+
+            exibirAlertaErro("Erro", "Erro ao verificar disponibilidade", e.getMessage());
+
+            return false;
+
+        }
+
+    }
 
 
+    public void confirmarReserva(ActionEvent event, LocalDate dataInicio, LocalDate dataFim) {
+        String comprovante = null;
+
+        boolean periodoDisponivel = reservarBem(dataInicio, dataFim);
+
+        if (periodoDisponivel) {
+
+            LocalDateTime inicioPeriodo = dataInicio.atStartOfDay();
+
+            LocalDateTime fimPeriodo = dataFim.atStartOfDay();
+
+            try {
+
+                comprovante = controladorReservas.criarReserva(inicioPeriodo, fimPeriodo, usuarioLogado, bem);
+
+                exibirAlertaInfo("Sucesso", "Reserva realizada", comprovante);
 
 
-public void confirmarReserva(ActionEvent event, LocalDate dataInicio, LocalDate dataFim) {
-    String comprovante = null;
+            } catch (Exception e) {
 
- boolean periodoDisponivel = reservarBem(dataInicio, dataFim);
+                exibirAlertaErro("Erro", "Erro ao criar reserva", e.getMessage());
 
- if (periodoDisponivel) {
+            }
 
- LocalDateTime inicioPeriodo = dataInicio.atStartOfDay();
+        } else {
 
-LocalDateTime fimPeriodo = dataFim.atStartOfDay();
+            exibirAlertaErro("Erro", "Período indisponível", "O período não está disponível para reserva.");
 
- try {
+        }
 
- comprovante=controladorReservas.criarReserva(inicioPeriodo, fimPeriodo, usuarioLogado, bem);
-
- exibirAlertaInfo("Sucesso", "Reserva realizada", comprovante);
- 
-
- } catch (Exception e) {
-
-exibirAlertaErro("Erro", "Erro ao criar reserva", e.getMessage());
-
- }
-
- } else {
-
- exibirAlertaErro("Erro", "Período indisponível", "O período não está disponível para reserva.");
-
-}
-
-}
+    }
 
 
+    private void exibirAlertaErro(String titulo, String header, String contentText) {
+
+        Alert alerta = new Alert(Alert.AlertType.ERROR);
+
+        alerta.setTitle(titulo);
+
+        alerta.setHeaderText(header);
+
+        alerta.setContentText(contentText);
+
+        alerta.getDialogPane().setStyle("-fx-background-color: #ffcccc;"); // Vermelho claro
+
+        alerta.showAndWait();
+
+    }
 
 
+    private void exibirAlertaInfo(String titulo, String header, String contentText) {
 
- private void exibirAlertaErro(String titulo, String header, String contentText) {
+        Alert alerta = new Alert(Alert.AlertType.INFORMATION);
 
- Alert alerta = new Alert(Alert.AlertType.ERROR);
+        alerta.setTitle(titulo);
 
- alerta.setTitle(titulo);
+        alerta.setHeaderText(header);
 
- alerta.setHeaderText(header);
+        alerta.setContentText(contentText);
 
- alerta.setContentText(contentText);
+        alerta.showAndWait();
 
- alerta.getDialogPane().setStyle("-fx-background-color: #ffcccc;"); // Vermelho claro
-
- alerta.showAndWait();
-
- }
-
-
-
- private void exibirAlertaInfo(String titulo, String header, String contentText) {
-
-Alert alerta = new Alert(Alert.AlertType.INFORMATION);
-
-alerta.setTitle(titulo);
-
-alerta.setHeaderText(header);
-
- alerta.setContentText(contentText);
-
- alerta.showAndWait();
-
-}
+    }
 }

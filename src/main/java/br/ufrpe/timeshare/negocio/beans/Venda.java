@@ -100,7 +100,7 @@ public class Venda extends Entidade{
     }
 
     public List<Cota> getCarrinhoDeComprasCotas() {
-        return this.carrinhoDeComprasCotas;
+        return this.carrinhoDeComprasCotas; // Retorna uma nova lista
     }
 
 

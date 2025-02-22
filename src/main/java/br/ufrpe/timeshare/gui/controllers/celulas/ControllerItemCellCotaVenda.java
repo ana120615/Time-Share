@@ -3,6 +3,7 @@ package br.ufrpe.timeshare.gui.controllers.celulas;
 import br.ufrpe.timeshare.gui.controllers.usuarioComum.telaVendaCotas.ControllerAdicionarCotaPopUp;
 import br.ufrpe.timeshare.gui.controllers.usuarioComum.telaVendaCotas.ControllerTelaDeVenda;
 import br.ufrpe.timeshare.negocio.beans.Cota;
+import br.ufrpe.timeshare.negocio.beans.Usuario;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -10,6 +11,8 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 
 public class ControllerItemCellCotaVenda {
+    private Usuario usuario;
+
     @FXML
     private Label itemLabelNomeBem;
     @FXML
