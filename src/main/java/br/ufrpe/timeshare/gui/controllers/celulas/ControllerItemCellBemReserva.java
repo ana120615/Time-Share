@@ -31,7 +31,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import br.ufrpe.timeshare.gui.application.ScreenManager;
-
+import br.ufrpe.timeshare.gui.controllers.basico.ControllerBase;
 import br.ufrpe.timeshare.negocio.ControladorReservas;
 
 import br.ufrpe.timeshare.negocio.beans.Bem;
@@ -52,7 +52,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 
-public class ControllerItemCellBemReserva {
+public class ControllerItemCellBemReserva implements ControllerBase {
 
 
     @FXML
@@ -99,23 +99,22 @@ public class ControllerItemCellBemReserva {
     public void initialize() {
 
         this.controladorReservas = new ControladorReservas();
-
-
-        // Usuario logado
-
-        Object data = ScreenManager.getInstance().getData();
-
-        if (data instanceof Usuario) {
-
-            this.usuarioLogado = (Usuario) data;
-
-        }
         this.dataInicioPicker = new DatePicker();
 
         this.dataFimPicker = new DatePicker();
 
     }
 
+    @Override
+    public void receiveData(Object data) {
+        System.out.println("receiveData chamado com: " + data);
+        if (data instanceof Usuario) {
+            this.usuarioLogado = (Usuario) data;
+            System.out.println("Usuário definido: " + usuarioLogado.getNome());
+        } else {
+            System.err.println("Erro: receiveData recebeu um objeto inválido.");
+        }
+    }
 
     private void configurarDayCellFactory() {
         if (dataInicioPicker != null && dataFimPicker != null) {
