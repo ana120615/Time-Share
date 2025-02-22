@@ -1,0 +1,39 @@
+.vbox-principal {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 15px;
+    -fx-border-radius: 15;
+}
+
+.button-reservar {
+    -fx-background-color: #007bff;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 20px;
+    -fx-padding: 8px 16px;
+    -fx-cursor: hand;
+    -fx-border: none;
+}
+
+.button-reservar:hover {
+    -fx-background-color: #0056b3;
+}
+
+.label-local {
+    -fx-text-fill: black;
+    -fx-font-family: "Arial";
+    -fx-font-weight: bold;
+    -fx-font-size: 16px;
+}
+
+.label-nome {
+    -fx-text-fill: #333333;
+    -fx-font-family: "Arial";
+    -fx-font-weight: normal;
+    -fx-font-size: 16px;
+}
+
+.imagem-bem {
+    -fx-border-radius: 15px;
+    -fx-background-radius: 15px;
+}

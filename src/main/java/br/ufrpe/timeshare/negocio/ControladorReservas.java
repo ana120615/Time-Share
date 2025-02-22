@@ -177,7 +177,7 @@ public class ControladorReservas {
         if (estadia != null && estadia.getDataInicio() != null && estadia.getDataFim() == null) {
             throw new ReservaJaCanceladaException("Estadia ja iniciada. Nao pode ser cancelada.");
         }
-        if (!reservaCancelada.getBem().getCadastradoPor().equals(usuario) || !reservaCancelada.getUsuarioComum().equals(usuario)) {
+        if (!reservaCancelada.getBem().getCadastradoPor().equals(usuario) && !reservaCancelada.getUsuarioComum().equals(usuario)) {
             throw new UsuarioNaoPermitidoException("Reserva nao vinculada a este usuario.");
         }
         reembolso = reembolsar(reservaCancelada);
@@ -273,7 +273,7 @@ public class ControladorReservas {
                     existeCotaOcupada = verificarConflitoDeDatasCota(cotasBemAssociado.get(i), inicioAtual, inicioAtual);
                 }
             }
-            // Verifica periodos em que ha reservas ativas
+
             for (int i = 0; i < reservas.size() && !existeReservaAtiva; i++) {
                 existeReservaAtiva = verificarConflitoDeDatasReserva(reservas.get(i), inicioAtual, inicioAtual);
             }
@@ -287,15 +287,23 @@ public class ControladorReservas {
 
     private boolean verificarConflitoDeDatasCota(Cota cotaAtual, LocalDateTime dataInicio, LocalDateTime dataFim) {
         boolean conflito = false;
-        if (cotaAtual.getDataInicio().isBefore(dataInicio) && cotaAtual.getDataFim().isAfter(dataInicio)) {
+
+        LocalDate dataInicioAtual = cotaAtual.getDataInicio().toLocalDate();
+        LocalDate dataFimAtual = cotaAtual.getDataFim().toLocalDate();
+
+        LocalDate dataInicioComparacao = dataInicio.toLocalDate();
+        LocalDate dataFimComparacao = dataFim.toLocalDate();
+
+        if (dataInicioAtual.isBefore(dataInicioComparacao) && dataFimAtual.isAfter(dataInicioComparacao)) {
             conflito = true;
-        } else if (cotaAtual.getDataInicio().isBefore(dataFim) && cotaAtual.getDataFim().isAfter(dataFim)) {
+        } else if (dataInicioAtual.isBefore(dataFimComparacao) && dataFimAtual.isAfter(dataFimComparacao)) {
             conflito = true;
-        } else if (cotaAtual.getDataInicio().isAfter(dataInicio) && cotaAtual.getDataFim().isBefore(dataFim)) {
+        } else if (dataInicioAtual.isAfter(dataInicioComparacao) && dataFimAtual.isBefore(dataFimComparacao)) {
             conflito = true;
-        } else if (cotaAtual.getDataInicio().isEqual(dataInicio) || cotaAtual.getDataFim().isEqual(dataFim)) {
+        } else if (dataInicioAtual.isEqual(dataInicioComparacao) || dataFimAtual.isEqual(dataFimComparacao)) {
             conflito = true;
         }
+
         return conflito;
     }
 
@@ -435,26 +443,28 @@ public class ControladorReservas {
 
     public List<Reserva> buscarReservasPorMultiplosPeriodos(Bem bem, LocalDateTime dataInicio, LocalDateTime dataFim) {
         List<Reserva> reservasDentroDosPeriodos = new ArrayList<>();
+        LocalDate dataInicial = dataInicio.toLocalDate();
+        LocalDate dataFinal = dataFim.toLocalDate();
 
         for (Reserva reserva : repositorioReservas.listar()) {
             if (reserva.getBem().equals(bem)) {
                 boolean conflito = false;
-                LocalDateTime reservaInicio = reserva.getDataInicio();
-                LocalDateTime reservaFim = reserva.getDataFim();
+                LocalDate reservaInicio = reserva.getDataInicio().toLocalDate();
+                LocalDate reservaFim = reserva.getDataFim().toLocalDate();
 
-                if (reserva.getDataInicio().isBefore(dataInicio) && reserva.getDataFim().isAfter(dataInicio)) {
+                if (reservaInicio.isBefore(dataInicial) && reservaFim.isAfter(dataFinal)) {
                     conflito = true;
-                } else if (reserva.getDataInicio().isBefore(dataFim) && reserva.getDataFim().isAfter(dataFim)) {
+                } else if (reservaInicio.isBefore(dataFinal) && reservaFim.isAfter(dataFinal)) {
                     conflito = true;
-                } else if (reserva.getDataInicio().isAfter(dataInicio) && reserva.getDataFim().isBefore(dataFim)) {
+                } else if (reservaInicio.isAfter(dataInicial) && reservaFim.isBefore(dataFinal)) {
                     conflito = true;
-                } else if (reserva.getDataInicio().isEqual(dataInicio) || reserva.getDataFim().isEqual(dataFim)) {
+                } else if (reservaInicio.isEqual(dataInicial) || reservaFim.isEqual(reservaFim)) {
                     conflito = true;
                 }
                 // Verifica se há sobreposição da reserva com qualquer período e se ha estadia
                 if (conflito) {
                     Estadia estadia = repositorioEstadia.buscarEstadiaPorReserva((int) reserva.getId());
-                    if (estadia != null) {
+                    if (estadia == null) {
                         reservasDentroDosPeriodos.add(reserva);
                     }
                 }
