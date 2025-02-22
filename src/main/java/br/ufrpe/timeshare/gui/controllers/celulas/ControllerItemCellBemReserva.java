@@ -123,8 +123,7 @@ public class ControllerItemCellBemReserva {
                 LocalDate fimDoAno = LocalDate.of(Year.now().getValue(), 12, 31);
                 List<String> periodosDisponiveisString = controladorReservas.consultarDisponibilidadeParaReserva(bem, LocalDate.now().atStartOfDay(), fimDoAno.atStartOfDay(), usuarioLogado);
                 List<LocalDate> datasDisponiveis = periodosDisponiveisString.stream()
-                        .map(dateString -> LocalDateTime.parse(dateString, DateTimeFormatter.ISO_LOCAL_DATE_TIME))
-                        .map(LocalDateTime::toLocalDate)
+                        .map(dateString -> LocalDateTime.parse(dateString, DateTimeFormatter.ISO_LOCAL_DATE_TIME).toLocalDate())
                         .collect(Collectors.toList());
 
                 dataInicioPicker.setDayCellFactory(picker -> new DateCell() {

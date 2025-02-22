@@ -54,7 +54,7 @@ public class ControladorBens {
                     ArrayList<Cota> cotas = new ArrayList<>();
                     Random random = new Random();
                     LocalDateTime dataInicio = diaInicial;
-                    LocalDateTime dataFim = dataInicio.plusDays(6).toLocalDate().atTime(LocalTime.MAX);
+                    LocalDateTime dataFim = dataInicio.plusDays(6).toLocalDate().atTime(23, 59, 59);
                     for (int i = 0; i < quantidadeDeCotas; ) {
                         int randomNumberCota = 1000 + random.nextInt(9999);
                         Cota c = repositorioCotas.buscar(randomNumberCota);

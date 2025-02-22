@@ -273,7 +273,7 @@ public class ControladorReservas {
                     existeCotaOcupada = verificarConflitoDeDatasCota(cotasBemAssociado.get(i), inicioAtual, inicioAtual);
                 }
             }
-            // Verifica periodos em que ha reservas ativas
+
             for (int i = 0; i < reservas.size() && !existeReservaAtiva; i++) {
                 existeReservaAtiva = verificarConflitoDeDatasReserva(reservas.get(i), inicioAtual, inicioAtual);
             }
@@ -287,15 +287,23 @@ public class ControladorReservas {
 
     private boolean verificarConflitoDeDatasCota(Cota cotaAtual, LocalDateTime dataInicio, LocalDateTime dataFim) {
         boolean conflito = false;
-        if (cotaAtual.getDataInicio().isBefore(dataInicio) && cotaAtual.getDataFim().isAfter(dataInicio)) {
+
+        LocalDate dataInicioAtual = cotaAtual.getDataInicio().toLocalDate();
+        LocalDate dataFimAtual = cotaAtual.getDataFim().toLocalDate();
+
+        LocalDate dataInicioComparacao = dataInicio.toLocalDate();
+        LocalDate dataFimComparacao = dataFim.toLocalDate();
+
+        if (dataInicioAtual.isBefore(dataInicioComparacao) && dataFimAtual.isAfter(dataInicioComparacao)) {
             conflito = true;
-        } else if (cotaAtual.getDataInicio().isBefore(dataFim) && cotaAtual.getDataFim().isAfter(dataFim)) {
+        } else if (dataInicioAtual.isBefore(dataFimComparacao) && dataFimAtual.isAfter(dataFimComparacao)) {
             conflito = true;
-        } else if (cotaAtual.getDataInicio().isAfter(dataInicio) && cotaAtual.getDataFim().isBefore(dataFim)) {
+        } else if (dataInicioAtual.isAfter(dataInicioComparacao) && dataFimAtual.isBefore(dataFimComparacao)) {
             conflito = true;
-        } else if (cotaAtual.getDataInicio().isEqual(dataInicio) || cotaAtual.getDataFim().isEqual(dataFim)) {
+        } else if (dataInicioAtual.isEqual(dataInicioComparacao) || dataFimAtual.isEqual(dataFimComparacao)) {
             conflito = true;
         }
+
         return conflito;
     }
 
