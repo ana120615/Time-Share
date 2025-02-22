@@ -9,11 +9,11 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<HBox alignment="CENTER" minHeight="-Infinity" minWidth="-Infinity" prefHeight="124.0" prefWidth="605.0" styleClass="item-hbox" stylesheets="@styles/basico/item-cell-bem.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.ufrpe.timeshare.gui.controllers.celulas.ControllerItemCellBem">
+<HBox alignment="CENTER" minHeight="-Infinity" minWidth="-Infinity" prefHeight="121.0" prefWidth="643.0" style="-fx-background-radius: 20; -fx-border-radius: 20; -fx-background-color: transparent;" styleClass="item-hbox" stylesheets="@styles/basico/item-cell-bem.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.ufrpe.timeshare.gui.controllers.celulas.ControllerItemCellBem">
    <children>
-      <Button fx:id="itemButton" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" prefHeight="124.0" prefWidth="619.0" styleClass="item-button" text="Button" HBox.hgrow="ALWAYS">
+      <Button fx:id="itemButton" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" prefHeight="134.0" prefWidth="664.0" styleClass="item-button" text="Button" HBox.hgrow="ALWAYS">
          <graphic>
-            <HBox alignment="CENTER_LEFT" prefHeight="102.0" prefWidth="594.0">
+            <HBox alignment="CENTER" prefHeight="115.0" prefWidth="635.0">
                <children>
                   <ImageView fx:id="itemImage" fitHeight="64.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true" styleClass="item-image">
                      <image>
