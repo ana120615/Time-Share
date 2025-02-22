@@ -239,6 +239,7 @@ public class ControllerTelaDeVenda implements ControllerBase {
         if (vendaAtual.getCarrinhoDeComprasCotas().isEmpty()) {
             exibirAlertaErro("Erro", "Carrinho vazio", "Va em ofertas e adicione cotas para comprar!");
         } else {
+
             List<Reserva> reservas = controladorVendas.getReservasNoPeriodoVenda(vendaAtual);
 
             if (!reservas.isEmpty()) {
