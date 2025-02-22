@@ -60,16 +60,15 @@ public class ControllerTelaDeVenda implements ControllerBase {
         if (data instanceof Usuario) {
             this.usuario = (Usuario) data;
             System.out.println("Usuário definido: " + usuario.getNome());
-            if (vendaAtual == null) {
-                try {
-                    this.vendaAtual = controladorVendas.iniciarVenda(usuario.getId());
-                } catch (UsuarioNaoExisteException e) {
-                    System.out.println(e.getMessage());
-                }
+            this.vendaAtual = null;
+            try {
+                this.vendaAtual = controladorVendas.iniciarVenda(usuario.getId());
+            } catch (UsuarioNaoExisteException e) {
+                System.out.println(e.getMessage());
             }
-
             carregarListaDeBens();
             carregarListaCarrinho();
+            tabPaneUsuarioComumTelaVenda.getSelectionModel().select(tabBensOfertados);
         } else {
             System.err.println("Erro: receiveData recebeu um objeto inválido.");
         }
@@ -77,8 +76,9 @@ public class ControllerTelaDeVenda implements ControllerBase {
 
     @FXML
     public void initialize() {
-        System.out.println("initialize() chamado.");
+        System.out.println("initialize");
     }
+
 
     public void setMainControllerVenda(ControllerTelaDeVenda mainControllerVenda) {
         this.mainControllerVenda = mainControllerVenda;
@@ -181,6 +181,13 @@ public class ControllerTelaDeVenda implements ControllerBase {
 
     // Parte Carrinho
     public void carregarListaCarrinho() {
+        if (vendaAtual == null) {
+            System.err.println("Erro: vendaAtual está null em carregarListaCarrinho()!");
+            return;
+        }
+
+        // Limpa a lista antes de adicionar os novos itens
+        listViewCotasSelecionadas.getItems().clear();
 
         this.labelValorTotal.setText(String.valueOf(vendaAtual.calcularValorTotal()));
         this.labelQuantidadeCotasCarrinho.setText(String.valueOf(vendaAtual.getCarrinhoDeComprasCotas().size()));
@@ -311,7 +318,7 @@ public class ControllerTelaDeVenda implements ControllerBase {
         }
 
         try {
-            controladorVendas.removeCotaCarrinho((int) cotaSelecionada.getId(), this.vendaAtual);
+            controladorVendas.removeCotaCarrinho(cotaSelecionada.getId(), this.vendaAtual);
             System.out.println("Cota removida com sucesso!");
             exibirAlertaInformation("Sucesso", "Cota removida", "Cota removida do carrinho com sucesso.");
             carregarListaCarrinho();

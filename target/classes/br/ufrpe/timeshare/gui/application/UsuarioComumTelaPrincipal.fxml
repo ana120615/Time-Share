@@ -150,7 +150,7 @@
                                  <children>
                                     <VBox alignment="CENTER" prefHeight="118.0" prefWidth="264.0" GridPane.columnIndex="1">
                                        <children>
-                                          <Button id="button2" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" prefHeight="500.0" prefWidth="500.0" styleClass="button2" stylesheets="@styles/basico/button.css" text="Realizar reserva">
+                                          <Button id="button2" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction = "#irParaTelaRealizarReserva" prefHeight="500.0" prefWidth="500.0" styleClass="button2" stylesheets="@styles/basico/button.css" text="Realizar reserva">
                                              <graphic>
                                                 <VBox alignment="CENTER">
                                                    <children>
@@ -172,7 +172,7 @@
                                     </VBox>
                                     <VBox alignment="CENTER" prefHeight="118.0" prefWidth="264.0" GridPane.columnIndex="2">
                                        <children>
-                                          <Button contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" prefHeight="500.0" prefWidth="500.0" styleClass="button2" stylesheets="@styles/basico/button.css" text="Minhas reservas">
+                                          <Button contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction = "#irParaTelaMinhasReservas" prefHeight="500.0" prefWidth="500.0" styleClass="button2" stylesheets="@styles/basico/button.css" text="Minhas reservas">
                                              <graphic>
                                                 <VBox alignment="CENTER" prefHeight="134.0" prefWidth="158.0">
                                                    <children>
@@ -194,7 +194,7 @@
                                     </VBox>
                                     <VBox alignment="CENTER" prefHeight="118.0" prefWidth="264.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                                        <children>
-                                          <Button contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" prefHeight="500.0" prefWidth="500.0" styleClass="button2" stylesheets="@styles/basico/button.css" text="Estadia">
+                                          <Button contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction = "#irParaTelaEstadia" prefHeight="500.0" prefWidth="500.0" styleClass="button2" stylesheets="@styles/basico/button.css" text="Estadia">
                                              <graphic>
                                                 <VBox alignment="CENTER" prefHeight="134.0" prefWidth="158.0">
                                                    <children>

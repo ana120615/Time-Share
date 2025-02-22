@@ -71,6 +71,19 @@ public class RepositorioBens extends RepositorioGenerico<Bem> implements IReposi
         return listaBensPorLocalizacao;
     }
 
+    @Override
+    public List<Bem> listarBensPorDescricao(String descricao){
+        List<Bem> listaBensPorDescricao = new ArrayList<>();
+        String descricaoo = descricao.trim().toLowerCase();
+        for(Bem bem:lista){
+            String descricaoBem = bem.getDescricao().trim().toLowerCase();
+            if(descricaoBem.contains(descricaoo)){
+                listaBensPorDescricao.add(bem);
+            }
+        }
+        Collections.sort(listaBensPorDescricao);
+        return listaBensPorDescricao;
+    }
 
     @Override
     public List<Bem> listarBensUsuarioPorNome(String nome, long idUsuario) {

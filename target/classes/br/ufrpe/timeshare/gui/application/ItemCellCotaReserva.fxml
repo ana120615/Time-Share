@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.geometry.Insets?>
+
+
+<HBox fx:id="itemCell" alignment="CENTER_LEFT" spacing="10.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.ufrpe.timeshare.gui.controllers.celulas.ControllerItemCellCotaReserva">
+    <padding>
+        <Insets left="10.0" right="10.0"/>
+    </padding>
+    <VBox spacing="5.0">
+        <Label fx:id="idCota" text="ID" style="-fx-font-weight: bold;" />
+        <Label fx:id="nomeBemAssociado" text="Bem" />
+        <Label fx:id="dataInicio" text="Início" />
+        <Label fx:id="dataFim" text="Fim" />
+        <Label fx:id="nomeProprietario" text="Proprietário" />
+    </VBox>
+    <Button fx:id="reservarCotaButton" text="Reservar" onAction="#handleReservarCota" />
+</HBox>

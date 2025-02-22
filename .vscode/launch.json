@@ -1,0 +1,33 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "testeTelas",
+            "request": "launch",
+            "mainClass": "br.ufrpe.timeshare.gui.application.testeTelas",
+            "projectName": "TimeShare"
+        },
+        {
+            "type": "java",
+            "name": "Current File",
+            "request": "launch",
+            "mainClass": "${file}"
+        },
+        {
+            "type": "java",
+            "name": "Sistema",
+            "request": "launch",
+            "mainClass": "br.ufrpe.timeshare.Sistema",
+            "projectName": "TimeShare"
+        },
+        {
+            "type": "java",
+            "name": "Main",
+            "request": "launch",
+            "mainClass": "br.ufrpe.timeshare.gui.application.Main",
+            "projectName": "TimeShare",
+            "vmArgs": "--module-path C:/Users/laila/Downloads/openjfx-21_windows-x64_bin-sdk/javafx-sdk-21/lib --add-modules javafx.controls,javafx.fxml"
+        }
+    ]
+}

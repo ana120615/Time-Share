@@ -3,12 +3,12 @@ package br.ufrpe.timeshare.gui.controllers.usuarioComum.telaVendaCotas;
 import br.ufrpe.timeshare.excecoes.BemNaoExisteException;
 import br.ufrpe.timeshare.excecoes.CotaNaoExisteException;
 import br.ufrpe.timeshare.excecoes.CotaNaoOfertadaException;
-import br.ufrpe.timeshare.gui.controllers.celulas.ControllerItemCellCota;
 import br.ufrpe.timeshare.gui.controllers.celulas.ControllerItemCellCotaVenda;
 import br.ufrpe.timeshare.negocio.ControladorBens;
 import br.ufrpe.timeshare.negocio.ControladorVendas;
 import br.ufrpe.timeshare.negocio.beans.Bem;
 import br.ufrpe.timeshare.negocio.beans.Cota;
+import br.ufrpe.timeshare.negocio.beans.Usuario;
 import br.ufrpe.timeshare.negocio.beans.Venda;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ControllerAdicionarCotaPopUp {
+    private Usuario usuario;
     private final ControladorBens controladorBens;
     private final ControladorVendas controladorVendas;
 
@@ -44,6 +45,7 @@ public class ControllerAdicionarCotaPopUp {
         configurarCelulas();
 
     }
+
 
     private void exibirAlertaErro(String titulo, String header, String contentText) {
         Alert alerta = new Alert(Alert.AlertType.ERROR);

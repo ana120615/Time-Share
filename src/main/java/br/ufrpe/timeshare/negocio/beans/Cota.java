@@ -9,7 +9,6 @@ public class Cota extends Entidade implements Cloneable, Comparable<Cota> {
     private double preco;
     private Usuario proprietario;
     private boolean statusDeDisponibilidadeParaCompra;
-    private boolean statusDeDisponibilidadeParaReserva;
     private Bem bemAssociado;
     private LocalDateTime dataInicio;
     private LocalDateTime dataFim;
@@ -23,7 +22,6 @@ public class Cota extends Entidade implements Cloneable, Comparable<Cota> {
         this.setPreco(preco);
         this.bemAssociado = bemAssociado;
         this.setStatusDeDisponibilidadeParaCompra(bemAssociado.isOfertado()); //inicializado como disponivel
-        this.statusDeDisponibilidadeParaReserva = true; //inicializado como disponivel
     }
 
     // METODOS GET E SET
@@ -83,18 +81,6 @@ public class Cota extends Entidade implements Cloneable, Comparable<Cota> {
 
     public void setPreco(double preco) {
         this.preco = preco;
-    }
-
-    public boolean getStatusDeDisponibilidadeParaReserva() {
-        return this.statusDeDisponibilidadeParaReserva;
-    }
-
-    public void setStatusDeDisponibilidadeParaReserva(boolean statusDeDisponibilidadeParaReserva) {
-        if (proprietario == null) {
-            this.statusDeDisponibilidadeParaReserva = bemAssociado.isOfertado();
-        } else {
-            this.statusDeDisponibilidadeParaReserva = statusDeDisponibilidadeParaReserva;
-        }
     }
 
     @Override

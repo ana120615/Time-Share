@@ -13,9 +13,21 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
+//Colocar liberar cota dentro de cancelar
+//corrigir verificacao da taxa extra (talvez)
+//Os bens estao com problema em exibir imagem
+/*Colocar liberar cota em todos os metodos que mexem na liberacao da cota de alguma forma*/
+//Pode ser no cancelamento, alteracao do periodo, prolongamento...
+//Ver questao da verificacao do periodo com cota
+//Colocar buscar estadia ativa aqui
+//fazer prolongar estadia na tela de estadia
+//colocar minhas reservas com tela de rolar
+//fazer date picker verificar periodos futuros a depender das cotas também
+
 public class ControladorReservas {
     private IRepositorioReservas repositorioReservas;
     private IRepositorioEstadia repositorioEstadia;
+
 
     public ControladorReservas() {
         this.repositorioReservas = RepositorioReservas.getInstancia();
@@ -125,7 +137,7 @@ public class ControladorReservas {
             throw new ForaPeriodoException("A data inicial nao pode ser depois da data final.");
         }
         //verifica se reserva ja existe dentro daquele periodo
-        if (repositorioReservas.verificarConflitoNaReserva(bem.getId(), dataInicio, dataFim)) {
+        if (verificarConflitoDeDatasReservaBem(bem.getId(), dataInicio, dataFim)) {
             throw new ReservaJaExisteException("Conflito de Periodo. Reserva não realizada.");
         }
         //verifica se reserva esta dentro de uma cota que ja foi comprada e nao pertence ao usuario
@@ -135,6 +147,7 @@ public class ControladorReservas {
     }
 
 
+    //TODO: verificar se este metodo ainda vai ser necessario ou se podemos usar diretamente o cancelar reserva
     public void liberarPeriodoCota(Cota cota, int idReserva, Usuario usuario) throws DadosInsuficientesException, ReservaNaoExisteException, OperacaoNaoPermitidaException, UsuarioNaoPermitidoException {
         if (cota == null || idReserva == 0) {
             throw new DadosInsuficientesException("Dados insuficientes.");
@@ -150,7 +163,6 @@ public class ControladorReservas {
         if (!reservaCancelada.getDataInicio().equals(cota.getDataInicio()) || !reservaCancelada.getDataFim().equals(cota.getDataFim())) {
             throw new OperacaoNaoPermitidaException("A reserva nao foi realizada dentro da cota, verifique o periodo completo da reserva para cancela-la.");
         }
-        cota.setStatusDeDisponibilidadeParaReserva(true);
         repositorioReservas.remover(reservaCancelada);
     }
 
@@ -165,7 +177,6 @@ public class ControladorReservas {
         if (estadia != null && estadia.getDataInicio() != null && estadia.getDataFim() == null) {
             throw new ReservaJaCanceladaException("Estadia ja iniciada. Nao pode ser cancelada.");
         }
-        ArrayList<Cota> cotasBemAssociadoReserva = reservaCancelada.getBem().getCotas();
         if (!reservaCancelada.getBem().getCadastradoPor().equals(usuario) || !reservaCancelada.getUsuarioComum().equals(usuario)) {
             throw new UsuarioNaoPermitidoException("Reserva nao vinculada a este usuario.");
         }
@@ -175,9 +186,9 @@ public class ControladorReservas {
         return comprovanteCancelamento;
     }
 
-    public void cancelarListaReservas (List<Reserva> aCancelar) {
-        if(aCancelar == null) {
-            for(Reserva reserva : aCancelar) {
+    public void cancelarListaReservas(List<Reserva> aCancelar) {
+        if (aCancelar != null) {
+            for (Reserva reserva : aCancelar) {
                 repositorioReservas.remover(reserva);
             }
         }
@@ -215,13 +226,13 @@ public class ControladorReservas {
         //verifica se a nova data ficara dentro do periodo de uma reserva outra
         //verificar a parte inicial nova
         if (novaDataInicio.isBefore(reserva.getDataInicio())) {
-            if (repositorioReservas.verificarConflitoNaReserva(bem.getId(), novaDataInicio, reserva.getDataInicio())) {
+            if (verificarConflitoDeDatasReservaBem(bem.getId(), novaDataInicio, reserva.getDataInicio())) {
                 throw new ReservaJaExisteException("Conflito de Periodo.");
             }
         }
         //verificar a parte final nova
         if (novaDataFim.isAfter(reserva.getDataFim())) {
-            if (repositorioReservas.verificarConflitoNaReserva(bem.getId(), reserva.getDataFim(), novaDataFim)) {
+            if (verificarConflitoDeDatasReservaBem(bem.getId(), reserva.getDataFim(), novaDataFim)) {
                 throw new ReservaJaExisteException("Conflito de Periodo.");
             }
         }
@@ -233,6 +244,7 @@ public class ControladorReservas {
         reserva.setDataFim(novaDataFim);
         return gerarComprovanteReserva(reserva);
     }
+
 
     // Consulta de periodos disponiveis para reserva
     // Considerando o usuario que deseja reservar
@@ -256,8 +268,7 @@ public class ControladorReservas {
             //Verifica periodos em que ha cotas que ja foram vendidas e nao podem ser usadas para reservas de todos
             for (int i = 0; i < cotasBemAssociado.size() && !existeCotaOcupada; i++) {
                 if ((cotasBemAssociado.get(i).getProprietario() != null && !cotasBemAssociado.get(i).getProprietario().equals(usuario) &&
-                        !cotasBemAssociado.get(i).getStatusDeDisponibilidadeParaCompra()) || cotasBemAssociado.get(i).getProprietario() != null &&
-                        (cotasBemAssociado.get(i).getProprietario().equals(usuario) && !cotasBemAssociado.get(i).getStatusDeDisponibilidadeParaReserva())) {
+                        !cotasBemAssociado.get(i).getStatusDeDisponibilidadeParaCompra())) {
 
                     existeCotaOcupada = verificarConflitoDeDatasCota(cotasBemAssociado.get(i), inicioAtual, dataFim);
                 }
@@ -273,7 +284,6 @@ public class ControladorReservas {
         }
         return periodosDisponiveis;
     }
-
 
     private boolean verificarConflitoDeDatasCota(Cota cotaAtual, LocalDateTime dataInicio, LocalDateTime dataFim) {
         boolean conflito = false;
@@ -331,6 +341,9 @@ public class ControladorReservas {
         return false;
     }
 
+    public boolean verificarConflitoDeDatasReservaBem(long idBem, LocalDateTime dataInicio, LocalDateTime dataFim) {
+        return this.repositorioReservas.verificarConflitoNaReserva(idBem, dataInicio, dataFim);
+    }
 
     //metodo para calcular taxa extra
     //tambem e usado quando prolongo uma estadia
@@ -441,7 +454,7 @@ public class ControladorReservas {
                 // Verifica se há sobreposição da reserva com qualquer período e se ha estadia
                 if (conflito) {
                     Estadia estadia = repositorioEstadia.buscarEstadiaPorReserva((int) reserva.getId());
-                    if(estadia != null) {
+                    if (estadia != null) {
                         reservasDentroDosPeriodos.add(reserva);
                     }
                 }
