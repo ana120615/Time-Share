@@ -117,7 +117,7 @@ private void handleReservarCota() {
 
 
 
-    private void exibirAlertaErro(String titulo, String header, String contentText) {
+private void exibirAlertaErro(String titulo, String header, String contentText) {
 
  Alert alerta = new Alert(Alert.AlertType.ERROR);
 

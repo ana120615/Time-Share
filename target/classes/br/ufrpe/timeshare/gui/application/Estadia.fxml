@@ -30,6 +30,22 @@
         </tabs>
     </TabPane>
 
+   
+    <AnchorPane fx:id="paneProlongar" visible="false" style="-fx-background-color: white; -fx-padding: 20px; -fx-background-radius: 10px; -fx-border-radius: 10px; -fx-border-color: #ccc; -fx-border-width: 2px;">
+        <VBox spacing="15" alignment="CENTER" prefWidth="300">
+            <Label text="Quantos dias deseja prolongar?" style="-fx-font-size: 14px; -fx-font-weight: bold;"/>
+            <Spinner fx:id="spinnerDias" prefWidth="100">
+                <valueFactory>
+                    <SpinnerValueFactory.IntegerSpinnerValueFactory min="1" max="30" initialValue="1" />
+                </valueFactory>
+            </Spinner>
+            <HBox spacing="15" alignment="CENTER">
+                <Button fx:id="btnConfirmarProlongamento" text="Confirmar" onAction="#handleConfirmarProlongamento"/>
+                <Button text="Cancelar" onAction="#handleCancelarProlongamento"/>
+            </HBox>
+        </VBox>
+    </AnchorPane>
+
     <VBox spacing="10" alignment="CENTER" prefWidth="600">
         <Label text="Estadia" style="-fx-font-size: 18px; -fx-font-weight: bold;" />
         <Button text="Voltar" onAction="#handleVoltar" />
