@@ -26,6 +26,7 @@ import javafx.scene.layout.HBox;
 
 import javafx.scene.layout.VBox;
 
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Modality;
 
 import javafx.stage.Stage;
@@ -49,73 +50,34 @@ import java.time.format.DateTimeFormatter;
 
 import java.util.List;
 
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 
 public class ControllerItemCellBemReserva {
 
-
     @FXML
-
-    private HBox itemCell;
-
-
-    @FXML
-
     private ImageView imagemBem;
-
-
     @FXML
-
-    private Label nomeBem;
-
-
+    private Label labelNomeBem;
     @FXML
-
-    private Label descricaoBem;
-
-
-    @FXML
-
-    private Label localizacaoBem;
-
-
-    @FXML
-
-    private Label capacidadeBem;
-
-
+    private Label labelNomeLocal;
     private Bem bem;
-
     private ControladorReservas controladorReservas;
-
     private Usuario usuarioLogado;
-
     private DatePicker dataInicioPicker;
-
     private DatePicker dataFimPicker;
 
-
     public void initialize() {
-
         this.controladorReservas = new ControladorReservas();
-
-
         // Usuario logado
-
         Object data = ScreenManager.getInstance().getData();
-
         if (data instanceof Usuario) {
-
             this.usuarioLogado = (Usuario) data;
-
         }
         this.dataInicioPicker = new DatePicker();
-
         this.dataFimPicker = new DatePicker();
-
     }
-
 
     private void configurarDayCellFactory() {
         if (dataInicioPicker != null && dataFimPicker != null) {
@@ -159,89 +121,64 @@ public class ControllerItemCellBemReserva {
 
 
     public void setItem(Bem bem) {
-
-        if (bem != null) {
-
-            this.bem = bem;
-            nomeBem.setText(bem.getNome());
-
-            descricaoBem.setText(bem.getDescricao());
-
-            localizacaoBem.setText(bem.getLocalizacao());
-
-            capacidadeBem.setText(String.valueOf(bem.getCapacidade()));
-
-
-            if (bem.getCaminhoImagem() != null && !bem.getCaminhoImagem().isEmpty()) {
-
-                File file = new File(bem.getCaminhoImagem());
-
-                if (file.exists()) {
-
-                    Image image = new Image(file.toURI().toString());
-
-                    imagemBem.setImage(image);
-
-                } else {
-
-                    imagemBem.setImage(null);
-
-                }
-
-            } else {
-
-                imagemBem.setImage(null);
-
-            }
-
+        if (bem == null) {
+            labelNomeLocal.setText("Item não encontrado");
+            labelNomeBem.setText("Nome não disponível");
+            imagemBem.setImage(carregarImagemPadrao());
+            return;
         }
 
+        this.bem = bem;
+        labelNomeBem.setText(bem.getNome());
+        labelNomeLocal.setText(bem.getLocalizacao());
+        imagemBem.setImage(carregarImagem(bem.getCaminhoImagem()));
     }
 
+    private Image carregarImagem(String caminhoImagem) {
+
+        if (caminhoImagem == null || caminhoImagem.isEmpty()) {
+            return carregarImagemPadrao();
+        }
+        try {
+            File file = new File(caminhoImagem);
+            if (file.exists()) {
+                return new Image(file.toURI().toString());  // Carrega caminho absoluto
+            } else {
+                imagemBem.setFitHeight(64);
+                imagemBem.setFitWidth(64);
+                imagemBem.setOpacity(0.7);
+                return new Image(Objects.requireNonNull(getClass().getResourceAsStream(caminhoImagem))); // Tenta carregar do classpath
+            }
+        } catch (Exception e) {
+            System.err.println("Erro ao carregar imagem: " + e.getMessage());
+            return carregarImagemPadrao();
+        }
+    }
+
+    private Image carregarImagemPadrao() {
+        return new Image(Objects.requireNonNull(getClass().getResourceAsStream("/br/ufrpe/timeshare/gui/application/images/picture.png")));
+    }
 
     @FXML
-
     public void abrirMiniTelaReserva(ActionEvent event) {
-
         Stage popupStage = new Stage();
-
         popupStage.initModality(Modality.APPLICATION_MODAL);
-
         popupStage.setTitle("Reservar " + bem.getNome());
-
-
         Button confirmarButton = new Button("Confirmar");
-
         Button cancelarButton = new Button("Cancelar");
-
         configurarDayCellFactory();
-
         confirmarButton.setOnAction(e -> {
-
-
             LocalDate dataInicio = dataInicioPicker.getValue();
-
             LocalDate dataFim = dataFimPicker.getValue();
-
-
             if (dataInicio != null && dataFim != null) {
-
                 try {
-
                     confirmarReserva(event, dataInicio, dataFim);
-
                     popupStage.close(); // Fechar a mini tela ao confirmar
-
                 } catch (NumberFormatException ex) {
-
                     exibirAlertaErro("Erro", "Período inválido", "Por favor, insira um número válido de meses.");
-
                 }
-
             } else {
-
                 exibirAlertaErro("Erro", "Dados inválidos", "Por favor, preencha todos os campos.");
-
             }
 
         });
@@ -250,39 +187,23 @@ public class ControllerItemCellBemReserva {
         cancelarButton.setOnAction(e -> popupStage.close());
 
         VBox layout = new VBox(10);
-
         layout.getChildren().addAll(dataInicioPicker, dataFimPicker, confirmarButton, cancelarButton);
-
         layout.setPadding(new Insets(20));
-
-
         Scene scene = new Scene(layout);
-
         popupStage.setScene(scene);
-
         popupStage.showAndWait();
 
     }
 
 
     private boolean reservarBem(LocalDate dataInicio, LocalDate dataFim) {
-
         try {
-
             LocalDateTime inicioPeriodo = dataInicio.atStartOfDay();
-
             LocalDateTime fimPeriodo = dataFim.atStartOfDay();
-
-
             List<String> periodosDisponiveisString = controladorReservas.consultarDisponibilidadeParaReserva(bem, inicioPeriodo, fimPeriodo, usuarioLogado);
-
-
             List<LocalDate> datasDisponiveis = periodosDisponiveisString.stream()
-
                     .map(dateString -> LocalDateTime.parse(dateString, DateTimeFormatter.ISO_LOCAL_DATE_TIME))
-
                     .map(LocalDateTime::toLocalDate)
-
                     .collect(Collectors.toList());
 
 

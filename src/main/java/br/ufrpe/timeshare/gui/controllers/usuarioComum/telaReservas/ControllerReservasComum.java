@@ -5,11 +5,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.Button;
+import javafx.scene.control.*;
 import br.ufrpe.timeshare.gui.application.ScreenManager;
 import br.ufrpe.timeshare.gui.controllers.basico.ControllerBase;
 import br.ufrpe.timeshare.gui.controllers.celulas.ControllerItemCellCotaReserva;
@@ -18,9 +14,9 @@ import br.ufrpe.timeshare.negocio.ControladorBens;
 import br.ufrpe.timeshare.negocio.beans.Bem;
 import br.ufrpe.timeshare.negocio.beans.Cota;
 import br.ufrpe.timeshare.negocio.beans.Usuario;
+import javafx.scene.layout.VBox;
 import javafx.util.Callback;
 import javafx.scene.layout.HBox;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 
 import java.io.IOException;
@@ -33,23 +29,23 @@ public class ControllerReservasComum implements ControllerBase {
     @FXML
     private TextField buscarTodosBensTextField;
     @FXML
-    private Button buscarTodosBensButton;
-    @FXML
     private ListView<Cota> minhasCotasListView;
     @FXML
-    private ScrollPane todosBensScrollPane;
+    private TabPane tabPaneUsuarioComumTelaReseva;
     @FXML
-    private ScrollPane minhasCotasScrollPane;
-    
+    private Tab tabBensDisponiveis;
+    @FXML
+    private Tab tabMinhasCotas;
+
     private ControladorBens controladorBens;
     private Usuario usuarioLogado;
 
-@FXML
+    @FXML
     public void initialize() {
         this.controladorBens = new ControladorBens();
     }
 
-@Override
+    @Override
     public void receiveData(Object data) {
         System.out.println("receiveData chamado com: " + data);
         if (data instanceof Usuario) {
@@ -78,13 +74,13 @@ public class ControllerReservasComum implements ControllerBase {
             public ListCell<Bem> call(ListView<Bem> listView) {
                 return new ListCell<>() {
                     private FXMLLoader loader;
-                    private HBox root;
+                    private VBox root;
                     private ControllerItemCellBemReserva controller;
-    
+
                     @Override
                     protected void updateItem(Bem item, boolean empty) {
                         super.updateItem(item, empty);
-    
+
                         if (empty || item == null) {
                             setGraphic(null);
                         } else {
@@ -98,16 +94,16 @@ public class ControllerReservasComum implements ControllerBase {
                                     return;
                                 }
                             }
-    
+
                             // Atualiza os dados da célula
                             controller.setItem(item);
-    
+
                             // Configura ação do botão
                             Button reservaButton = (Button) root.lookup("#reservaButton");
                             if (reservaButton != null) {
                                 reservaButton.setOnAction(event -> controller.abrirMiniTelaReserva(event));
                             }
-    
+
                             setGraphic(root);
                         }
                     }
@@ -115,58 +111,57 @@ public class ControllerReservasComum implements ControllerBase {
             }
         });
     }
-    
 
-        // Configuração para minhasCotasListView
-        private void configurarListViewMinhasCotas() {
-            minhasCotasListView.setCellFactory(new Callback<>() {
-                @Override
-                public ListCell<Cota> call(ListView<Cota> listView) {
-                    return new ListCell<>() {
-                        private FXMLLoader loader;
-                        private HBox root;
-                        private ControllerItemCellCotaReserva controller;
-    
-                        @Override
-                        protected void updateItem(Cota item, boolean empty) {
-                            super.updateItem(item, empty);
-    
-                            if (empty || item == null) {
-                                setGraphic(null);
-                            } else {
-                                if (loader == null) {
-                                    try {
-                                        loader = new FXMLLoader(getClass().getResource("/br/ufrpe/timeshare/gui/application/ItemCellCotaReserva.fxml"));
-                                        root = loader.load();
-                                        controller = loader.getController();
-    
-                                        // *** PASSA O usuarioLogado PARA ControllerItemCellCotaReserva ***
-                                        controller.receiveData(usuarioLogado); // Linha importante!
-    
-                                    } catch (IOException e) {
-                                        exibirAlertaErro("Erro", "Erro ao exibir cotas", e.getMessage());
-                                        return;
-                                    }
+
+    // Configuração para minhasCotasListView
+    private void configurarListViewMinhasCotas() {
+        minhasCotasListView.setCellFactory(new Callback<>() {
+            @Override
+            public ListCell<Cota> call(ListView<Cota> listView) {
+                return new ListCell<>() {
+                    private FXMLLoader loader;
+                    private HBox root;
+                    private ControllerItemCellCotaReserva controller;
+
+                    @Override
+                    protected void updateItem(Cota item, boolean empty) {
+                        super.updateItem(item, empty);
+
+                        if (empty || item == null) {
+                            setGraphic(null);
+                        } else {
+                            if (loader == null) {
+                                try {
+                                    loader = new FXMLLoader(getClass().getResource("/br/ufrpe/timeshare/gui/application/ItemCellCotaReserva.fxml"));
+                                    root = loader.load();
+                                    controller = loader.getController();
+
+                                    // *** PASSA O usuarioLogado PARA ControllerItemCellCotaReserva ***
+                                    controller.receiveData(usuarioLogado); // Linha importante!
+
+                                } catch (IOException e) {
+                                    exibirAlertaErro("Erro", "Erro ao exibir cotas", e.getMessage());
+                                    return;
                                 }
-    
-                                controller.setItem(item);
-    
-                                setGraphic(root);
                             }
-                        }
-                    };
-                }
-            });
-        }
 
-        @FXML
-private void limparMinhasCotas() {
-    minhasCotasListView.getItems().clear();
-    minhasCotasScrollPane.setVvalue(0.0);
-}
+                            controller.setItem(item);
+
+                            setGraphic(root);
+                        }
+                    }
+                };
+            }
+        });
+    }
+
+    @FXML
+    private void limparMinhasCotas() {
+        minhasCotasListView.getItems().clear();
+    }
 
     private void exibirBensIniciais() {
-        
+
         if (usuarioLogado != null) {
             buscarMinhasCotas();
         } else {
@@ -202,7 +197,7 @@ private void limparMinhasCotas() {
             if (cotas == null || cotas.isEmpty()) {
                 System.out.println("Usuário não possui cotas.");
                 minhasCotasListView.getItems().clear(); // Limpa a lista
-                return; 
+                return;
             }
             ObservableList<Cota> items = FXCollections.observableArrayList(cotas);
             minhasCotasListView.setItems(items);
@@ -213,8 +208,19 @@ private void limparMinhasCotas() {
     }
 
     @FXML
-    public void voltarTelaPrincipalComum(ActionEvent event){
+    public void voltarTelaPrincipalComum(ActionEvent event) {
         ScreenManager.getInstance().showUsuarioComumPrincipalScreen();
     }
+
+    @FXML
+    public void mudarAbaTodosBens(ActionEvent event) {
+        tabPaneUsuarioComumTelaReseva.getSelectionModel().select(tabBensDisponiveis);
+    }
+
+    @FXML
+    public void mudarAbaMinhasCotas(ActionEvent event) {
+        tabPaneUsuarioComumTelaReseva.getSelectionModel().select(tabMinhasCotas);
+    }
+
 
 }
