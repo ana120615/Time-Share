@@ -270,7 +270,7 @@ public class ControladorReservas {
                 if ((cotasBemAssociado.get(i).getProprietario() != null && !cotasBemAssociado.get(i).getProprietario().equals(usuario) &&
                         !cotasBemAssociado.get(i).getStatusDeDisponibilidadeParaCompra())) {
 
-                    existeCotaOcupada = verificarConflitoDeDatasCota(cotasBemAssociado.get(i), inicioAtual, dataFim);
+                    existeCotaOcupada = verificarConflitoDeDatasCota(cotasBemAssociado.get(i), inicioAtual, inicioAtual);
                 }
             }
             // Verifica periodos em que ha reservas ativas

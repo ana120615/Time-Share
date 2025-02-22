@@ -3,61 +3,56 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="750.0" stylesheets="@styles/basico/tela-lista-bens.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.ufrpe.timeshare.gui.controllers.usuarioAdmin.telaCotas.ControllerTelaDeCotas">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="520.0" prefWidth="782.0" style="-fx-background-color: #001f54;" stylesheets="@styles/basico/tela-minhas-cotas.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.ufrpe.timeshare.gui.controllers.usuarioAdmin.telaCotas.ControllerTelaDeCotas">
    <center>
-      <VBox VBox.vgrow="ALWAYS">
+      <VBox style="-fx-background-color: white;" VBox.vgrow="ALWAYS">
          <children>
-            <TabPane fx:id="tabPaneTelaDeslocarCotasPrincipal" stylesheets="@styles/basico/tabpane.css">
+            <TabPane fx:id="tabPaneTelaDeslocarCotasPrincipal" side="BOTTOM" stylesheets="@styles/basico/tabpane.css">
                <tabs>
                   <Tab fx:id="tabBens" text="tabBens">
                      <content>
                         <VBox alignment="CENTER">
                            <children>
-                              <HBox prefHeight="100.0" prefWidth="200.0">
-                                 <children>
-                                    <Button mnemonicParsing="false" onAction="#voltarParaTelaAdm" text="Voltar" />
-                                 </children>
-                              </HBox>
-                              <HBox alignment="CENTER" styleClass="search-box">
-                                 <children>
-                                    <GridPane prefHeight="30.0" prefWidth="648.0">
-                                       <columnConstraints>
-                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="387.6666259765625" minWidth="10.0" prefWidth="387.6666259765625" />
-                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="282.0" minWidth="10.0" prefWidth="155.000010172526" />
-                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="187.0" minWidth="10.0" prefWidth="97.66665649414062" />
-                                       </columnConstraints>
-                                       <rowConstraints>
-                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                       </rowConstraints>
-                                       <children>
-                                          <TextField fx:id="nomeBemProcurado" maxWidth="700.0" prefHeight="30.0" prefWidth="349.0" promptText="Inserir nome do Bem" />
-                                          <Button mnemonicParsing="false" onAction="#buscarBens" prefHeight="30.0" prefWidth="71.0" text="Buscar" GridPane.columnIndex="1" />
-                                       </children>
-                                    </GridPane>
-                                 </children>
+                              <HBox alignment="CENTER" maxWidth="700.0" prefHeight="56.0" prefWidth="531.0" styleClass="hbox-search">
                                  <VBox.margin>
                                     <Insets bottom="10.0" />
                                  </VBox.margin>
+                                 <children>
+                                    <TextField fx:id="nomeBemProcurado" maxWidth="700.0" prefHeight="30.0" prefWidth="349.0" promptText="Inserir nome do Bem" styleClass="text-field-search" HBox.hgrow="ALWAYS" />
+                                    <Button contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#buscarBens" prefHeight="30.0" prefWidth="71.0" styleClass="button-search" text="Buscar">
+                                       <graphic>
+                                          <ImageView fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@images/search_white.png" />
+                                             </image>
+                                          </ImageView>
+                                       </graphic>
+                                    </Button>
+                                 </children>
                               </HBox>
-                              <ListView fx:id="listViewItens" maxWidth="700.0" prefHeight="278.0" prefWidth="639.0" VBox.vgrow="ALWAYS">
+                              <ListView fx:id="listViewItens" maxWidth="700.0" prefHeight="278.0" prefWidth="639.0" stylesheets="@styles/basico/tela-lista-bens.css" VBox.vgrow="ALWAYS">
                                  <padding>
                                     <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                                  </padding>
                               </ListView>
                            </children>
                            <padding>
-                              <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                            </padding>
                         </VBox>
                      </content>
@@ -66,39 +61,30 @@
                      <content>
                         <VBox alignment="CENTER">
                            <children>
-                              <HBox prefHeight="39.0" prefWidth="639.0">
+                              <HBox alignment="CENTER" maxWidth="700.0" prefHeight="35.0" prefWidth="572.0" style="-fx-background-color: white;" styleClass="hbox-search">
+                                 <VBox.margin>
+                                    <Insets bottom="10.0" />
+                                 </VBox.margin>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
                                  <children>
-                                    <GridPane prefHeight="39.0" prefWidth="241.0">
-                                       <columnConstraints>
-                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="87.66668701171875" minWidth="10.0" prefWidth="58.333335876464844" />
-                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="199.66666412353516" minWidth="10.0" prefWidth="183.66666412353516" />
-                                       </columnConstraints>
-                                       <rowConstraints>
-                                          <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
-                                       </rowConstraints>
-                                       <children>
-                                          <VBox>
-                                             <children>
-                                                <Button mnemonicParsing="false" onAction="#mudarTabBens" text="Voltar" />
-                                             </children>
-                                          </VBox>
-                                          <VBox GridPane.columnIndex="1">
-                                             <children>
-                                                <Button mnemonicParsing="false" onAction="#mudarTabDeslocamentoAll" text="Calcular Em Todas" />
-                                             </children>
-                                          </VBox>
-                                       </children>
-                                    </GridPane>
+                                    <Button mnemonicParsing="false" onAction="#mudarTabBens" style="-fx-cursor: hand;" text="Voltar">
+                                       <HBox.margin>
+                                          <Insets right="10.0" />
+                                       </HBox.margin>
+                                    </Button>
+                                    <Button mnemonicParsing="false" onAction="#mudarTabDeslocamentoAll" style="-fx-cursor: hand;" text="Calcular Em Todas" />
                                  </children>
                               </HBox>
-                              <ListView fx:id="listViewCotas" maxWidth="700.0" prefHeight="278.0" prefWidth="639.0" VBox.vgrow="ALWAYS">
+                              <ListView fx:id="listViewCotas" maxWidth="700.0" prefHeight="321.0" prefWidth="527.0" stylesheets="@styles/basico/tela-minhas-cotas.css" VBox.vgrow="ALWAYS">
                                  <padding>
                                     <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                                  </padding>
                               </ListView>
                            </children>
                            <padding>
-                              <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                            </padding>
                         </VBox>
                      </content>
@@ -149,13 +135,57 @@
          </children>
       </VBox>
    </center>
-   <bottom>
-      <HBox prefHeight="34.0" prefWidth="600.0" BorderPane.alignment="CENTER" />
-   </bottom>
+   <top>
+      <GridPane prefWidth="570.0" style="-fx-background-color: #001f54;" BorderPane.alignment="CENTER">
+         <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+         </rowConstraints>
+         <children>
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="400.0" style="-fx-background-color: #001f54;" GridPane.columnIndex="2">
+               <children>
+                  <Label style="-fx-text-fill: white; -fx-font-size: 24px; -fx-font-weight: bold;" text="Informaçoes das Cotas" />
+               </children>
+            </HBox>
+            <Button contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#voltarParaTelaAdm" style="-fx-background-color: #001f54; -fx-cursor: hand;" text="&lt;" textAlignment="CENTER" textFill="WHITE" textOverrun="CENTER_WORD_ELLIPSIS">
+               <font>
+                  <Font size="30.0" />
+               </font>
+               <graphic>
+                  <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@images/angle-left-white.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+         </children>
+      </GridPane>
+   </top>
    <left>
-      <VBox prefHeight="200.0" prefWidth="25.0" BorderPane.alignment="CENTER" />
+      <VBox prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: white; -fx-background-radius: 60 0 0 0;" BorderPane.alignment="CENTER" />
    </left>
    <right>
-      <VBox prefHeight="200.0" prefWidth="25.0" BorderPane.alignment="CENTER" />
+      <VBox prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: white;" BorderPane.alignment="CENTER" />
    </right>
+   <bottom>
+      <HBox alignment="CENTER" prefHeight="23.0" prefWidth="750.0" style="-fx-background-color: white;" BorderPane.alignment="CENTER">
+         <children>
+            <Label style="-fx-text-fill: gray;" text="Version 1.0.0.00000">
+               <font>
+                  <Font size="10.0" />
+               </font>
+               <padding>
+                  <Insets bottom="3.0" />
+               </padding>
+            </Label>
+         </children>
+      </HBox>
+   </bottom>
 </BorderPane>
