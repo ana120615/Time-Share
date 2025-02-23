@@ -196,7 +196,7 @@ public class ControllerReservasComum implements ControllerBase {
             List<Cota> cotas = controladorBens.listarCotasDeUmUsuario(usuarioLogado);
             if (cotas == null || cotas.isEmpty()) {
                 System.out.println("Usuário não possui cotas.");
-                minhasCotasListView.getItems().clear(); // Limpa a lista
+                minhasCotasListView.getItems().clear(); 
                 return;
             }
             ObservableList<Cota> items = FXCollections.observableArrayList(cotas);

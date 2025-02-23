@@ -66,6 +66,10 @@ public class ControllerMinhasReservas implements ControllerBase {
         }
     }
 
+    private void buscarReservas(){
+        
+    }
+
     private void exibirReservas() {
         ObservableList<VBox> itens = FXCollections.observableArrayList();
         for (Reserva reserva : reservas) {
@@ -117,8 +121,8 @@ public class ControllerMinhasReservas implements ControllerBase {
 
     }
 
+    //Realizar checkin
     private void fazerCheckin(Reserva reserva) {
-        // Lógica para realizar o check-in da reserva
         System.out.println("Check-in da reserva: ");
         int id = (int) reserva.getId();
         String comprovante = null;

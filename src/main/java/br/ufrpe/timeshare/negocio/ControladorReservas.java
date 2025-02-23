@@ -19,8 +19,6 @@ import java.util.concurrent.ThreadLocalRandom;
 /*Colocar liberar cota em todos os metodos que mexem na liberacao da cota de alguma forma*/
 //Pode ser no cancelamento, alteracao do periodo, prolongamento...
 //Ver questao da verificacao do periodo com cota
-//Colocar buscar estadia ativa aqui
-//fazer prolongar estadia na tela de estadia
 //colocar minhas reservas com tela de rolar
 //fazer date picker verificar periodos futuros a depender das cotas também
 
@@ -450,6 +448,31 @@ public class ControladorReservas {
         }
         return resultado;
     }
+   
+    //Verifica se usuario possui alguma estadia ativa
+    //Se fez check in em alguma reserva
+   public Estadia getEstadiaAtiva(Usuario usuario) throws OperacaoNaoPermitidaException, DadosInsuficientesException {
+    List<Estadia> estadias = null;
+    Estadia estadiaAtiva = null;
+    if(usuario!=null){
+    estadias = listarEstadiasUsuario(usuario);
+    if(estadias!=null){
+        for(Estadia estadia: estadias){
+        if(estadia.getReserva()!=null && estadia.getDataFim()==null){
+         estadiaAtiva = estadia;
+         break;
+        }
+        }
+     }
+     else{
+         throw new OperacaoNaoPermitidaException("O usuario nao possui estadias");
+     }
+    }
+    else{
+        throw new DadosInsuficientesException("O usuario nao pode ser nulo");
+    }
+   return estadiaAtiva;
+   } 
 
 
 //RELATORIOS
