@@ -16,7 +16,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.util.Callback;
 
@@ -62,7 +61,7 @@ public class ControllerMinhasCotas implements ControllerBase {
         System.out.println("initialize() chamado.");
     }
 
-    private void carregarListaDeCotas() {
+    public void carregarListaDeCotas() {
         if (usuario == null) {
             System.err.println("Erro: Usuário está null em carregarListaDeCotas()!");
             return;

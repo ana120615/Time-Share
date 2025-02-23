@@ -81,7 +81,7 @@ public class ControladorVendas {
         }
     }
 
-    public boolean transferenciaDeDireitos(long cpfUsuarioRemetente, long cpfUsuarioDestinario, int idCota) throws
+    public void transferenciaDeDireitos(long cpfUsuarioRemetente, long cpfUsuarioDestinario, long idCota) throws
             CotaNaoExisteException, UsuarioNaoExisteException, TransferenciaInvalidaException {
         Cota cotaTransferida = controladorBens.buscarCota(idCota);
 
@@ -95,7 +95,6 @@ public class ControladorVendas {
         if (cotaTransferida.getProprietario().equals(usuarioRemetente)) {
             if (!usuarioRemetente.equals(usuarioDestinatario)) {
                 cotaTransferida.setProprietario(usuarioDestinatario);
-                return true;
             } else {
                 throw new TransferenciaInvalidaException("Operação não permitida.");
             }
