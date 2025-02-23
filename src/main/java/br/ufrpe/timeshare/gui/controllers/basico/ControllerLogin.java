@@ -103,6 +103,12 @@ public class ControllerLogin implements ControllerBase {
         }
     }
 
+    @FXML
+private void irParaRecuperarSenha() {
+    System.out.println("Redirecionando para a tela de recuperação de senha...");
+    ScreenManager.getInstance().showRecuperarSenhaScreen();
+}
+
     private void limparCampos() {
         txtUser.clear();
         txtPassword.clear();

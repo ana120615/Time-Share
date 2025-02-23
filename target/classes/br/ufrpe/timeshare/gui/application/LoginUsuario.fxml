@@ -69,7 +69,7 @@
                   </HBox>
                   <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="8">
                      <children>
-                            <Hyperlink text="Esqueceu a senha?" />
+                            <Hyperlink text="Esqueceu a senha?" onAction="#irParaRecuperarSenha"/>
                      </children>
                   </HBox>
                </children>

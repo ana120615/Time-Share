@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.ufrpe.timeshare.gui.controllers.basico.ControllerRecuperarSenha">
+   <children>
+      <!-- Título -->
+      <Label layoutX="206.0" layoutY="26.0" text="Recuperar senha">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
+
+      <!-- Rótulos -->
+      <Label layoutX="60.0" layoutY="102.0" text="Email:" />
+      <Label layoutX="60.0" layoutY="216.0" text="Token para recuperação:" />
+      
+      <!-- Campos de texto -->
+      <TextField fx:id="emailField" layoutX="106.0" layoutY="98.0" />
+      <TextField fx:id="tokenField" layoutX="206.0" layoutY="212.0" />
+      
+      <!-- Botões -->
+      <Button fx:id="btnBuscar" layoutX="268.0" layoutY="98.0" mnemonicParsing="false" text="Buscar" onAction="#onBuscar" />
+      <Button fx:id="btnValidar" layoutX="382.0" layoutY="212.0" mnemonicParsing="false" text="Validar" onAction="#onValidar" />
+      <Button fx:id="btnVoltar" layoutX="526.0" layoutY="355.0" mnemonicParsing="false" text="Voltar" onAction="#onVoltar" />
+
+      <!-- Label para mensagens -->
+      <Label fx:id="mensagemLabel" layoutX="106.0" layoutY="300.0" text="" />
+
+   </children>
+</Pane>
