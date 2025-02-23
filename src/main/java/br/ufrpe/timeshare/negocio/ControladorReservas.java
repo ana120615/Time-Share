@@ -475,9 +475,51 @@ public class ControladorReservas {
    } 
 
 
-public List<Reserva> buscarReservaPorAtributo(){
-    
+   //Buscar reserva pelo nome do bem e pelo periodo
+   //metodo utilizado na tela minhas reservas
+   public List<Reserva> buscarReservaPorAtributo(Usuario usuario, String nomeBem, LocalDateTime dataInicio, LocalDateTime dataFim) throws DadosInsuficientesException, OperacaoNaoPermitidaException{
+    List<Reserva> resultado = new ArrayList<>();
+    List<Reserva> reservasUsuario = listarReservasUsuario(usuario);
+    if(usuario!=null){
+        if(reservasUsuario!=null){
+    for (Reserva reserva : reservasUsuario) {
+        boolean atendeNomeBem = false;
+        boolean atendePeriodo = false;
+
+        // Verifica se o nome do bem está presente
+        if (nomeBem != null && !nomeBem.trim().isEmpty()) {
+            if (reserva.getBem().getNome().equalsIgnoreCase(nomeBem)) {
+                atendeNomeBem = true;
+            }
+        }
+
+        // Verifica se o período está dentro do intervalo especificado
+        if (dataInicio != null && dataFim != null) {
+            LocalDateTime inicioReserva = reserva.getDataInicio();
+            LocalDateTime fimReserva = reserva.getDataFim();
+            
+            if ((inicioReserva.isEqual(dataInicio) || inicioReserva.isAfter(dataInicio)) &&
+                (fimReserva.isEqual(dataFim) || fimReserva.isBefore(dataFim))) {
+                atendePeriodo = true;
+            }
+        }
+
+        // Adiciona a reserva se atender pelo menos um dos critérios
+        if ((nomeBem != null && atendeNomeBem) || (dataInicio != null && dataFim != null && atendePeriodo)) {
+            resultado.add(reserva);
+        }
+    }
 }
+else{
+    throw new OperacaoNaoPermitidaException("Usuario nao possui reservas");
+}
+}
+else{
+    throw new DadosInsuficientesException("Usuario nao pode ser nulo.");
+}
+    return resultado;
+}
+
 
 //RELATORIOS
 
