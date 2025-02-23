@@ -82,6 +82,28 @@ public class RepositorioReservas extends RepositorioGenerico<Reserva> implements
         }
         return resultado;
     }
+
+    @Override
+    public List<Reserva> buscarReservasPorPeriodo(LocalDateTime dataInicio, LocalDateTime dataFim) {
+        List<Reserva> resultado = new ArrayList<>();
+    
+        for (Reserva reserva : lista) {
+            LocalDateTime inicioReserva = reserva.getDataInicio();
+            LocalDateTime fimReserva = reserva.getDataFim();
+    
+            // Verifica se a reserva está dentro do período ou se coincide com as datas fornecidas
+            if ((inicioReserva.isAfter(dataInicio) && inicioReserva.isBefore(dataFim)) || 
+                (fimReserva.isAfter(dataInicio) && fimReserva.isBefore(dataFim)) || 
+                inicioReserva.isEqual(dataInicio) || 
+                fimReserva.isEqual(dataFim)) {
+                resultado.add(reserva);
+            }
+        }
+    
+        return resultado;
+    }
+    
+
 }
 
 

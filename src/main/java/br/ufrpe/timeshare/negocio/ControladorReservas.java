@@ -475,6 +475,10 @@ public class ControladorReservas {
    } 
 
 
+public List<Reserva> buscarReservaPorAtributo(){
+    
+}
+
 //RELATORIOS
 
     public List<Reserva> buscarReservasPorMultiplosPeriodos(Bem bem, LocalDateTime dataInicio, LocalDateTime dataFim) {
