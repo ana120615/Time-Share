@@ -2,6 +2,7 @@ package br.ufrpe.timeshare.gui.controllers.usuarioComum.telaReservas;
 import br.ufrpe.timeshare.excecoes.EstadiaNaoExisteException;
 import br.ufrpe.timeshare.excecoes.ReservaJaCanceladaException;
 import br.ufrpe.timeshare.excecoes.ReservaNaoExisteException;
+import br.ufrpe.timeshare.excecoes.UsuarioNaoPermitidoException;
 import br.ufrpe.timeshare.gui.application.ScreenManager;
 import br.ufrpe.timeshare.gui.controllers.basico.ControllerBase;
 import br.ufrpe.timeshare.negocio.ControladorReservas;
