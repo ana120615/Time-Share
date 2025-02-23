@@ -44,6 +44,7 @@ public class ScreenManager {
         carregarTela("TelaRealizarReserva", "/br/ufrpe/timeshare/gui/application/RealizarReserva.fxml");
         carregarTela("TelaMinhasReservas","/br/ufrpe/timeshare/gui/application/MinhasReservasComum.fxml" );
         carregarTela("TelaEstadia","/br/ufrpe/timeshare/gui/application/Estadia.fxml");
+        carregarTela("TelaBensMaisVendidos", "/br/ufrpe/timeshare/gui/application/CharTelaBensMaisVendidos.fxml");
     }
 
     private void carregarTela(String nome, String caminhoFXML) {
@@ -139,4 +140,6 @@ public void showEstadiaScreen(){
     public void showTelaMinhasCotasScreen() {
         showScreen("TelaMinhasCotas");
     }
+
+    public void showTelaBensMaisVendidos() {showScreen("TelaBensMaisVendidos");}
 }

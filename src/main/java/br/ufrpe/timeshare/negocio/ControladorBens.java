@@ -436,6 +436,17 @@ public class ControladorBens {
         return resultadoFinal;
     }
 
+    // RELATÓRIO
+    public int quantidadeVendasBem(Bem bem) {
+        int resultado = 0;
+        for (Cota c : bem.getCotas()) {
+            if (c.getProprietario() != null && !c.getStatusDeDisponibilidadeParaCompra()) {
+                resultado++;
+            }
+        }
+        return resultado;
+    }
+
 }
 
 
