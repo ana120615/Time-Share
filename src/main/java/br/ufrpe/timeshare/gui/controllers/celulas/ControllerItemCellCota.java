@@ -3,6 +3,7 @@ package br.ufrpe.timeshare.gui.controllers.celulas;
 import br.ufrpe.timeshare.gui.controllers.usuarioAdmin.telaCotas.ControllerDeslocamentoDeCotasPopUP;
 import br.ufrpe.timeshare.gui.controllers.usuarioAdmin.telaCotas.ControllerTelaDeCotas;
 import br.ufrpe.timeshare.gui.controllers.usuarioComum.telaMinhasCotas.ControllerMinhasCotas;
+import br.ufrpe.timeshare.gui.controllers.usuarioComum.telaMinhasCotas.ControllerRepassarDireitoUsoPopUp;
 import br.ufrpe.timeshare.gui.controllers.usuarioComum.telaVendaCotas.ControllerAdicionarCotaPopUp;
 import br.ufrpe.timeshare.gui.controllers.usuarioComum.telaVendaCotas.ControllerTelaDeVenda;
 import br.ufrpe.timeshare.negocio.beans.Cota;
@@ -10,8 +11,10 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.effect.GaussianBlur;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -47,6 +50,7 @@ public class ControllerItemCellCota {
     private ControllerAdicionarCotaPopUp mainControllerAdicionarCotaPopUp;
     private ControllerTelaDeVenda mainControllerVendaCotas;
     private ControllerTelaDeCotas mainControllerDeslocamentoCotas;
+    private ControllerRepassarDireitoUsoPopUp mainControllerRepassarDireitoUsoPopUp;
 
     public void setItem(Cota item) {
         this.cota = item;
@@ -80,8 +84,7 @@ public class ControllerItemCellCota {
                     if (result.get() == botaoDeslocar) {
                         showPopupDeslocamentoCotas();
                     } else if (result.get() == botaoRepassar) {
-                        // Implementar ação para repassar direito de uso
-                        System.out.println("Repassar Direito de Uso selecionado.");
+                        showPopupRepassarDireitoUso();
                     } else {
                         alert.close();
                     }
@@ -119,6 +122,10 @@ public class ControllerItemCellCota {
         this.mainControllerDeslocamentoCotas = mainControllerDeslocamentoCotas;
     }
 
+    public void setMainControllerRepassarDireitoUsoPopUp(ControllerRepassarDireitoUsoPopUp mainControllerRepassarDireitoUsoPopUp) {
+        this.mainControllerRepassarDireitoUsoPopUp = mainControllerRepassarDireitoUsoPopUp;
+    }
+
 
     //SET VALORES DE TELA
     public void setValorTelaDeDeslocamento(int valorTelaDeDeslocamento) {
@@ -150,6 +157,39 @@ public class ControllerItemCellCota {
 
             popupStage.showAndWait();
 
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void showPopupRepassarDireitoUso() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/br/ufrpe/timeshare/gui/application/RepassarDireitoUsoPopUp.fxml"));
+            StackPane popupRoot = loader.load(); // Carrega a interface corretamente
+
+            // Obtém o controlador da tela do pop-up
+            ControllerRepassarDireitoUsoPopUp popupController = loader.getController();
+            popupController.setCota(cota);
+            popupController.setMainController(mainControllerMinhasCotas);
+
+            Stage popupStage = new Stage();
+            popupStage.initModality(Modality.APPLICATION_MODAL);
+            popupStage.setScene(new Scene(popupRoot));
+            popupStage.setTitle("Detalhes do Bem");
+            popupStage.setMinWidth(932);
+            popupStage.setMinHeight(650);
+
+            // Aplica efeito de desfoque na tela principal
+            if (mainControllerMinhasCotas != null && mainControllerMinhasCotas.getListViewItens().getScene() != null) {
+                mainControllerMinhasCotas.getListViewItens().getScene().getRoot().setEffect(new GaussianBlur(10));
+            }
+
+            popupStage.showAndWait();
+
+            // Remove efeito de desfoque ao fechar
+            if (mainControllerMinhasCotas != null && mainControllerMinhasCotas.getListViewItens().getScene() != null) {
+                mainControllerMinhasCotas.getListViewItens().getScene().getRoot().setEffect(null);
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
