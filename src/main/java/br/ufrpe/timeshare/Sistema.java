@@ -361,11 +361,12 @@ public class Sistema {
                                                                     System.out.println("Informe o id da Estadia: ");
                                                                     int idEstadiaFinalizar = input.nextInt();
                                                                     try {
-                                                                        controladorReservas.checkout(idEstadiaFinalizar);
+                                                                        controladorReservas.checkout(idEstadiaFinalizar, usuario);
                                                                         System.out.println("Estadia finalizada com sucesso!");
                                                                     } catch (ReservaNaoExisteException |
                                                                              ReservaJaCanceladaException |
-                                                                             EstadiaNaoExisteException e) {
+                                                                             EstadiaNaoExisteException |
+                                                                            UsuarioNaoPermitidoException e) {
                                                                         System.out.println(e.getMessage());
                                                                     }
                                                                     break;

@@ -62,7 +62,7 @@ public class RepositorioEstadia extends RepositorioGenerico<Estadia> implements 
             }
         }
 
-        if(!lista.isEmpty()) {
+        if(!lista.isEmpty() && existe) {
             estadia = lista.get(i-1);
         }
 
