@@ -33,14 +33,15 @@ public class ControllerLogin implements ControllerBase {
             admin = new Usuario(12345678901L, "admin", "admin@gmail.com", "senha123", LocalDate.of(2000, 01, 01), TipoUsuario.ADMINISTRADOR);
             controladorUsuarioGeral.cadastrar(admin);
             controladorUsuarioGeral.cadastrar(12345678902L, "comum", "comum@gmail.com", "senha123", LocalDate.of(2000, 01, 01), TipoUsuario.COMUM);
+            controladorUsuarioGeral.cadastrar(12335678902L, "comum2", "comum2@gmail.com", "senha123", LocalDate.of(2000, 01, 01), TipoUsuario.COMUM);
         } catch (UsuarioJaExisteException | UsuarioNaoPermitidoException | DadosInsuficientesException e) {
             System.out.println(e.getMessage());
         }
 
         try {
-            controladorBens.cadastrar(1111, "Lar doce Lar", "Seu lugar é aqui. Vem ser feliz", "Recife-PE", 4, admin, LocalDateTime.now(), 15, 5425, "/home/caua/IdeaProjects/Time-Share/src/main/resources/br/ufrpe/timeshare/gui/application/images/casa-piscina.jpg");
+            controladorBens.cadastrar(1111, "Lar doce Lar", "Seu lugar é aqui. Vem ser feliz", "Recife-PE", 4, admin, LocalDateTime.now(), 15, 5425, "/main/resources/br/ufrpe/timeshare/gui/application/images/casa-piscina.jpg");
             controladorBens.ofertarBem(1111);
-            controladorBens.cadastrar(2222, "Hotel de Luxo ", "Lugar de paz", "Camaragibe-PE", 4, admin, LocalDateTime.now(), 15, 5425, "/home/caua/IdeaProjects/Time-Share/src/main/resources/br/ufrpe/timeshare/gui/application/images/hotel-luxo.jpg");
+            controladorBens.cadastrar(2222, "Hotel de Luxo ", "Lugar de paz", "Camaragibe-PE", 4, admin, LocalDateTime.now(), 15, 5425, "/main/resources/br/ufrpe/timeshare/gui/application/images/hotel-luxo.jpg");
             controladorBens.ofertarBem(2222);
         } catch (BemNaoExisteException | UsuarioNaoPermitidoException | QuantidadeDeCotasExcedidasException | BemJaExisteException | UsuarioNaoExisteException | BemJaOfertadoException e) {
             System.out.println(e.getMessage());
