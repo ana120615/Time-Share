@@ -110,6 +110,7 @@ public class ControllerRecuperarSenha {
     @FXML
     public void onVoltar() {
         ScreenManager.getInstance().showLoginScreen();
+        limparCampos();
     }
 
     private boolean isValidEmail(String email) {
