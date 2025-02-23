@@ -111,11 +111,11 @@ public class ControllerEstadia implements ControllerBase {
         if (confirmacao.isPresent() && confirmacao.get() == ButtonType.OK) {
             
             try {
-                controladorReservas.checkout((int)estadiaAtiva.getId());
+                controladorReservas.checkout((int)estadiaAtiva.getId(), usuarioLogado);
                 exibirAlertaInfo("Sucesso!","Check out realizado com sucesso","Volte sempre!");
                 limparEstadiaAtiva();
             carregarEstadias(usuarioLogado);
-            } catch (ReservaNaoExisteException | ReservaJaCanceladaException | EstadiaNaoExisteException e) {
+            } catch (ReservaNaoExisteException | ReservaJaCanceladaException | EstadiaNaoExisteException | UsuarioNaoPermitidoException e) {
                 exibirAlertaErro("Erro", "Problema ao realizar check out", e.getMessage());
             }
         }

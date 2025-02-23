@@ -34,6 +34,26 @@ public class ControladorReservas {
         this.repositorioEstadia = RepositorioEstadia.getInstancia();
     }
 
+    private static List<Map.Entry<LocalDate, Long>> calcularContagemPorData(List<Reserva> reservas, List<Estadia> estadias) {
+        Map<LocalDate, Long> contagemDias = new HashMap<>();
+        // Contabiliza reservas
+        for (Reserva reserva : reservas) {
+            LocalDate data = reserva.getDataInicio().toLocalDate();
+            while (!data.isAfter(reserva.getDataFim().toLocalDate())) {
+                contagemDias.compute(data, (k, v) -> (v == null) ? 1L : v + 1);
+                data = data.plusDays(1);
+            }
+        }
+        // Contabiliza estadias
+        for (Estadia estadia : estadias) {
+            LocalDate data = estadia.getDataInicio().toLocalDate();
+            while (!data.isAfter(estadia.getDataFim().toLocalDate())) {
+                contagemDias.compute(data, (k, v) -> (v == null) ? 1L : v + 1);
+                data = data.plusDays(1);
+            }
+        }
+        return new ArrayList<>(contagemDias.entrySet());
+    }
 
     public String checkin(int idReserva) throws EstadiaJaInicializadaException, ReservaNaoExisteException, ReservaJaCanceladaException, ForaPeriodoException {
         LocalDateTime dataInicio = LocalDateTime.now();
@@ -64,7 +84,6 @@ public class ControladorReservas {
         return gerarComprovanteEstadia(estadia);
     }
 
-
     public String prolongarEstadia(int idEstadia, int quantidaDias) throws ReservaNaoExisteException, ReservaJaCanceladaException, ForaPeriodoException, PeriodoJaReservadoException, PeriodoNaoDisponivelParaReservaException, ReservaNaoExisteException, CotaJaReservadaException, ReservaJaExisteException, DadosInsuficientesException, EstadiaNaoExisteException, UsuarioNaoPermitidoException, OperacaoNaoPermitidaException {
         Estadia estadia = repositorioEstadia.buscar(idEstadia);
         if (estadia == null) {
@@ -78,8 +97,7 @@ public class ControladorReservas {
         return gerarComprovanteReserva(reserva);
     }
 
-
-    public String checkout(int idEstadia) throws ReservaNaoExisteException, ReservaJaCanceladaException, EstadiaNaoExisteException {
+    public String checkout(int idEstadia, Usuario usuario) throws ReservaNaoExisteException, ReservaJaCanceladaException, EstadiaNaoExisteException, UsuarioNaoPermitidoException {
         LocalDateTime agora = LocalDateTime.now();
         Estadia estadia = repositorioEstadia.buscar(idEstadia);
         if (estadia == null) {
@@ -88,13 +106,14 @@ public class ControladorReservas {
         Reserva reserva = repositorioReservas.buscarReserva(estadia.getReserva());
         if (reserva == null) {
             throw new ReservaNaoExisteException("Reserva inexistente.");
-        } else {
-            estadia.setDataFim(agora);
-            repositorioReservas.remover(reserva); //remove reserva do repositorio
         }
+        if (!usuario.equals(reserva.getUsuarioComum())) {
+            throw new UsuarioNaoPermitidoException("Usuário não permitido.");
+        }
+        estadia.setDataFim(agora);
+        repositorioReservas.remover(reserva); //remove reserva do repositorio
         return gerarComprovanteEstadia(estadia);
     }
-
 
     //metodo para criar reserva/ reservar
     public String criarReserva(LocalDateTime dataInicio, LocalDateTime dataFim, Usuario usuarioComum, Bem bem)
@@ -116,7 +135,6 @@ public class ControladorReservas {
         repositorioReservas.cadastrar(reserva);
         return gerarComprovanteReserva(reserva);
     }
-
 
     //metodo para reservar o periodo completo de 1 cota
     public String reservaPeriodoCota(Cota cota, Usuario usuario) throws UsuarioNaoPermitidoException, DadosInsuficientesException, ProprietarioNaoIdentificadoException, DadosInsuficientesException, ReservaJaExisteException, ForaPeriodoException, PeriodoJaReservadoException, PeriodoNaoDisponivelParaReservaException, ReservaNaoExisteException, CotaJaReservadaException {
@@ -146,7 +164,6 @@ public class ControladorReservas {
         }
     }
 
-
     //TODO: verificar se este metodo ainda vai ser necessario ou se podemos usar diretamente o cancelar reserva
     public void liberarPeriodoCota(Cota cota, int idReserva, Usuario usuario) throws DadosInsuficientesException, ReservaNaoExisteException, OperacaoNaoPermitidaException, UsuarioNaoPermitidoException {
         if (cota == null || idReserva == 0) {
@@ -165,7 +182,6 @@ public class ControladorReservas {
         }
         repositorioReservas.remover(reservaCancelada);
     }
-
 
     public String cancelarReserva(int idReserva, Usuario usuario) throws ReservaNaoExisteException, ReservaJaCanceladaException, CotaJaReservadaException, UsuarioNaoPermitidoException, ReservaNaoReembolsavelException, DadosInsuficientesException {
         Reserva reservaCancelada = repositorioReservas.buscar(idReserva);
@@ -207,7 +223,6 @@ public class ControladorReservas {
         return reembolso;
     }
 
-
     public String alterarPeriodoReserva(long idReserva, LocalDateTime novaDataInicio, LocalDateTime novaDataFim, Usuario usuario)
             throws ReservaNaoExisteException, ReservaJaCanceladaException, ForaPeriodoException, PeriodoJaReservadoException, PeriodoNaoDisponivelParaReservaException, ReservaNaoExisteException, CotaJaReservadaException, ReservaJaExisteException, DadosInsuficientesException, UsuarioNaoPermitidoException {
         //busca reserva pelo id
@@ -244,7 +259,6 @@ public class ControladorReservas {
         reserva.setDataFim(novaDataFim);
         return gerarComprovanteReserva(reserva);
     }
-
 
     // Consulta de periodos disponiveis para reserva
     // Considerando o usuario que deseja reservar
@@ -406,19 +420,16 @@ public class ControladorReservas {
         return Math.max(taxa, 0.00);
     }
 
-
     public String gerarComprovanteReserva(Reserva reserva) throws CotaJaReservadaException, DadosInsuficientesException, ReservaNaoExisteException {
         int dias = reserva.calcularDuracaoReserva();
         double taxa = calcularTaxaExtra(reserva, dias);
         return reserva + "\nTaxa extra: R$" + String.format("%.2f", taxa);
     }
 
-
     public String gerarComprovanteEstadia(Estadia estadia) {
         int duracao = estadia.calcularDuracao();
         return estadia + "Duracao da estadia: " + String.format("%d", duracao) + " dias";
     }
-
 
     public List<Reserva> listarReservasUsuario(Usuario usuario) {
         List<Reserva> resultado = new ArrayList<>();
@@ -430,7 +441,6 @@ public class ControladorReservas {
         return resultado;
     }
 
-
     public List<Estadia> listarEstadiasUsuario(Usuario usuario) {
         List<Estadia> resultado = new ArrayList<>();
         for (Estadia e : repositorioEstadia.listar()) {
@@ -440,6 +450,9 @@ public class ControladorReservas {
         }
         return resultado;
     }
+
+
+//RELATORIOS
 
     public List<Reserva> buscarReservasPorMultiplosPeriodos(Bem bem, LocalDateTime dataInicio, LocalDateTime dataFim) {
         List<Reserva> reservasDentroDosPeriodos = new ArrayList<>();
@@ -473,9 +486,6 @@ public class ControladorReservas {
         return reservasDentroDosPeriodos;
     }
 
-
-//RELATORIOS
-
     //HISTORICO DE USO DE UM BEM
     public List<Estadia> historicoDeUsoBem(int idBem) {
         List<Estadia> historico = new ArrayList<>();
@@ -485,7 +495,6 @@ public class ControladorReservas {
         return historico;
     }
 
-
     public List<Map.Entry<LocalDate, Long>> periodosMaisReservados(int idBem) {
         List<Reserva> reservas = repositorioReservas.buscarReservasPorBem(idBem);
         List<Estadia> estadias = repositorioEstadia.buscarEstadiasPorBem(idBem);
@@ -493,28 +502,6 @@ public class ControladorReservas {
         // Ordenar em ordem decrescente pelo número de reservas
         resultado.sort(Comparator.comparing(Map.Entry<LocalDate, Long>::getValue).reversed());
         return resultado;
-    }
-
-
-    private static List<Map.Entry<LocalDate, Long>> calcularContagemPorData(List<Reserva> reservas, List<Estadia> estadias) {
-        Map<LocalDate, Long> contagemDias = new HashMap<>();
-        // Contabiliza reservas
-        for (Reserva reserva : reservas) {
-            LocalDate data = reserva.getDataInicio().toLocalDate();
-            while (!data.isAfter(reserva.getDataFim().toLocalDate())) {
-                contagemDias.compute(data, (k, v) -> (v == null) ? 1L : v + 1);
-                data = data.plusDays(1);
-            }
-        }
-        // Contabiliza estadias
-        for (Estadia estadia : estadias) {
-            LocalDate data = estadia.getDataInicio().toLocalDate();
-            while (!data.isAfter(estadia.getDataFim().toLocalDate())) {
-                contagemDias.compute(data, (k, v) -> (v == null) ? 1L : v + 1);
-                data = data.plusDays(1);
-            }
-        }
-        return new ArrayList<>(contagemDias.entrySet());
     }
 
 }
