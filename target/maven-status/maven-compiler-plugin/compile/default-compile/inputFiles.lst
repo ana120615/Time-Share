@@ -4,12 +4,14 @@ C:\Users\laila\Documents\GitHub\Time-Share\src\main\java\br\ufrpe\timeshare\dado
 C:\Users\laila\Documents\GitHub\Time-Share\src\main\java\br\ufrpe\timeshare\dados\IRepositorioEstadia.java
 C:\Users\laila\Documents\GitHub\Time-Share\src\main\java\br\ufrpe\timeshare\dados\IRepositorioReservas.java
 C:\Users\laila\Documents\GitHub\Time-Share\src\main\java\br\ufrpe\timeshare\dados\IRepositorioUsuario.java
+C:\Users\laila\Documents\GitHub\Time-Share\src\main\java\br\ufrpe\timeshare\dados\IRepositorioVenda.java
 C:\Users\laila\Documents\GitHub\Time-Share\src\main\java\br\ufrpe\timeshare\dados\RepositorioBens.java
 C:\Users\laila\Documents\GitHub\Time-Share\src\main\java\br\ufrpe\timeshare\dados\RepositorioCotas.java
 C:\Users\laila\Documents\GitHub\Time-Share\src\main\java\br\ufrpe\timeshare\dados\RepositorioEstadia.java
 C:\Users\laila\Documents\GitHub\Time-Share\src\main\java\br\ufrpe\timeshare\dados\RepositorioGenerico.java
 C:\Users\laila\Documents\GitHub\Time-Share\src\main\java\br\ufrpe\timeshare\dados\RepositorioReservas.java
 C:\Users\laila\Documents\GitHub\Time-Share\src\main\java\br\ufrpe\timeshare\dados\RepositorioUsuarios.java
+C:\Users\laila\Documents\GitHub\Time-Share\src\main\java\br\ufrpe\timeshare\dados\RepositorioVenda.java
 C:\Users\laila\Documents\GitHub\Time-Share\src\main\java\br\ufrpe\timeshare\excecoes\BemJaExisteException.java
 C:\Users\laila\Documents\GitHub\Time-Share\src\main\java\br\ufrpe\timeshare\excecoes\BemJaOfertadoException.java
 C:\Users\laila\Documents\GitHub\Time-Share\src\main\java\br\ufrpe\timeshare\excecoes\BemNaoExisteException.java
@@ -37,10 +39,12 @@ C:\Users\laila\Documents\GitHub\Time-Share\src\main\java\br\ufrpe\timeshare\exce
 C:\Users\laila\Documents\GitHub\Time-Share\src\main\java\br\ufrpe\timeshare\excecoes\UsuarioNaoPermitidoException.java
 C:\Users\laila\Documents\GitHub\Time-Share\src\main\java\br\ufrpe\timeshare\gui\application\Main.java
 C:\Users\laila\Documents\GitHub\Time-Share\src\main\java\br\ufrpe\timeshare\gui\application\ScreenManager.java
+C:\Users\laila\Documents\GitHub\Time-Share\src\main\java\br\ufrpe\timeshare\gui\controllers\basico\ControllerAjuda.java
 C:\Users\laila\Documents\GitHub\Time-Share\src\main\java\br\ufrpe\timeshare\gui\controllers\basico\ControllerBase.java
 C:\Users\laila\Documents\GitHub\Time-Share\src\main\java\br\ufrpe\timeshare\gui\controllers\basico\ControllerCadastro.java
 C:\Users\laila\Documents\GitHub\Time-Share\src\main\java\br\ufrpe\timeshare\gui\controllers\basico\ControllerConfiguracoes.java
 C:\Users\laila\Documents\GitHub\Time-Share\src\main\java\br\ufrpe\timeshare\gui\controllers\basico\ControllerLogin.java
+C:\Users\laila\Documents\GitHub\Time-Share\src\main\java\br\ufrpe\timeshare\gui\controllers\basico\ControllerRecuperarSenha.java
 C:\Users\laila\Documents\GitHub\Time-Share\src\main\java\br\ufrpe\timeshare\gui\controllers\celulas\ControllerItemCellBem.java
 C:\Users\laila\Documents\GitHub\Time-Share\src\main\java\br\ufrpe\timeshare\gui\controllers\celulas\ControllerItemCellBemOfertado.java
 C:\Users\laila\Documents\GitHub\Time-Share\src\main\java\br\ufrpe\timeshare\gui\controllers\celulas\ControllerItemCellBemReserva.java
