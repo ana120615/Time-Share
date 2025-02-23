@@ -46,6 +46,7 @@ public class ControllerRepassarDireitoUsoPopUp {
     private TextField cpfProprietario;
     @FXML
     private TextField cpfDestinatario;
+
     private ControllerMinhasCotas mainController;
 
 
