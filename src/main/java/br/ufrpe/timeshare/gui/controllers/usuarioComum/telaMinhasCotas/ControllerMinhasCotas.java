@@ -2,6 +2,7 @@ package br.ufrpe.timeshare.gui.controllers.usuarioComum.telaMinhasCotas;
 
 import br.ufrpe.timeshare.excecoes.BemNaoExisteException;
 import br.ufrpe.timeshare.excecoes.UsuarioNaoExisteException;
+import br.ufrpe.timeshare.excecoes.UsuarioNaoPermitidoException;
 import br.ufrpe.timeshare.gui.application.ScreenManager;
 import br.ufrpe.timeshare.gui.controllers.basico.ControllerBase;
 import br.ufrpe.timeshare.gui.controllers.celulas.ControllerItemCellCota;
@@ -16,6 +17,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.util.Callback;
 
@@ -26,6 +28,8 @@ public class ControllerMinhasCotas implements ControllerBase {
 
     @FXML
     private ListView<Cota> listViewItensCotas;
+    @FXML
+    private TextField nomeBemProcurado;
 
     private Usuario usuario;
     private final ControladorBens controladorBens;
@@ -61,6 +65,11 @@ public class ControllerMinhasCotas implements ControllerBase {
         System.out.println("initialize() chamado.");
     }
 
+    @FXML
+    public void buscarCotasBem(ActionEvent event) {
+        carregarListaDeCotas();
+    }
+
     public void carregarListaDeCotas() {
         if (usuario == null) {
             System.err.println("Erro: Usuário está null em carregarListaDeCotas()!");
@@ -71,12 +80,23 @@ public class ControllerMinhasCotas implements ControllerBase {
         listViewItensCotas.getItems().clear();
 
         List<Cota> cotas;
-        try {
-            cotas = controladorBens.listarCotasDeUmUsuario(usuario);
-        } catch (BemNaoExisteException | UsuarioNaoExisteException e) {
-            System.err.println("Bem com este id nao existe!");
-            exibirAlertaErro("Erro", "Erro ao procurar bem", "Bem com este id nao existe!");
-            return;
+
+        if (!nomeBemProcurado.getText().isEmpty()) {
+            try {
+                cotas = controladorBens.listarCotasDeUmUsuarioPorNomeBem(usuario, nomeBemProcurado.getText().trim());
+            } catch (UsuarioNaoPermitidoException e) {
+                System.err.println("Bem com este id nao existe!");
+                exibirAlertaErro("Erro", "Erro ao procurar cotas", e.getMessage());
+                return;
+            }
+        } else {
+            try {
+                cotas = controladorBens.listarCotasDeUmUsuario(usuario);
+            } catch (BemNaoExisteException | UsuarioNaoExisteException e) {
+                System.err.println("Bem com este id nao existe!");
+                exibirAlertaErro("Erro", "Erro ao procurar bem", "Bem com este id nao existe!");
+                return;
+            }
         }
 
         if (cotas == null || cotas.isEmpty()) {
