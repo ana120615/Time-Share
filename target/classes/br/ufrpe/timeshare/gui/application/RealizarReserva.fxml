@@ -123,7 +123,7 @@
    <center>
       <VBox prefHeight="498.0" prefWidth="1023.0" BorderPane.alignment="TOP_LEFT">
          <children>
-            <TabPane fx:id="tabPaneUsuarioComumTelaReseva" prefHeight="464.0" prefWidth="1013.0" style="-fx-background-image: transparent;" tabClosingPolicy="UNAVAILABLE">
+            <TabPane fx:id="tabPaneUsuarioComumTelaReseva" prefHeight="471.0" prefWidth="1013.0" style="-fx-background-image: transparent;" tabClosingPolicy="UNAVAILABLE">
                <tabs>
                   <Tab fx:id="tabBensDisponiveis" text="Bens Disponiveis">
                      <content>
@@ -151,41 +151,35 @@
                   </Tab>
                   <Tab fx:id="tabMinhasCotas" text="Minhas Cotas">
                      <content>
-                        <VBox alignment="CENTER" prefHeight="442.0" prefWidth="1013.0">
+                        <VBox alignment="TOP_CENTER" prefHeight="442.0" prefWidth="1013.0">
                            <children>
-                              <HBox alignment="CENTER_LEFT" prefHeight="43.0" prefWidth="754.0">
-                                 <children>
-                                    <Label styleClass="label-grande" text="Minhas Cotas">
-                                       <font>
-                                          <Font size="21.0" />
-                                       </font>
-                                       <HBox.margin>
-                                          <Insets left="20.0" />
-                                       </HBox.margin>
-                                    </Label>
-                                 </children>
-                              </HBox>
-                              <HBox prefHeight="345.0" prefWidth="1023.0">
-                                 <children>
-                                    <GridPane hgap="5.0" prefHeight="372.0" prefWidth="1013.0" HBox.hgrow="ALWAYS">
-                                       <columnConstraints>
-                                          <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" percentWidth="100.0" prefWidth="100.0" />
-                                       </columnConstraints>
-                                       <rowConstraints>
-                                          <RowConstraints maxHeight="70.0" minHeight="0.0" prefHeight="6.0" vgrow="SOMETIMES" />
-                                          <RowConstraints maxHeight="327.0" minHeight="10.0" prefHeight="327.0" vgrow="SOMETIMES" />
-                                          <RowConstraints maxHeight="141.0" minHeight="0.0" prefHeight="0.0" vgrow="SOMETIMES" />
-                                       </rowConstraints>
+                              <BorderPane prefHeight="346.0" prefWidth="1020.0">
+                                 <left>
+                                    <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER" />
+                                 </left>
+                                 <right>
+                                    <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER" />
+                                 </right>
+                                 <center>
+                                    <VBox prefHeight="328.0" prefWidth="826.0" BorderPane.alignment="CENTER">
                                        <children>
-                                          <HBox prefHeight="338.0" prefWidth="720.0" style="-fx-background-color: transparent;" GridPane.rowIndex="1">
+                                          <HBox alignment="CENTER_LEFT" prefHeight="43.0" prefWidth="754.0">
                                              <children>
-                                                <ListView fx:id="minhasCotasListView" prefHeight="329.0" prefWidth="720.0" HBox.hgrow="ALWAYS" />
+                                                <Label styleClass="label-grande" text="Minhas Cotas">
+                                                   <font>
+                                                      <Font size="21.0" />
+                                                   </font>
+                                                   <HBox.margin>
+                                                      <Insets bottom="10.0" />
+                                                   </HBox.margin>
+                                                </Label>
                                              </children>
                                           </HBox>
+                                          <ListView fx:id="minhasCotasListView" prefHeight="313.0" prefWidth="813.0" />
                                        </children>
-                                    </GridPane>
-                                 </children>
-                              </HBox>
+                                    </VBox>
+                                 </center>
+                              </BorderPane>
                            </children>
                         </VBox>
                      </content>
