@@ -27,9 +27,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class ControllerMinhasReservas implements ControllerBase {
-
     @FXML
     private ListView<VBox> reservasListView;
+
+    @FXML
+    private TextField nomeBemTextField;
 
     private ObservableList<Reserva> reservas = FXCollections.observableArrayList();
 
@@ -66,6 +68,52 @@ public class ControllerMinhasReservas implements ControllerBase {
         }
     }
 
+
+    
+    @FXML
+    public void buscarReservas(ActionEvent event) {
+        
+        String nomeBem = null;
+        // Se o nome do bem for preenchido, armazena o valor
+        if (nomeBemTextField != null && !nomeBemTextField.getText().trim().isEmpty()) {
+            nomeBem = nomeBemTextField.getText().trim();
+        }
+    
+            List<Reserva> reservasFiltradas = null;
+            if (nomeBem == null) {
+                reservasFiltradas = controladorReservas.listarReservasUsuario(usuarioLogado);  // Método para buscar todas as reservas
+                System.out.println("Reservas encontradas: " + reservasFiltradas.size());
+            }
+            else{
+            try {
+                reservasFiltradas = controladorReservas.buscarReservaPorNomeBem(usuarioLogado, nomeBem);
+            } catch (Exception e) {
+                exibirAlertaErro("Erro", "Problema ao buscar reserva por atributo", e.getMessage());
+            }
+            System.out.println("Reservas encontradas: " + reservasFiltradas.size());
+            }
+            // Atualiza a lista com as reservas filtradas, garantindo que seja ObservableList<VBox>
+            ObservableList<VBox> itens = FXCollections.observableArrayList();
+    
+            // Se a lista de reservas não estiver vazia, exibe as reservas
+            if (reservasFiltradas != null && !reservasFiltradas.isEmpty()) {
+                // Limpa as reservas e adiciona os novos itens em formato VBox
+                for (Reserva reserva : reservasFiltradas) {
+                    VBox item = criarItemReserva(reserva);
+                    itens.add(item);
+                }
+            } else {
+                // Caso não haja reservas encontradas, limpa a lista
+                itens.clear();
+            }
+    
+            // Atualiza o ListView com a lista de itens
+            reservasListView.setItems(itens);  // Agora estamos passando ObservableList<VBox>
+            nomeBemTextField.clear();
+    }
+    
+
+
     private void exibirReservas() {
         ObservableList<VBox> itens = FXCollections.observableArrayList();
         for (Reserva reserva : reservas) {
@@ -85,7 +133,14 @@ public class ControllerMinhasReservas implements ControllerBase {
         alterarPeriodoButton.setOnAction(e -> alterarPeriodo(reserva));
 
         Button cancelarReservaButton = new Button("Cancelar");
-        cancelarReservaButton.setOnAction(e -> cancelarReserva(reserva));
+        cancelarReservaButton.setOnAction(e -> {
+            try {
+                cancelarReserva(reserva);
+            } catch (NullPointerException | OperacaoNaoPermitidaException e1) {
+                exibirAlertaErro("Erro", "Problema em cancelar", e1.getMessage());
+                
+            }
+        });
 
         HBox botoes = new HBox(checkinButton, alterarPeriodoButton, cancelarReservaButton);
         botoes.setSpacing(10);
@@ -117,8 +172,8 @@ public class ControllerMinhasReservas implements ControllerBase {
 
     }
 
+    //Realizar checkin
     private void fazerCheckin(Reserva reserva) {
-        // Lógica para realizar o check-in da reserva
         System.out.println("Check-in da reserva: ");
         int id = (int) reserva.getId();
         String comprovante = null;
@@ -169,6 +224,7 @@ public class ControllerMinhasReservas implements ControllerBase {
                     }
                 });
             } catch (Exception e) {
+                System.out.println("Erro: " + e.getMessage());
                 exibirAlertaErro("Erro", "Erro ao carregar datas disponíveis", e.getMessage());
             }
         } else {
@@ -275,7 +331,7 @@ public class ControllerMinhasReservas implements ControllerBase {
 
     }
 
-    public void confirmarAlteracao(ActionEvent event, Reserva reserva, LocalDate dataInicio, LocalDate dataFim) {
+    public void confirmarAlteracao(ActionEvent event, Reserva reserva, LocalDate dataInicio, LocalDate dataFim) throws Exception {
 
         boolean periodoDisponivel = alterarPeriodoReserva(reserva, dataInicio, dataFim);
 
@@ -330,9 +386,15 @@ public class ControllerMinhasReservas implements ControllerBase {
 
             if (dataInicio != null && dataFim != null) {
 
-                confirmarAlteracao(e, reserva, dataInicio, dataFim);
+                try {
+                    confirmarAlteracao(e, reserva, dataInicio, dataFim);
+                    popupStage.close(); // Fechar a mini tela ao confirmar
 
-                popupStage.close(); // Fechar a mini tela ao confirmar
+                } catch (Exception e1) {
+                    // TODO Auto-generated catch block
+                    exibirAlertaErro("Erro", "Problema na alteração", e1.getMessage());
+                }
+
 
 
             } else {
@@ -361,7 +423,7 @@ public class ControllerMinhasReservas implements ControllerBase {
     }
 
 
-    private void cancelarReserva(Reserva reserva) {
+    private void cancelarReserva(Reserva reserva) throws NullPointerException, OperacaoNaoPermitidaException {
         // Lógica para cancelar a reserva
         System.out.println("Cancelar reserva: ");
         int id = (int) reserva.getId();

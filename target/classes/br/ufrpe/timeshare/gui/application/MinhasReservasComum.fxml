@@ -10,19 +10,22 @@
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.ufrpe.timeshare.gui.controllers.usuarioComum.telaReservas.ControllerMinhasReservas">
     <children>
-        <ScrollPane layoutX="57.0" layoutY="119.0" prefHeight="246.0" prefWidth="481.0">
+        <ScrollPane layoutX="9.0" layoutY="151.0" prefHeight="241.0" prefWidth="565.0">
             <content>
-                <ListView fx:id="reservasListView" prefHeight="221.0" prefWidth="439.0" />
+                <ListView fx:id="reservasListView" prefHeight="220.0" prefWidth="529.0" />
             </content>
         </ScrollPane>
-        <Label layoutX="187.0" layoutY="14.0" text="Minhas reservas">
+        <Label layoutX="179.0" layoutY="3.0" text="Minhas reservas">
             <font>
                 <Font size="32.0" />
             </font>
         </Label>
-        <Label layoutX="26.0" layoutY="76.0" text="buscar reserva:" />
-        <TextField layoutX="114.0" layoutY="72.0" prefHeight="25.0" prefWidth="175.0" />
-        <Button layoutX="298.0" layoutY="72.0" mnemonicParsing="false" text="buscar" />
-        <Button layoutX="26.0" layoutY="25.0" mnemonicParsing="false" onAction="#voltarParaPrincipalComum" text="voltar"  />
+        <Label layoutX="34.0" layoutY="80.0" text="buscar reserva:">
+         <font>
+            <Font size="13.0" />
+         </font></Label>
+        <TextField fx:id="nomeBemTextField" layoutX="127.0" layoutY="77.0" prefHeight="25.0" prefWidth="191.0" promptText="digite o nome do bem associado" />
+        <Button fx:id="buscarReservas" layoutX="330.0" layoutY="72.0" mnemonicParsing="false" onAction="#buscarReservas" prefHeight="35.0" prefWidth="67.0" text="buscar" />
+        <Button layoutX="19.0" layoutY="14.0" mnemonicParsing="false" onAction="#voltarParaPrincipalComum" text="voltar" />
     </children>
 </Pane>

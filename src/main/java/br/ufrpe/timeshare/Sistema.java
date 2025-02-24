@@ -14,7 +14,7 @@ import java.util.Map;
 import java.util.Scanner;
 
 public class Sistema {
-    public static void main(String[] args) throws DadosInsuficientesException {
+    public static void main(String[] args) throws Exception {
         Scanner input = new Scanner(System.in);
 
         //INICIALIZAR REPOSITORIOS

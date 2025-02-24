@@ -1,13 +1,8 @@
 package br.ufrpe.timeshare.gui.controllers.usuarioComum.telaReservas;
-import br.ufrpe.timeshare.excecoes.CotaJaReservadaException;
 import br.ufrpe.timeshare.excecoes.DadosInsuficientesException;
 import br.ufrpe.timeshare.excecoes.EstadiaNaoExisteException;
-import br.ufrpe.timeshare.excecoes.ForaPeriodoException;
 import br.ufrpe.timeshare.excecoes.OperacaoNaoPermitidaException;
-import br.ufrpe.timeshare.excecoes.PeriodoJaReservadoException;
-import br.ufrpe.timeshare.excecoes.PeriodoNaoDisponivelParaReservaException;
 import br.ufrpe.timeshare.excecoes.ReservaJaCanceladaException;
-import br.ufrpe.timeshare.excecoes.ReservaJaExisteException;
 import br.ufrpe.timeshare.excecoes.ReservaNaoExisteException;
 import br.ufrpe.timeshare.excecoes.UsuarioNaoPermitidoException;
 import br.ufrpe.timeshare.gui.application.ScreenManager;
@@ -76,26 +71,23 @@ public class ControllerEstadia implements ControllerBase {
         listViewEstadias.getItems().setAll(estadias);
 
         // Obtém a estadia ativa, se houver
-        //implementar isso no controlador de reservas
-        for(Estadia estadia: estadias){
-            if(estadia.getReserva()!=null && estadia.getDataFim()==null){
-                estadiaAtiva = estadia;
-                break;
+        try {
+            this.estadiaAtiva = controladorReservas.getEstadiaAtiva(usuario);
+            if (estadiaAtiva != null) {
+                labelEstadiaAtiva.setText(estadiaAtiva.toString());
+            } else {
+                labelEstadiaAtiva.setText("Nenhuma estadia ativa encontrada.");
             }
+    
+            if(btnCheckOut != null){
+                btnCheckOut.setDisable(estadiaAtiva == null);
+            }
+            if(btnProlongar != null){
+                btnProlongar.setDisable(estadiaAtiva == null);
+            }
+        } catch (OperacaoNaoPermitidaException | DadosInsuficientesException e) {
+            exibirAlertaErro("Erro", "Problema ao buscar estadia ativa", e.getLocalizedMessage());
         }
-        if (estadiaAtiva != null) {
-            labelEstadiaAtiva.setText(estadiaAtiva.toString());
-        } else {
-            labelEstadiaAtiva.setText("Nenhuma estadia ativa encontrada.");
-        }
-
-        if(btnCheckOut != null){
-            btnCheckOut.setDisable(estadiaAtiva == null);
-        }
-        if(btnProlongar != null){
-            btnProlongar.setDisable(estadiaAtiva == null);
-        }
-
     }
     
     // Método para realizar o Check-out
@@ -151,8 +143,7 @@ public class ControllerEstadia implements ControllerBase {
         if (confirmacao.isPresent() && confirmacao.get() == ButtonType.OK) {
             try {
                 comprovante=controladorReservas.prolongarEstadia((int) estadiaAtiva.getId(), diasProlongamento);
-                exibirAlertaInfo("Sucesso!", "Estadia prolongada com sucesso", "Aproveite!");
-                exibirAlertaInfo("Estadia prolongada", "Comprovante da reserva associada", comprovante);
+                exibirAlertaInfo("Estadia prolongada", "Operação realizada com sucesso", comprovante);
             } catch (Exception e) {
                 exibirAlertaErro("Erro", "Problema ao prolongar estadia", e.getMessage());
             }
