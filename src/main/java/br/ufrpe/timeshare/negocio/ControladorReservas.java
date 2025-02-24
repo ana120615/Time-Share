@@ -78,7 +78,7 @@ public class ControladorReservas {
         return gerarComprovanteEstadia(estadia);
     }
 
-    public String prolongarEstadia(int idEstadia, int quantidadeDias) throws Exception {
+    public String prolongarEstadia(int idEstadia, int quantidadeDias) throws ReservaNaoExisteException, ReservaJaCanceladaException, ForaPeriodoException, PeriodoJaReservadoException, PeriodoNaoDisponivelParaReservaException, ReservaNaoExisteException, CotaJaReservadaException, ReservaJaExisteException, DadosInsuficientesException, EstadiaNaoExisteException, UsuarioNaoPermitidoException, OperacaoNaoPermitidaException {
         Estadia estadia = repositorioEstadia.buscar(idEstadia);
         if (estadia == null) {
             throw new EstadiaNaoExisteException("Estadia inexistente.");
@@ -123,8 +123,7 @@ public class ControladorReservas {
     }
 
     //metodo para criar reserva/ reservar
-    public String criarReserva(LocalDateTime dataInicio, LocalDateTime dataFim, Usuario usuarioComum, Bem bem)
-            throws Exception {
+    public String criarReserva(LocalDateTime dataInicio, LocalDateTime dataFim, Usuario usuarioComum, Bem bem) throws DadosInsuficientesException, ReservaJaExisteException, ForaPeriodoException, PeriodoJaReservadoException, PeriodoNaoDisponivelParaReservaException, ReservaNaoExisteException, CotaJaReservadaException{
         if (bem == null || dataInicio == null || dataFim == null || usuarioComum == null) {
             throw new DadosInsuficientesException("Bem, data de inicio, data final ou usuario nao podem ser nulos.");
         }
@@ -144,7 +143,7 @@ public class ControladorReservas {
     }
 
     //metodo para reservar o periodo completo de 1 cota
-    public String reservaPeriodoCota(Cota cota, Usuario usuario) throws Exception {
+    public String reservaPeriodoCota(Cota cota, Usuario usuario) throws UsuarioNaoPermitidoException, DadosInsuficientesException, ProprietarioNaoIdentificadoException, DadosInsuficientesException, ReservaJaExisteException, ForaPeriodoException, PeriodoJaReservadoException, PeriodoNaoDisponivelParaReservaException, ReservaNaoExisteException, CotaJaReservadaException {
         String reservaFeita;
         if (cota == null || usuario == null) {
             throw new DadosInsuficientesException("Cota inexistente.");
@@ -230,8 +229,7 @@ public class ControladorReservas {
         return reembolso;
     }
 
-    public String alterarPeriodoReserva(long idReserva, LocalDateTime novaDataInicio, LocalDateTime novaDataFim, Usuario usuario)
-            throws Exception {
+    public String alterarPeriodoReserva(long idReserva, LocalDateTime novaDataInicio, LocalDateTime novaDataFim, Usuario usuario) throws ReservaJaCanceladaException, ForaPeriodoException, PeriodoJaReservadoException, PeriodoNaoDisponivelParaReservaException, ReservaNaoExisteException, CotaJaReservadaException, ReservaJaExisteException, DadosInsuficientesException, UsuarioNaoPermitidoException{
         //busca reserva pelo id
         Reserva reserva = repositorioReservas.buscar(idReserva);
         Bem bem = reserva.getBem();
@@ -422,7 +420,7 @@ public class ControladorReservas {
     }
 
 
-    public String gerarComprovanteReserva(Reserva reserva) throws Exception {
+    public String gerarComprovanteReserva(Reserva reserva)  throws CotaJaReservadaException, DadosInsuficientesException, ReservaNaoExisteException {
         int dias = reserva.calcularDuracaoReserva();
         double taxa = 0.00;
         try {

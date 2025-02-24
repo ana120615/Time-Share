@@ -85,7 +85,7 @@ public class ControllerItemCellCotaReserva implements ControllerBase {
 
 
     @FXML
-private void handleReservarCota() throws Exception {
+private void handleReservarCota() {
     String comprovante = null;
     if (cota != null) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);

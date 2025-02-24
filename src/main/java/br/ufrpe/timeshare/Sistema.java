@@ -14,15 +14,11 @@ import java.util.Map;
 import java.util.Scanner;
 
 public class Sistema {
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) {
         Scanner input = new Scanner(System.in);
 
         //INICIALIZAR REPOSITORIOS
         IRepositorioUsuario repositorioUsuario = RepositorioUsuarios.getInstancia();
-        IRepositorioBens repositorioBens = RepositorioBens.getInstancia();
-        IRepositorioReservas repositorioReservas = RepositorioReservas.getInstancia();
-        IRepositorioCotas repositorioCotas = RepositorioCotas.getInstancia();
-        IRepositorioEstadia repositorioEstadia = RepositorioEstadia.getInstancia();
 
         //INICIALIZANDO CONTROLADORES
         ControladorLogin controladorLogin = new ControladorLogin();
@@ -525,7 +521,8 @@ public class Sistema {
                                                             try {
                                                                 controladorReservas.cancelarReserva(idReserva, usuario);
                                                             } catch (ReservaNaoExisteException |
-                                                                     ReservaJaCanceladaException e) {
+                                                                     ReservaJaCanceladaException |
+                                                                     OperacaoNaoPermitidaException e) {
                                                                 System.out.println(e.getMessage());
                                                             } catch (UsuarioNaoPermitidoException |
                                                                      CotaJaReservadaException |
@@ -877,7 +874,11 @@ public class Sistema {
                                             break;
                                         case 2:
                                             System.out.println("\n\n-- LISTA DE BEM CADASTRADOS --");
-                                            System.out.println(controladorBens.listarBensUsuario(usuario));
+                                            try {
+                                                System.out.println(controladorBens.listarBensUsuario(usuario));
+                                            } catch (DadosInsuficientesException e) {
+                                                System.out.println(e.getMessage());
+                                            }
                                             break;
                                         case 3:
                                             System.out.println("\n\n-- LISTA DE BEM OFERTADOS --");

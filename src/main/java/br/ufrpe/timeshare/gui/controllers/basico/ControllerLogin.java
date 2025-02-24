@@ -11,6 +11,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
+import org.controlsfx.control.action.Action;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -122,5 +123,9 @@ private void irParaRecuperarSenha() {
         alert.setContentText(mensagem);
         alert.getDialogPane().setStyle("-fx-background-color: #ffcccc;");
         alert.showAndWait();
+    }
+
+    public void irParaRecuperarSenha(ActionEvent event) {
+        System.out.println("");
     }
 }
