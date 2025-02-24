@@ -133,7 +133,14 @@ public class ControllerMinhasReservas implements ControllerBase {
         alterarPeriodoButton.setOnAction(e -> alterarPeriodo(reserva));
 
         Button cancelarReservaButton = new Button("Cancelar");
-        cancelarReservaButton.setOnAction(e -> cancelarReserva(reserva));
+        cancelarReservaButton.setOnAction(e -> {
+            try {
+                cancelarReserva(reserva);
+            } catch (NullPointerException | OperacaoNaoPermitidaException e1) {
+                exibirAlertaErro("Erro", "Problema em cancelar", e1.getMessage());
+                
+            }
+        });
 
         HBox botoes = new HBox(checkinButton, alterarPeriodoButton, cancelarReservaButton);
         botoes.setSpacing(10);
@@ -324,7 +331,7 @@ public class ControllerMinhasReservas implements ControllerBase {
 
     }
 
-    public void confirmarAlteracao(ActionEvent event, Reserva reserva, LocalDate dataInicio, LocalDate dataFim) {
+    public void confirmarAlteracao(ActionEvent event, Reserva reserva, LocalDate dataInicio, LocalDate dataFim) throws Exception {
 
         boolean periodoDisponivel = alterarPeriodoReserva(reserva, dataInicio, dataFim);
 
@@ -379,9 +386,15 @@ public class ControllerMinhasReservas implements ControllerBase {
 
             if (dataInicio != null && dataFim != null) {
 
-                confirmarAlteracao(e, reserva, dataInicio, dataFim);
+                try {
+                    confirmarAlteracao(e, reserva, dataInicio, dataFim);
+                    popupStage.close(); // Fechar a mini tela ao confirmar
 
-                popupStage.close(); // Fechar a mini tela ao confirmar
+                } catch (Exception e1) {
+                    // TODO Auto-generated catch block
+                    exibirAlertaErro("Erro", "Problema na alteração", e1.getMessage());
+                }
+
 
 
             } else {
@@ -410,7 +423,7 @@ public class ControllerMinhasReservas implements ControllerBase {
     }
 
 
-    private void cancelarReserva(Reserva reserva) {
+    private void cancelarReserva(Reserva reserva) throws NullPointerException, OperacaoNaoPermitidaException {
         // Lógica para cancelar a reserva
         System.out.println("Cancelar reserva: ");
         int id = (int) reserva.getId();

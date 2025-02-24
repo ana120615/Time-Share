@@ -143,8 +143,7 @@ public class ControllerEstadia implements ControllerBase {
         if (confirmacao.isPresent() && confirmacao.get() == ButtonType.OK) {
             try {
                 comprovante=controladorReservas.prolongarEstadia((int) estadiaAtiva.getId(), diasProlongamento);
-                exibirAlertaInfo("Sucesso!", "Estadia prolongada com sucesso", "Aproveite!");
-                exibirAlertaInfo("Estadia prolongada", "Comprovante da reserva associada", comprovante);
+                exibirAlertaInfo("Estadia prolongada", "Operação realizada com sucesso", comprovante);
             } catch (Exception e) {
                 exibirAlertaErro("Erro", "Problema ao prolongar estadia", e.getMessage());
             }
