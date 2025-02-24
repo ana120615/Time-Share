@@ -7,8 +7,7 @@ import br.ufrpe.timeshare.negocio.beans.Bem;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -19,6 +18,7 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.io.IOException;
 import java.util.Objects;
+import java.util.Optional;
 
 public class ControllerItemCellBem {
 
@@ -63,9 +63,31 @@ public class ControllerItemCellBem {
 
         if (valorTela == 1) {
             itemButton.setOnAction(e -> showPopup()); // Agora chama o pop-up ao clicar no botão
-        }
-        else if (valorTela == 2){
-           itemButton.setOnAction(e -> mainControllerDeslocamento.mudarTabCotas(bem)); //Mudar na tela de deslocamento de telas a tab
+        } else if (valorTela == 2) {
+            itemButton.setOnAction(e -> {
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setTitle("Confirme a Ação");
+                alert.setHeaderText("O que deseja fazer?");
+                alert.setContentText("Escolha entre as opções:");
+
+                ButtonType botaoCotas = new ButtonType("Mostrar Cotas", ButtonBar.ButtonData.YES);
+                ButtonType botaoEditar = new ButtonType("Editar Bem", ButtonBar.ButtonData.NO);
+                ButtonType botaoCancelar = new ButtonType("Cancelar", ButtonBar.ButtonData.CANCEL_CLOSE);
+
+                alert.getButtonTypes().setAll(botaoCotas, botaoEditar, botaoCancelar);
+
+                Optional<ButtonType> result = alert.showAndWait();
+
+                if (result.isPresent()) {
+                    if (result.get() == botaoCotas) {
+                        mainControllerDeslocamento.mudarTabCotas(bem);
+                    } else if (result.get() == botaoEditar) {
+                        showPopup();
+                    } else {
+                        alert.close();
+                    }
+                }
+            });
         }
     }
 
