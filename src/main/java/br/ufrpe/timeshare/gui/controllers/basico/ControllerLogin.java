@@ -40,10 +40,12 @@ public class ControllerLogin implements ControllerBase {
         }
 
         try {
-            controladorBens.cadastrar(1111, "Lar doce Lar", "Seu lugar é aqui. Vem ser feliz", "Recife-PE", 4, admin, LocalDateTime.now(), 15, 5425, "src/main/resources/br/ufrpe/timeshare/gui/application/images/casa-piscina.jpg");
+            controladorBens.cadastrar(1111, "Lar doce Lar", "Seu lugar é aqui. Vem ser feliz", "Recife-PE", 4, admin, LocalDateTime.now(), 15, 11500, "src/main/resources/br/ufrpe/timeshare/gui/application/images/casa-piscina.jpg");
             controladorBens.ofertarBem(1111);
-            controladorBens.cadastrar(2222, "Hotel de Luxo ", "Lugar de paz", "Camaragibe-PE", 4, admin, LocalDateTime.now(), 15, 5425, "src/main/resources/br/ufrpe/timeshare/gui/application/images/hotel-luxo.jpg");
+            controladorBens.cadastrar(2222, "Fazenda Feliz", "Lugar de paz.", "Camaragibe-PE", 8, admin, LocalDateTime.now(), 15, 7500, "src/main/resources/br/ufrpe/timeshare/gui/application/images/fazenda.jpg");
             controladorBens.ofertarBem(2222);
+            controladorBens.cadastrar(3333, "Casa Beira Mar", "Diversão garantida.", "Olinda-PE", 7, admin, LocalDateTime.now(), 15, 8000, "src/main/resources/br/ufrpe/timeshare/gui/application/images/casa-beira-mar.jpg");
+            controladorBens.ofertarBem(3333);
         } catch (BemNaoExisteException | UsuarioNaoPermitidoException | QuantidadeDeCotasExcedidasException | BemJaExisteException | UsuarioNaoExisteException | BemJaOfertadoException e) {
             System.out.println(e.getMessage());
         }
