@@ -156,6 +156,7 @@ public class ControllerAdicionarCotaPopUp {
             return;
         }
 
+
         try {
             controladorVendas.adicionarCotaCarrinho((int) cotaSelecionada.getId(), this.vendaAtual);
             System.out.println("Cota adicionada com sucesso!");
@@ -164,6 +165,7 @@ public class ControllerAdicionarCotaPopUp {
             mainControllerVenda.carregarListaCarrinho();
         } catch (CotaNaoExisteException | CotaNaoOfertadaException e) {
             System.out.println(e.getMessage());
+            exibirAlertaErro("Erro", "Erro ao adicionar cota", e.getMessage());
         }
     }
 
