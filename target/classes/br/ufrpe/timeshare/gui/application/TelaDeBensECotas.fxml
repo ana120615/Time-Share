@@ -18,7 +18,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="520.0" prefWidth="782.0" style="-fx-background-color: #001f54;" stylesheets="@styles/basico/tela-minhas-cotas.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.ufrpe.timeshare.gui.controllers.usuarioAdmin.telaCotas.ControllerTelaDeCotas">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="520.0" prefWidth="782.0" style="-fx-background-color: #001f54;" stylesheets="@styles/basico/tela-minhas-cotas.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.ufrpe.timeshare.gui.controllers.usuarioAdmin.telaBensCotas.ControllerTelaDeBensECotas">
    <center>
       <VBox style="-fx-background-color: white;" VBox.vgrow="ALWAYS">
          <children>

@@ -1,4 +1,4 @@
-package br.ufrpe.timeshare.gui.controllers.usuarioAdmin.telaCotas;
+package br.ufrpe.timeshare.gui.controllers.usuarioAdmin.telaBensCotas;
 
 import br.ufrpe.timeshare.excecoes.BemNaoExisteException;
 import br.ufrpe.timeshare.excecoes.DadosInsuficientesException;
@@ -23,11 +23,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ControllerTelaDeCotas implements ControllerBase {
+public class ControllerTelaDeBensECotas implements ControllerBase {
     private Usuario usuario;
     private final ControladorBens controladorBens;
 
-    public ControllerTelaDeCotas() {
+    public ControllerTelaDeBensECotas() {
         this.controladorBens = new ControladorBens();
     }
 
@@ -131,7 +131,7 @@ public class ControllerTelaDeCotas implements ControllerBase {
                                 ControllerItemCellBem controller = loader.getController();
                                 controller.setValorTela(2);
                                 controller.setItem(item);
-                                controller.setMainControllerDeslocamento(ControllerTelaDeCotas.this); // Passa a referência do controlador principal
+                                controller.setMainControllerDeslocamento(ControllerTelaDeBensECotas.this); // Passa a referência do controlador principal
                                 setGraphic(root);
                             } catch (IOException e) {
                                 System.err.println("Erro ao carregar ItemCell.fxml: " + e.getMessage());
@@ -188,7 +188,7 @@ public class ControllerTelaDeCotas implements ControllerBase {
                                 HBox root = loader.load();
                                 ControllerItemCellCota controller = loader.getController();
                                 controller.setItem(item);
-                                controller.setMainControllerDeslocamentoCotas(ControllerTelaDeCotas.this); // Passa referência do controlador principal
+                                controller.setMainControllerDeslocamentoCotas(ControllerTelaDeBensECotas.this); // Passa referência do controlador principal
                                 setGraphic(root);
                             } catch (IOException e) {
                                 System.err.println("Erro ao carregar ItemCellCota.fxml: " + e.getMessage());
@@ -244,7 +244,7 @@ public class ControllerTelaDeCotas implements ControllerBase {
                                 ControllerItemCellCota controller = loader.getController();
                                 controller.setValorTelaDeDeslocamento(2);
                                 controller.setItem(item);
-                                controller.setMainControllerDeslocamentoCotas(ControllerTelaDeCotas.this);
+                                controller.setMainControllerDeslocamentoCotas(ControllerTelaDeBensECotas.this);
                                 setGraphic(root);
                             } catch (IOException e) {
                                 System.err.println("Erro ao carregar ItemCellCota.fxml: " + e.getMessage());

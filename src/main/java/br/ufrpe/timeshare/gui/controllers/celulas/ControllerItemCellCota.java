@@ -1,7 +1,7 @@
 package br.ufrpe.timeshare.gui.controllers.celulas;
 
-import br.ufrpe.timeshare.gui.controllers.usuarioAdmin.telaCotas.ControllerDeslocamentoDeCotasPopUP;
-import br.ufrpe.timeshare.gui.controllers.usuarioAdmin.telaCotas.ControllerTelaDeCotas;
+import br.ufrpe.timeshare.gui.controllers.usuarioAdmin.telaBensCotas.ControllerDeslocamentoDeCotasPopUP;
+import br.ufrpe.timeshare.gui.controllers.usuarioAdmin.telaBensCotas.ControllerTelaDeBensECotas;
 import br.ufrpe.timeshare.gui.controllers.usuarioComum.telaMinhasCotas.ControllerMinhasCotas;
 import br.ufrpe.timeshare.gui.controllers.usuarioComum.telaMinhasCotas.ControllerRepassarDireitoUsoPopUp;
 import br.ufrpe.timeshare.gui.controllers.usuarioComum.telaVendaCotas.ControllerAdicionarCotaPopUp;
@@ -49,7 +49,7 @@ public class ControllerItemCellCota {
     private ControllerMinhasCotas mainControllerMinhasCotas;
     private ControllerAdicionarCotaPopUp mainControllerAdicionarCotaPopUp;
     private ControllerTelaDeVenda mainControllerVendaCotas;
-    private ControllerTelaDeCotas mainControllerDeslocamentoCotas;
+    private ControllerTelaDeBensECotas mainControllerDeslocamentoCotas;
     private ControllerRepassarDireitoUsoPopUp mainControllerRepassarDireitoUsoPopUp;
 
     public void setItem(Cota item) {
@@ -118,7 +118,7 @@ public class ControllerItemCellCota {
         this.mainControllerAdicionarCotaPopUp = mainControllerAdicionarCotaPopUp;
     }
 
-    public void setMainControllerDeslocamentoCotas(ControllerTelaDeCotas mainControllerDeslocamentoCotas) {
+    public void setMainControllerDeslocamentoCotas(ControllerTelaDeBensECotas mainControllerDeslocamentoCotas) {
         this.mainControllerDeslocamentoCotas = mainControllerDeslocamentoCotas;
     }
 

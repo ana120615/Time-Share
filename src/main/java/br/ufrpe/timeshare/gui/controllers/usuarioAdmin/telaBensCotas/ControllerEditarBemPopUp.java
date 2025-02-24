@@ -1,4 +1,4 @@
-package br.ufrpe.timeshare.gui.controllers.usuarioAdmin.telaMeusBens;
+package br.ufrpe.timeshare.gui.controllers.usuarioAdmin.telaBensCotas;
 
 import br.ufrpe.timeshare.excecoes.BemJaOfertadoException;
 import br.ufrpe.timeshare.excecoes.BemNaoExisteException;
@@ -57,7 +57,6 @@ public class ControllerEditarBemPopUp {
     private ToggleButton btnLigarDesligarOfertado;
     private boolean isTrue = false;
     private File imagemSelecionada;
-    private ControllerListarBens mainController;
 
 
     @FXML
@@ -114,9 +113,6 @@ public class ControllerEditarBemPopUp {
     }
 
 
-    public void setMainController(ControllerListarBens mainController) {
-        this.mainController = mainController;
-    }
 
 
     @FXML
@@ -178,10 +174,6 @@ public class ControllerEditarBemPopUp {
             //fechar a janela após a edicao
             fecharPopup();
 
-            //atualizar a listagem na tela principal, se necessário
-            if (mainController != null) {
-                mainController.carregarListaDeBens();
-            }
         } catch (BemNaoExisteException | NullPointerException | BemJaOfertadoException e) {
             exibirAlertaErro("Erro", "Erro ao alterar nome do bem", e.getMessage());
         }
@@ -211,10 +203,7 @@ public class ControllerEditarBemPopUp {
                 //fechar a janela após a exclusão
                 fecharPopup();
 
-                //atualizar a listagem na tela principal, se necessário
-                if (mainController != null) {
-                    mainController.carregarListaDeBens();
-                }
+
             } catch (BemNaoExisteException | IllegalAccessException e) {
                 exibirAlertaErro("Erro", "Erro ao remover bem", e.getMessage());
             }
