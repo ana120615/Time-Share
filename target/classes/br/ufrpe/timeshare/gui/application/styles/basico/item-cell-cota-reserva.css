@@ -1,0 +1,29 @@
+.item-button {
+    -fx-background-color: #ffffff;
+    -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 5, 0.3, 2, 2);
+    -fx-alignment: center;
+}
+
+/* Efeito ao passar o mouse no botão */
+.item-button:hover {
+    -fx-background-color: #f0f8ff;
+    -fx-cursor: hand;
+}
+
+.label-destaque {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #333;
+}
+
+/* Estiliza a quantidade de cotas */
+.label-discreta {
+    -fx-font-size: 14px;
+    -fx-text-fill: #666;
+}
+
+.hbox-fundo {
+    -fx-background-color: transparent;
+}

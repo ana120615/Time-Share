@@ -1,10 +1,9 @@
 /* Estiliza o botão que envolve todo o item */
 .item-button {
     -fx-background-color: #ffffff;
-    -fx-border-color: #007bff; /* Azul moderno */
+    -fx-border-color: #666;
     -fx-border-radius: 10px;
     -fx-background-radius: 10px;
-    -fx-padding: 10px;
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 5, 0.3, 2, 2);
     -fx-alignment: center;
 }
@@ -18,15 +17,12 @@
 
 /* Estiliza o HBox que contém a imagem e o VBox com os textos */
 .item-hbox {
-    -fx-spacing: 10px;
-    -fx-alignment: center-left;
+    -fx-alignment: center;
 }
 
 /* Estiliza a imagem do item */
 .item-image {
-    -fx-fit-width: 80px;
-    -fx-fit-height: 80px;
-    -fx-border-radius: 5px;
+
 }
 
 /* Estiliza o VBox que contém as labels */
