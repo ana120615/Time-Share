@@ -2,6 +2,7 @@ package br.ufrpe.timeshare.dados;
 
 import br.ufrpe.timeshare.negocio.beans.Reserva;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -47,14 +48,21 @@ public class RepositorioReservas extends RepositorioGenerico<Reserva> implements
     @Override
     public boolean verificarConflitoNaReserva(long idBem, LocalDateTime dataInicial, LocalDateTime dataFinal) {
         boolean conflito = false;
+
+        LocalDate dataInicioAtual = dataInicial.toLocalDate();
+        LocalDate dataFinalAtual = dataFinal.toLocalDate();
+
         for (Reserva reservaAtual : buscarReservasPorBem(idBem)) {
-            if (reservaAtual.getDataInicio().isBefore(dataInicial) && reservaAtual.getDataFim().isAfter(dataInicial)) {
+            LocalDate reservaDataInicial = reservaAtual.getDataInicio().toLocalDate();
+            LocalDate reservaDataFinal = reservaAtual.getDataFim().toLocalDate();
+
+            if (reservaDataInicial.isBefore(dataInicioAtual) && reservaDataFinal.isAfter(dataFinalAtual)) {
                 conflito = true;
-            } else if (reservaAtual.getDataInicio().isBefore(dataFinal) && reservaAtual.getDataFim().isAfter(dataFinal)) {
+            } else if (reservaDataInicial.isBefore(dataFinalAtual) && reservaDataFinal.isAfter(dataInicioAtual)) {
                 conflito = true;
-            } else if (reservaAtual.getDataInicio().isAfter(dataInicial) && reservaAtual.getDataFim().isBefore(dataFinal)) {
+            } else if (reservaDataInicial.isAfter(dataInicioAtual) && reservaDataFinal.isBefore(dataFinalAtual)) {
                 conflito = true;
-            } else if (reservaAtual.getDataInicio().isEqual(dataInicial) || reservaAtual.getDataFim().isEqual(dataFinal)) {
+            } else if (reservaDataInicial.isEqual(dataInicioAtual) || reservaDataFinal.isEqual(dataFinalAtual)) {
                 conflito = true;
             }
         }

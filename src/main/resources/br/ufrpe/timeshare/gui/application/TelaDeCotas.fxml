@@ -150,7 +150,7 @@
          <children>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="400.0" style="-fx-background-color: #001f54;" GridPane.columnIndex="2">
                <children>
-                  <Label style="-fx-text-fill: white; -fx-font-size: 24px; -fx-font-weight: bold;" text="Informaçoes das Cotas" />
+                  <Label style="-fx-text-fill: white; -fx-font-size: 24px; -fx-font-weight: bold;" text="Meus Bens" />
                </children>
             </HBox>
             <Button contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#voltarParaTelaAdm" style="-fx-background-color: #001f54; -fx-cursor: hand;" text="&lt;" textAlignment="CENTER" textFill="WHITE" textOverrun="CENTER_WORD_ELLIPSIS">
