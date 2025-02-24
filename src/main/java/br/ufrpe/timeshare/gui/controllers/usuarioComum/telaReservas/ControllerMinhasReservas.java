@@ -114,8 +114,6 @@ public class ControllerMinhasReservas implements ControllerBase {
     
 
 
-
-
     private void exibirReservas() {
         ObservableList<VBox> itens = FXCollections.observableArrayList();
         for (Reserva reserva : reservas) {

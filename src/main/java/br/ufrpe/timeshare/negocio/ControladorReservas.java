@@ -18,8 +18,6 @@ import java.util.concurrent.ThreadLocalRandom;
 //Os bens estao com problema em exibir imagem
 /*Colocar liberar cota em todos os metodos que mexem na liberacao da cota de alguma forma*/
 //Pode ser no cancelamento, alteracao do periodo, prolongamento...
-//Ver questao da verificacao do periodo com cota
-//colocar minhas reservas com tela de rolar
 //fazer date picker verificar periodos futuros a depender das cotas também
 
 public class ControladorReservas {
@@ -369,51 +367,45 @@ public class ControladorReservas {
     //tambem e usado quando prolongo uma estadia
     //verifica se cota pertence ao usuario e corresponde ao periodo que deseja reservar
     public double calcularTaxaExtra(Reserva reserva, int quantidadeDias) throws ReservaNaoExisteException, CotaJaReservadaException, DadosInsuficientesException {
-        //taxa e uma porcentagem do preco de uma cota do bem
         double taxa = 0.00;
         boolean reservaTaxada = true;
         Promocao promocao = new Promocao();
-
+    
         if (reserva == null) {
             throw new ReservaNaoExisteException("Reserva nao pode ser nula.");
         }
-
+    
         if (quantidadeDias < 1) {
             throw new DadosInsuficientesException("Quantidade de dias invalida.");
         }
-
-        //deve verificar se ha alguma cota no periodo
-        //se nao houver, a taxa sera automaticamente aplicada
+    
         List<Cota> cotas = reserva.getBem().getCotas();
-
+    
         for (Cota cota : cotas) {
             if (cota.getProprietario() != null && cota.getProprietario().equals(reserva.getUsuarioComum())) {
-                boolean datasIguais = cota.getDataInicio().isEqual(reserva.getDataInicio()) &&
-                        cota.getDataFim().isEqual(reserva.getDataFim());
-
-                boolean cotaCobreReserva = (!cota.getDataInicio().isAfter(reserva.getDataInicio()) && !cota.getDataFim().isBefore(reserva.getDataFim())) ||
-                        (!cota.getDataInicio().isBefore(reserva.getDataInicio()) && cota.getDataFim().isAfter(reserva.getDataFim())) ||
-                        (cota.getDataInicio().isBefore(reserva.getDataInicio()) && !cota.getDataFim().isAfter(reserva.getDataFim())) ||
-                        (cota.getDataInicio().isEqual(reserva.getDataInicio()) && !cota.getDataFim().isAfter(reserva.getDataFim())) ||
-                        (!cota.getDataInicio().isBefore(reserva.getDataInicio()) && cota.getDataFim().isEqual(reserva.getDataFim())) ||
-                        (cota.getDataInicio().isEqual(reserva.getDataInicio()) && cota.getDataFim().isEqual(reserva.getDataFim()));
-                if (datasIguais || cotaCobreReserva) {
+                // Verifica se a cota cobre exatamente o período da reserva
+                if (cota.getDataInicio().isEqual(reserva.getDataInicio()) && cota.getDataFim().isEqual(reserva.getDataFim())) {
+                    reservaTaxada = false;
+                    break;
+                }
+    
+                // Verifica se a cota cobre parte do período da reserva
+                if (cota.getDataInicio().isBefore(reserva.getDataInicio()) && cota.getDataFim().isAfter(reserva.getDataInicio()) ||
+                    cota.getDataInicio().isBefore(reserva.getDataFim()) && cota.getDataFim().isAfter(reserva.getDataFim()) ||
+                    cota.getDataInicio().isAfter(reserva.getDataInicio()) && cota.getDataFim().isBefore(reserva.getDataFim())) {
                     reservaTaxada = false;
                     break;
                 }
             }
         }
-
-
-        //calcula a taxa baseada no preco de 1 cota e na quantidade de dias da reserva
-        //5% ao dia
+    
         if (reservaTaxada) {
             if (!cotas.isEmpty()) {
                 taxa = cotas.getFirst().getPreco() * 0.05 * quantidadeDias;
             }
+            //Aplica promocao na taxa extra
             double taxaPromocional = promocao.calcularTaxaPromocao(reserva.getDataInicio().withHour(0).withMinute(0), reserva.getUsuarioComum());
-            double desconto = taxa * taxaPromocional;
-            taxa -= desconto;
+            taxa-= taxa*taxaPromocional;
         }
         return Math.max(taxa, 0.00);
     }
