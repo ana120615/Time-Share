@@ -1,14 +1,12 @@
 package br.ufrpe.timeshare.gui.controllers.celulas;
 
-import br.ufrpe.timeshare.gui.controllers.usuarioAdmin.telaCotas.ControllerTelaDeCotas;
-import br.ufrpe.timeshare.gui.controllers.usuarioAdmin.telaMeusBens.ControllerEditarBemPopUp;
-import br.ufrpe.timeshare.gui.controllers.usuarioAdmin.telaMeusBens.ControllerListarBens;
+import br.ufrpe.timeshare.gui.controllers.usuarioAdmin.telaBensCotas.ControllerTelaDeBensECotas;
+import br.ufrpe.timeshare.gui.controllers.usuarioAdmin.telaBensCotas.ControllerEditarBemPopUp;
 import br.ufrpe.timeshare.negocio.beans.Bem;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.effect.GaussianBlur;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
@@ -37,8 +35,7 @@ public class ControllerItemCellBem {
 
     private Bem bem;
     private int valorTela;
-    private ControllerListarBens mainControllerBens;
-    private ControllerTelaDeCotas mainControllerDeslocamento;
+    private ControllerTelaDeBensECotas mainControllerDeslocamento;
 
 
     public void setValorTela(int valorTela) {
@@ -91,11 +88,8 @@ public class ControllerItemCellBem {
         }
     }
 
-    public void setMainControllerBens(ControllerListarBens mainControllerBens) {
-        this.mainControllerBens = mainControllerBens;
-    }
 
-    public void setMainControllerDeslocamento(ControllerTelaDeCotas mainControllerDeslocamento) {
+    public void setMainControllerDeslocamento(ControllerTelaDeBensECotas mainControllerDeslocamento) {
         this.mainControllerDeslocamento = mainControllerDeslocamento;
     }
 
@@ -107,7 +101,6 @@ public class ControllerItemCellBem {
             // Obtém o controlador da tela do pop-up
             ControllerEditarBemPopUp popupController = loader.getController();
             popupController.setBem(bem);
-            popupController.setMainController(mainControllerBens);
 
             Stage popupStage = new Stage();
             popupStage.initModality(Modality.APPLICATION_MODAL);
@@ -117,16 +110,9 @@ public class ControllerItemCellBem {
             popupStage.setMinHeight(650);
 
             // Aplica efeito de desfoque na tela principal
-            if (mainControllerBens != null && mainControllerBens.getListViewItens().getScene() != null) {
-                mainControllerBens.getListViewItens().getScene().getRoot().setEffect(new GaussianBlur(10));
-            }
 
             popupStage.showAndWait();
 
-            // Remove efeito de desfoque ao fechar
-            if (mainControllerBens != null && mainControllerBens.getListViewItens().getScene() != null) {
-                mainControllerBens.getListViewItens().getScene().getRoot().setEffect(null);
-            }
         } catch (IOException e) {
             e.printStackTrace();
         }

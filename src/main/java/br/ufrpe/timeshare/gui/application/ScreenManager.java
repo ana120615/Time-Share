@@ -13,21 +13,20 @@ import java.util.Map;
 public class ScreenManager {
 
     private static ScreenManager instance;
+    private final Map<String, Scene> telas = new HashMap<>();
+    private final Map<String, FXMLLoader> loaders = new HashMap<>();
     private Object data;
     private Stage mainStage;
 
-    private final Map<String, Scene> telas = new HashMap<>();
-    private final Map<String, FXMLLoader> loaders = new HashMap<>();
+    private ScreenManager() {
+        carregarTelas();
+    }
 
     public static ScreenManager getInstance() {
         if (instance == null) {
             instance = new ScreenManager();
         }
         return instance;
-    }
-
-    private ScreenManager() {
-        carregarTelas();
     }
 
     private void carregarTelas() {
@@ -37,13 +36,12 @@ public class ScreenManager {
         carregarTela("AdmPrincipal", "/br/ufrpe/timeshare/gui/application/UsuarioAdmTelaPrincipal.fxml");
         carregarTela("ConfiguracoesUsuario", "/br/ufrpe/timeshare/gui/application/ConfiguracoesUsuario.fxml");
         carregarTela("CadastroBens", "/br/ufrpe/timeshare/gui/application/TelaCadastroBens.fxml");
-        carregarTela("ListarBens", "/br/ufrpe/timeshare/gui/application/TelaListaDeBens.fxml");
         carregarTela("TelaDeVendas", "/br/ufrpe/timeshare/gui/application/TelaDeVenda.fxml");
-        carregarTela("TelaDeCotas", "/br/ufrpe/timeshare/gui/application/TelaDeCotas.fxml");
+        carregarTela("TelaDeBensECotas", "/br/ufrpe/timeshare/gui/application/TelaDeBensECotas.fxml");
         carregarTela("TelaMinhasCotas", "/br/ufrpe/timeshare/gui/application/TelaMinhasCotas.fxml");
         carregarTela("TelaRealizarReserva", "/br/ufrpe/timeshare/gui/application/RealizarReserva.fxml");
-        carregarTela("TelaMinhasReservas","/br/ufrpe/timeshare/gui/application/MinhasReservasComum.fxml" );
-        carregarTela("TelaEstadia","/br/ufrpe/timeshare/gui/application/Estadia.fxml");
+        carregarTela("TelaMinhasReservas", "/br/ufrpe/timeshare/gui/application/MinhasReservasComum.fxml");
+        carregarTela("TelaEstadia", "/br/ufrpe/timeshare/gui/application/Estadia.fxml");
         carregarTela("TelaBensMaisVendidos", "/br/ufrpe/timeshare/gui/application/CharTelaBensMaisVendidos.fxml");
         carregarTela("TelaRecuperarSenha", "/br/ufrpe/timeshare/gui/application/RecuperarSenha.fxml");
     }
@@ -59,12 +57,12 @@ public class ScreenManager {
         }
     }
 
-    public void setData(Object data) {
-        this.data = data;
-    }
-
     public Object getData() {
         return data;
+    }
+
+    public void setData(Object data) {
+        this.data = data;
     }
 
     public Stage getMainStage() {
@@ -90,20 +88,20 @@ public class ScreenManager {
         }
     }
 
-public void showRecuperarSenhaScreen(){
-    showScreen("TelaRecuperarSenha");
-}
+    public void showRecuperarSenhaScreen() {
+        showScreen("TelaRecuperarSenha");
+    }
 
-public void showEstadiaScreen(){
-    showScreen("TelaEstadia");
-}
+    public void showEstadiaScreen() {
+        showScreen("TelaEstadia");
+    }
 
-   public void showMinhasReservasScreen(){
-    showScreen("TelaMinhasReservas");
-   }
+    public void showMinhasReservasScreen() {
+        showScreen("TelaMinhasReservas");
+    }
 
-    public void showRealizarReservaScreen(){
-    showScreen("TelaRealizarReserva");
+    public void showRealizarReservaScreen() {
+        showScreen("TelaRealizarReserva");
     }
 
     public void showCadastroScreen() {
@@ -138,13 +136,15 @@ public void showEstadiaScreen(){
         showScreen("TelaDeVendas");
     }
 
-    public void showTelaDeCotasScreen() {
-        showScreen("TelaDeCotas");
+    public void showTelaDeBensECotasScreen() {
+        showScreen("TelaDeBensECotas");
     }
 
     public void showTelaMinhasCotasScreen() {
         showScreen("TelaMinhasCotas");
     }
 
-    public void showTelaBensMaisVendidos() {showScreen("TelaBensMaisVendidos");}
+    public void showTelaBensMaisVendidos() {
+        showScreen("TelaBensMaisVendidos");
+    }
 }

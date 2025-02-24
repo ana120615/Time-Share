@@ -1,4 +1,4 @@
-package br.ufrpe.timeshare.gui.controllers.usuarioAdmin.telaCotas;
+package br.ufrpe.timeshare.gui.controllers.usuarioAdmin.telaBensCotas;
 
 import br.ufrpe.timeshare.gui.application.ScreenManager;
 import br.ufrpe.timeshare.gui.controllers.celulas.ControllerItemCellCota;
@@ -28,7 +28,7 @@ public class ControllerDeslocamentoDeCotasPopUP {
 
     private Cota cota;
     private final ControladorBens controladorBens;
-    private ControllerTelaDeCotas mainController;
+    private ControllerTelaDeBensECotas mainController;
 
     public ControllerDeslocamentoDeCotasPopUP() {
         this.controladorBens = new ControladorBens();
@@ -129,7 +129,7 @@ public class ControllerDeslocamentoDeCotasPopUP {
         ScreenManager.getInstance().showAdmPrincipalScreen();
     }
 
-    public void setMainController(ControllerTelaDeCotas mainControllerDeslocamento) {
+    public void setMainController(ControllerTelaDeBensECotas mainControllerDeslocamento) {
         this.mainController = mainControllerDeslocamento;
     }
 
