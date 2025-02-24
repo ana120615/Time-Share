@@ -27,9 +27,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class ControllerMinhasReservas implements ControllerBase {
-//IMPLEMENTAR BUSCA DE RESERVAS
     @FXML
     private ListView<VBox> reservasListView;
+
+    @FXML
+    private TextField nomeBemTextField;
 
     private ObservableList<Reserva> reservas = FXCollections.observableArrayList();
 
@@ -66,9 +68,53 @@ public class ControllerMinhasReservas implements ControllerBase {
         }
     }
 
-    private void buscarReservas(){
+
+    
+    @FXML
+    public void buscarReservas(ActionEvent event) {
         
+        String nomeBem = null;
+        // Se o nome do bem for preenchido, armazena o valor
+        if (nomeBemTextField != null && !nomeBemTextField.getText().trim().isEmpty()) {
+            nomeBem = nomeBemTextField.getText().trim();
+        }
+    
+            List<Reserva> reservasFiltradas = null;
+            if (nomeBem == null) {
+                reservasFiltradas = controladorReservas.listarReservasUsuario(usuarioLogado);  // Método para buscar todas as reservas
+                System.out.println("Reservas encontradas: " + reservasFiltradas.size());
+            }
+            else{
+            try {
+                reservasFiltradas = controladorReservas.buscarReservaPorNomeBem(usuarioLogado, nomeBem);
+            } catch (Exception e) {
+                exibirAlertaErro("Erro", "Problema ao buscar reserva por atributo", e.getMessage());
+            }
+            System.out.println("Reservas encontradas: " + reservasFiltradas.size());
+            }
+            // Atualiza a lista com as reservas filtradas, garantindo que seja ObservableList<VBox>
+            ObservableList<VBox> itens = FXCollections.observableArrayList();
+    
+            // Se a lista de reservas não estiver vazia, exibe as reservas
+            if (reservasFiltradas != null && !reservasFiltradas.isEmpty()) {
+                // Limpa as reservas e adiciona os novos itens em formato VBox
+                for (Reserva reserva : reservasFiltradas) {
+                    VBox item = criarItemReserva(reserva);
+                    itens.add(item);
+                }
+            } else {
+                // Caso não haja reservas encontradas, limpa a lista
+                itens.clear();
+            }
+    
+            // Atualiza o ListView com a lista de itens
+            reservasListView.setItems(itens);  // Agora estamos passando ObservableList<VBox>
+            nomeBemTextField.clear();
     }
+    
+
+
+
 
     private void exibirReservas() {
         ObservableList<VBox> itens = FXCollections.observableArrayList();
@@ -173,6 +219,7 @@ public class ControllerMinhasReservas implements ControllerBase {
                     }
                 });
             } catch (Exception e) {
+                System.out.println("Erro: " + e.getMessage());
                 exibirAlertaErro("Erro", "Erro ao carregar datas disponíveis", e.getMessage());
             }
         } else {
