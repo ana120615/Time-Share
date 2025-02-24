@@ -11,7 +11,6 @@ import br.ufrpe.timeshare.negocio.beans.TipoUsuario;
 import br.ufrpe.timeshare.negocio.beans.Usuario;
 
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -268,6 +267,13 @@ public class ControladorBens {
         }
     }
 
+    public List<Cota> listarCotasDeUmUsuarioPorNomeBem(Usuario usuario, String nome) throws UsuarioNaoPermitidoException {
+        if (usuario != null) {
+            return repositorioCotas.buscarCotasPorProprietarioPorNomeBem(usuario, nome);
+        } else {
+            throw new UsuarioNaoPermitidoException("Esse usuario nao existe");
+        }
+    }
 
     public List<Cota> registros(Usuario usuario) throws UsuarioNaoExisteException {
         List<Cota> resultado = new ArrayList<>();
@@ -386,12 +392,11 @@ public class ControladorBens {
         return resultado;
     }
 
-    
 
     //busca de bem por nome, localizacao ou id
     public List<Bem> buscarBensPorAtributo(String filtro) {
         if (filtro == null || filtro.trim().isEmpty()) {
-            return repositorioBens.listar(); 
+            return repositorioBens.listar();
         }
 
         try {
@@ -404,7 +409,7 @@ public class ControladorBens {
                 }
             } catch (BemNaoExisteException e) {
                 e.printStackTrace();
-            } 
+            }
         } catch (NumberFormatException e) {
         }
 

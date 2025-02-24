@@ -48,6 +48,23 @@ public class RepositorioCotas extends RepositorioGenerico<Cota> implements IRepo
     }
 
     @Override
+    public List<Cota> buscarCotasPorProprietarioPorNomeBem(Usuario proprietario, String nomeBem) {
+        List<Cota> resultado = new ArrayList<>();
+        String nomePesquisa = nomeBem.trim().toLowerCase();
+
+        for (Cota cota : lista) {
+            if (!cota.getStatusDeDisponibilidadeParaCompra() && cota.getProprietario() != null && cota.getProprietario().equals(proprietario)) {
+                String nomeCota = cota. getBemAssociado().getNome().trim().toLowerCase(); // Removendo espaços e padronizando
+                if (nomeCota.contains(nomePesquisa)) {
+                    resultado.add(cota);
+                }
+            }
+        }
+
+        return resultado;
+    }
+
+    @Override
     public List<Cota> buscarCotasPorBem(Bem bem) {
         List<Cota> retorno = new ArrayList<>();
         for (Cota cota : lista) {

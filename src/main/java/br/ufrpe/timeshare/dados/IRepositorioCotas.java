@@ -12,6 +12,8 @@ public interface IRepositorioCotas extends IRepositorio<Cota> {
 
     List<Cota> buscarCotasPorProprietario(Usuario proprietario);
 
+    List<Cota> buscarCotasPorProprietarioPorNomeBem(Usuario proprietario, String nomeBem);
+
     List<Cota> buscarCotasPorBem(Bem bem);
 
     List<Cota> listarCotasDisponiveisParaVenda();
