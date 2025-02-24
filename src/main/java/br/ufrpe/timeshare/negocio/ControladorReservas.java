@@ -1,4 +1,5 @@
 package br.ufrpe.timeshare.negocio;
+
 import br.ufrpe.timeshare.dados.IRepositorioEstadia;
 import br.ufrpe.timeshare.dados.IRepositorioReservas;
 import br.ufrpe.timeshare.dados.RepositorioEstadia;
@@ -83,26 +84,26 @@ public class ControladorReservas {
         if (estadia == null) {
             throw new EstadiaNaoExisteException("Estadia inexistente.");
         }
-    
+
         Reserva reserva = estadia.getReserva();
         LocalDateTime dataFimOriginal = reserva.getDataFim();
         LocalDateTime novaDataFim = dataFimOriginal.plusDays(quantidadeDias);
-    
+
         // Garante que só cobra pelos dias adicionais
         long diasExtras = quantidadeDias;
         if (LocalDateTime.now().isBefore(dataFimOriginal)) {
-            diasExtras = Math.max(java.time.Duration.between(dataFimOriginal, novaDataFim).toDays(),0);
+            diasExtras = Math.max(java.time.Duration.between(dataFimOriginal, novaDataFim).toDays(), 0);
         }
-    
+
         // Calcula a taxa APENAS para os dias adicionais
         double taxaExtra = calcularTaxaExtra(reserva, (int) diasExtras);
-    
+
         // Atualiza a reserva
         alterarPeriodoReserva(reserva.getId(), reserva.getDataInicio(), novaDataFim, reserva.getUsuarioComum());
-    
+
         return "Estadia prolongada. Dias adicionais: " + diasExtras + "\nTaxa extra: R$" + taxaExtra;
     }
-    
+
 
     public String checkout(int idEstadia, Usuario usuario) throws ReservaNaoExisteException, ReservaJaCanceladaException, EstadiaNaoExisteException, UsuarioNaoPermitidoException {
         LocalDateTime agora = LocalDateTime.now();
@@ -123,7 +124,7 @@ public class ControladorReservas {
     }
 
     //metodo para criar reserva/ reservar
-    public String criarReserva(LocalDateTime dataInicio, LocalDateTime dataFim, Usuario usuarioComum, Bem bem) throws DadosInsuficientesException, ReservaJaExisteException, ForaPeriodoException, PeriodoJaReservadoException, PeriodoNaoDisponivelParaReservaException, ReservaNaoExisteException, CotaJaReservadaException{
+    public String criarReserva(LocalDateTime dataInicio, LocalDateTime dataFim, Usuario usuarioComum, Bem bem) throws DadosInsuficientesException, ReservaJaExisteException, ForaPeriodoException, PeriodoJaReservadoException, PeriodoNaoDisponivelParaReservaException, ReservaNaoExisteException, CotaJaReservadaException {
         if (bem == null || dataInicio == null || dataFim == null || usuarioComum == null) {
             throw new DadosInsuficientesException("Bem, data de inicio, data final ou usuario nao podem ser nulos.");
         }
@@ -229,7 +230,7 @@ public class ControladorReservas {
         return reembolso;
     }
 
-    public String alterarPeriodoReserva(long idReserva, LocalDateTime novaDataInicio, LocalDateTime novaDataFim, Usuario usuario) throws ReservaJaCanceladaException, ForaPeriodoException, PeriodoJaReservadoException, PeriodoNaoDisponivelParaReservaException, ReservaNaoExisteException, CotaJaReservadaException, ReservaJaExisteException, DadosInsuficientesException, UsuarioNaoPermitidoException{
+    public String alterarPeriodoReserva(long idReserva, LocalDateTime novaDataInicio, LocalDateTime novaDataFim, Usuario usuario) throws ReservaJaCanceladaException, ForaPeriodoException, PeriodoJaReservadoException, PeriodoNaoDisponivelParaReservaException, ReservaNaoExisteException, CotaJaReservadaException, ReservaJaExisteException, DadosInsuficientesException, UsuarioNaoPermitidoException {
         //busca reserva pelo id
         Reserva reserva = repositorioReservas.buscar(idReserva);
         Bem bem = reserva.getBem();
@@ -379,17 +380,17 @@ public class ControladorReservas {
         double taxa = 0.00;
         boolean reservaTaxada = true;
         Promocao promocao = new Promocao();
-    
+
         if (reserva == null) {
             throw new ReservaNaoExisteException("Reserva nao pode ser nula.");
         }
-    
+
         if (quantidadeDias < 1) {
             throw new DadosInsuficientesException("Quantidade de dias invalida.");
         }
-    
+
         List<Cota> cotas = reserva.getBem().getCotas();
-    
+
         for (Cota cota : cotas) {
             if (cota.getProprietario() != null && cota.getProprietario().equals(reserva.getUsuarioComum())) {
                 // Verifica se a cota cobre exatamente o período da reserva
@@ -397,36 +398,36 @@ public class ControladorReservas {
                     reservaTaxada = false;
                     break;
                 }
-    
+
                 // Verifica se a cota cobre parte do período da reserva
                 if (cota.getDataInicio().isBefore(reserva.getDataInicio()) && cota.getDataFim().isAfter(reserva.getDataInicio()) ||
-                    cota.getDataInicio().isBefore(reserva.getDataFim()) && cota.getDataFim().isAfter(reserva.getDataFim()) ||
-                    cota.getDataInicio().isAfter(reserva.getDataInicio()) && cota.getDataFim().isBefore(reserva.getDataFim())) {
+                        cota.getDataInicio().isBefore(reserva.getDataFim()) && cota.getDataFim().isAfter(reserva.getDataFim()) ||
+                        cota.getDataInicio().isAfter(reserva.getDataInicio()) && cota.getDataFim().isBefore(reserva.getDataFim())) {
                     reservaTaxada = false;
                     break;
                 }
             }
         }
-    
+
         if (reservaTaxada) {
             if (!cotas.isEmpty()) {
                 taxa = cotas.getFirst().getPreco() * 0.05 * quantidadeDias;
             }
             //Aplica promocao na taxa extra
             double taxaPromocional = promocao.calcularTaxaPromocao(reserva.getDataInicio().withHour(0).withMinute(0), reserva.getUsuarioComum());
-            taxa-= taxa*taxaPromocional;
+            taxa -= taxa * taxaPromocional;
         }
         return Math.max(taxa, 0.00);
     }
 
 
-    public String gerarComprovanteReserva(Reserva reserva)  throws CotaJaReservadaException, DadosInsuficientesException, ReservaNaoExisteException {
+    public String gerarComprovanteReserva(Reserva reserva) throws CotaJaReservadaException, DadosInsuficientesException, ReservaNaoExisteException {
         int dias = reserva.calcularDuracaoReserva();
         double taxa = 0.00;
         try {
             taxa = calcularTaxaExtra(reserva, dias);
         } catch (ReservaNaoExisteException | DadosInsuficientesException e) {
-        throw e;
+            throw e;
         }
         return reserva + "\nTaxa extra: R$" + String.format("%.2f", taxa);
     }
@@ -455,106 +456,92 @@ public class ControladorReservas {
         }
         return resultado;
     }
-   
+
     //Verifica se usuario possui alguma estadia ativa
     //Se fez check in em alguma reserva
-   public Estadia getEstadiaAtiva(Usuario usuario) throws OperacaoNaoPermitidaException, DadosInsuficientesException {
-    List<Estadia> estadias = null;
-    Estadia estadiaAtiva = null;
-    if(usuario!=null){
-    estadias = listarEstadiasUsuario(usuario);
-    if(estadias!=null){
-        for(Estadia estadia: estadias){
-        if(estadia.getReserva()!=null && estadia.getDataFim()==null){
-         estadiaAtiva = estadia;
-         break;
+    public Estadia getEstadiaAtiva(Usuario usuario) throws OperacaoNaoPermitidaException, DadosInsuficientesException {
+        List<Estadia> estadias = null;
+        Estadia estadiaAtiva = null;
+        if (usuario != null) {
+            estadias = listarEstadiasUsuario(usuario);
+            if (estadias != null) {
+                for (Estadia estadia : estadias) {
+                    if (estadia.getReserva() != null && estadia.getDataFim() == null) {
+                        estadiaAtiva = estadia;
+                        break;
+                    }
+                }
+            } else {
+                throw new OperacaoNaoPermitidaException("O usuario nao possui estadias");
+            }
+        } else {
+            throw new DadosInsuficientesException("O usuario nao pode ser nulo");
         }
+        return estadiaAtiva;
+    }
+
+
+    //Buscar reserva pelo nome do bem
+    //metodo utilizado na tela minhas reservas
+    public List<Reserva> buscarReservaPorNomeBem(Usuario usuario, String nomeBem)
+            throws DadosInsuficientesException, BuscaNaoPermitidaException, OperacaoNaoPermitidaException {
+
+        List<Reserva> resultado = new ArrayList<>();
+        List<Reserva> reservasUsuario = listarReservasUsuario(usuario);
+        int criteriosPreenchidos = 0;
+        if (usuario != null) {
+            if (reservasUsuario != null) {
+
+                if (nomeBem != null && !nomeBem.trim().isEmpty()) {
+                    criteriosPreenchidos++;
+                }
+
+                if (criteriosPreenchidos == 0) {
+                    throw new BuscaNaoPermitidaException("É necessário inserir o nome do bem para buscar.");
+                }
+
+                for (Reserva reserva : reservasUsuario) {
+                    boolean atendeNomeBem = false;
+
+
+                    // Verifica se o nome do bem está presente
+                    if (nomeBem != null && !nomeBem.trim().isEmpty()) {
+                        if (reserva.getBem().getNome().toLowerCase().contains(nomeBem.toLowerCase())) {
+                            atendeNomeBem = true;
+                        }
+                    }
+
+
+                    // Adiciona a reserva se atender pelo menos um dos critérios
+                    if (nomeBem != null && atendeNomeBem) {
+                        resultado.add(reserva);
+                    }
+                }
+            } else {
+                throw new OperacaoNaoPermitidaException("Usuário não possui reservas");
+            }
+        } else {
+            throw new DadosInsuficientesException("Usuário não pode ser nulo.");
         }
-     }
-     else{
-         throw new OperacaoNaoPermitidaException("O usuario nao possui estadias");
-     }
+        return resultado;
     }
-    else{
-        throw new DadosInsuficientesException("O usuario nao pode ser nulo");
-    }
-   return estadiaAtiva;
-   } 
-
-
-   //Buscar reserva pelo nome do bem 
-   //metodo utilizado na tela minhas reservas
-   public List<Reserva> buscarReservaPorNomeBem(Usuario usuario, String nomeBem) 
-   throws DadosInsuficientesException, BuscaNaoPermitidaException, OperacaoNaoPermitidaException {
-
-List<Reserva> resultado = new ArrayList<>();
-List<Reserva> reservasUsuario = listarReservasUsuario(usuario);
-int criteriosPreenchidos = 0;
-if (usuario != null) {
-   if (reservasUsuario != null) {
-       
-       if (nomeBem != null && !nomeBem.trim().isEmpty()) {
-           criteriosPreenchidos++;
-       }
-       
-       if (criteriosPreenchidos == 0) {
-           throw new BuscaNaoPermitidaException("É necessário inserir o nome do bem para buscar.");
-       }
-
-       for (Reserva reserva : reservasUsuario) {
-           boolean atendeNomeBem = false;
-          
-
-           // Verifica se o nome do bem está presente
-           if (nomeBem != null && !nomeBem.trim().isEmpty()) {
-               if (reserva.getBem().getNome().toLowerCase().contains(nomeBem.toLowerCase())) {
-                   atendeNomeBem = true;
-               }
-           }
-           
-
-           // Adiciona a reserva se atender pelo menos um dos critérios
-           if (nomeBem != null && atendeNomeBem) {
-               resultado.add(reserva);
-           }
-       }
-   } else {
-       throw new OperacaoNaoPermitidaException("Usuário não possui reservas");
-   }
-} else {
-   throw new DadosInsuficientesException("Usuário não pode ser nulo.");
-}
-return resultado;
-}
-
-
-
-
 
 
 //RELATORIOS
 
-    public List<Reserva> buscarReservasPorMultiplosPeriodos(Bem bem, LocalDateTime dataInicio, LocalDateTime dataFim) {
+    public List<Reserva> buscarReservasPorMultiplosPeriodos(Bem bem, Usuario usuario, LocalDateTime dataInicio, LocalDateTime dataFim) {
         List<Reserva> reservasDentroDosPeriodos = new ArrayList<>();
         LocalDate dataInicial = dataInicio.toLocalDate();
         LocalDate dataFinal = dataFim.toLocalDate();
 
         for (Reserva reserva : repositorioReservas.listar()) {
-            if (reserva.getBem().equals(bem)) {
-                boolean conflito = false;
+            if (!reserva.getUsuarioComum().equals(usuario) && reserva.getBem().equals(bem)) {
                 LocalDate reservaInicio = reserva.getDataInicio().toLocalDate();
                 LocalDate reservaFim = reserva.getDataFim().toLocalDate();
 
-                if (reservaInicio.isBefore(dataInicial) && reservaFim.isAfter(dataFinal)) {
-                    conflito = true;
-                } else if (reservaInicio.isBefore(dataFinal) && reservaFim.isAfter(dataFinal)) {
-                    conflito = true;
-                } else if (reservaInicio.isAfter(dataInicial) && reservaFim.isBefore(dataFinal)) {
-                    conflito = true;
-                } else if (reservaInicio.isEqual(dataInicial) || reservaFim.isEqual(reservaFim)) {
-                    conflito = true;
-                }
-                // Verifica se há sobreposição da reserva com qualquer período e se ha estadia
+                // Condição correta para verificar se há sobreposição de períodos
+                boolean conflito = !(reservaFim.isBefore(dataInicial) || reservaInicio.isAfter(dataFinal));
+
                 if (conflito) {
                     Estadia estadia = repositorioEstadia.buscarEstadiaPorReserva((int) reserva.getId());
                     if (estadia == null) {
@@ -565,6 +552,7 @@ return resultado;
         }
         return reservasDentroDosPeriodos;
     }
+
 
     //HISTORICO DE USO DE UM BEM
     public List<Estadia> historicoDeUsoBem(int idBem) {

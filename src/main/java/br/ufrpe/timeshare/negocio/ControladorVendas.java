@@ -130,7 +130,7 @@ public class ControladorVendas {
     public List<Reserva> getReservasNoPeriodoVenda(Venda venda) {
         List<Reserva> resultado = new ArrayList<>();
         for (Cota cotas : venda.getCarrinhoDeComprasCotas()) {
-            resultado.addAll(controladorReservas.buscarReservasPorMultiplosPeriodos(cotas.getBemAssociado(), cotas.getDataInicio(), cotas.getDataFim()));
+            resultado.addAll(controladorReservas.buscarReservasPorMultiplosPeriodos(cotas.getBemAssociado(), venda.getUsuario(), cotas.getDataInicio(), cotas.getDataFim()));
         }
         return resultado;
     }
