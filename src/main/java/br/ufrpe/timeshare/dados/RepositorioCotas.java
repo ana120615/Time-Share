@@ -55,7 +55,7 @@ public class RepositorioCotas extends RepositorioGenerico<Cota> implements IRepo
         for (Cota cota : lista) {
             if (!cota.getStatusDeDisponibilidadeParaCompra() && cota.getProprietario() != null && cota.getProprietario().equals(proprietario)) {
                 String nomeCota = cota. getBemAssociado().getNome().trim().toLowerCase(); // Removendo espaços e padronizando
-                if (nomeCota.contains(nomeBem)) {
+                if (nomeCota.contains(nomePesquisa)) {
                     resultado.add(cota);
                 }
             }
