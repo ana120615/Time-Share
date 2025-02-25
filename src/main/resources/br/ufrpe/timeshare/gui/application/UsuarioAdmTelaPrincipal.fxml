@@ -237,7 +237,7 @@
                                  <children>
                                     <VBox alignment="CENTER" prefHeight="118.0" prefWidth="264.0" GridPane.columnIndex="1">
                                        <children>
-                                          <Button id="button2" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" prefHeight="500.0" prefWidth="500.0" styleClass="button2" stylesheets="@styles/basico/button.css" text="Historico De Uso Bem">
+                                          <Button id="button2" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#irParaTelaHistoricoUsoDeBens" prefHeight="500.0" prefWidth="500.0" styleClass="button2" stylesheets="@styles/basico/button.css" text="Historico De Uso Bem">
                                              <graphic>
                                                 <VBox alignment="CENTER">
                                                    <children>
@@ -258,28 +258,6 @@
                                        </children>
                                     </VBox>
                                     <VBox alignment="CENTER" prefHeight="118.0" prefWidth="264.0" GridPane.columnIndex="2">
-                                       <children>
-                                          <Button contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" prefHeight="500.0" prefWidth="500.0" styleClass="button2" stylesheets="@styles/basico/button.css" text="Listar">
-                                             <graphic>
-                                                <VBox alignment="CENTER" prefHeight="134.0" prefWidth="158.0">
-                                                   <children>
-                                                      <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
-                                                         <image>
-                                                            <Image url="@images/pending.png" />
-                                                         </image>
-                                                      </ImageView>
-                                                      <Label styleClass="label2" stylesheets="@styles/basico/button.css" text="Disponibilidade Bem">
-                                                         <VBox.margin>
-                                                            <Insets top="10.0" />
-                                                         </VBox.margin>
-                                                      </Label>
-                                                   </children>
-                                                </VBox>
-                                             </graphic>
-                                          </Button>
-                                       </children>
-                                    </VBox>
-                                    <VBox alignment="CENTER" prefHeight="118.0" prefWidth="264.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                                        <children>
                                           <Button contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#irParaTelaDeBensMaisVendidos" prefHeight="500.0" prefWidth="500.0" styleClass="button2" stylesheets="@styles/basico/button.css" text="Editar">
                                              <graphic>

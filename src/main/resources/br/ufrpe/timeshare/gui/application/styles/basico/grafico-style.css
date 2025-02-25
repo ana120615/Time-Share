@@ -1,0 +1,26 @@
+.barChart {
+    -fx-background-color: transparent; /* Fundo transparente */
+    -fx-border-color: transparent transparent black transparent; /* Bordas transparentes nas outras partes, e preta apenas na parte inferior */
+}
+
+.barChart .chart-bar {
+    -fx-bar-fill: #007bff;
+}
+
+.barChart .chart-title {
+    -fx-font-size: 18px;               /* Tamanho da fonte */
+    -fx-font-weight: bold;             /* Fonte em negrito */
+    -fx-fill: #333333;                 /* Cor do título */
+}
+
+/* Estilo para o eixo X */
+.barChart .chart-x-axis {
+    -fx-label-fill: #444444;           /* Cor dos rótulos do eixo X */
+    -fx-font-size: 12px;               /* Tamanho da fonte dos rótulos */
+}
+
+/* Estilo para o eixo Y */
+.barChart .chart-y-axis {
+    -fx-label-fill: #444444;           /* Cor dos rótulos do eixo Y */
+    -fx-font-size: 12px;               /* Tamanho da fonte dos rótulos */
+}

@@ -72,6 +72,16 @@
     -fx-padding: 5px;
 }
 
+.list-view .scroll-bar {
+    -fx-opacity: 0;
+    -fx-background-color: transparent;
+}
+
+.list-view .scroll-bar:vertical,
+.list-view .scroll-bar:horizontal {
+    -fx-background-color: transparent;
+}
+
 .list-cell {
     -fx-padding: 10px;
     -fx-border-color: #eee;

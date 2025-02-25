@@ -130,5 +130,8 @@ public class ControllerAdm implements ControllerBase {
     public void irParaTelaDeBensMaisVendidos(ActionEvent event) {
         ScreenManager.getInstance().showTelaBensMaisVendidos();
     }
+    public void irParaTelaHistoricoUsoDeBens(ActionEvent event) {
+        ScreenManager.getInstance().showTelaBensMaisUsados();
+    }
 }
 

@@ -44,6 +44,7 @@ public class ScreenManager {
         carregarTela("TelaEstadia", "/br/ufrpe/timeshare/gui/application/Estadia.fxml");
         carregarTela("TelaBensMaisVendidos", "/br/ufrpe/timeshare/gui/application/CharTelaBensMaisVendidos.fxml");
         carregarTela("TelaRecuperarSenha", "/br/ufrpe/timeshare/gui/application/RecuperarSenha.fxml");
+        carregarTela("TelaHistoricoUsoBens", "/br/ufrpe/timeshare/gui/application/CharTelaBensMaisUsados.fxml");
     }
 
     private void carregarTela(String nome, String caminhoFXML) {
@@ -146,5 +147,8 @@ public class ScreenManager {
 
     public void showTelaBensMaisVendidos() {
         showScreen("TelaBensMaisVendidos");
+    }
+    public void showTelaBensMaisUsados() {
+        showScreen("TelaHistoricoUsoBens");
     }
 }

@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="428.0" prefWidth="644.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.ufrpe.timeshare.gui.controllers.usuarioAdmin.telasGrafico.ControllerGraficoBensMaisVendidos">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="428.0" prefWidth="644.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.ufrpe.timeshare.gui.controllers.usuarioAdmin.telasGrafico.ControllerGraficoBensMaisUsados">
    <left>
       <VBox prefHeight="400.0" prefWidth="74.0" BorderPane.alignment="CENTER" />
    </left>
@@ -42,7 +42,7 @@
    <center>
       <VBox alignment="CENTER" prefHeight="355.0" prefWidth="496.0" BorderPane.alignment="CENTER">
          <children>
-            <BarChart fx:id="barChartBensMaisVendidos" prefHeight="395.0" prefWidth="476.0" styleClass="barChart" stylesheets="@styles/basico/grafico-style.css">
+            <BarChart fx:id="barChartBensMaisUsados" prefHeight="395.0" prefWidth="476.0" styleClass="barChart" stylesheets="@styles/basico/grafico-style.css">
                <xAxis>
                   <CategoryAxis label="Bens" />
                </xAxis>
