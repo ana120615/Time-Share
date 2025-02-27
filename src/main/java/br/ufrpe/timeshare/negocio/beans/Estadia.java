@@ -83,7 +83,11 @@ public class Estadia extends Entidade implements Comparable<Estadia> {
 
     @Override
     public int compareTo(Estadia outraEstadia) {
-        return outraEstadia.getDataInicio().compareTo(this.getDataInicio());
+        LocalDateTime agora = LocalDateTime.now();
+        long diferencaEsta = Math.abs(ChronoUnit.SECONDS.between(agora, this.getDataInicio()));
+        long diferencaOutra = Math.abs(ChronoUnit.SECONDS.between(agora, outraEstadia.getDataInicio()));
+
+        return Long.compare(diferencaEsta, diferencaOutra);
     }
 
 }

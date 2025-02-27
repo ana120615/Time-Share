@@ -96,7 +96,11 @@ public class Reserva extends Entidade implements Comparable<Reserva> {
 
     @Override
     public int compareTo(Reserva outraReserva) {
-        return outraReserva.getDataInicio().compareTo(this.getDataInicio());
+        LocalDateTime agora = LocalDateTime.now();
+        long diferencaEsta = Math.abs(ChronoUnit.SECONDS.between(agora, this.getDataInicio()));
+        long diferencaOutra = Math.abs(ChronoUnit.SECONDS.between(agora, outraReserva.getDataInicio()));
+
+        return Long.compare(diferencaEsta, diferencaOutra);
     }
 
 }
