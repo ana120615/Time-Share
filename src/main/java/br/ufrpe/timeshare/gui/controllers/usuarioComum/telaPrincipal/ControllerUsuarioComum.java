@@ -9,6 +9,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.util.Optional;
@@ -167,5 +168,11 @@ public class ControllerUsuarioComum implements ControllerBase {
             System.out.println("Usuario não logado");
         }
     }
+
+    
+   public void irParaAjuda(ActionEvent event){
+  Stage telaAnterior = (Stage) ((Button) event.getSource()).getScene().getWindow();
+    ScreenManager.getInstance().showAjudaScreen(telaAnterior);
+}
 
 }

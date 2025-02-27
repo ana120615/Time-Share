@@ -2,6 +2,7 @@ package br.ufrpe.timeshare.gui.controllers.celulas;
 
 import br.ufrpe.timeshare.gui.controllers.usuarioAdmin.telaBensCotas.ControllerTelaDeBensECotas;
 import br.ufrpe.timeshare.gui.controllers.usuarioAdmin.telaBensCotas.ControllerEditarBemPopUp;
+import br.ufrpe.timeshare.gui.controllers.usuarioAdmin.telaReservas.ControllerListarReservas;
 import br.ufrpe.timeshare.negocio.beans.Bem;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -36,6 +37,7 @@ public class ControllerItemCellBem {
     private Bem bem;
     private int valorTela;
     private ControllerTelaDeBensECotas mainControllerDeslocamento;
+    private ControllerListarReservas mainControllerListarReservas;
 
 
     public void setValorTela(int valorTela) {
@@ -59,7 +61,7 @@ public class ControllerItemCellBem {
         itemLabelLocalizacao.setText(item.getLocalizacao() != null ? item.getLocalizacao() : "Localização não disponível");
 
         if (valorTela == 1) {
-            itemButton.setOnAction(e -> showPopup()); // Agora chama o pop-up ao clicar no botão
+            itemButton.setOnAction(e -> mainControllerListarReservas.carregarReservasBem(this.bem)); // Agora chama o pop-up ao clicar no botão
         } else if (valorTela == 2) {
             itemButton.setOnAction(e -> {
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -91,6 +93,10 @@ public class ControllerItemCellBem {
 
     public void setMainControllerDeslocamento(ControllerTelaDeBensECotas mainControllerDeslocamento) {
         this.mainControllerDeslocamento = mainControllerDeslocamento;
+    }
+
+    public void setMainControllerListarReservas(ControllerListarReservas mainControllerListarReservas) {
+        this.mainControllerListarReservas = mainControllerListarReservas;
     }
 
     private void showPopup() {

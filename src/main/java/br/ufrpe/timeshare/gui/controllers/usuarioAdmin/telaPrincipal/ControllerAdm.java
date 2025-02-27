@@ -9,6 +9,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.util.Optional;
@@ -80,15 +81,15 @@ public class ControllerAdm implements ControllerBase {
         isExpanded = !isExpanded; // Alterna estado
     }
 
-    public void mudarAbaBens (ActionEvent event) {
+    public void mudarAbaBens(ActionEvent event) {
         tabPaneAdmTelaPrincipal.getSelectionModel().select(tabGerenciamentoBens);
     }
 
-    public void mudarAbaReservas (ActionEvent event) {
+    public void mudarAbaReservas(ActionEvent event) {
         tabPaneAdmTelaPrincipal.getSelectionModel().select(tabGerenciamentoReservas);
     }
 
-    public void mudarAbaRelatorio (ActionEvent event) {
+    public void mudarAbaRelatorio(ActionEvent event) {
         tabPaneAdmTelaPrincipal.getSelectionModel().select(tabRelatorio);
     }
 
@@ -127,11 +128,22 @@ public class ControllerAdm implements ControllerBase {
     public void irParaTelaDeBensECotas(ActionEvent event) {
         ScreenManager.getInstance().showTelaDeBensECotasScreen();
     }
+
     public void irParaTelaDeBensMaisVendidos(ActionEvent event) {
         ScreenManager.getInstance().showTelaBensMaisVendidos();
     }
+
     public void irParaTelaHistoricoUsoDeBens(ActionEvent event) {
         ScreenManager.getInstance().showTelaBensMaisUsados();
     }
+
+    public void irParaTelaListarReservas(ActionEvent event) {
+        ScreenManager.getInstance().showTelaListarReservasAdminScreen();
+    }
+
+    public void irParaAjuda(ActionEvent event){
+  Stage telaAnterior = (Stage) ((Button) event.getSource()).getScene().getWindow();
+    ScreenManager.getInstance().showAjudaScreen(telaAnterior);
+}
 }
 

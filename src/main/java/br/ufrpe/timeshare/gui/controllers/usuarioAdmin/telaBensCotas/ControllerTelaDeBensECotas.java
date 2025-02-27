@@ -281,6 +281,7 @@ public class ControllerTelaDeBensECotas implements ControllerBase {
         nomeBemProcurado.clear();
         listViewItens.getItems().clear();
         System.out.println("Botão voltar clicado.");
+        tabPaneTelaDeslocarCotasPrincipal.getSelectionModel().select(tabBens);
         ScreenManager.getInstance().showAdmPrincipalScreen();
     }
 

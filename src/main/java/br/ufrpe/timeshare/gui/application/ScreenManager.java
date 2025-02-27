@@ -1,5 +1,6 @@
 package br.ufrpe.timeshare.gui.application;
 
+import br.ufrpe.timeshare.gui.controllers.basico.ControllerAjuda;
 import br.ufrpe.timeshare.gui.controllers.basico.ControllerBase;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -45,6 +46,8 @@ public class ScreenManager {
         carregarTela("TelaBensMaisVendidos", "/br/ufrpe/timeshare/gui/application/CharTelaBensMaisVendidos.fxml");
         carregarTela("TelaRecuperarSenha", "/br/ufrpe/timeshare/gui/application/RecuperarSenha.fxml");
         carregarTela("TelaHistoricoUsoBens", "/br/ufrpe/timeshare/gui/application/CharTelaBensMaisUsados.fxml");
+        carregarTela("TelaListarReservasAdmin", "/br/ufrpe/timeshare/gui/application/TelaListarReservaAdmin.fxml");
+        carregarTela("TelaAjuda", "/br/ufrpe/timeshare/gui/application/Ajuda.fxml");
     }
 
     private void carregarTela(String nome, String caminhoFXML) {
@@ -87,6 +90,15 @@ public class ScreenManager {
                 }
             }
         }
+    }
+
+    public void showAjudaScreen(Stage telaAnterior) {
+        if (telaAnterior != null) {
+            FXMLLoader loader = loaders.get("TelaAjuda");
+            ControllerAjuda controller = loader.getController();
+            controller.receiveData(telaAnterior);
+            showScreen("TelaAjuda");
+        } 
     }
 
     public void showRecuperarSenhaScreen() {
@@ -148,7 +160,12 @@ public class ScreenManager {
     public void showTelaBensMaisVendidos() {
         showScreen("TelaBensMaisVendidos");
     }
+
     public void showTelaBensMaisUsados() {
         showScreen("TelaHistoricoUsoBens");
+    }
+
+    public void showTelaListarReservasAdminScreen() {
+        showScreen("TelaListarReservasAdmin");
     }
 }

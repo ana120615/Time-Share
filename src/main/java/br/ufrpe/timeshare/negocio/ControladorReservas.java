@@ -481,8 +481,17 @@ public class ControladorReservas {
     }
 
 
-    //Buscar reserva pelo nome do bem
-    //metodo utilizado na tela minhas reservas
+    public List<Reserva> buscarReservaPorBem(long idBem) throws OperacaoNaoPermitidaException {
+        if (idBem == 0) {
+            throw new OperacaoNaoPermitidaException("ID do bem invalido");
+        }
+        return this.repositorioReservas.buscarReservasPorBem(idBem);
+    }
+
+    public List<Estadia> buscarEstadiasAtivasNumBem(long idBem) {
+        return repositorioEstadia.buscarEstadiasAtivasNumBem(idBem);
+    }
+
     public List<Reserva> buscarReservaPorNomeBem(Usuario usuario, String nomeBem)
             throws DadosInsuficientesException, BuscaNaoPermitidaException, OperacaoNaoPermitidaException {
 
