@@ -52,9 +52,9 @@ public class ControllerAjuda implements ControllerBase{
         perguntasRespostas.put("Como acessar histórico de uso dos bens?", "Essa informação pode ser acessada na aba de relatórios localizada na tela do administrador.");
         perguntasRespostas.put("Fiz uma reserva, mas queria fazer check-in antes do período", "Só é possível realizar o check-in dentro do período reservado para evitar conflitos de agendamento.");
         perguntasRespostas.put("Não vou poder fazer check-in, pois tive imprevistos. Vou perder meu dinheiro?", "Pode obter um reembolso parcial, que corresponde a 30% da taxa extra. Ou seja, se você reservar em um período em que não possui cotas, é possível conseguir reembolso, caso contrário, nenhum valor é retornado.");
-        perguntasRespostas.put("Como saber se uma casa estará disponível daqui a 2 meses?", "Você pode consultar a disponibilidade futura do bem");
+        perguntasRespostas.put("Como saber se uma casa estará disponível daqui a 2 meses?", "Na tela de 'realizar reserva' é possível verificar a disponibilidade futura do bem clicando em 'reservar'. Ao clicar em reservar, aparecerão as datas disponível no calendário de seleção de data inicial e final.");
         perguntasRespostas.put("Gostei muito de uma chácara que reservei. Queria passar mais alguns dias nela", "Você pode prolongar a estadia se houver disponibilidade.");
-        perguntasRespostas.put("Como repasso minhas cotas?", "Você pode transferir cotas para outro usuário pela plataforma. Para isso, basta clicar na cota que deseja repassar e em seguida no botão 'transferir direitos de uso' e preencher as informações necessárias.");
+        perguntasRespostas.put("Como repasso minhas cotas?", "Você pode transferir cotas para outro usuário pela plataforma. Para isso, basta clicar na cota que deseja repassar e em seguida no botão 'repassar direito de uso' e preencher as informações necessárias.");
         perguntasRespostas.put("Como funciona o deslocamento das cotas?", "Anualmente, as cotas são deslocadas em 1 semana.");
 
         // Exibir todas as perguntas inicialmente
