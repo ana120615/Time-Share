@@ -9,8 +9,6 @@ Ideias que inspiram o projeto:
  * https://gavresorts.com.br/
 
 ## Integrantes do grupo 
- * Ana Beatriz Gomes - ana.beatriz@ufrpe.br
- * Ana Raquel Rodrigues da Silva - ana.raquel@ufrpe.br
  * Cauã Wallacy Gomes Teodoro - caua.wallacy@ufrpe.br
  * Laila Samara da Costa Lemos - laila.samara@ufrpe.br
  * Samara Monteiro Xavier - samara.xavier@ufrpe.br
@@ -18,7 +16,7 @@ Ideias que inspiram o projeto:
 ## Descrição geral do projeto 
 O sistema será uma aplicação voltada para o gerenciamento de bens compartilhados no modelo de time share. Ele permitirá que administradores ofertem produtos de alto valor, em frações de tempo específicas. Usuários poderão adquirir direitos de uso dessas frações, realizar reservas dentro de seus períodos contratados e, opcionalmente, fora desses períodos mediante pagamento de taxas adicionais.
 
-O sistema automatiza o deslocamento das semanas adquiridas a cada ano, assegurando um uso justo ao longo do tempo e possibilita a revenda ou transferência de direitos entre usuários. Além disso, oferece funcionalidades de consulta, relatórios e integração com ferramentas externas, como mapas e calendários, promovendo praticidade e transparência para todos os envolvidos.
+O sistema automatiza o deslocamento das semanas adquiridas a cada ano, assegurando um uso justo ao longo do tempo e possibilita a revenda ou transferência de direitos entre usuários. Além disso, oferece funcionalidades de consulta e relatórios, promovendo praticidade e transparência para todos os envolvidos.
 
 O objetivo do sistema é gerenciar e otimizar a compra, venda, reserva e uso compartilhado de bens, garantindo que múltiplos usuários possam usufruir de produtos de alto valor de forma justa, prática e organizada.
 
@@ -28,7 +26,6 @@ Proporcionar aos usuários ferramentas para adquirir, reservar e transferir dire
 Automatizar o deslocamento de frações de tempo para garantir equilíbrio no uso anual.
 Permitir a reserva no período contratado e aplicar taxas para reservas fora dele.
 Oferecer relatórios e estatísticas para auxiliar no controle e na tomada de decisões.
-Integrar funcionalidades externas, como mapas e calendários, para aprimorar a experiência dos usuários.
 O sistema busca atender às necessidades de administradores e usuários de forma eficiente, promovendo um modelo eficaz de compartilhamento de bens ao longo do tempo.
 
 ## Requisitos do projeto 
