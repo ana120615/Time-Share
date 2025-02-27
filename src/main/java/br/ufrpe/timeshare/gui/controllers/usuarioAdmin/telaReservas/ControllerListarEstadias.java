@@ -62,7 +62,7 @@ public class ControllerListarEstadias implements ControllerBase {
 
     public void carregarListaDeEstadias() {
         if (usuario == null) {
-            System.err.println("Erro: Usuário está null em carregarListaDeBens()!");
+            exibirAlertaErro("Erro", "Problema ao carregar lista de estadias", "O usuário está null");
             return;
         }
 
@@ -72,7 +72,7 @@ public class ControllerListarEstadias implements ControllerBase {
         try {
             estadias = controladorReservas.getEstadiasDosBensDoUsuarioAdm(usuario);
         } catch (OperacaoNaoPermitidaException | DadosInsuficientesException e) {
-            System.out.println(e.getMessage());
+            exibirAlertaErro("Erro", "Problema ao carregar lista de estadias", e.getMessage());
         }
 
 

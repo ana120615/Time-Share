@@ -8,11 +8,8 @@ import br.ufrpe.timeshare.negocio.beans.Reserva;
 import br.ufrpe.timeshare.negocio.beans.Usuario;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
-import java.io.File;
-import java.util.Objects;
 import java.util.Optional;
 
 public class ControllerItemCellReservaAdm implements ControllerBase {
@@ -85,7 +82,7 @@ public class ControllerItemCellReservaAdm implements ControllerBase {
                                  UsuarioNaoPermitidoException |
                                  ReservaNaoReembolsavelException | DadosInsuficientesException | NullPointerException |
                                  OperacaoNaoPermitidaException ex) {
-                            System.out.println(ex.getMessage());
+                            exibirAlertaErro("Erro", "Problema ao cancelar reserva", ex.getMessage());
                         }
                     } else {
                         alert.close();
@@ -95,6 +92,15 @@ public class ControllerItemCellReservaAdm implements ControllerBase {
         }
     }
 
+
+    private void exibirAlertaErro(String titulo, String header, String contentText) {
+        Alert alerta = new Alert(Alert.AlertType.ERROR);
+        alerta.setTitle(titulo);
+        alerta.setHeaderText(header);
+        alerta.setContentText(contentText);
+        alerta.getDialogPane().setStyle("-fx-background-color:  #ffcccc;"); // Vermelho claro
+        alerta.showAndWait();
+    }
 
     public void setMainControllerListarReservas(ControllerListarReservas mainControllerListarReservas) {
         this.mainControllerListarReservas = mainControllerListarReservas;

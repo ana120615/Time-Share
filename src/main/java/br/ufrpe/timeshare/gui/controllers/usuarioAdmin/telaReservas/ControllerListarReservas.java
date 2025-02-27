@@ -18,7 +18,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.util.Callback;
 
@@ -84,8 +83,8 @@ public class ControllerListarReservas implements ControllerBase {
 
     public void carregarListaDeBens() {
         if (usuario == null) {
-            System.err.println("Erro: Usuário está null em carregarListaDeBens()!");
-            return;
+      System.err.println("Usuário null");    
+        return;
         }
 
         // limpar a ListView antes de carregar novos itens
@@ -102,7 +101,7 @@ public class ControllerListarReservas implements ControllerBase {
             try {
                 bens = controladorBens.listarBensUsuario(usuario);
             } catch (DadosInsuficientesException e) {
-                System.out.println(e.getMessage());
+               System.out.println(e.getMessage());
             }
         }
 
@@ -149,7 +148,7 @@ public class ControllerListarReservas implements ControllerBase {
 
     public void carregarReservasBem(Bem bem) {
         if (bem == null) {
-            System.err.println("Erro: Bem está null em carregarCotasDoBem()!");
+           System.out.println("Erro ao carregar lista. Bem null");
             return;
         }
 
@@ -160,12 +159,12 @@ public class ControllerListarReservas implements ControllerBase {
         try {
             reservas = controladorReservas.buscarReservaPorBem(bem.getId());
         } catch (OperacaoNaoPermitidaException e) {
-            exibirAlertaErro("Erro", "Erro ao exibir reservas", e.getMessage());
+            System.out.println(e.getMessage());
         }
 
         if (reservas == null || reservas.isEmpty()) {
-            System.err.println("lista de reservas vazia ou null.");
-        } else {
+         System.out.println("reservas null ou empty");
+                } else {
             System.out.println("Lista de reservas carregada com " + reservas.size() + " itens.");
         }
 
