@@ -9,6 +9,7 @@ import br.ufrpe.timeshare.negocio.beans.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
@@ -580,5 +581,40 @@ public class ControladorReservas {
         resultado.sort(Comparator.comparing(Map.Entry<LocalDate, Long>::getValue).reversed());
         return resultado;
     }
+
+    public Map<YearMonth, Long> reservasPorMes(int idBem) {
+        List<Reserva> reservas = repositorioReservas.buscarReservasPorBem(idBem);
+        List<Estadia> estadias = repositorioEstadia.buscarEstadiasPorBem(idBem);
+
+        List<Map.Entry<LocalDate, Long>> contagemPorData = calcularContagemPorData(reservas, estadias);
+
+        // Mapa para armazenar a soma das reservas agrupadas por mês
+        Map<YearMonth, Long> reservasPorMes = new HashMap<>();
+
+        for (Map.Entry<LocalDate, Long> entry : contagemPorData) {
+            YearMonth mes = YearMonth.from(entry.getKey());
+            reservasPorMes.merge(mes, entry.getValue(), Long::sum);
+        }
+
+        return reservasPorMes;
+    }
+
+    public Map<YearMonth, Long> reservasPorMesTodosOsBens() {
+        List<Reserva> todasReservas = repositorioReservas.listar();
+        List<Estadia> todasEstadias = repositorioEstadia.listar();
+
+        List<Map.Entry<LocalDate, Long>> contagemPorData = calcularContagemPorData(todasReservas, todasEstadias);
+
+        // Mapa para armazenar a soma das reservas agrupadas por mês
+        Map<YearMonth, Long> reservasPorMes = new HashMap<>();
+
+        for (Map.Entry<LocalDate, Long> entry : contagemPorData) {
+            YearMonth mes = YearMonth.from(entry.getKey());
+            reservasPorMes.merge(mes, entry.getValue(), Long::sum);
+        }
+
+        return reservasPorMes;
+    }
+
 
 }

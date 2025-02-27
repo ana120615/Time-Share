@@ -7,6 +7,7 @@ import br.ufrpe.timeshare.negocio.ControladorBens;
 import br.ufrpe.timeshare.negocio.ControladorReservas;
 import br.ufrpe.timeshare.negocio.beans.Bem;
 import br.ufrpe.timeshare.negocio.beans.Usuario;
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.chart.BarChart;
@@ -15,19 +16,25 @@ import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.ComboBox;
 
+import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class ControllerGraficoBensMaisUsados implements ControllerBase {
     private final ControladorReservas controladorReservas;
     private final ControladorBens controladorBens;
     private Usuario usuario;
+
     @FXML
-    private ComboBox<String> comboBox;
+    private ComboBox<String> cbBens;
+
     @FXML
     private BarChart<String, Number> barChartBensMaisUsados;
+
     @FXML
     private CategoryAxis xAxis;
+
     @FXML
     private NumberAxis yAxis;
 
@@ -41,17 +48,29 @@ public class ControllerGraficoBensMaisUsados implements ControllerBase {
     @FXML
     public void initialize() {
         System.out.println("initialize");
+        carregarBens();
+        cbBens.setOnAction(event -> atualizarGrafico(cbBens.getValue()));
 
-        xAxis.setAutoRanging(true); // Garante que as categorias sejam reconhecidas
-
+        // Configura o eixo Y para mostrar apenas números inteiros
         yAxis.setTickLabelFormatter(new NumberAxis.DefaultFormatter(yAxis) {
             @Override
             public String toString(Number object) {
-                return String.format("%d", object.intValue());
+                return String.format("%d", object.intValue()); // Converte para inteiro
             }
         });
+    }
 
-        comboBox.setOnAction(event -> atualizarGrafico(comboBox.getValue()));
+    private void carregarBens() {
+        List<Bem> bens = controladorBens.listarBens();
+        List<String> nomesBens = new ArrayList<>();
+        nomesBens.add("Todos os Bens");
+
+        for (Bem bem : bens) {
+            nomesBens.add(bem.getNome());
+        }
+
+        cbBens.setItems(FXCollections.observableArrayList(nomesBens));
+        cbBens.getSelectionModel().selectFirst(); // Seleciona "Todos os Bens" por padrão
     }
 
     @Override
@@ -67,14 +86,14 @@ public class ControllerGraficoBensMaisUsados implements ControllerBase {
         try {
             bens = controladorBens.listarBensUsuario(usuario);
 
-            comboBox.getItems().clear();
-            comboBox.getItems().add("Todos");
+            cbBens.getItems().clear();
+            cbBens.getItems().add("Todos os Bens");
             for (Bem bem : bens) {
-                comboBox.getItems().add(bem.getNome());
+                cbBens.getItems().add(bem.getNome());
             }
-            comboBox.setValue("Todos");
+            cbBens.setValue("Todos os Bens");
 
-            atualizarGrafico("Todos");
+            atualizarGrafico("Todos os Bens");
 
         } catch (DadosInsuficientesException e) {
             System.out.println("Erro ao carregar bens: " + e.getMessage());
@@ -85,57 +104,44 @@ public class ControllerGraficoBensMaisUsados implements ControllerBase {
         barChartBensMaisUsados.getData().clear();
 
         XYChart.Series<String, Number> series = new XYChart.Series<>();
-        series.setName("Uso de Bens");
+        series.setName("Reservas por Mês");
 
         try {
-            if (bens == null || bens.isEmpty()) {
-                System.out.println("Nenhum bem encontrado.");
-                return;
+            Map<YearMonth, Long> dadosReservas;
+
+            if ("Todos os Bens".equals(bemSelecionado)) {
+                dadosReservas = controladorReservas.reservasPorMesTodosOsBens();
+            } else {
+                long idBem = controladorBens.buscarBemIdPorNome(bemSelecionado);
+                dadosReservas = controladorReservas.reservasPorMes((int) idBem);
             }
 
             List<String> categorias = new ArrayList<>();
+            List<YearMonth> sortedYearMonths = new ArrayList<>(dadosReservas.keySet());
 
-            if (bemSelecionado.equals("Todos")) {
-                for (Bem bem : bens) {
-                    String nome = bem.getNome();
-                    Number qtdVendas = controladorBens.quantidadeVendasBem(bem);
-                    series.getData().add(new XYChart.Data<>(nome, qtdVendas));
-                    categorias.add(nome);
-                }
-            } else {
-                for (Bem bem : bens) {
-                    if (bem.getNome().equals(bemSelecionado)) {
-                        Number qtdVendas = controladorBens.quantidadeVendasBem(bem);
-                        series.getData().add(new XYChart.Data<>(bem.getNome(), qtdVendas));
-                        categorias.add(bem.getNome());
-                        break;
-                    }
-                }
+            // Ordenar os YearMonth cronologicamente
+            sortedYearMonths.sort((ym1, ym2) -> ym1.compareTo(ym2));
+
+            // Adicionar os dados ordenados no gráfico
+            for (YearMonth yearMonth : sortedYearMonths) {
+                String mesFormatado = yearMonth.getMonth().toString().substring(0, 3) + "/" + yearMonth.getYear();
+                series.getData().add(new XYChart.Data<>(mesFormatado, dadosReservas.get(yearMonth)));
+                categorias.add(mesFormatado);
             }
 
-            // Forçar a atualização do eixo X
-            xAxis.setCategories(null); // Reseta as categorias para evitar conflitos
-            xAxis.setCategories(javafx.collections.FXCollections.observableArrayList(categorias));
+            // Configurar o eixo X corretamente com os meses ordenados
+            xAxis.setCategories(FXCollections.observableArrayList(categorias));
 
-            // Adiciona a série ao gráfico
+            // Adicionar a série ao gráfico
             barChartBensMaisUsados.getData().add(series);
             barChartBensMaisUsados.layout(); // Força atualização da interface
 
-            ajustarEscalaEixoX(series);
         } catch (Exception e) {
             System.out.println("Erro ao atualizar gráfico: " + e.getMessage());
         }
     }
 
-    private void ajustarEscalaEixoX(XYChart.Series<String, Number> series) {
-        if (series.getData().size() == 1) {
-            barChartBensMaisUsados.setCategoryGap(100);
-            barChartBensMaisUsados.setBarGap(20);
-        } else {
-            barChartBensMaisUsados.setCategoryGap(30);
-            barChartBensMaisUsados.setBarGap(10);
-        }
-    }
+
 
     public void voltarTelaPrincipalUsuarioComum(ActionEvent event) {
         ScreenManager.getInstance().showAdmPrincipalScreen();

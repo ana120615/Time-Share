@@ -3,8 +3,10 @@ package br.ufrpe.timeshare.gui.application;
 import br.ufrpe.timeshare.gui.controllers.basico.ControllerAjuda;
 import br.ufrpe.timeshare.gui.controllers.basico.ControllerBase;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -54,7 +56,10 @@ public class ScreenManager {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(caminhoFXML));
             Parent root = loader.load();
-            telas.put(nome, new Scene(root));
+
+            Scene scene = new Scene(root);
+
+            telas.put(nome, scene);
             loaders.put(nome, loader);
         } catch (IOException e) {
             e.printStackTrace();
@@ -98,7 +103,7 @@ public class ScreenManager {
             ControllerAjuda controller = loader.getController();
             controller.receiveData(telaAnterior);
             showScreen("TelaAjuda");
-        } 
+        }
     }
 
     public void showRecuperarSenhaScreen() {
