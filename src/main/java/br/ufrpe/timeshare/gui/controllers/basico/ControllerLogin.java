@@ -107,7 +107,7 @@ public class ControllerLogin implements ControllerBase {
         }
     }
 
-    @FXML
+ @FXML
 private void irParaRecuperarSenha() {
     System.out.println("Redirecionando para a tela de recuperação de senha...");
     ScreenManager.getInstance().showRecuperarSenhaScreen();
@@ -127,7 +127,4 @@ private void irParaRecuperarSenha() {
         alert.showAndWait();
     }
 
-    public void irParaRecuperarSenha(ActionEvent event) {
-        System.out.println("");
-    }
 }

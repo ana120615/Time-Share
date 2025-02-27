@@ -383,7 +383,7 @@ public class ControllerMinhasReservas implements ControllerBase {
                     popupStage.close(); // Fechar a mini tela ao confirmar
 
                 } catch (Exception e1) {
-                    // TODO Auto-generated catch block
+                    
                     exibirAlertaErro("Erro", "Problema na alteração", e1.getMessage());
                 }
 
