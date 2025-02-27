@@ -3,6 +3,7 @@ package br.ufrpe.timeshare.dados;
 import br.ufrpe.timeshare.negocio.beans.Estadia;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class RepositorioEstadia extends RepositorioGenerico<Estadia> implements IRepositorioEstadia {
@@ -36,6 +37,7 @@ public class RepositorioEstadia extends RepositorioGenerico<Estadia> implements 
                 estadia.add(est);
             }
         }
+        Collections.sort(estadia);
         return estadia;
     }
 
@@ -48,6 +50,7 @@ public class RepositorioEstadia extends RepositorioGenerico<Estadia> implements 
                 estadia.add(est);
             }
         }
+        Collections.sort(estadia);
         return estadia;
     }
 
@@ -77,6 +80,7 @@ public class RepositorioEstadia extends RepositorioGenerico<Estadia> implements 
                 estadia.add(est);
             }
         }
+        Collections.sort(estadia);
         return estadia;
     }
 

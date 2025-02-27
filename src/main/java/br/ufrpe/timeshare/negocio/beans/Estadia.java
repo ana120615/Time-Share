@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 
-public class Estadia extends Entidade {
+public class Estadia extends Entidade implements Comparable<Estadia> {
     private int id;
     private LocalDateTime dataInicio;
     private LocalDateTime dataFim;
@@ -80,4 +80,10 @@ public class Estadia extends Entidade {
         comprovanteEstadia += "id da Estadia: " + id + "\n";
         return comprovanteEstadia;
     }
+
+    @Override
+    public int compareTo(Estadia outraEstadia) {
+        return outraEstadia.getDataInicio().compareTo(this.getDataInicio());
+    }
+
 }

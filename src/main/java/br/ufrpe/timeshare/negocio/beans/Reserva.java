@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 
-public class Reserva extends Entidade{
+public class Reserva extends Entidade implements Comparable<Reserva> {
     private int id;
     private LocalDateTime dataInicio;
     private LocalDateTime dataFim;
@@ -93,5 +93,10 @@ public class Reserva extends Entidade{
         return resultado;
     }
 
+
+    @Override
+    public int compareTo(Reserva outraReserva) {
+        return outraReserva.getDataInicio().compareTo(this.getDataInicio());
+    }
 
 }

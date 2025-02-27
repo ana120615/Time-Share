@@ -5,6 +5,7 @@ import br.ufrpe.timeshare.negocio.beans.Reserva;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class RepositorioReservas extends RepositorioGenerico<Reserva> implements IRepositorioReservas {
@@ -77,6 +78,7 @@ public class RepositorioReservas extends RepositorioGenerico<Reserva> implements
                 resultado.add(reservaUser);
             }
         }
+        Collections.sort(resultado);
         return resultado;
     }
 
@@ -88,6 +90,8 @@ public class RepositorioReservas extends RepositorioGenerico<Reserva> implements
                 resultado.add(reservaBem);
             }
         }
+
+        Collections.sort(resultado);
         return resultado;
     }  
 
