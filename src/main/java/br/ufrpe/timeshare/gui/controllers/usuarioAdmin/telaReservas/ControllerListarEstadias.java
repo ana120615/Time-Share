@@ -97,7 +97,7 @@ public class ControllerListarEstadias implements ControllerBase {
                                 setGraphic(root);
 
                             } catch (IOException e) {
-                                System.err.println("Erro ao carregar ItemCell.fxml: " + e.getMessage());
+                                System.err.println("Erro ao carregar ItemCellEstadia.fxml: " + e.getMessage());
                                 setGraphic(null);
                             }
                         }

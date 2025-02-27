@@ -1,16 +1,9 @@
 package br.ufrpe.timeshare.gui.controllers.celulas;
 
-import br.ufrpe.timeshare.excecoes.*;
 import br.ufrpe.timeshare.negocio.ControladorReservas;
 import br.ufrpe.timeshare.negocio.beans.Estadia;
-import br.ufrpe.timeshare.negocio.beans.Reserva;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonBar;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
-
-import java.util.Optional;
 
 public class ControllerItemCellEstadiaAdm {
     private final ControladorReservas controladorReservas;
@@ -40,5 +33,6 @@ public class ControllerItemCellEstadiaAdm {
         dataInicio.setText(item.getDataInicio() != null ? item.getDataInicio().toLocalDate().toString() : "Data inicial não disponível");
         dataFim.setText(item.getDataFim() != null ? item.getDataFim().toLocalDate().toString() : "Em andamento");
 
-        }
+    }
+
 }

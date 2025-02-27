@@ -312,18 +312,21 @@ public class ControladorReservas {
 
     private boolean verificarConflitoDeDatasCota(Bem bem, LocalDateTime dataInicio, LocalDateTime dataFim, Usuario usuario) {
         boolean conflito = false;
-
+        LocalDate dataInicial = dataInicio.toLocalDate();
+        LocalDate dataFinal = dataFim.toLocalDate();
         List<Cota> cotasBemAssociado = bem.getCotas();
         for (Cota cotaAtual : cotasBemAssociado) {
+            LocalDate cotaAtualDataInicio = cotaAtual.getDataInicio().toLocalDate();
+            LocalDate cotaAtualDataFim = cotaAtual.getDataFim().toLocalDate();
             if ((cotaAtual.getProprietario() != null && !cotaAtual.getProprietario().equals(usuario)) &&
                     !cotaAtual.getStatusDeDisponibilidadeParaCompra()) {
-                if (cotaAtual.getDataInicio().isBefore(dataInicio) && cotaAtual.getDataFim().isAfter(dataInicio)) {
+                if (cotaAtualDataInicio.isBefore(dataInicial) && cotaAtualDataFim.isAfter(dataInicial)) {
                     conflito = true;
-                } else if (cotaAtual.getDataInicio().isBefore(dataFim) && cotaAtual.getDataFim().isAfter(dataFim)) {
+                } else if (cotaAtualDataInicio.isBefore(dataFinal) && cotaAtualDataFim.isAfter(dataFinal)) {
                     conflito = true;
-                } else if (cotaAtual.getDataInicio().isAfter(dataInicio) && cotaAtual.getDataFim().isBefore(dataFim)) {
+                } else if (cotaAtualDataInicio.isAfter(dataInicial) && cotaAtualDataFim.isBefore(dataFinal)) {
                     conflito = true;
-                } else if (cotaAtual.getDataInicio().isEqual(dataInicio) || cotaAtual.getDataFim().isEqual(dataFim)) {
+                } else if (cotaAtualDataInicio.isEqual(dataInicial) || cotaAtualDataFim.isEqual(dataFinal)) {
                     conflito = true;
                 }
             }
@@ -345,14 +348,18 @@ public class ControladorReservas {
 
     //Verifica se o periodo esta dentro da cota atual
     private boolean verificarConflitoDeDatasReserva(Reserva reservaAtual, LocalDateTime dataInicio, LocalDateTime dataFim) {
+        LocalDate reservaAtualDataInicio = reservaAtual.getDataInicio().toLocalDate();
+        LocalDate reservaAtualDataFim = reservaAtual.getDataFim().toLocalDate();
 
-        if (reservaAtual.getDataInicio().isBefore(dataInicio) && reservaAtual.getDataFim().isAfter(dataInicio)) {
+        LocalDate dataInicial = dataInicio.toLocalDate();
+        LocalDate dataFinal = dataFim.toLocalDate();
+        if (reservaAtualDataInicio.isBefore(dataInicial) && reservaAtualDataFim.isAfter(dataInicial)) {
             return true;
-        } else if (reservaAtual.getDataInicio().isBefore(dataFim) && reservaAtual.getDataFim().isAfter(dataFim)) {
+        } else if (reservaAtualDataInicio.isBefore(dataFinal) && reservaAtualDataFim.isAfter(dataFinal)) {
             return true;
-        } else if (reservaAtual.getDataInicio().isAfter(dataInicio) && reservaAtual.getDataFim().isBefore(dataFim)) {
+        } else if (reservaAtualDataInicio.isAfter(dataInicial) && reservaAtualDataFim.isBefore(dataFinal)) {
             return true;
-        } else if (reservaAtual.getDataInicio().isEqual(dataInicio) || reservaAtual.getDataFim().isEqual(dataFim)) {
+        } else if (reservaAtualDataInicio.isEqual(dataInicial) || reservaAtualDataFim.isEqual(dataFinal)) {
             return true;
         }
         return false;
