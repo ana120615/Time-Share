@@ -46,6 +46,7 @@ public class ControllerItemCellBem {
 
     public void setItem(Bem item) {
         this.bem = item;
+        System.out.println("Bem definido: " + (bem != null ? bem.getNome() : "null"));
 
         if (item == null) {
             itemLabelNome.setText("Item não encontrado");
@@ -90,6 +91,9 @@ public class ControllerItemCellBem {
         }
     }
 
+    public Bem getBem() {
+        return bem;
+    }
 
     public void setMainControllerDeslocamento(ControllerTelaDeBensECotas mainControllerDeslocamento) {
         this.mainControllerDeslocamento = mainControllerDeslocamento;
