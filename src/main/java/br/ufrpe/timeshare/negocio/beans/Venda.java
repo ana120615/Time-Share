@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 public class Venda extends Entidade{
     private int id;
-    private LocalDateTime data;
+    //private LocalDateTime data;
     private Usuario usuario;
     private ArrayList<Cota> carrinhoDeComprasCotas;
     private boolean foiDescontoAplicado;
