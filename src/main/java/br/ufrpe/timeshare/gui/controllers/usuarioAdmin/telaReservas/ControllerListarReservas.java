@@ -1,14 +1,16 @@
-package br.ufrpe.timeshare.gui.controllers.usuarioAdmin.telaBensCotas;
+package br.ufrpe.timeshare.gui.controllers.usuarioAdmin.telaReservas;
 
-import br.ufrpe.timeshare.excecoes.BemNaoExisteException;
 import br.ufrpe.timeshare.excecoes.DadosInsuficientesException;
+import br.ufrpe.timeshare.excecoes.OperacaoNaoPermitidaException;
 import br.ufrpe.timeshare.gui.application.ScreenManager;
 import br.ufrpe.timeshare.gui.controllers.basico.ControllerBase;
 import br.ufrpe.timeshare.gui.controllers.celulas.ControllerItemCellBem;
-import br.ufrpe.timeshare.gui.controllers.celulas.ControllerItemCellCota;
+import br.ufrpe.timeshare.gui.controllers.celulas.ControllerItemCellReservaAdm;
 import br.ufrpe.timeshare.negocio.ControladorBens;
+import br.ufrpe.timeshare.negocio.ControladorReservas;
 import br.ufrpe.timeshare.negocio.beans.Bem;
-import br.ufrpe.timeshare.negocio.beans.Cota;
+import br.ufrpe.timeshare.negocio.beans.Estadia;
+import br.ufrpe.timeshare.negocio.beans.Reserva;
 import br.ufrpe.timeshare.negocio.beans.Usuario;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -16,6 +18,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.util.Callback;
 
@@ -23,32 +26,32 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ControllerTelaDeBensECotas implements ControllerBase {
+public class ControllerListarReservas implements ControllerBase {
     private Usuario usuario;
+    private final ControladorReservas controladorReservas;
     private final ControladorBens controladorBens;
 
-    public ControllerTelaDeBensECotas() {
+    public ControllerListarReservas() {
+        this.controladorReservas = new ControladorReservas();
         this.controladorBens = new ControladorBens();
     }
 
-    @FXML
-    private DatePicker dataDeslocamento;
     @FXML
     private ListView<Bem> listViewItens;
     @FXML
     private TextField nomeBemProcurado;
     @FXML
-    private ListView<Cota> listViewCotas;
+    private ListView<Reserva> listViewReservasDeUmBem;
     @FXML
-    private ListView<Cota> listViewDeslocamentoAll;
+    private ListView<Estadia> listViewReservasConcluidas;
     @FXML
-    private TabPane tabPaneTelaDeslocarCotasPrincipal;
+    private TabPane tabPaneTelaReservasAdmPrincipal;
     @FXML
-    private Tab tabBens;
+    private Tab tabReservasPrincipal;
     @FXML
-    private Tab tabCotas;
+    private Tab tabReservasAndamento;
     @FXML
-    Tab tabDeslocamentoAll;
+    private Tab tabReservasDeUmBem;
 
     @Override
     public void receiveData(Object data) {
@@ -129,9 +132,9 @@ public class ControllerTelaDeBensECotas implements ControllerBase {
                                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/br/ufrpe/timeshare/gui/application/ItemCell.fxml"));
                                 HBox root = loader.load();
                                 ControllerItemCellBem controller = loader.getController();
-                                controller.setValorTela(2);
+                                controller.setValorTela(1);
                                 controller.setItem(item);
-                                controller.setMainControllerDeslocamento(ControllerTelaDeBensECotas.this); // Passa a referência do controlador principal
+                                controller.setMainControllerListarReservas(ControllerListarReservas.this); // Passa a referência do controlador principal
                                 setGraphic(root);
                             } catch (IOException e) {
                                 System.err.println("Erro ao carregar ItemCell.fxml: " + e.getMessage());
@@ -145,106 +148,48 @@ public class ControllerTelaDeBensECotas implements ControllerBase {
     }
 
 
-    public void calcularDeslocamentoAll(ActionEvent event) {
-
-        // limpar a ListView antes de carregar novos itens
-        listViewDeslocamentoAll.getItems().clear();
-
-        if (dataDeslocamento.getValue() == null) {
-            exibirAlertaErro("Erro", "Campos obrigatórios não preenchidos", "Por favor, preencha todos os campos.");
-            return;
-        }
-
-        List<Cota> cotas = new ArrayList<>();
-
-        try{
-            cotas = controladorBens.calcularDeslocamentoDasCotas(listViewCotas.getItems().getFirst().getBemAssociado().getId(), dataDeslocamento.getValue().atStartOfDay());
-        } catch (BemNaoExisteException e) {
-            exibirAlertaErro("Erro", "Erro ao listar cotas", e.getMessage());
-        }
-
-        if (cotas == null || cotas.isEmpty()) {
-            System.err.println("Erro: lista de bens vazia ou null.");
-            return;
-        } else {
-            System.out.println("Lista de bens carregada com " + cotas.size() + " itens.");
-        }
-
-        ObservableList<Cota> listaDeItens = FXCollections.observableArrayList(cotas);
-        listViewDeslocamentoAll.getItems().setAll(listaDeItens);
-
-        listViewDeslocamentoAll.setCellFactory(new Callback<>() {
-            @Override
-            public ListCell<Cota> call(ListView<Cota> cotaListView) {
-                return new ListCell<Cota>() {
-                    @Override
-                    protected void updateItem(Cota item, boolean empty) {
-                        super.updateItem(item, empty);
-                        if (empty || item == null) {
-                            setGraphic(null);
-                        } else {
-                            try {
-                                FXMLLoader loader = new FXMLLoader(getClass().getResource("/br/ufrpe/timeshare/gui/application/ItemCellCota.fxml"));
-                                HBox root = loader.load();
-                                ControllerItemCellCota controller = loader.getController();
-                                controller.setItem(item);
-                                controller.setMainControllerDeslocamentoCotas(ControllerTelaDeBensECotas.this); // Passa referência do controlador principal
-                                setGraphic(root);
-                            } catch (IOException e) {
-                                System.err.println("Erro ao carregar ItemCellCota.fxml: " + e.getMessage());
-                                e.printStackTrace();
-                                setGraphic(null);
-                            }
-                        }
-                    }
-                };
-            }
-        });
-    }
-
-    public void carregarCotasDoBem(Bem bem) {
+    public void carregarReservasBem(Bem bem) {
         if (bem == null) {
             System.err.println("Erro: Bem está null em carregarCotasDoBem()!");
             return;
         }
 
         // Limpar a ListView antes de carregar novos itens
-        listViewCotas.getItems().clear();
-        List<Cota> cotas = new ArrayList<>();
+        listViewReservasDeUmBem.getItems().clear();
+        List<Reserva> reservas = new ArrayList<>();
 
         try {
-            cotas = controladorBens.listarCotasDeUmBem((int) bem.getId());
-        } catch (BemNaoExisteException e) {
-            exibirAlertaErro("Erro", "Erro ao exibir cotas", e.getMessage());
+            reservas = controladorReservas.buscarReservaPorBem(bem.getId());
+        } catch (OperacaoNaoPermitidaException e) {
+            exibirAlertaErro("Erro", "Erro ao exibir reservas", e.getMessage());
         }
 
-        if (cotas == null || cotas.isEmpty()) {
-            System.err.println("Erro: lista de cotas vazia ou null.");
+        if (reservas == null || reservas.isEmpty()) {
+            System.err.println("Erro: lista de reservas vazia ou null.");
             return;
         } else {
-            System.out.println("Lista de cotas carregada com " + cotas.size() + " itens.");
+            System.out.println("Lista de reservas carregada com " + reservas.size() + " itens.");
         }
 
-        ObservableList<Cota> listaDeCotas = FXCollections.observableArrayList(cotas);
-        listViewCotas.getItems().setAll(listaDeCotas);
+        ObservableList<Reserva> listaDeCotas = FXCollections.observableArrayList(reservas);
+        listViewReservasDeUmBem.getItems().setAll(listaDeCotas);
 
-        listViewCotas.setCellFactory(new Callback<>() {
+        listViewReservasDeUmBem.setCellFactory(new Callback<>() {
             @Override
-            public ListCell<Cota> call(ListView<Cota> cotaListView) {
-                return new ListCell<>() {
-                    @Override
-                    protected void updateItem(Cota item, boolean empty) {
+            public ListCell<Reserva> call(ListView<Reserva> cotaListView) {
+                return new ListCell<Reserva>() {
+                    protected void updateItem(Reserva item, boolean empty) {
                         super.updateItem(item, empty);
                         if (empty || item == null) {
                             setGraphic(null);
                         } else {
                             try {
-                                FXMLLoader loader = new FXMLLoader(getClass().getResource("/br/ufrpe/timeshare/gui/application/ItemCellCota.fxml"));
-                                HBox root = loader.load();
-                                ControllerItemCellCota controller = loader.getController();
-                                controller.setValorTelaDeDeslocamento(2);
+                                FXMLLoader loader = new FXMLLoader(getClass().getResource("/br/ufrpe/timeshare/gui/application/ItemCellReservasAdmin.fxml"));
+                                BorderPane root = loader.load();
+                                ControllerItemCellReservaAdm controller = loader.getController();
+                                controller.setValorTela(1);
                                 controller.setItem(item);
-                                controller.setMainControllerDeslocamentoCotas(ControllerTelaDeBensECotas.this);
+                                controller.setMainControllerListarReservas(ControllerListarReservas.this);
                                 setGraphic(root);
                             } catch (IOException e) {
                                 System.err.println("Erro ao carregar ItemCellCota.fxml: " + e.getMessage());
@@ -262,18 +207,17 @@ public class ControllerTelaDeBensECotas implements ControllerBase {
     }
 
     @FXML
-    public void mudarTabBens(ActionEvent event) {
-        tabPaneTelaDeslocarCotasPrincipal.getSelectionModel().select(tabBens);
+    public void mudarTabReservasPrincipal(ActionEvent event) {
+        tabPaneTelaReservasAdmPrincipal.getSelectionModel().select(tabReservasPrincipal);
     }
 
-    public void mudarTabCotas(Bem bem) {
-        carregarCotasDoBem(bem);
-        tabPaneTelaDeslocarCotasPrincipal.getSelectionModel().select(tabCotas);
+    public void mudarTabReservasDeUmBem(Bem bem) {
+        carregarReservasBem(bem);
+        tabPaneTelaReservasAdmPrincipal.getSelectionModel().select(tabReservasDeUmBem);
     }
 
-    @FXML
-    public void mudarTabDeslocamentoAll() {
-        tabPaneTelaDeslocarCotasPrincipal.getSelectionModel().select(tabDeslocamentoAll);
+    public void mudarTabReservasAndamento() {
+
     }
 
     @FXML
@@ -281,12 +225,12 @@ public class ControllerTelaDeBensECotas implements ControllerBase {
         nomeBemProcurado.clear();
         listViewItens.getItems().clear();
         System.out.println("Botão voltar clicado.");
-        tabPaneTelaDeslocarCotasPrincipal.getSelectionModel().select(tabBens);
+        tabPaneTelaReservasAdmPrincipal.getSelectionModel().select(tabReservasPrincipal);
         ScreenManager.getInstance().showAdmPrincipalScreen();
     }
 
 
-    public void mudarTabCotas(ActionEvent event) {
-        tabPaneTelaDeslocarCotasPrincipal.getSelectionModel().select(tabCotas);
+    public void mudarTabReservasAndamento(ActionEvent event) {
+        tabPaneTelaReservasAdmPrincipal.getSelectionModel().select(tabReservasAndamento);
     }
 }

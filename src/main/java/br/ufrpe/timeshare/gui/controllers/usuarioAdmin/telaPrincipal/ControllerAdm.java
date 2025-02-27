@@ -80,15 +80,15 @@ public class ControllerAdm implements ControllerBase {
         isExpanded = !isExpanded; // Alterna estado
     }
 
-    public void mudarAbaBens (ActionEvent event) {
+    public void mudarAbaBens(ActionEvent event) {
         tabPaneAdmTelaPrincipal.getSelectionModel().select(tabGerenciamentoBens);
     }
 
-    public void mudarAbaReservas (ActionEvent event) {
+    public void mudarAbaReservas(ActionEvent event) {
         tabPaneAdmTelaPrincipal.getSelectionModel().select(tabGerenciamentoReservas);
     }
 
-    public void mudarAbaRelatorio (ActionEvent event) {
+    public void mudarAbaRelatorio(ActionEvent event) {
         tabPaneAdmTelaPrincipal.getSelectionModel().select(tabRelatorio);
     }
 
@@ -127,11 +127,17 @@ public class ControllerAdm implements ControllerBase {
     public void irParaTelaDeBensECotas(ActionEvent event) {
         ScreenManager.getInstance().showTelaDeBensECotasScreen();
     }
+
     public void irParaTelaDeBensMaisVendidos(ActionEvent event) {
         ScreenManager.getInstance().showTelaBensMaisVendidos();
     }
+
     public void irParaTelaHistoricoUsoDeBens(ActionEvent event) {
         ScreenManager.getInstance().showTelaBensMaisUsados();
+    }
+
+    public void irParaTelaListarReservas(ActionEvent event) {
+        ScreenManager.getInstance().showTelaListarReservasAdminScreen();
     }
 }
 

@@ -74,7 +74,7 @@
                                           <Insets right="10.0" />
                                        </HBox.margin>
                                     </Button>
-                                    <Button mnemonicParsing="false" onAction="#mudarTabDeslocamentoAll" style="-fx-cursor: hand;" text="Calcular Em Todas" />
+                                    <Button mnemonicParsing="false" onAction="#mudarTabDeslocamentoAll" style="-fx-cursor: hand;" text="Calcular Deslocamento Cotas" />
                                  </children>
                               </HBox>
                               <ListView fx:id="listViewCotas" maxWidth="700.0" prefHeight="321.0" prefWidth="527.0" stylesheets="@styles/basico/tela-minhas-cotas.css" VBox.vgrow="ALWAYS">

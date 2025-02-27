@@ -62,10 +62,21 @@ public class RepositorioEstadia extends RepositorioGenerico<Estadia> implements 
             }
         }
 
-        if(!lista.isEmpty() && existe) {
-            estadia = lista.get(i-1);
+        if (!lista.isEmpty() && existe) {
+            estadia = lista.get(i - 1);
         }
+        return estadia;
+    }
 
+    @Override
+    public List<Estadia> buscarEstadiasAtivasNumBem(long idBem) {
+        List<Estadia> estadia = new ArrayList<>();
+
+        for (Estadia est : lista) {
+            if (est.getReserva().getBem().getId() == idBem && est.getDataFim() == null) {
+                estadia.add(est);
+            }
+        }
         return estadia;
     }
 
