@@ -431,7 +431,7 @@
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                      </rowConstraints>
                      <children>
-                        <Button contentDisplay="GRAPHIC_ONLY" graphicTextGap="10.0" mnemonicParsing="false" prefHeight="52.0" prefWidth="354.0" style="-fx-background-color: #000814; -fx-cursor: hand;" stylesheets="@styles/basico/button.css" text="Ajuda" GridPane.rowIndex="1">
+                        <Button contentDisplay="GRAPHIC_ONLY" graphicTextGap="10.0" mnemonicParsing="false" onAction="#irParaAjuda" prefHeight="52.0" prefWidth="354.0" style="-fx-background-color: #000814; -fx-cursor: hand;" stylesheets="@styles/basico/button.css" text="Ajuda" GridPane.rowIndex="1">
                            <graphic>
                               <GridPane prefHeight="44.0" prefWidth="319.0">
                                  <columnConstraints>
