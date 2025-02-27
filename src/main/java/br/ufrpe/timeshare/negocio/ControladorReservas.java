@@ -172,24 +172,6 @@ public class ControladorReservas {
         }
     }
 
-    //TODO: verificar se este metodo ainda vai ser necessario ou se podemos usar diretamente o cancelar reserva
-    public void liberarPeriodoCota(Cota cota, int idReserva, Usuario usuario) throws DadosInsuficientesException, ReservaNaoExisteException, OperacaoNaoPermitidaException, UsuarioNaoPermitidoException {
-        if (cota == null || idReserva == 0) {
-            throw new DadosInsuficientesException("Dados insuficientes.");
-        }
-        Reserva reservaCancelada = repositorioReservas.buscar(idReserva);
-
-        if (reservaCancelada == null) {
-            throw new ReservaNaoExisteException("Reserva com este ID nao existe.");
-        }
-        if (!reservaCancelada.getUsuarioComum().equals(usuario)) {
-            throw new UsuarioNaoPermitidoException("Reserva nao vinculada a este usuario.");
-        }
-        if (!reservaCancelada.getDataInicio().equals(cota.getDataInicio()) || !reservaCancelada.getDataFim().equals(cota.getDataFim())) {
-            throw new OperacaoNaoPermitidaException("A reserva nao foi realizada dentro da cota, verifique o periodo completo da reserva para cancela-la.");
-        }
-        repositorioReservas.remover(reservaCancelada);
-    }
 
     public String cancelarReserva(int idReserva, Usuario usuario) throws ReservaNaoExisteException, ReservaJaCanceladaException, CotaJaReservadaException, UsuarioNaoPermitidoException, ReservaNaoReembolsavelException, DadosInsuficientesException, NullPointerException, OperacaoNaoPermitidaException {
         Reserva reservaCancelada = repositorioReservas.buscar(idReserva);
@@ -330,6 +312,7 @@ public class ControladorReservas {
 
     private boolean verificarConflitoDeDatasCota(Bem bem, LocalDateTime dataInicio, LocalDateTime dataFim, Usuario usuario) {
         boolean conflito = false;
+
         List<Cota> cotasBemAssociado = bem.getCotas();
         for (Cota cotaAtual : cotasBemAssociado) {
             if ((cotaAtual.getProprietario() != null && !cotaAtual.getProprietario().equals(usuario)) &&
@@ -362,6 +345,7 @@ public class ControladorReservas {
 
     //Verifica se o periodo esta dentro da cota atual
     private boolean verificarConflitoDeDatasReserva(Reserva reservaAtual, LocalDateTime dataInicio, LocalDateTime dataFim) {
+
         if (reservaAtual.getDataInicio().isBefore(dataInicio) && reservaAtual.getDataFim().isAfter(dataInicio)) {
             return true;
         } else if (reservaAtual.getDataInicio().isBefore(dataFim) && reservaAtual.getDataFim().isAfter(dataFim)) {

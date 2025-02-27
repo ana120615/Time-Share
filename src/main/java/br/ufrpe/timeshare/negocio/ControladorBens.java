@@ -165,13 +165,6 @@ public class ControladorBens {
         return repositorioBens.listarBensPorLocalizacao(localizacao);
     }
 
-    public void listarCotasDisponiveis() {
-        List<Cota> cotas = repositorioCotas.listarCotasDisponiveisParaVenda();
-        for (Cota cota : cotas) {
-            System.out.println(cota + "\n");
-        }
-    }
-
 
     public ArrayList<Cota> calcularDeslocamentoDasCotas(long bemId, LocalDateTime dataParaDeslocamento) throws BemNaoExisteException {
         Bem bem = repositorioBens.buscar(bemId);
@@ -275,16 +268,6 @@ public class ControladorBens {
         }
     }
 
-    public List<Cota> registros(Usuario usuario) throws UsuarioNaoExisteException {
-        List<Cota> resultado = new ArrayList<>();
-        for (Cota cota : repositorioCotas.listar()) {
-            if (cota.getProprietario().equals(usuario)) {
-                resultado.add(cota);
-            }
-        }
-        return resultado;
-    }
-
 
     public void deslocarCotasAutomaticamente() {
         List<Cota> cotas = repositorioCotas.listar();
@@ -380,18 +363,6 @@ public class ControladorBens {
         }
         return repositorioBens.listarBensPorDescricao(descricao);
     }
-
-    public List<Cota> listarCotasDeUmUsuarioEmUmBem(Usuario usuario, int idBemParaReserva) {
-        List<Cota> resultado = new ArrayList<>();
-        Bem bem = repositorioBens.buscar(idBemParaReserva);
-        for (Cota c : repositorioCotas.buscarCotasPorProprietario(usuario)) {
-            if (c.getBemAssociado().equals(bem)) {
-                resultado.add(c);
-            }
-        }
-        return resultado;
-    }
-
 
     //busca de bem por nome, localizacao ou id
     public List<Bem> buscarBensPorAtributo(String filtro) {

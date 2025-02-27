@@ -166,9 +166,9 @@ public class ControllerRepassarDireitoUsoPopUp {
                         return;
                     }
                 }
-
+                Long cpfUsuarioRemetente = cota.getProprietario().getId();
                 controladorVendas.transferenciaDeDireitos(cota.getProprietario().getId(), Long.parseLong(cpfDest), cota.getId());
-                exibirAlertaInformation("Operacao concluída", "Operacao realizada com sucesso!", "Fechando tela de transferencia...");
+                exibirAlertaInformation("Operação finalizada", "COMPROVANTE DE TRANSFERENCIA", controladorVendas.gerarComprovanteTransferencia(cpfUsuarioRemetente, Long.parseLong(cpfDest), (int) cota.getId()));
                 System.out.println("Bem alterado com sucesso!");
 
                 //fechar a janela após a operacao

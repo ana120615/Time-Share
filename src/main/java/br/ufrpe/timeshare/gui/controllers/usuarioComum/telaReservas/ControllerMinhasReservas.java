@@ -225,132 +225,25 @@ public class ControllerMinhasReservas implements ControllerBase {
         }
     }
 
-
-//    private boolean alterarPeriodoReserva(Reserva reserva, LocalDate dataInicio, LocalDate dataFim) {
-//
-//        try {
-//
-//            LocalDateTime inicioPeriodo = dataInicio.atStartOfDay();
-//
-//            LocalDateTime fimPeriodo = dataFim.atStartOfDay();
-//
-//
-//            List<String> periodosDisponiveisString = controladorReservas.consultarDisponibilidadeParaReserva(reserva.getBem(), inicioPeriodo, fimPeriodo, usuarioLogado);
-//
-//
-//            List<LocalDate> datasDisponiveis = periodosDisponiveisString.stream()
-//
-//                    .map(dateString -> LocalDateTime.parse(dateString, DateTimeFormatter.ISO_LOCAL_DATE_TIME))
-//
-//                    .map(LocalDateTime::toLocalDate)
-//
-//                    .collect(Collectors.toList());
-//
-//
-//            // Filtrar DatePickers para exibir apenas datas disponíveis
-//
-//            dataInicioPicker.setDayCellFactory(picker -> new DateCell() {
-//
-//                public void updateItem(LocalDate date, boolean empty) {
-//
-//                    super.updateItem(date, empty);
-//
-//                    if (empty || date == null || !datasDisponiveis.contains(date)) {
-//
-//                        setDisable(true);
-//
-//                        setStyle("-fx-background-color: #cccccc;"); // Cinza claro para datas indisponíveis
-//
-//                    } else {
-//
-//                        setStyle("-fx-background-color: #ccffcc;"); // Verde claro para datas disponíveis
-//                    }
-//
-//                }
-//
-//            });
-//
-//            dataFimPicker.setDayCellFactory(picker -> new DateCell() {
-//
-//                public void updateItem(LocalDate date, boolean empty) {
-//
-//                    super.updateItem(date, empty);
-//                    if (empty || date == null || !datasDisponiveis.contains(date)) {
-//
-//                        setDisable(true);
-//
-//                        setStyle("-fx-background-color: #cccccc;"); // Cinza claro para datas indisponíveis
-//
-//                    } else {
-//
-//                        setStyle("-fx-background-color: #ccffcc;"); // Verde claro para datas disponíveis
-//                    }
-//
-//                }
-//
-//            });
-//
-//
-//            // Verificar se o período selecionado está disponível
-//
-//            LocalDateTime dataAtual = inicioPeriodo;
-//
-//            boolean periodoDisponivel = true;
-//
-//
-//            while (dataAtual.isBefore(fimPeriodo)) {
-//
-//                if (!datasDisponiveis.contains(dataAtual.toLocalDate())) {
-//
-//                    periodoDisponivel = false;
-//
-//                    break;
-//
-//                }
-//
-//                dataAtual = dataAtual.plusDays(1);
-//
-//            }
-//
-//            return periodoDisponivel;
-//
-//        } catch (Exception e) {
-//
-//            exibirAlertaErro("Erro", "Erro ao verificar disponibilidade", e.getMessage());
-//
-//            return false;
-//
-//        }
-//
-//    }
-
     public void confirmarAlteracao(ActionEvent event, Reserva reserva, LocalDate dataInicio, LocalDate dataFim) {
 
-        //boolean periodoDisponivel = alterarPeriodoReserva(reserva, dataInicio, dataFim);
+        LocalDateTime inicioPeriodo = dataInicio.atStartOfDay();
 
-        //if (periodoDisponivel) {
-            LocalDateTime inicioPeriodo = dataInicio.atStartOfDay();
+        LocalDateTime fimPeriodo = dataFim.atStartOfDay();
 
-            LocalDateTime fimPeriodo = dataFim.atStartOfDay();
-
-            int id = (int) reserva.getId();
-            String comprovante = null;
-            try {
-                comprovante = controladorReservas.alterarPeriodoReserva(id, inicioPeriodo, fimPeriodo, usuarioLogado);
-                exibirAlertaInfo("Alteracao realizada com sucesso", "Comprovante", comprovante);
-                receberReservas(usuarioLogado);
-                exibirReservas();
-            } catch (ReservaNaoExisteException | ReservaJaCanceladaException | ForaPeriodoException
-                     | PeriodoJaReservadoException | PeriodoNaoDisponivelParaReservaException | CotaJaReservadaException
-                     | ReservaJaExisteException | DadosInsuficientesException | UsuarioNaoPermitidoException e) {
-                exibirAlertaErro("Erro", "Problema ao alterar periodo da reserva", e.getMessage());
-                return;
-            }
-
-        //} else {
-           // exibirAlertaErro("Erro", "Período indisponível", "O período não está disponível para reserva.");
-
-       // }
+        int id = (int) reserva.getId();
+        String comprovante = null;
+        try {
+            comprovante = controladorReservas.alterarPeriodoReserva(id, inicioPeriodo, fimPeriodo, usuarioLogado);
+            exibirAlertaInfo("Alteracao realizada com sucesso", "Comprovante", comprovante);
+            receberReservas(usuarioLogado);
+            exibirReservas();
+        } catch (ReservaNaoExisteException | ReservaJaCanceladaException | ForaPeriodoException
+                 | PeriodoJaReservadoException | PeriodoNaoDisponivelParaReservaException | CotaJaReservadaException
+                 | ReservaJaExisteException | DadosInsuficientesException | UsuarioNaoPermitidoException e) {
+            exibirAlertaErro("Erro", "Problema ao alterar periodo da reserva", e.getMessage());
+            return;
+        }
     }
 
     public void alterarPeriodo(Reserva reserva) {
@@ -383,7 +276,7 @@ public class ControllerMinhasReservas implements ControllerBase {
                     popupStage.close(); // Fechar a mini tela ao confirmar
 
                 } catch (Exception e1) {
-                    
+
                     exibirAlertaErro("Erro", "Problema na alteração", e1.getMessage());
                 }
 
