@@ -5,6 +5,7 @@
 <?import javafx.scene.chart.CategoryAxis?>
 <?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
@@ -42,9 +43,14 @@
    <center>
       <VBox alignment="CENTER" prefHeight="355.0" prefWidth="496.0" BorderPane.alignment="CENTER">
          <children>
-            <BarChart fx:id="barChartBensMaisUsados" prefHeight="395.0" prefWidth="476.0" styleClass="barChart" stylesheets="@styles/basico/grafico-style.css">
+            <HBox prefHeight="100.0" prefWidth="476.0">
+               <children>
+                  <ComboBox fx:id="comboBox" prefWidth="150.0" HBox.hgrow="ALWAYS" />
+               </children>
+            </HBox>
+            <BarChart fx:id="barChartBensMaisUsados" prefHeight="343.0" prefWidth="476.0" styleClass="barChart" stylesheets="@styles/basico/grafico-style.css">
                <xAxis>
-                  <CategoryAxis label="Bens" />
+                  <CategoryAxis label="Bens" fx:id="xAxis" />
                </xAxis>
                <yAxis>
                   <NumberAxis fx:id="yAxis" label="Vendas" />

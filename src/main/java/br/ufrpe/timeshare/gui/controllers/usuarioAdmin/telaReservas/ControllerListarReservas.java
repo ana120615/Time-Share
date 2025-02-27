@@ -136,6 +136,7 @@ public class ControllerListarReservas implements ControllerBase {
                                 controller.setItem(item);
                                 controller.setMainControllerListarReservas(ControllerListarReservas.this); // Passa a referência do controlador principal
                                 setGraphic(root);
+
                             } catch (IOException e) {
                                 System.err.println("Erro ao carregar ItemCell.fxml: " + e.getMessage());
                                 setGraphic(null);
@@ -165,8 +166,7 @@ public class ControllerListarReservas implements ControllerBase {
         }
 
         if (reservas == null || reservas.isEmpty()) {
-            System.err.println("Erro: lista de reservas vazia ou null.");
-            return;
+            System.err.println("lista de reservas vazia ou null.");
         } else {
             System.out.println("Lista de reservas carregada com " + reservas.size() + " itens.");
         }
@@ -185,14 +185,14 @@ public class ControllerListarReservas implements ControllerBase {
                         } else {
                             try {
                                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/br/ufrpe/timeshare/gui/application/ItemCellReservasAdmin.fxml"));
-                                BorderPane root = loader.load();
+                                HBox root = loader.load();
                                 ControllerItemCellReservaAdm controller = loader.getController();
                                 controller.setValorTela(1);
                                 controller.setItem(item);
                                 controller.setMainControllerListarReservas(ControllerListarReservas.this);
                                 setGraphic(root);
                             } catch (IOException e) {
-                                System.err.println("Erro ao carregar ItemCellCota.fxml: " + e.getMessage());
+                                System.err.println("Erro ao carregar ItemCellCotaReservaAdmin.fxml: " + e.getMessage());
                                 setGraphic(null);
                             }
                         }
@@ -200,6 +200,7 @@ public class ControllerListarReservas implements ControllerBase {
                 };
             }
         });
+        mudarTabReservasDeUmBem(); // ir para tab reservas de um bem
     }
 
     public ListView<Bem> getListViewItens() {
@@ -211,8 +212,7 @@ public class ControllerListarReservas implements ControllerBase {
         tabPaneTelaReservasAdmPrincipal.getSelectionModel().select(tabReservasPrincipal);
     }
 
-    public void mudarTabReservasDeUmBem(Bem bem) {
-        carregarReservasBem(bem);
+    public void mudarTabReservasDeUmBem() {
         tabPaneTelaReservasAdmPrincipal.getSelectionModel().select(tabReservasDeUmBem);
     }
 
