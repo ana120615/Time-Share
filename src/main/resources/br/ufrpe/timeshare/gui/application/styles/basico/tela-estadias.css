@@ -1,0 +1,37 @@
+.list-view {
+    -fx-background-color: white;
+    -fx-border-color: transparent;
+}
+
+.list-cell {
+    -fx-background-color: white;
+    -fx-text-fill: black;
+    -fx-padding: 0;
+    -fx-border-color: transparent;
+}
+
+.list-view .scroll-bar {
+    -fx-opacity: 0;
+    -fx-background-color: transparent;
+}
+
+.list-view .scroll-bar:vertical,
+.list-view .scroll-bar:horizontal {
+    -fx-background-color: transparent;
+}
+
+.label-bold {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #333;
+}
+
+.vbox-list {
+    -fx-background-color: white;
+    -fx-border-color: #ccc;
+    -fx-border-width: 1px 1px 1px 1px;
+    -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
+    -fx-padding: 10px;
+    -fx-background-insets: 0; /* Garante que o fundo respeite o border-radius */
+}

@@ -14,15 +14,90 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="581.0" prefWidth="832.0" style="-fx-background-color: #001f54;" stylesheets="@styles/basico/tela-minhas-cotas.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.ufrpe.timeshare.gui.controllers.usuarioAdmin.telaReservas.ControllerListarEstadias">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="586.0" prefWidth="855.0" style="-fx-background-color: #001f54;" stylesheets="@styles/basico/tela-estadias.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.ufrpe.timeshare.gui.controllers.usuarioAdmin.telaReservas.ControllerListarEstadias">
    <center>
-      <VBox alignment="CENTER" prefHeight="417.0" prefWidth="592.0" style="-fx-background-color: white;" VBox.vgrow="ALWAYS">
+      <VBox alignment="CENTER" style="-fx-background-color: #F3F4F6;" VBox.vgrow="ALWAYS">
          <children>
-            <ListView fx:id="listViewItensEstadias" maxWidth="700.0" prefHeight="278.0" prefWidth="639.0" stylesheets="@styles/basico/tela-lista-bens.css" VBox.vgrow="ALWAYS">
-               <padding>
-                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-               </padding>
-            </ListView>
+            <VBox alignment="CENTER" maxWidth="680.0" prefHeight="452.0" prefWidth="637.0" style="-fx-background-color: white;" styleClass="vbox-list">
+               <children>
+                  <GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="55.0" prefWidth="615.0" style="-fx-background-color: white;">
+                     <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="135.0" minWidth="10.0" prefWidth="134.0" />
+                     </columnConstraints>
+                     <rowConstraints>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                     </rowConstraints>
+                     <children>
+                        <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.hgrow="ALWAYS">
+                           <GridPane.margin>
+                              <Insets />
+                           </GridPane.margin>
+                           <children>
+                              <Label style="-fx-text-fill: #001f54; -fx-font-size: 27; -fx-font-weight: bold;" text="Estadias" />
+                           </children>
+                        </HBox>
+                     </children>
+                     <VBox.margin>
+                        <Insets bottom="5.0" />
+                     </VBox.margin>
+                  </GridPane>
+                  <HBox alignment="CENTER">
+                     <children>
+                        <GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="55.0" prefWidth="615.0" style="-fx-background-color: white;">
+                           <columnConstraints>
+                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="135.0" minWidth="10.0" prefWidth="134.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="135.0" minWidth="10.0" prefWidth="134.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="135.0" minWidth="10.0" prefWidth="134.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="135.0" minWidth="10.0" prefWidth="134.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="135.0" minWidth="10.0" prefWidth="134.0" />
+                           </columnConstraints>
+                           <rowConstraints>
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                           </rowConstraints>
+                           <children>
+                              <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.hgrow="ALWAYS">
+                                 <children>
+                                    <Label fx:id="idReserva" styleClass="label-bold" text="ID">
+                                       <HBox.margin>
+                                          <Insets left="5.0" />
+                                       </HBox.margin>
+                                    </Label>
+                                 </children>
+                                 <GridPane.margin>
+                                    <Insets />
+                                 </GridPane.margin>
+                              </HBox>
+                              <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="125.0" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS">
+                                 <children>
+                                    <Label fx:id="nomeProprietario" styleClass="label-bold" text="Nome" />
+                                 </children>
+                              </HBox>
+                              <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.hgrow="ALWAYS">
+                                 <children>
+                                    <Label fx:id="dataInicio" styleClass="label-bold" text="Data inicial" />
+                                 </children>
+                              </HBox>
+                              <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.hgrow="ALWAYS">
+                                 <children>
+                                    <Label fx:id="itemLabelNomeBem" styleClass="label-bold" text="Bem" />
+                                 </children>
+                              </HBox>
+                              <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.hgrow="ALWAYS">
+                                 <children>
+                                    <Label fx:id="dataFim" styleClass="label-bold" text="Data final" />
+                                 </children>
+                              </HBox>
+                           </children>
+                        </GridPane>
+                     </children>
+                  </HBox>
+                  <ListView fx:id="listViewItensEstadias" maxWidth="700.0" prefHeight="280.0" prefWidth="623.0" VBox.vgrow="ALWAYS">
+                     <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </padding>
+                  </ListView>
+               </children>
+            </VBox>
          </children>
          <padding>
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
@@ -42,11 +117,6 @@
             <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
          </rowConstraints>
          <children>
-            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="400.0" style="-fx-background-color: #001f54;" GridPane.columnIndex="2">
-               <children>
-                  <Label style="-fx-text-fill: white; -fx-font-size: 24px; -fx-font-weight: bold;" text="Estadias" />
-               </children>
-            </HBox>
             <Button contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#voltarParaTelaAdm" style="-fx-background-color: #001f54; -fx-cursor: hand;" text="&lt;" textAlignment="CENTER" textFill="WHITE" textOverrun="CENTER_WORD_ELLIPSIS">
                <font>
                   <Font size="30.0" />
@@ -63,13 +133,13 @@
       </GridPane>
    </top>
    <left>
-      <VBox prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: white;" BorderPane.alignment="CENTER" />
+      <VBox prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: #F3F4F6;" BorderPane.alignment="CENTER" />
    </left>
    <right>
-      <VBox prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: white;" BorderPane.alignment="CENTER" />
+      <VBox prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: #F3F4F6;" BorderPane.alignment="CENTER" />
    </right>
    <bottom>
-      <HBox alignment="CENTER" prefHeight="23.0" prefWidth="807.0" style="-fx-background-color: white;" BorderPane.alignment="CENTER">
+      <HBox alignment="CENTER" prefHeight="35.0" prefWidth="832.0" style="-fx-background-color: #F3F4F6;" BorderPane.alignment="CENTER">
          <children>
             <Label style="-fx-text-fill: gray;" text="Version 1.0.0.00000">
                <font>
