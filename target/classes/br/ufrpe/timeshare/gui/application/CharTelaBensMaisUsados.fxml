@@ -45,15 +45,15 @@
          <children>
             <HBox prefHeight="100.0" prefWidth="476.0">
                <children>
-                  <ComboBox fx:id="comboBox" prefWidth="150.0" HBox.hgrow="ALWAYS" />
+                  <ComboBox fx:id="cbBens" prefWidth="150.0" HBox.hgrow="ALWAYS" />
                </children>
             </HBox>
             <BarChart fx:id="barChartBensMaisUsados" prefHeight="343.0" prefWidth="476.0" styleClass="barChart" stylesheets="@styles/basico/grafico-style.css">
                <xAxis>
-                  <CategoryAxis label="Bens" fx:id="xAxis" />
+                  <CategoryAxis label="Meses" fx:id="xAxis" />
                </xAxis>
                <yAxis>
-                  <NumberAxis fx:id="yAxis" label="Vendas" />
+                  <NumberAxis fx:id="yAxis" label="Quantidade de dias" />
                </yAxis>
             </BarChart>
          </children>

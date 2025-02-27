@@ -441,6 +441,16 @@ public class ControladorBens {
         return resultadoFinal;
     }
 
+    public long buscarBemIdPorNome (String bemSelecionado) {
+        int resultdado;
+        for (Bem bem : repositorioBens.listar()) {
+            if (bem.getNome().equals(bemSelecionado)) {
+                return bem.getId();
+            }
+        }
+        return -1;
+    }
+
     // RELATÓRIO
     public int quantidadeVendasBem(Bem bem) {
         int resultado = 0;
