@@ -42,9 +42,9 @@ public class Cota extends Entidade implements Cloneable, Comparable<Cota> {
         this.dataFim = dataFim;
     }
 
-    private int calculoDoPeriodoDeDiasEntreAsDatas(){
+    /*private int calculoDoPeriodoDeDiasEntreAsDatas(){
         return  (int) this.dataInicio.until(dataFim, ChronoUnit.DAYS);
-    }
+    }*/
 
     public Bem getBemAssociado() {
         return bemAssociado;
