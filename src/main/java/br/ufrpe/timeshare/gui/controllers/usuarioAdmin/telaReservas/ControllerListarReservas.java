@@ -49,8 +49,6 @@ public class ControllerListarReservas implements ControllerBase {
     @FXML
     private Tab tabReservasPrincipal;
     @FXML
-    private Tab tabReservasAndamento;
-    @FXML
     private Tab tabReservasDeUmBem;
 
     @Override
@@ -229,8 +227,4 @@ public class ControllerListarReservas implements ControllerBase {
         ScreenManager.getInstance().showAdmPrincipalScreen();
     }
 
-
-    public void mudarTabReservasAndamento(ActionEvent event) {
-        tabPaneTelaReservasAdmPrincipal.getSelectionModel().select(tabReservasAndamento);
-    }
 }

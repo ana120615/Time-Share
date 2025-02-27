@@ -50,14 +50,14 @@ public class ControllerItemCellReservaAdm implements ControllerBase {
     public void setItem(Reserva item) {
         this.reserva = item;
 
-        if (item == null) {
-            itemImage.setImage(carregarImagemPadrao());
-            return;
-        }
+//        if (item == null) {
+//            itemImage.setImage(carregarImagemPadrao());
+//            return;
+//        }
 
         itemLabelNomeBem.setText(item.getBem().getNome() != null ? item.getBem().getNome() : "Nome do bem não disponível");
         nomeProprietario.setText(item.getUsuarioComum().getNome() != null ? item.getUsuarioComum().getNome() : "Nome do proprietario não disponível");
-        itemImage.setImage(carregarImagem(item.getBem().getCaminhoImagem()));
+        //itemImage.setImage(carregarImagem(item.getBem().getCaminhoImagem()));
         idReserva.setText(item.getId() != 0 ? String.valueOf(item.getId()) : "0");
         dataInicio.setText(item.getDataInicio() != null ? item.getDataInicio().toLocalDate().toString() : "Data inicial não disponível");
         dataFim.setText(item.getDataFim() != null ? item.getDataFim().toLocalDate().toString() : "Data final não disponível");
@@ -79,7 +79,8 @@ public class ControllerItemCellReservaAdm implements ControllerBase {
                 if (result.isPresent()) {
                     if (result.get() == botaoCancelarReserva) {
                         try {
-                            controladorReservas.cancelarReserva((int) this.reserva.getId(), this.usuarioLogado);
+                            controladorReservas.cancelarReserva((int) this.reserva.getId(), this.reserva.getUsuarioComum());
+                            mainControllerListarReservas.carregarReservasBem(reserva.getBem());
                         } catch (ReservaNaoExisteException | ReservaJaCanceladaException | CotaJaReservadaException |
                                  UsuarioNaoPermitidoException |
                                  ReservaNaoReembolsavelException | DadosInsuficientesException | NullPointerException |
@@ -99,28 +100,28 @@ public class ControllerItemCellReservaAdm implements ControllerBase {
         this.mainControllerListarReservas = mainControllerListarReservas;
     }
 
-    private Image carregarImagem(String caminhoImagem) {
-        if (caminhoImagem == null || caminhoImagem.isEmpty()) {
-            return carregarImagemPadrao();
-        }
-
-        try {
-            File file = new File(caminhoImagem);
-            if (file.exists()) {
-                return new Image(file.toURI().toString());  // Carrega caminho absoluto
-            } else {
-                return new Image(Objects.requireNonNull(getClass().getResourceAsStream(caminhoImagem))); // Tenta carregar do classpath
-            }
-        } catch (Exception e) {
-            System.err.println("Erro ao carregar imagem: " + e.getMessage());
-            return carregarImagemPadrao();
-        }
-    }
-
-
-    private Image carregarImagemPadrao() {
-        return new Image(Objects.requireNonNull(getClass().getResourceAsStream("/br/ufrpe/timeshare/gui/application/images/picture.png")));
-    }
+//    private Image carregarImagem(String caminhoImagem) {
+//        if (caminhoImagem == null || caminhoImagem.isEmpty()) {
+//            return carregarImagemPadrao();
+//        }
+//
+//        try {
+//            File file = new File(caminhoImagem);
+//            if (file.exists()) {
+//                return new Image(file.toURI().toString());  // Carrega caminho absoluto
+//            } else {
+//                return new Image(Objects.requireNonNull(getClass().getResourceAsStream(caminhoImagem))); // Tenta carregar do classpath
+//            }
+//        } catch (Exception e) {
+//            System.err.println("Erro ao carregar imagem: " + e.getMessage());
+//            return carregarImagemPadrao();
+//        }
+//    }
+//
+//
+//    private Image carregarImagemPadrao() {
+//        return new Image(Objects.requireNonNull(getClass().getResourceAsStream("/br/ufrpe/timeshare/gui/application/images/picture.png")));
+//    }
 
     @Override
     public void receiveData(Object data) {

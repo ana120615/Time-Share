@@ -49,6 +49,7 @@ public class ScreenManager {
         carregarTela("TelaRecuperarSenha", "/br/ufrpe/timeshare/gui/application/RecuperarSenha.fxml");
         carregarTela("TelaHistoricoUsoBens", "/br/ufrpe/timeshare/gui/application/CharTelaBensMaisUsados.fxml");
         carregarTela("TelaListarReservasAdmin", "/br/ufrpe/timeshare/gui/application/TelaListarReservaAdmin.fxml");
+        carregarTela("TelaListarEstadiasAdmin", "/br/ufrpe/timeshare/gui/application/TelaListarEstadiasAdmin.fxml");
         carregarTela("TelaAjuda", "/br/ufrpe/timeshare/gui/application/Ajuda.fxml");
     }
 
@@ -173,4 +174,6 @@ public class ScreenManager {
     public void showTelaListarReservasAdminScreen() {
         showScreen("TelaListarReservasAdmin");
     }
+
+    public void showTelaListarEstadiasAdminScreen() { showScreen("TelaListarEstadiasAdmin");}
 }

@@ -141,9 +141,13 @@ public class ControllerAdm implements ControllerBase {
         ScreenManager.getInstance().showTelaListarReservasAdminScreen();
     }
 
-    public void irParaAjuda(ActionEvent event){
-  Stage telaAnterior = (Stage) ((Button) event.getSource()).getScene().getWindow();
-    ScreenManager.getInstance().showAjudaScreen(telaAnterior);
-}
+    public void irParaAjuda(ActionEvent event) {
+        Stage telaAnterior = (Stage) ((Button) event.getSource()).getScene().getWindow();
+        ScreenManager.getInstance().showAjudaScreen(telaAnterior);
+    }
+
+    public void irParaTelaListarEstadias(ActionEvent event) {
+        ScreenManager.getInstance().showTelaListarEstadiasAdminScreen();
+    }
 }
 

@@ -486,6 +486,23 @@ public class ControladorReservas {
         return estadiaAtiva;
     }
 
+    public List<Estadia> getEstadiasDosBensDoUsuarioAdm(Usuario usuario) throws OperacaoNaoPermitidaException, DadosInsuficientesException {
+        List<Estadia> resultado = new ArrayList<>();
+        if (usuario != null) {
+            List<Estadia> estadias = repositorioEstadia.listar();
+            if (estadias != null) {
+                for (Estadia estadia : estadias) {
+                    if (estadia.getReserva() != null && estadia.getReserva().getBem().getCadastradoPor().equals(usuario)) {
+                        resultado.add(estadia);
+                    }
+                }
+            }
+        } else {
+            throw new DadosInsuficientesException("O usuario nao pode ser nulo");
+        }
+        return resultado;
+    }
+
 
     public List<Reserva> buscarReservaPorBem(long idBem) throws OperacaoNaoPermitidaException {
         if (idBem == 0) {
