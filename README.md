@@ -58,16 +58,14 @@ Requisitos para o sistema FlexShare
    **Consultas e Relatórios**
 
    * **REQ11** Consulta ao histórico de uso de um bem, incluindo reservas realizadas por diferentes usuários.
-       
-   * **REQ12** Relatório de disponibilidade de um bem em períodos futuros, considerando frações ainda não vendidas e reservas pendentes.
 
-   * **REQ13** Estatísticas de vendas e reservas por bem, incluindo frações mais populares e períodos mais reservados.
+   * **REQ12** Estatísticas de vendas e reservas por bem, incluindo frações mais populares e períodos mais reservados.
 
 
    **Validação e Controle**
-   * **REQ14** Validação automática de conflitos de datas para reservas e controle de taxas adicionais para períodos fora do intervalo permitido.
+   * **REQ13** Validação automática de conflitos de datas para reservas e controle de taxas adicionais para períodos fora do intervalo permitido.
          
-   * **REQ15** Ajuste automático do deslocamento da fração de semanas no início de cada ano (ex.: a fração de uma semana de 2024, de 1 a 7 de março, passará para 8 a 15 de março em 2025, e assim sucessivamente).
+   * **REQ14** Ajuste automático do deslocamento da fração de semanas no início de cada ano (ex.: a fração de uma semana de 2024, de 1 a 7 de março, passará para 8 a 15 de março em 2025, e assim sucessivamente).
 
 
  
@@ -91,12 +89,12 @@ MVP3 - Operações de Reserva -
 Descrição: Implementação de funcionalidades relacionadas à reserva de bens, incluindo consulta de períodos disponíveis, criação de reservas, e cancelamento de reservas.
 Justificativa: As reservas são o principal ponto de interação dos usuários com os bens adquiridos, sendo necessário estabelecer um controle robusto para esta funcionalidade.
 
-MVP4 - Consultas e Relatórios - [REQ11, REQ12, REQ13]
+MVP4 - Consultas e Relatórios - [REQ11, REQ12]
 
-Descrição: Criação de funcionalidades para consulta do histórico de uso, relatórios de disponibilidade futura, e estatísticas de vendas e reservas.
+Descrição: Criação de funcionalidades para consulta do histórico de uso e estatísticas de vendas e reservas.
 Justificativa: As consultas e relatórios fornecem informações estratégicas para usuários e administradores, promovendo transparência e auxiliando na tomada de decisões.
 
-MVP5 - Validação e Controle - [REQ14, REQ15]
+MVP5 - Validação e Controle - [REQ13, REQ14]
 
 Descrição: Desenvolvimento de mecanismos automáticos para validar conflitos de datas, aplicar taxas adicionais e ajustar o deslocamento de frações de semanas no início de cada ano.
 Justificativa: Esse módulo garante que o sistema mantenha a consistência e integridade dos br.ufrpe.time_share.dados ao longo do tempo, corrigindo automaticamente as mudanças de períodos.
