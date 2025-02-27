@@ -349,11 +349,15 @@ public class ControladorReservas {
     }
 
     public List<Reserva> getReservas() {
-        return this.repositorioReservas.listar();
+        List<Reserva> resultado = this.repositorioReservas.listar();
+        Collections.sort(resultado);
+        return resultado;
     }
 
     public List<Estadia> getEstadias() {
-        return this.repositorioEstadia.listar();
+        List<Estadia> resultado = this.repositorioEstadia.listar();
+        Collections.sort(resultado);
+        return resultado;
     }
 
     //Verifica se o periodo esta dentro da cota atual
@@ -445,6 +449,7 @@ public class ControladorReservas {
                 resultado.add(r);
             }
         }
+        Collections.sort(resultado);
         return resultado;
     }
 
@@ -570,6 +575,7 @@ public class ControladorReservas {
         for (Estadia estadia : repositorioEstadia.buscarEstadiasPorBem(idBem)) {
             historico.add(estadia);
         }
+        Collections.sort(historico);
         return historico;
     }
 
