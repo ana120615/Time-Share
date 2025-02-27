@@ -185,14 +185,14 @@ public class ControllerListarReservas implements ControllerBase {
                         } else {
                             try {
                                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/br/ufrpe/timeshare/gui/application/ItemCellReservasAdmin.fxml"));
-                                BorderPane root = loader.load();
+                                HBox root = loader.load();
                                 ControllerItemCellReservaAdm controller = loader.getController();
                                 controller.setValorTela(1);
                                 controller.setItem(item);
                                 controller.setMainControllerListarReservas(ControllerListarReservas.this);
                                 setGraphic(root);
                             } catch (IOException e) {
-                                System.err.println("Erro ao carregar ItemCellCota.fxml: " + e.getMessage());
+                                System.err.println("Erro ao carregar ItemCellCotaReservaAdmin.fxml: " + e.getMessage());
                                 setGraphic(null);
                             }
                         }
